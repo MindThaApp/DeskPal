@@ -295,7 +295,7 @@ internal static class Shaders
             float3 l = normalize(LightDir);
             float ndl = dot(n, l);
             float wrap = saturate((ndl + 0.35) / 1.35);
-            float3 hemi = lerp(float3(0.22, 0.19, 0.16), float3(0.42, 0.46, 0.52), n.y * 0.5 + 0.5);
+            float3 hemi = lerp(float3(0.30, 0.27, 0.24), float3(0.52, 0.56, 0.62), n.y * 0.5 + 0.5);
 
             float3 h = normalize(l + v);
             float a = Roughness * Roughness;

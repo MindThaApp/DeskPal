@@ -1,10 +1,13 @@
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using DeskPal.Core;
+using DeskPal.Render;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -29,6 +32,10 @@ public sealed partial class NudgeCardWindow : Window
     private long _timedEndTick;
     private int _timedSeconds;
     private long _loadVersion;
+    private LiveViewport? _viewport;
+    private long _liveRequestedTick;
+    private IntPtr _foregroundBefore;
+    private readonly List<Microsoft.UI.Dispatching.DispatcherQueueTimer> _debugTimers = [];
 
     public NudgeCardWindow(ICommandRouter router)
     {
@@ -36,6 +43,7 @@ public sealed partial class NudgeCardWindow : Window
         InitializeComponent();
         _hwnd = WindowNative.GetWindowHandle(this);
         _timer.Tick += (s, e) => TickGuard.Run("nudge-card", () => OnTimer(s, e));
+        if (AppData.Debug3D) After(10, "debug-3d-stats", LogStats, repeat: true);
 
         var presenter = OverlappedPresenter.Create();
         presenter.SetBorderAndTitleBar(false, false);
@@ -73,6 +81,20 @@ public sealed partial class NudgeCardWindow : Window
         DoneButton.IsEnabled = _timedSeconds == 0;
         UpdateCountdown();
 
+        if (AppData.IsDebugRun)
+        {
+            _foregroundBefore = GetForegroundWindow();
+            LogStats("before card");
+        }
+
+        var live = style == "3d" && !Stage3D.Failed && nudge.AssetName.StartsWith("bloop", StringComparison.OrdinalIgnoreCase);
+        var slot = style == "3d" ? 96 : 72;
+        AvatarColumn.Width = new GridLength(slot);
+        AvatarSlot.Width = AvatarSlot.Height = slot;
+        LivePanel.Visibility = live ? Visibility.Visible : Visibility.Collapsed;
+        LivePanel.Opacity = 0;
+        Avatar.Opacity = 1;
+
         Avatar.Source = null;
         var avatar = await LoadAvatarAsync(style, nudge.AssetName);
         if (version != _loadVersion) return;
@@ -85,6 +107,19 @@ public sealed partial class NudgeCardWindow : Window
         SetWindowPos(_hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
         PlayEntrance();
         _timer.Start();
+
+        if (live)
+        {
+            _viewport ??= CreateViewport();
+            _liveRequestedTick = Environment.TickCount64;
+            _viewport.Show(GetDpiForWindow(_hwnd) / 96.0);
+        }
+        if (AppData.IsDebugRun)
+        {
+            var r = AppWindow.Position;
+            var s = AppWindow.Size;
+            Logger.Log($"card rect {r.X} {r.Y} {s.Width} {s.Height}");
+        }
     }
 
     public void HideCard()
@@ -92,7 +127,89 @@ public sealed partial class NudgeCardWindow : Window
         _timer.Stop();
         _nudge = null;
         _loadVersion++;
+        _viewport?.Hide();
         AppWindow.Hide();
+        if (AppData.IsDebugRun) LogStats("card hidden");
+    }
+
+    private LiveViewport CreateViewport()
+    {
+        var viewport = new LiveViewport(LivePanel);
+        viewport.FirstFrame += OnFirstFrame;
+        viewport.Failed += () =>
+        {
+            LivePanel.Visibility = Visibility.Collapsed;
+            LivePanel.Opacity = 0;
+            Avatar.Opacity = 1;
+        };
+        return viewport;
+    }
+
+    private void OnFirstFrame()
+    {
+        Logger.Log($"3d first frame {Environment.TickCount64 - _liveRequestedTick} ms after show");
+        var duration = new Duration(TimeSpan.FromMilliseconds(150));
+        var fadeIn = new DoubleAnimation { From = 0, To = 1, Duration = duration };
+        var fadeOut = new DoubleAnimation { From = 1, To = 0, Duration = duration };
+        Storyboard.SetTarget(fadeIn, LivePanel);
+        Storyboard.SetTargetProperty(fadeIn, "Opacity");
+        Storyboard.SetTarget(fadeOut, Avatar);
+        Storyboard.SetTargetProperty(fadeOut, "Opacity");
+        var sb = new Storyboard();
+        sb.Children.Add(fadeIn);
+        sb.Children.Add(fadeOut);
+        sb.Begin();
+
+        if (!AppData.IsDebugRun) return;
+        LogForeground("after card shown");
+        if (AppData.DebugPoke)
+        {
+            After(2, "debug-poke", () =>
+            {
+                Logger.Log("debug poke");
+                _viewport?.Poke();
+                After(1.5, "debug-poke-fg", () => LogForeground("after poke"));
+            });
+        }
+    }
+
+    private void OnLivePressed(object sender, PointerRoutedEventArgs e)
+    {
+        _viewport?.Poke();
+        e.Handled = true;
+    }
+
+    private void OnRootPointerMoved(object sender, PointerRoutedEventArgs e)
+    {
+        if (_viewport is null || LivePanel.Visibility != Visibility.Visible) return;
+        var p = e.GetCurrentPoint(LivePanel).Position;
+        _viewport.LookAt(new Vector2((float)((p.X - 48) / 150), (float)((p.Y - 40) / 100)));
+    }
+
+    private void OnRootPointerExited(object sender, PointerRoutedEventArgs e) => _viewport?.LookAway();
+
+    private void LogForeground(string when)
+    {
+        var now = GetForegroundWindow();
+        Logger.Log($"foreground {when}: before=0x{_foregroundBefore:X} now=0x{now:X} same={now == _foregroundBefore} card=0x{_hwnd:X}");
+    }
+
+    private void LogStats() => LogStats("3d presents/10s: " + Interlocked.Exchange(ref LiveViewport.Presents, 0));
+
+    private static void LogStats(string label)
+    {
+        using var p = Process.GetCurrentProcess();
+        Logger.Log($"{label}; private {p.PrivateMemorySize64 / 1048576.0:F1} MB, working set {p.WorkingSet64 / 1048576.0:F1} MB");
+    }
+
+    private void After(double seconds, string name, Action action, bool repeat = false)
+    {
+        var timer = DispatcherQueue.CreateTimer();
+        timer.IsRepeating = repeat;
+        timer.Interval = TimeSpan.FromSeconds(seconds);
+        timer.Tick += (_, _) => TickGuard.Run(name, action);
+        _debugTimers.Add(timer);
+        timer.Start();
     }
 
     private void Place()
@@ -155,7 +272,7 @@ public sealed partial class NudgeCardWindow : Window
     public static string? ResolveAvatarPath(string style, string name)
     {
         var root = Path.Combine(AppContext.BaseDirectory, "Assets", "Characters");
-        if (style == "soft3d")
+        if (style is "soft3d" or "3d")
         {
             var soft = Path.Combine(root, "soft3d", name + ".svg");
             if (File.Exists(soft)) return soft;
@@ -200,6 +317,9 @@ public sealed partial class NudgeCardWindow : Window
 
     [DllImport("user32.dll")]
     private static extern uint GetDpiForWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetForegroundWindow();
 
     [DllImport("user32.dll")]
     private static extern bool SetWindowPos(IntPtr hWnd, IntPtr after, int x, int y, int cx, int cy, uint flags);

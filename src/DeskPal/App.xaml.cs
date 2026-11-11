@@ -43,6 +43,7 @@ public partial class App : Application
     private MenuFlyoutItem? _resumeItem;
     private ToggleMenuFlyoutItem? _flatItem;
     private ToggleMenuFlyoutItem? _softItem;
+    private ToggleMenuFlyoutItem? _liveItem;
 
     public App()
     {
@@ -215,8 +216,11 @@ public partial class App : Application
         _softItem = new ToggleMenuFlyoutItem { Text = "Soft 3D" };
         _flatItem.Click += (_, _) => SetStyle("flat");
         _softItem.Click += (_, _) => SetStyle("soft3d");
+        _liveItem = new ToggleMenuFlyoutItem { Text = "3D (beta)" };
+        _liveItem.Click += (_, _) => SetStyle("3d");
         style.Items.Add(_flatItem);
         style.Items.Add(_softItem);
+        style.Items.Add(_liveItem);
         RefreshStyleChecks();
 
         _crashItem = new ToggleMenuFlyoutItem { Text = "Send crash reports" };
@@ -286,9 +290,10 @@ public partial class App : Application
 
     private void RefreshStyleChecks()
     {
-        if (_flatItem is null || _softItem is null) return;
-        _flatItem.IsChecked = _settings.AvatarStyle != "soft3d";
+        if (_flatItem is null || _softItem is null || _liveItem is null) return;
+        _flatItem.IsChecked = _settings.AvatarStyle is not ("soft3d" or "3d");
         _softItem.IsChecked = _settings.AvatarStyle == "soft3d";
+        _liveItem.IsChecked = _settings.AvatarStyle == "3d";
     }
 
     private void CheckBusy()
@@ -400,7 +405,7 @@ public partial class App : Application
                 _scheduler.Expire(id);
             };
         }
-        return _card.ShowNudgeAsync(nudge, _settings.AvatarStyle);
+        return _card.ShowNudgeAsync(nudge, AppData.Debug3D ? "3d" : _settings.AvatarStyle);
     }
 
     private async Task ShowToastAsync(Nudge nudge)

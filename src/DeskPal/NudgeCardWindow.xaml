@@ -4,7 +4,8 @@
     <Window.SystemBackdrop>
         <DesktopAcrylicBackdrop />
     </Window.SystemBackdrop>
-    <Grid x:Name="Root" Padding="16,14,16,14" RowSpacing="10">
+    <Grid x:Name="Root" Padding="16,14,16,14" RowSpacing="10" Background="Transparent"
+          PointerMoved="OnRootPointerMoved" PointerExited="OnRootPointerExited">
         <Grid.RenderTransform>
             <TranslateTransform x:Name="Slide" Y="24" />
         </Grid.RenderTransform>
@@ -14,10 +15,14 @@
         </Grid.RowDefinitions>
         <Grid ColumnSpacing="12">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="72" />
+                <ColumnDefinition x:Name="AvatarColumn" Width="72" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Image x:Name="Avatar" Width="72" Height="72" VerticalAlignment="Top" />
+            <Grid x:Name="AvatarSlot" Width="72" Height="72" VerticalAlignment="Top">
+                <Image x:Name="Avatar" />
+                <SwapChainPanel x:Name="LivePanel" Width="96" Height="96" Opacity="0" Visibility="Collapsed"
+                                AutomationProperties.Name="Bloop" PointerPressed="OnLivePressed" />
+            </Grid>
             <StackPanel Grid.Column="1" Spacing="4">
                 <TextBlock x:Name="TitleText" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
                 <TextBlock x:Name="MessageText" FontSize="12" TextWrapping="Wrap" MaxLines="4" TextTrimming="CharacterEllipsis" />

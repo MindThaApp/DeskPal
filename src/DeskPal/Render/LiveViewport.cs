@@ -220,15 +220,15 @@ internal sealed class LiveViewport : IDisposable
             return null;
         }, joints);
 
-        var camPos = new Vector3(0, 0.055f, 0.21f);
-        var view = Matrix4x4.CreateLookAt(camPos, new Vector3(0, 0.03f, 0), Vector3.UnitY);
+        var camPos = new Vector3(0, 0.06f, 0.245f);
+        var view = Matrix4x4.CreateLookAt(camPos, new Vector3(0, 0.031f, 0), Vector3.UnitY);
         var proj = Matrix4x4.CreatePerspectiveFieldOfView(30f * MathF.PI / 180, (float)_width / _height, 0.01f, 1f);
         var frame = new FrameConstants
         {
             ViewProj = view * proj,
             LightDir = Vector3.Normalize(new Vector3(-0.55f, 0.8f, 0.55f)),
             CameraPos = camPos,
-            KeyColor = new Vector3(0.95f, 0.92f, 0.86f),
+            KeyColor = new Vector3(1.0f, 0.97f, 0.92f),
         };
         ctx.UpdateSubresource(in frame, s.FrameCb);
 

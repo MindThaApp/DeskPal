@@ -6,7 +6,10 @@ public static class AppData
     public static readonly bool DebugNudge = HasArg("--debug-nudge");
     public static readonly bool DebugCrash = HasArg("--debug-crash");
     public static readonly bool DebugTray = HasArg("--debug-tray");
-    public static readonly bool IsDebugRun = DebugEyeCue || DebugNudge || DebugCrash || DebugTray;
+    public static readonly bool Debug3DFail = HasArg("--debug-3d-fail");
+    public static readonly bool Debug3D = HasArg("--debug-3d") || Debug3DFail;
+    public static readonly bool DebugPoke = HasArg("--debug-poke");
+    public static readonly bool IsDebugRun = DebugEyeCue || DebugNudge || DebugCrash || DebugTray || Debug3D || DebugPoke;
 
     // Debug runs keep their own state and log so they never touch the real ones.
     public static readonly string Dir = Path.Combine(
