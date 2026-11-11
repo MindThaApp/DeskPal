@@ -24,5 +24,8 @@
     <Content Include="Assets\**\*.svg" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\deskpal.ico" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeskPal.Core\DeskPal.Core.csproj" />
+  </ItemGroup>
 </Project>
 
