@@ -35,7 +35,11 @@ public partial class App : Application
     private TrayAnimator? _anim;
     private int _walkNudges;
     private DispatcherQueueTimer? _debugTrayTimer;
-    private ToggleMenuFlyoutItem? _animateItem;
+    private DispatcherQueueTimer? _clickTimer;
+    private DispatcherQueueTimer? _debugPanelTimer;
+    private QuickPanelWindow? _quick;
+    private TrayMenuWindow? _menu;
+    private long _lastDoubleClickTick;
     private DispatcherQueueTimer? _toastTimer;
     private Guid? _toastNudgeId;
     private DispatcherQueueTimer? _tickTimer;
@@ -43,11 +47,6 @@ public partial class App : Application
     private DispatcherQueueTimer? _debugEyeTimer;
     private DispatcherQueueTimer? _debugNudgeTimer;
     private DispatcherQueueTimer? _debugCrashTimer;
-    private ToggleMenuFlyoutItem? _crashItem;
-    private MenuFlyoutItem? _resumeItem;
-    private ToggleMenuFlyoutItem? _flatItem;
-    private ToggleMenuFlyoutItem? _softItem;
-    private ToggleMenuFlyoutItem? _liveItem;
 
     public App()
     {
@@ -61,7 +60,7 @@ public partial class App : Application
         };
 
         var sid = WindowsIdentity.GetCurrent().User?.Value ?? Environment.UserName;
-        var mutexName = "DeskPal-" + sid + (AppData.DebugSettings ? "-debug-settings" : AppData.DebugMain ? "-debug-main" : AppData.IsDebugRun ? "-debug" : "");
+        var mutexName = "DeskPal-" + sid + (AppData.DebugSettings ? "-debug-settings" : AppData.DebugMain ? "-debug-main" : AppData.DebugQuickPanel ? "-debug-quickpanel" : AppData.DebugTrayMenu ? "-debug-traymenu" : AppData.IsDebugRun ? "-debug" : "");
         _instanceMutex = new Mutex(true, mutexName, out var created);
         if (!created) Environment.Exit(0);
         InitializeComponent();
@@ -118,9 +117,11 @@ public partial class App : Application
         _tray = new TaskbarIcon
         {
             ToolTipText = "Desk Pal",
-            ContextFlyout = BuildMenu(),
             Icon = _baseIcon,
-            LeftClickCommand = new ActionCommand(() => OpenMain()),
+            NoLeftClickDelay = true,
+            LeftClickCommand = new ActionCommand(() => _dq.TryEnqueue(() => TickGuard.Run("tray-left-click", OnTrayLeftClick))),
+            DoubleClickCommand = new ActionCommand(() => _dq.TryEnqueue(() => TickGuard.Run("tray-double-click", OnTrayDoubleClick))),
+            RightClickCommand = new ActionCommand(() => _dq.TryEnqueue(() => TickGuard.Run("tray-right-click", OnTrayRightClick))),
         };
         _tray.ForceCreate();
 
@@ -203,6 +204,18 @@ public partial class App : Application
             });
             _debugTrayTimer.Start();
         }
+        if (AppData.DebugQuickPanel || AppData.DebugTrayMenu)
+        {
+            _debugPanelTimer = _dq.CreateTimer();
+            _debugPanelTimer.IsRepeating = false;
+            _debugPanelTimer.Interval = TimeSpan.FromSeconds(2);
+            _debugPanelTimer.Tick += (_, _) => TickGuard.Run("debug-panel", () =>
+            {
+                if (AppData.DebugQuickPanel) ShowQuick();
+                else ShowMenu();
+            });
+            _debugPanelTimer.Start();
+        }
         if (AppData.DebugNudge)
         {
             _debugNudgeTimer = _dq.CreateTimer();
@@ -215,71 +228,6 @@ public partial class App : Application
             });
             _debugNudgeTimer.Start();
         }
-    }
-
-    private MenuFlyout BuildMenu()
-    {
-        var menu = new MenuFlyout();
-
-        var open = new MenuFlyoutItem { Text = "Open Desk Pal", FontWeight = Microsoft.UI.Text.FontWeights.Bold };
-        open.Click += (_, _) => OpenMain();
-
-        var test = new MenuFlyoutItem { Text = "Test nudge" };
-        test.Click += (_, _) => _router.Execute(new TestNudgeCommand());
-
-        var pause = new MenuFlyoutSubItem { Text = "Pause" };
-        pause.Items.Add(PauseItem("30 min", new PauseCommand(Minutes: 30)));
-        pause.Items.Add(PauseItem("1 hour", new PauseCommand(Minutes: 60)));
-        pause.Items.Add(PauseItem("Until tomorrow", new PauseCommand(UntilTomorrow: true)));
-
-        _resumeItem = new MenuFlyoutItem { Text = "Resume", IsEnabled = false };
-        _resumeItem.Click += (_, _) => _router.Execute(new ResumeCommand());
-
-        var style = new MenuFlyoutSubItem { Text = "Style" };
-        _flatItem = new ToggleMenuFlyoutItem { Text = "Flat" };
-        _softItem = new ToggleMenuFlyoutItem { Text = "Soft 3D" };
-        _flatItem.Click += (_, _) => SetStyle("flat");
-        _softItem.Click += (_, _) => SetStyle("soft3d");
-        _liveItem = new ToggleMenuFlyoutItem { Text = "3D (beta)" };
-        _liveItem.Click += (_, _) => SetStyle("3d");
-        style.Items.Add(_flatItem);
-        style.Items.Add(_softItem);
-        style.Items.Add(_liveItem);
-        RefreshStyleChecks();
-
-        _crashItem = new ToggleMenuFlyoutItem { Text = "Send crash reports" };
-        _crashItem.Click += (_, _) => ToggleCrashReports();
-        RefreshCrashCheck();
-
-        _animateItem = new ToggleMenuFlyoutItem { Text = "Animate tray icon", IsChecked = _settings.AnimateTray };
-        _animateItem.Click += (_, _) => ToggleAnimateTray();
-
-        var exit = new MenuFlyoutItem { Text = "Exit" };
-        exit.Click += (_, _) => ExitApp();
-
-        var settingsItem = new MenuFlyoutItem { Text = "Settings…" };
-        settingsItem.Click += (_, _) => OpenMain("settings");
-
-        menu.Items.Add(open);
-        menu.Items.Add(new MenuFlyoutSeparator());
-        menu.Items.Add(test);
-        menu.Items.Add(pause);
-        menu.Items.Add(_resumeItem);
-        menu.Items.Add(style);
-        menu.Items.Add(_animateItem);
-        menu.Items.Add(_crashItem);
-        menu.Items.Add(settingsItem);
-        menu.Items.Add(new MenuFlyoutSeparator());
-        menu.Items.Add(exit);
-        menu.Opening += (_, _) => UpdateTray();
-        return menu;
-    }
-
-    private MenuFlyoutItem PauseItem(string text, Command command)
-    {
-        var item = new MenuFlyoutItem { Text = text };
-        item.Click += (_, _) => _router.Execute(command);
-        return item;
     }
 
     private void SetStyle(string style)
@@ -297,16 +245,13 @@ public partial class App : Application
 
     private void ToggleAnimateTray()
     {
-        _settings.AnimateTray = _animateItem?.IsChecked ?? !_settings.AnimateTray;
+        _settings.AnimateTray = !_settings.AnimateTray;
         _hub.Commit(false);
     }
 
     // Runs after every settings change, whether it came from the tray menu or the settings page.
     private void OnSettingsChanged()
     {
-        RefreshStyleChecks();
-        RefreshCrashCheck();
-        if (_animateItem is not null) _animateItem.IsChecked = _settings.AnimateTray;
         if (!_settings.AnimateTray) _anim?.Stop();
         if (_settings.CrashReports != _appliedCrashMode)
         {
@@ -335,19 +280,6 @@ public partial class App : Application
 
     private bool IsPausedUntilTomorrow() =>
         _scheduler.ManualHold is { } h && h.Until.Date > TimeProvider.System.GetLocalNow().Date;
-
-    private void RefreshCrashCheck()
-    {
-        if (_crashItem is not null) _crashItem.IsChecked = _settings.CrashReports == CrashReportingMode.Always;
-    }
-
-    private void RefreshStyleChecks()
-    {
-        if (_flatItem is null || _softItem is null || _liveItem is null) return;
-        _flatItem.IsChecked = _settings.AvatarStyle is not ("soft3d" or "3d");
-        _softItem.IsChecked = _settings.AvatarStyle == "soft3d";
-        _liveItem.IsChecked = _settings.AvatarStyle == "3d";
-    }
 
     private void CheckBusy()
     {
@@ -379,7 +311,8 @@ public partial class App : Application
         else
             text = "Desk Pal";
         _tray.ToolTipText = text;
-        if (_resumeItem is not null) _resumeItem.IsEnabled = manual is not null;
+        if (_quick?.IsOpen == true) _quick.Refresh();
+        if (_menu?.IsOpen == true) _menu.Refresh();
         _anim?.Refresh();
     }
 
@@ -593,6 +526,80 @@ public partial class App : Application
         }
     }
 
+    private TrayContext PanelContext() =>
+        new(_scheduler, _hub, ShowEyeCue, OpenMain, SetStyle, ToggleAnimateTray, ToggleCrashReports, ExitApp);
+
+    // A left click waits out the double-click time before opening the quick panel, so the first click of a
+    // double-click never flashes it; the double-click cancels the wait.
+    private void OnTrayLeftClick()
+    {
+        if (Environment.TickCount64 - _lastDoubleClickTick < GetDoubleClickTime() + 250) return;
+        if (_quick is { IsOpen: true } or { JustDeactivated: true })
+        {
+            _clickTimer?.Stop();
+            _quick.HidePanel();
+            return;
+        }
+        if (_clickTimer is null)
+        {
+            _clickTimer = _dq.CreateTimer();
+            _clickTimer.IsRepeating = false;
+            _clickTimer.Tick += (_, _) => TickGuard.Run("tray-click-delay", ShowQuick);
+        }
+        _clickTimer.Stop();
+        _clickTimer.Interval = TimeSpan.FromMilliseconds(GetDoubleClickTime());
+        _clickTimer.Start();
+    }
+
+    private void OnTrayDoubleClick()
+    {
+        _clickTimer?.Stop();
+        _lastDoubleClickTick = Environment.TickCount64;
+        _quick?.HidePanel();
+        _menu?.HidePanel();
+        OpenMain();
+    }
+
+    private void OnTrayRightClick()
+    {
+        _clickTimer?.Stop();
+        if (_menu is { IsOpen: true } or { JustDeactivated: true })
+        {
+            _menu.HidePanel();
+            return;
+        }
+        ShowMenu();
+    }
+
+    private void ShowQuick()
+    {
+        try
+        {
+            _quick ??= new QuickPanelWindow(PanelContext());
+            _menu?.HidePanel();
+            var anchor = TrayAnchor.Get(_tray?.Id ?? Guid.Empty);
+            if (AppData.IsDebugRun) Logger.Log($"quick panel anchor {anchor}");
+            _quick.ShowPanel(anchor);
+        }
+        catch (Exception ex) { Logger.Log("quick panel failed: " + ex.Message); }
+    }
+
+    private void ShowMenu()
+    {
+        try
+        {
+            _menu ??= new TrayMenuWindow(PanelContext());
+            _quick?.HidePanel();
+            var anchor = TrayAnchor.Get(_tray?.Id ?? Guid.Empty);
+            if (AppData.IsDebugRun) Logger.Log($"tray menu anchor {anchor}");
+            _menu.ShowPanel(anchor);
+        }
+        catch (Exception ex) { Logger.Log("tray menu failed: " + ex.Message); }
+    }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern uint GetDoubleClickTime();
+
     private void OpenMain(string? page = null)
     {
         _dq.TryEnqueue(() =>
@@ -638,10 +645,14 @@ public partial class App : Application
         _debugNudgeTimer?.Stop();
         _debugCrashTimer?.Stop();
         _debugTrayTimer?.Stop();
+        _clickTimer?.Stop();
+        _debugPanelTimer?.Stop();
         AppNotificationManager.Default.NotificationInvoked -= OnNotificationInvoked;
         AppNotificationManager.Default.Unregister();
         _tray?.Dispose();
         _icons?.Dispose();
+        _quick?.Close();
+        _menu?.Close();
         _card?.Close();
         _pill?.Close();
         _main?.Quit();

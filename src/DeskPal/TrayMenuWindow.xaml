@@ -1,0 +1,29 @@
+<Window x:Class="DeskPal.TrayMenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.SystemBackdrop>
+        <DesktopAcrylicBackdrop />
+    </Window.SystemBackdrop>
+    <Grid x:Name="Root" Padding="6" XYFocusKeyboardNavigation="Enabled">
+        <Grid.Resources>
+            <SolidColorBrush x:Key="ButtonBackground" Color="Transparent" />
+            <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+            <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
+            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent" />
+        </Grid.Resources>
+        <StackPanel Spacing="2">
+            <StackPanel x:Name="Info" Padding="12,8,12,10" Spacing="3">
+                <TextBlock x:Name="GreetingText" FontSize="14" FontWeight="SemiBold" TextWrapping="Wrap" />
+                <TextBlock x:Name="NextText" FontSize="12" />
+                <TextBlock x:Name="HoldsText" FontSize="12" TextWrapping="Wrap" />
+                <TextBlock x:Name="StatsText" FontSize="12" Opacity="0.7" />
+            </StackPanel>
+            <Rectangle Height="1" Margin="8,0,8,4" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+            <StackPanel x:Name="Rows" Spacing="2" />
+            <Rectangle Height="1" Margin="8,4,8,4" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+            <StackPanel x:Name="ExitRows" Spacing="2" />
+        </StackPanel>
+    </Grid>
+</Window>
