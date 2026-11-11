@@ -56,25 +56,11 @@ public sealed partial class HomePage : Page
 
     private void Refresh()
     {
-        var h = DateTime.Now.Hour;
-        GreetingText.Text = h switch
-        {
-            < 5 => "Still up? Be kind to your eyes tonight.",
-            < 12 => "Morning! Ready for a good day?",
-            < 17 => "Afternoon! A little stretch will feel good.",
-            < 22 => "Evening! You did well today.",
-            _ => "Late one. Time to wind down soon?",
-        };
+        GreetingText.Text = HomeInfo.Greeting(DateTime.Now.Hour);
         var s = _ctx.Scheduler;
-        if (s.NextDue is { } next)
-        {
-            var what = next.Kind switch { NudgeKind.Eyes => "Eye break", NudgeKind.Walk => "Walk", _ => "Stretch" };
-            NextText.Text = $"{what} at {next.At:HH:mm}";
-        }
-        else NextText.Text = "Nothing scheduled";
-        var holds = s.Holds;
-        HoldsText.Text = holds.Count == 0 ? "No holds" : "Holding: " + string.Join(", ", holds.Select(x => x.Reason));
-        CountsText.Text = $"Stretches {s.StretchesToday}   Eye breaks {s.EyeBreaksToday}   Walks {s.WalksToday}";
+        NextText.Text = HomeInfo.NextUp(s);
+        HoldsText.Text = HomeInfo.HoldsLine(s);
+        CountsText.Text = HomeInfo.CountsLine(s);
         PauseButton.Content = s.ManualHold is null ? "Pause 30 min" : "Resume";
     }
 
