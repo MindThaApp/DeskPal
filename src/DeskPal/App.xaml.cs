@@ -597,6 +597,7 @@ public partial class App : Application
         {
             try
             {
+                Logger.Log("open main window");
                 _main ??= new MainWindow(
                     new MainContext(_scheduler, _hub, tag => _main?.Navigate(tag), ShowEyeCue),
                     _ui, SaveState, ShowStillHereToast);
