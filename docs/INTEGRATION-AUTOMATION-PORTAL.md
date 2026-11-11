@@ -189,3 +189,17 @@ No template includes HTTP, AskAi or email steps.
 - Does Automation Portal have a JSON-parse action? If not, the "Send details as JSON" toggle on event mappings has little use and can wait.
 - What is Automation Portal's Store product ID, for the "Get Automation Portal" card?
 - How does MSIX redirect `%TEMP%` and `%APPDATA%` for the packaged Desk Pal? The contract avoids shared files for this reason; confirm before adding any file hand-off between the two apps.
+
+## Corrections from the Automation Portal side (checked against its pipe code)
+
+- **Automation Portal's pipe uses its own message shape.**
+  - Request: `{"kind":"run","name":"<id>","input":"...","files":[...],"wait":false,"json":true}`.
+  - Reply: `{"exitCode":0,"output":"...","message":"..."}`, using its CLI exit codes (see its docs/CLI.md).
+  - Desk Pal's own pipe keeps its `v/cmd/args` shape. Desk Pal's AP client speaks AP's shape, so there's no v2 on AP's side.
+- **No-wait run already exists:** `wait` defaults to false and replies `{shortcut, status:"started"}`. If the shortcut is already running, the second run is silently dropped, so don't use replies for counting.
+- **Send the shortcut id** from `list`. `name` also matches alias, name and a unique prefix. `list` with `json:true` returns `{id, name, folder, alias, hotkey, pinned, description}` in `output`.
+- **Pipe name:** `AutomationPortal-<SID>`. A `-<8 hex>` suffix is added only for a non-default data root. Desk Pal tries the plain name.
+- **Trust:** pipe runs count as CLI runs, with no allow prompt. CurrentUserOnly is the only gate, and the caller's identity isn't checked.
+- **Sibling contract:** `ping`, `list`, `run` and `import` only. `launch` and `export` stay internal. Freezing them is a doc task on AP's side when work starts.
+- **AP not running:** the connect times out, so Desk Pal skips the run and counts it. There's no `ap run` fallback, because without the app `ap` runs the shortcut itself in a console.
+- **Weather read** exists (WeatherActions / WeatherService), so the lunch-walk template is feasible.
