@@ -530,6 +530,7 @@ internal sealed class LiveViewport : IDisposable
         {
             if (s.SampleCount > 1) ctx.ResolveSubresource(back, 0, _msaa, 0, Format.B8G8R8A8_UNorm);
             else ctx.CopyResource(back, _msaa);
+            if (AppData.Debug3DDump && Now >= _nextDump && _dumps < 16) DumpFrame(s, back);
         }
         _swap.Present(1, PresentFlags.None).CheckError();
         Interlocked.Increment(ref Presents);
@@ -572,6 +573,35 @@ internal sealed class LiveViewport : IDisposable
                 ctx.IASetIndexBuffer(part.Indices, Format.R32_UInt, 0);
                 ctx.DrawIndexed((uint)mp.Indices.Length, 0, 0);
             }
+        }
+    }
+
+    private double _nextDump = 1;
+    private int _dumps;
+
+    // Debug only (--debug-3d-dump): reads the presented image back into a new PNG in %TEMP%, about every 1.5 s while
+    // frames are running, so the render can be checked when the screen cannot be captured. Never overwrites a file.
+    private void DumpFrame(Stage3D s, ID3D11Texture2D back)
+    {
+        _nextDump = Now + 1.5;
+        _dumps++;
+        using var staging = s.Device.CreateTexture2D(new Texture2DDescription(Format.B8G8R8A8_UNorm, _width, _height, 1, 1,
+            BindFlags.None, ResourceUsage.Staging, CpuAccessFlags.Read, 1, 0));
+        s.Context.CopyResource(staging, back);
+        var map = s.Context.Map(staging, 0, MapMode.Read);
+        try
+        {
+            using var bmp = new SkiaSharp.SKBitmap(new SkiaSharp.SKImageInfo((int)_width, (int)_height, SkiaSharp.SKColorType.Bgra8888, SkiaSharp.SKAlphaType.Premul));
+            for (var y = 0; y < _height; y++)
+                unsafe { Buffer.MemoryCopy((byte*)map.DataPointer + y * map.RowPitch, (byte*)bmp.GetPixels() + y * bmp.RowBytes, bmp.RowBytes, _width * 4); }
+            var path = Path.Combine(Path.GetTempPath(), $"dp-3d-{(_home ? "home" : "card")}-{Environment.ProcessId}-{Now:00.0}s-{_anim?.CurrentClip ?? "idle"}.png");
+            using var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write);
+            bmp.Encode(file, SkiaSharp.SKEncodedImageFormat.Png, 100);
+            Logger.Log($"3d frame dump {Path.GetFileName(path)}");
+        }
+        finally
+        {
+            s.Context.Unmap(staging, 0);
         }
     }
 

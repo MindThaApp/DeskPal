@@ -9,6 +9,7 @@ public static class AppData
     public static readonly bool Debug3DFail = HasArg("--debug-3d-fail");
     public static readonly bool Debug3D = HasArg("--debug-3d") || Debug3DFail;
     public static readonly bool DebugPoke = HasArg("--debug-poke");
+    public static readonly bool Debug3DDump = HasArg("--debug-3d-dump");
     public static readonly bool DebugSettings = HasArg("--debug-settings");
     public static readonly bool DebugMain = HasArg("--debug-main");
     public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || Debug3D || DebugPoke;
