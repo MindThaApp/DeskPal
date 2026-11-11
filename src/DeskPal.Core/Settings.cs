@@ -8,26 +8,92 @@ public sealed class WorkingHours
     public TimeOnly End { get; set; } = new(17, 30);
 }
 
+public enum WaterMode { WithBreaks, Hourly, Off }
+
 public sealed class DeskPalSettings
 {
-    public const int GridMinutes = 20;
-    public static readonly int[] StretchChoices = [40, 60];
+    public const int CurrentVersion = 2;
 
-    public int StretchMinutes { get; set; } = 40;
-    public int WaterMinutes { get; set; } = 40;
+    public const int RecommendedMovementMinutes = 30;
+    public const int MovementMin = 15;
+    public const int MovementMax = 120;
+    public const int RecommendedEyesMinutes = 20;
+    public const int RecommendedWalkAfter = 3;
+    public const int RecommendedSitStandMinutes = 30;
+    public const int HourlyWaterMinutes = 60;
+    public static readonly int[] MovementChoices = [20, 30, 45, 60];
+    public static readonly int[] EyesChoices = [20, 30];
+    public static readonly int[] WalkChoices = [2, 3, 4];
+    public static readonly int[] SitStandChoices = [30, 45, 60];
+
+    // 0 means the file was written before versions existed.
+    public int SettingsVersion { get; set; }
+
+    public bool MovementEnabled { get; set; } = true;
+    public int StretchMinutes { get; set; } = RecommendedMovementMinutes;
+    public bool EyesEnabled { get; set; } = true;
+    public int EyesMinutes { get; set; } = RecommendedEyesMinutes;
+    public WaterMode Water { get; set; } = WaterMode.WithBreaks;
+    // Completed stretches before a walk replaces the next one; 0 turns the walk off.
+    public int WalkAfterStretches { get; set; } = RecommendedWalkAfter;
+    public bool SitStandEnabled { get; set; }
+    public int SitStandMinutes { get; set; } = RecommendedSitStandMinutes;
+
     public WorkingHours WorkingHours { get; set; } = new();
     public string AvatarStyle { get; set; } = "flat";
     public bool UseNudgeCard { get; set; } = true;
     public bool AnimateTray { get; set; } = true;
     public CrashReportingMode CrashReports { get; set; } = CrashReportingMode.Ask;
 
+    public int MovementMinutes => Math.Clamp(StretchMinutes, MovementMin, MovementMax);
+
+    public bool IsScheduled(NudgeKind kind) => kind switch
+    {
+        NudgeKind.Stretch => MovementEnabled,
+        NudgeKind.Eyes => EyesEnabled,
+        NudgeKind.Water => Water == WaterMode.Hourly || (Water == WaterMode.WithBreaks && MovementEnabled),
+        _ => false,
+    };
+
     public TimeSpan IntervalFor(NudgeKind kind) => TimeSpan.FromMinutes(kind switch
     {
-        NudgeKind.Stretch or NudgeKind.Walk => Array.IndexOf(StretchChoices, StretchMinutes) >= 0 ? StretchMinutes : 40,
-        NudgeKind.Eyes => GridMinutes,
-        NudgeKind.Water => Math.Max(GridMinutes, WaterMinutes / GridMinutes * GridMinutes),
-        _ => 40,
+        NudgeKind.Stretch or NudgeKind.Walk => MovementMinutes,
+        NudgeKind.Eyes => EyesMinutes == 30 ? 30 : RecommendedEyesMinutes,
+        NudgeKind.Water => Water == WaterMode.Hourly ? HourlyWaterMinutes : MovementMinutes,
+        _ => RecommendedMovementMinutes,
     });
+
+    // Brings a loaded file up to date and repairs out-of-range values. Returns true when something changed.
+    public bool Migrate()
+    {
+        var changed = false;
+        if (SettingsVersion < CurrentVersion)
+        {
+            // The old default was 40; whether the user chose it cannot be told, so it moves to 30 once.
+            if (StretchMinutes == 40) StretchMinutes = RecommendedMovementMinutes;
+            SettingsVersion = CurrentVersion;
+            changed = true;
+        }
+        var movement = MovementMinutes;
+        if (StretchMinutes != movement) { StretchMinutes = movement; changed = true; }
+        if (Array.IndexOf(EyesChoices, EyesMinutes) < 0) { EyesMinutes = RecommendedEyesMinutes; changed = true; }
+        if (WalkAfterStretches != 0 && Array.IndexOf(WalkChoices, WalkAfterStretches) < 0) { WalkAfterStretches = RecommendedWalkAfter; changed = true; }
+        if (Array.IndexOf(SitStandChoices, SitStandMinutes) < 0) { SitStandMinutes = RecommendedSitStandMinutes; changed = true; }
+        if (!Enum.IsDefined(Water)) { Water = WaterMode.WithBreaks; changed = true; }
+        return changed;
+    }
+
+    public void ResetRemindersToRecommended()
+    {
+        MovementEnabled = true;
+        StretchMinutes = RecommendedMovementMinutes;
+        EyesEnabled = true;
+        EyesMinutes = RecommendedEyesMinutes;
+        Water = WaterMode.WithBreaks;
+        WalkAfterStretches = RecommendedWalkAfter;
+        SitStandEnabled = false;
+        SitStandMinutes = RecommendedSitStandMinutes;
+    }
 }
 
 public sealed class DeskPalState
@@ -39,4 +105,3 @@ public sealed class DeskPalState
     public int StretchesToday { get; set; }
     public int EyeBreaksToday { get; set; }
 }
-

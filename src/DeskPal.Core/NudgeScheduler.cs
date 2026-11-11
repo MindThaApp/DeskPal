@@ -8,13 +8,13 @@ public sealed class NudgeScheduler : ICommandRouter
     public static readonly TimeSpan LongCall = TimeSpan.FromMinutes(20);
     public static readonly TimeSpan BudgetWindow = TimeSpan.FromHours(1);
     public const int MaxVisiblePerHour = 2;
-    public const int WalkAfterStretches = 3;
     public const string SnoozeSource = "snooze";
     public const string ManualSource = "manual";
     public const string CallSource = "call";
     public const string LongCallMessage = "That was a long one. Stretch?";
 
     private static readonly NudgeKind[] Scheduled = [NudgeKind.Stretch, NudgeKind.Eyes, NudgeKind.Water];
+    private static readonly TimeSpan PostureSlack = TimeSpan.FromMinutes(5);
 
     private readonly TimeProvider _time;
     private readonly DeskPalSettings _settings;
@@ -27,6 +27,8 @@ public sealed class NudgeScheduler : ICommandRouter
     private DateTimeOffset? _lastShown;
     private DateTimeOffset? _callStart;
     private bool _longCall;
+    private DateTimeOffset? _lastPosture;
+    private bool _standing;
     private DateOnly _countersDate;
     private int _stretchesToday;
     private int _eyeBreaksToday;
@@ -42,7 +44,7 @@ public sealed class NudgeScheduler : ICommandRouter
         _eyeBreaksToday = state?.EyeBreaksToday ?? 0;
         var now = Now;
         RollDay(now);
-        foreach (var kind in Scheduled) _due[kind] = NextOnGrid(now, settings.IntervalFor(kind));
+        ApplyDue(now);
         if (state is not null)
             foreach (var h in state.Holds)
                 if (h.Until > now && h.Source is not ("dnd" or CallSource)) _holds.Add(h);
@@ -64,6 +66,32 @@ public sealed class NudgeScheduler : ICommandRouter
     }
 
     private DateTimeOffset Now => _time.GetLocalNow();
+
+    private bool WalkDue => _settings.WalkAfterStretches > 0 && StretchesCompleted >= _settings.WalkAfterStretches;
+
+    // Call after the settings object changed: restarts the timers of the reminders that are still on.
+    public void ApplySettings()
+    {
+        lock (_gate)
+        {
+            ApplyDue(Now);
+            _lastPosture = null;
+        }
+    }
+
+    private void ApplyDue(DateTimeOffset now)
+    {
+        foreach (var kind in Scheduled)
+        {
+            if (!_settings.IsScheduled(kind))
+            {
+                _due.Remove(kind);
+                _pending.Remove(kind);
+            }
+            else if (!_pending.ContainsKey(kind))
+                _due[kind] = NextOnGrid(now, _settings.IntervalFor(kind));
+        }
+    }
 
     public IReadOnlyList<Hold> Holds
     {
@@ -89,7 +117,7 @@ public sealed class NudgeScheduler : ICommandRouter
                 var candidates = _due.Where(p => p.Key is NudgeKind.Stretch or NudgeKind.Eyes).ToList();
                 if (candidates.Count == 0) return null;
                 var best = candidates.OrderBy(p => p.Value).First();
-                var kind = best.Key == NudgeKind.Stretch && StretchesCompleted >= WalkAfterStretches ? NudgeKind.Walk : best.Key;
+                var kind = best.Key == NudgeKind.Stretch && WalkDue ? NudgeKind.Walk : best.Key;
                 return (kind, best.Value);
             }
         }
@@ -187,13 +215,28 @@ public sealed class NudgeScheduler : ICommandRouter
                     _due.Remove(NudgeKind.Stretch);
                 }
 
+                if (_settings.Water == WaterMode.Hourly && !_pending.ContainsKey(NudgeKind.Water)
+                    && _due.TryGetValue(NudgeKind.Water, out var hourly) && hourly <= now
+                    && !(_due.TryGetValue(NudgeKind.Stretch, out var soon) && soon <= now + MergeWindow)
+                    && !_pending.ContainsKey(NudgeKind.Stretch))
+                {
+                    _pending[NudgeKind.Water] = hourly;
+                    _due.Remove(NudgeKind.Water);
+                }
+
                 if (_pending.Count > 0 && _holds.Count == 0
                     && (_lastShown is not { } last || now - last >= MinGap)
                     && BudgetLeft(now))
                 {
-                    var batch = new List<NudgeKind> { NudgeKind.Stretch };
-                    if (_due.TryGetValue(NudgeKind.Water, out var water) && water <= now + MergeWindow)
-                        batch.Add(NudgeKind.Water);
+                    var batch = new List<NudgeKind>();
+                    if (_pending.ContainsKey(NudgeKind.Stretch))
+                    {
+                        batch.Add(NudgeKind.Stretch);
+                        if (_pending.ContainsKey(NudgeKind.Water)
+                            || (_due.TryGetValue(NudgeKind.Water, out var water) && water <= now + MergeWindow))
+                            batch.Add(NudgeKind.Water);
+                    }
+                    else batch.Add(NudgeKind.Water);
                     Show(batch, now, isTest: false, longCall: _longCall);
                     _longCall = false;
                     return;
@@ -250,6 +293,7 @@ public sealed class NudgeScheduler : ICommandRouter
     {
         Raise(new SchedulerEvent(SchedulerEventType.HoldEnded, Hold: hold));
         if (hold.Source != CallSource || _callStart is not { } start) return;
+        if (!_settings.MovementEnabled) { _callStart = null; return; }
         _callStart = null;
         if (now - start < LongCall) return;
         _pending[NudgeKind.Stretch] = now;
@@ -344,7 +388,7 @@ public sealed class NudgeScheduler : ICommandRouter
         foreach (var kind in nudge.Kinds)
         {
             var key = kind == NudgeKind.Walk ? NudgeKind.Stretch : kind;
-            if (Array.IndexOf(Scheduled, key) >= 0) _due[key] = NextOnGrid(now, _settings.IntervalFor(key));
+            if (Array.IndexOf(Scheduled, key) >= 0 && _settings.IsScheduled(key)) _due[key] = NextOnGrid(now, _settings.IntervalFor(key));
         }
     }
 
@@ -381,12 +425,20 @@ public sealed class NudgeScheduler : ICommandRouter
             }
 
         var kinds = batch.Distinct()
-            .Select(k => k == NudgeKind.Stretch && !longCall && StretchesCompleted >= WalkAfterStretches ? NudgeKind.Walk : k)
+            .Select(k => k == NudgeKind.Stretch && !longCall && WalkDue ? NudgeKind.Walk : k)
             .OrderBy(k => k == NudgeKind.Walk ? -1 : (int)k)
             .ToList();
         var primary = kinds[0];
         var stretch = primary == NudgeKind.Stretch ? _library.Next() : null;
         var (title, instruction) = Describe(primary, stretch);
+        string? posture = null;
+        if (!isTest && !longCall && primary == NudgeKind.Stretch && _settings.SitStandEnabled
+            && (_lastPosture is not { } lp || now - lp >= TimeSpan.FromMinutes(_settings.SitStandMinutes) - PostureSlack))
+        {
+            posture = _standing ? "Time to sit for a bit" : "Switch to standing";
+            _standing = !_standing;
+            _lastPosture = now;
+        }
         string message;
         string? extra = null;
         if (longCall)
@@ -396,11 +448,12 @@ public sealed class NudgeScheduler : ICommandRouter
         }
         else if (kinds.Count == 1)
         {
-            message = instruction;
+            message = posture ?? instruction;
+            if (posture is not null) extra = instruction;
         }
         else
         {
-            message = $"{title}, {string.Join(" and ", kinds.Skip(1).Select(Tail))}.";
+            message = $"{posture ?? title}, {string.Join(" and ", kinds.Skip(1).Select(Tail))}.";
             extra = instruction;
         }
 
