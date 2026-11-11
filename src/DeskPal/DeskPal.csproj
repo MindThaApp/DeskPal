@@ -14,6 +14,7 @@
     <SelfContained>true</SelfContained>
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
+    <CopyDebugSymbolFilesFromPackages>false</CopyDebugSymbolFilesFromPackages>
     <ImplicitUsings>enable</ImplicitUsings>
     <DisableXamlRootNamespaceCheck>true</DisableXamlRootNamespaceCheck>
     <!-- No global using Sentry, no native crash handler (it would bypass the consent gate and the redaction), no build paths in the assembly. -->
@@ -26,6 +27,10 @@
       <Compile Remove="$(IntermediateOutputPath)$(SentryAttributesFile)" />
     </ItemGroup>
   </Target>
+  <!-- The SkiaSharp native symbols are ~85 MB and not needed at run time. -->
+  <Target Name="DpDropSkiaSymbols" AfterTargets="Publish">
+    <Delete Files="$(PublishDir)libSkiaSharp.pdb" />
+  </Target>
   <ItemGroup Condition="'$(DpBetaTag)' != ''">
     <AssemblyMetadata Include="DpBetaTag" Value="$(DpBetaTag)" />
   </ItemGroup>
@@ -35,6 +40,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.5" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
     <Content Include="Assets\**\*.svg" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\Tray\manifest.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\deskpal.ico" CopyToOutputDirectory="PreserveNewest" />
     <PackageReference Include="Svg.Skia" Version="5.2.3" />
   </ItemGroup>
