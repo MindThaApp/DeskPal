@@ -36,6 +36,7 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
     <Content Include="Assets\**\*.svg" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\deskpal.ico" CopyToOutputDirectory="PreserveNewest" />
+    <PackageReference Include="Svg.Skia" Version="5.2.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeskPal.Core\DeskPal.Core.csproj" />

@@ -35,7 +35,7 @@ public sealed partial class NudgeCardWindow : Window
         _router = router;
         InitializeComponent();
         _hwnd = WindowNative.GetWindowHandle(this);
-        _timer.Tick += OnTimer;
+        _timer.Tick += (s, e) => TickGuard.Run("nudge-card", () => OnTimer(s, e));
 
         var presenter = OverlappedPresenter.Create();
         presenter.SetBorderAndTitleBar(false, false);
@@ -207,3 +207,4 @@ public sealed partial class NudgeCardWindow : Window
     [DllImport("dwmapi.dll")]
     private static extern int DwmSetWindowAttribute(IntPtr hWnd, int attribute, ref int value, int size);
 }
+

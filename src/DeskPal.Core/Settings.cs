@@ -18,6 +18,7 @@ public sealed class DeskPalSettings
     public WorkingHours WorkingHours { get; set; } = new();
     public string AvatarStyle { get; set; } = "flat";
     public bool UseNudgeCard { get; set; } = true;
+    public bool AnimateTray { get; set; } = true;
     public CrashReportingMode CrashReports { get; set; } = CrashReportingMode.Ask;
 
     public TimeSpan IntervalFor(NudgeKind kind) => TimeSpan.FromMinutes(kind switch
@@ -38,3 +39,4 @@ public sealed class DeskPalState
     public int StretchesToday { get; set; }
     public int EyeBreaksToday { get; set; }
 }
+

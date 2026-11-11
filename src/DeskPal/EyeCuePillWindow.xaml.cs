@@ -26,7 +26,7 @@ public sealed partial class EyeCuePillWindow : Window
     {
         InitializeComponent();
         _hwnd = WindowNative.GetWindowHandle(this);
-        _timer.Tick += (_, _) => OnTimer();
+        _timer.Tick += (_, _) => TickGuard.Run("eye-cue-pill", OnTimer);
 
         var fade = new DoubleAnimation { From = 1, To = 0, Duration = new Duration(TimeSpan.FromMilliseconds(700)) };
         Storyboard.SetTarget(fade, Root);
@@ -130,3 +130,4 @@ public sealed partial class EyeCuePillWindow : Window
     [DllImport("dwmapi.dll")]
     private static extern int DwmSetWindowAttribute(IntPtr hWnd, int attribute, ref int value, int size);
 }
+

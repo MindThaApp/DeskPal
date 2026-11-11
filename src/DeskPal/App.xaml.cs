@@ -27,7 +27,11 @@ public partial class App : Application
     private TodayWindow? _today;
     private CallMonitor _calls = null!;
     private Icon? _baseIcon;
-    private Icon? _eyesIcon;
+    private TrayIcons? _icons;
+    private TrayAnimator? _anim;
+    private int _walkNudges;
+    private DispatcherQueueTimer? _debugTrayTimer;
+    private ToggleMenuFlyoutItem? _animateItem;
     private DispatcherQueueTimer? _toastTimer;
     private Guid? _toastNudgeId;
     private DispatcherQueueTimer? _tickTimer;
@@ -97,7 +101,6 @@ public partial class App : Application
 
         var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "deskpal.ico");
         _baseIcon = new Icon(iconPath);
-        _eyesIcon = MakeEyesIcon();
         _tray = new TaskbarIcon
         {
             ToolTipText = "Desk Pal",
@@ -107,14 +110,21 @@ public partial class App : Application
         };
         _tray.ForceCreate();
 
+        _icons = new TrayIcons();
+        _anim = new TrayAnimator(_dq, _tray, _icons,
+            () => _settings.AnimateTray,
+            () => !_scheduler.IsWorkingTime(TimeProvider.System.GetLocalNow()) || IsPausedUntilTomorrow(),
+            () => _scheduler.Holds.Any(h => h.Source == "dnd"));
+        _anim.Refresh();
+
         _tickTimer = _dq.CreateTimer();
         _tickTimer.Interval = TimeSpan.FromSeconds(5);
-        _tickTimer.Tick += (_, _) => { _scheduler.Tick(); UpdateTray(); };
+        _tickTimer.Tick += (_, _) => TickGuard.Run("scheduler", () => { _scheduler.Tick(); UpdateTray(); });
         _tickTimer.Start();
 
         _busyTimer = _dq.CreateTimer();
         _busyTimer.Interval = TimeSpan.FromSeconds(30);
-        _busyTimer.Tick += (_, _) => CheckBusy();
+        _busyTimer.Tick += (_, _) => TickGuard.Run("busy", CheckBusy);
         _busyTimer.Start();
         CheckBusy();
 
@@ -129,7 +139,7 @@ public partial class App : Application
         {
             _debugEyeTimer = _dq.CreateTimer();
             _debugEyeTimer.Interval = TimeSpan.FromSeconds(3);
-            _debugEyeTimer.Tick += (t, _) =>
+            _debugEyeTimer.Tick += (t, _) => TickGuard.Run("debug-eye", () =>
             {
                 if (t.Interval != TimeSpan.FromSeconds(40))
                 {
@@ -139,7 +149,7 @@ public partial class App : Application
                 }
                 Logger.Log("debug eye cue");
                 ShowEyeCue();
-            };
+            });
             _debugEyeTimer.Start();
         }
         if (AppData.DebugCrash)
@@ -149,24 +159,38 @@ public partial class App : Application
             crashTimer.Interval = TimeSpan.FromSeconds(3);
             // An exception escaping a dispatcher timer callback fails fast before Application.UnhandledException is raised,
             // so the test exception is caught here and goes through the same logging and reporting as a UI one.
-            crashTimer.Tick += (_, _) =>
+            crashTimer.Tick += (_, _) => TickGuard.Run("debug-crash", () =>
             {
                 try { throw new InvalidOperationException("Desk Pal crash report test"); }
                 catch (Exception ex) { LogCrash("ui unhandled (debug test)", ex, null, "Application.UnhandledException", handled: true); }
-            };
+            });
             crashTimer.Start();
             _debugCrashTimer = crashTimer;
+        }
+        if (AppData.DebugTray && _icons is not null)
+        {
+            var loops = _icons.LoopNames.ToArray();
+            var next = 0;
+            _debugTrayTimer = _dq.CreateTimer();
+            _debugTrayTimer.Interval = TimeSpan.FromSeconds(4);
+            _debugTrayTimer.Tick += (_, _) => TickGuard.Run("debug-tray", () =>
+            {
+                var loop = loops[next++ % loops.Length];
+                Logger.Log("debug tray loop " + loop);
+                _anim?.Play(loop, 4000, force: true);
+            });
+            _debugTrayTimer.Start();
         }
         if (AppData.DebugNudge)
         {
             _debugNudgeTimer = _dq.CreateTimer();
             _debugNudgeTimer.IsRepeating = false;
             _debugNudgeTimer.Interval = TimeSpan.FromSeconds(3);
-            _debugNudgeTimer.Tick += (_, _) =>
+            _debugNudgeTimer.Tick += (_, _) => TickGuard.Run("debug-nudge", () =>
             {
                 var ok = _router.Execute(new TestNudgeCommand());
                 Logger.Log("debug nudge " + (ok ? "requested" : "refused"));
-            };
+            });
             _debugNudgeTimer.Start();
         }
     }
@@ -199,6 +223,9 @@ public partial class App : Application
         _crashItem.Click += (_, _) => ToggleCrashReports();
         RefreshCrashCheck();
 
+        _animateItem = new ToggleMenuFlyoutItem { Text = "Animate tray icon", IsChecked = _settings.AnimateTray };
+        _animateItem.Click += (_, _) => ToggleAnimateTray();
+
         var exit = new MenuFlyoutItem { Text = "Exit" };
         exit.Click += (_, _) => ExitApp();
 
@@ -206,6 +233,7 @@ public partial class App : Application
         menu.Items.Add(pause);
         menu.Items.Add(_resumeItem);
         menu.Items.Add(style);
+        menu.Items.Add(_animateItem);
         menu.Items.Add(_crashItem);
         menu.Items.Add(new MenuFlyoutSeparator());
         menu.Items.Add(exit);
@@ -239,6 +267,17 @@ public partial class App : Application
         CrashReporting.Apply(_settings.CrashReports);
         if (on) CrashReporting.SendPending();
     }
+
+    private void ToggleAnimateTray()
+    {
+        _settings.AnimateTray = _animateItem?.IsChecked ?? !_settings.AnimateTray;
+        try { JsonFileStore.Save(AppData.SettingsPath, _settings); }
+        catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
+        _anim?.Stop();
+    }
+
+    private bool IsPausedUntilTomorrow() =>
+        _scheduler.ManualHold is { } h && h.Until.Date > TimeProvider.System.GetLocalNow().Date;
 
     private void RefreshCrashCheck()
     {
@@ -283,6 +322,7 @@ public partial class App : Application
             text = "Desk Pal";
         _tray.ToolTipText = text;
         if (_resumeItem is not null) _resumeItem.IsEnabled = manual is not null;
+        _anim?.Refresh();
     }
 
     private void OnSchedulerEvent(SchedulerEvent e)
@@ -296,10 +336,16 @@ public partial class App : Application
                 return;
             case SchedulerEventType.NudgeShown:
                 _pill?.Dismiss();
-                SetEyesIcon(false);
-                if (e.Nudge is not null) PresentAsync(e.Nudge);
+                _anim?.Stop();
+                if (e.Nudge is not null)
+                {
+                    _anim?.Play(LoopFor(e.Nudge), 10_000);
+                    PresentAsync(e.Nudge);
+                }
                 return;
             case SchedulerEventType.NudgeDone:
+                _anim?.Play("celebrate", 3000);
+                goto case SchedulerEventType.NudgeSkipped;
             case SchedulerEventType.NudgeSkipped:
             case SchedulerEventType.NudgeSnoozed:
                 _card?.HideCard();
@@ -308,6 +354,16 @@ public partial class App : Application
         }
         SaveState();
         UpdateTray();
+    }
+
+    private string LoopFor(Nudge nudge)
+    {
+        if (nudge.Message == NudgeScheduler.LongCallMessage) return "jumps";
+        if (nudge.Kinds.Contains(NudgeKind.Walk)) return ++_walkNudges % 2 == 0 ? "fresh-air" : "walk";
+        if (nudge.Kinds.Contains(NudgeKind.Water)) return "drink";
+        if (nudge.Kinds.Contains(NudgeKind.Stretch)) return "stretch";
+        if (nudge.Kinds.Contains(NudgeKind.Eyes)) return "eyes";
+        return "fresh-air";
     }
 
     private void SaveState()
@@ -389,7 +445,10 @@ public partial class App : Application
         _toastTimer.Start();
     }
 
-    private void OnToastExpired(DispatcherQueueTimer sender, object args)
+    private void OnToastExpired(DispatcherQueueTimer sender, object args) =>
+        TickGuard.Run("toast-expiry", ToastExpired);
+
+    private void ToastExpired()
     {
         if (_toastNudgeId is { } id && _card?.CurrentId != id)
         {
@@ -457,39 +516,16 @@ public partial class App : Application
                 _pill.Finished += clicked =>
                 {
                     Logger.Log(clicked ? "eye cue clicked" : "eye cue faded");
-                    SetEyesIcon(false);
+                    _anim?.Stop();
                 };
             }
             _pill.ShowCue();
-            SetEyesIcon(true);
+            _anim?.Play("eyes", 20_000);
         }
         catch (Exception ex)
         {
             Logger.Log("eye cue failed: " + ex.Message);
         }
-    }
-
-    private void SetEyesIcon(bool eyes)
-    {
-        if (_tray is null || _baseIcon is null || _eyesIcon is null) return;
-        // Assigning TaskbarIcon.Icon disposes the previous Icon, so swap the shown handle instead.
-        try { _tray.UpdateIcon(eyes ? _eyesIcon : _baseIcon); }
-        catch (Exception ex) { Logger.Log("tray icon swap failed: " + ex.Message); }
-    }
-
-    private static Icon MakeEyesIcon()
-    {
-        using var bmp = new Bitmap(32, 32);
-        using (var g = Graphics.FromImage(bmp))
-        {
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            g.FillEllipse(Brushes.SeaGreen, 0, 0, 31, 31);
-            g.FillEllipse(Brushes.White, 3, 9, 12, 14);
-            g.FillEllipse(Brushes.White, 17, 9, 12, 14);
-            g.FillEllipse(Brushes.Black, 7, 13, 6, 6);
-            g.FillEllipse(Brushes.Black, 21, 13, 6, 6);
-        }
-        return Icon.FromHandle(bmp.GetHicon());
     }
 
     private void OpenToday()
@@ -521,9 +557,11 @@ public partial class App : Application
         _debugEyeTimer?.Stop();
         _debugNudgeTimer?.Stop();
         _debugCrashTimer?.Stop();
+        _debugTrayTimer?.Stop();
         AppNotificationManager.Default.NotificationInvoked -= OnNotificationInvoked;
         AppNotificationManager.Default.Unregister();
         _tray?.Dispose();
+        _icons?.Dispose();
         _card?.Close();
         _pill?.Close();
         _today?.Close();
@@ -532,3 +570,5 @@ public partial class App : Application
         Exit();
     }
 }
+
+
