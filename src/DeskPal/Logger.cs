@@ -4,7 +4,8 @@ public static class AppData
 {
     public static readonly bool DebugEyeCue = HasArg("--debug-eyecue");
     public static readonly bool DebugNudge = HasArg("--debug-nudge");
-    public static readonly bool IsDebugRun = DebugEyeCue || DebugNudge;
+    public static readonly bool DebugCrash = HasArg("--debug-crash");
+    public static readonly bool IsDebugRun = DebugEyeCue || DebugNudge || DebugCrash;
 
     // Debug runs keep their own state and log so they never touch the real ones.
     public static readonly string Dir = Path.Combine(
@@ -22,6 +23,7 @@ public static class Logger
 
     public static void Log(string message)
     {
+        CrashReporting.Breadcrumb(message);
         try
         {
             var dir = Path.Combine(AppData.Dir, "logs");

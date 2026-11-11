@@ -16,9 +16,22 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DisableXamlRootNamespaceCheck>true</DisableXamlRootNamespaceCheck>
+    <!-- No global using Sentry, no native crash handler (it would bypass the consent gate and the redaction), no build paths in the assembly. -->
+    <SentryImplicitUsings>false</SentryImplicitUsings>
+    <SentryNative>false</SentryNative>
+    <SentryDisableSourceGenerator>true</SentryDisableSourceGenerator>
   </PropertyGroup>
+  <Target Name="DpDropSentryAttributes" AfterTargets="WriteSentryAttributes" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <Compile Remove="$(IntermediateOutputPath)$(SentryAttributesFile)" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup Condition="'$(DpBetaTag)' != ''">
+    <AssemblyMetadata Include="DpBetaTag" Value="$(DpBetaTag)" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="H.NotifyIcon.WinUI" Version="2.4.1" />
+    <PackageReference Include="Sentry" Version="6.12.1" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.5" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
     <Content Include="Assets\**\*.svg" CopyToOutputDirectory="PreserveNewest" />

@@ -34,6 +34,8 @@ public partial class App : Application
     private DispatcherQueueTimer? _busyTimer;
     private DispatcherQueueTimer? _debugEyeTimer;
     private DispatcherQueueTimer? _debugNudgeTimer;
+    private DispatcherQueueTimer? _debugCrashTimer;
+    private ToggleMenuFlyoutItem? _crashItem;
     private MenuFlyoutItem? _resumeItem;
     private ToggleMenuFlyoutItem? _flatItem;
     private ToggleMenuFlyoutItem? _softItem;
@@ -41,10 +43,11 @@ public partial class App : Application
     public App()
     {
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
-            LogCrash("domain unhandled (terminating=" + e.IsTerminating + ")", e.ExceptionObject as Exception);
+            LogCrash("domain unhandled (terminating=" + e.IsTerminating + ")", e.ExceptionObject as Exception,
+                source: "AppDomain.UnhandledException", handled: !e.IsTerminating);
         TaskScheduler.UnobservedTaskException += (_, e) =>
         {
-            LogCrash("unobserved task", e.Exception);
+            LogCrash("unobserved task", e.Exception, source: "TaskScheduler.UnobservedTaskException", handled: true);
             e.SetObserved();
         };
 
@@ -58,13 +61,14 @@ public partial class App : Application
 
     private static void OnUiUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        LogCrash("ui unhandled", e.Exception, e.Message);
         // A throwing UI event handler should not take the tray app down; corrupt-state exceptions still crash.
-        e.Handled = e.Exception is not (OutOfMemoryException or AccessViolationException
+        var handled = e.Exception is not (OutOfMemoryException or AccessViolationException
             or System.Runtime.InteropServices.SEHException or InvalidProgramException);
+        LogCrash("ui unhandled", e.Exception, e.Message, "Application.UnhandledException", handled);
+        e.Handled = handled;
     }
 
-    private static void LogCrash(string kind, Exception? ex, string? message = null)
+    private static void LogCrash(string kind, Exception? ex, string? message = null, string? source = null, bool handled = true)
     {
         if (ex is null)
         {
@@ -72,12 +76,15 @@ public partial class App : Application
             return;
         }
         Logger.Log($"CRASH {kind}: {ex.GetType().FullName}: {ex.Message}{Environment.NewLine}{ex}");
+        if (source is not null) CrashReporting.CaptureCrash(ex, source, handled);
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         _dq = DispatcherQueue.GetForCurrentThread();
         _settings = JsonFileStore.Load<DeskPalSettings>(AppData.SettingsPath, TimeProvider.System);
+        // The pipeline check always sends: it only runs in the debug data root, with a test exception.
+        CrashReporting.Apply(AppData.DebugCrash ? CrashReportingMode.Always : _settings.CrashReports);
         var state = JsonFileStore.Load<DeskPalState>(AppData.StatePath, TimeProvider.System);
         _scheduler = new NudgeScheduler(TimeProvider.System, _settings, state);
         _router = _scheduler;
@@ -135,6 +142,21 @@ public partial class App : Application
             };
             _debugEyeTimer.Start();
         }
+        if (AppData.DebugCrash)
+        {
+            var crashTimer = _dq.CreateTimer();
+            crashTimer.IsRepeating = false;
+            crashTimer.Interval = TimeSpan.FromSeconds(3);
+            // An exception escaping a dispatcher timer callback fails fast before Application.UnhandledException is raised,
+            // so the test exception is caught here and goes through the same logging and reporting as a UI one.
+            crashTimer.Tick += (_, _) =>
+            {
+                try { throw new InvalidOperationException("Desk Pal crash report test"); }
+                catch (Exception ex) { LogCrash("ui unhandled (debug test)", ex, null, "Application.UnhandledException", handled: true); }
+            };
+            crashTimer.Start();
+            _debugCrashTimer = crashTimer;
+        }
         if (AppData.DebugNudge)
         {
             _debugNudgeTimer = _dq.CreateTimer();
@@ -173,6 +195,10 @@ public partial class App : Application
         style.Items.Add(_softItem);
         RefreshStyleChecks();
 
+        _crashItem = new ToggleMenuFlyoutItem { Text = "Send crash reports" };
+        _crashItem.Click += (_, _) => ToggleCrashReports();
+        RefreshCrashCheck();
+
         var exit = new MenuFlyoutItem { Text = "Exit" };
         exit.Click += (_, _) => ExitApp();
 
@@ -180,6 +206,7 @@ public partial class App : Application
         menu.Items.Add(pause);
         menu.Items.Add(_resumeItem);
         menu.Items.Add(style);
+        menu.Items.Add(_crashItem);
         menu.Items.Add(new MenuFlyoutSeparator());
         menu.Items.Add(exit);
         menu.Opening += (_, _) => UpdateTray();
@@ -199,6 +226,23 @@ public partial class App : Application
         RefreshStyleChecks();
         try { JsonFileStore.Save(AppData.SettingsPath, _settings); }
         catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
+    }
+
+    // On sends reports (and the ones waiting from Ask); off is Never, which keeps and sends nothing.
+    private void ToggleCrashReports()
+    {
+        var on = _settings.CrashReports != CrashReportingMode.Always;
+        _settings.CrashReports = on ? CrashReportingMode.Always : CrashReportingMode.Never;
+        RefreshCrashCheck();
+        try { JsonFileStore.Save(AppData.SettingsPath, _settings); }
+        catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
+        CrashReporting.Apply(_settings.CrashReports);
+        if (on) CrashReporting.SendPending();
+    }
+
+    private void RefreshCrashCheck()
+    {
+        if (_crashItem is not null) _crashItem.IsChecked = _settings.CrashReports == CrashReportingMode.Always;
     }
 
     private void RefreshStyleChecks()
@@ -476,6 +520,7 @@ public partial class App : Application
         _busyTimer?.Stop();
         _debugEyeTimer?.Stop();
         _debugNudgeTimer?.Stop();
+        _debugCrashTimer?.Stop();
         AppNotificationManager.Default.NotificationInvoked -= OnNotificationInvoked;
         AppNotificationManager.Default.Unregister();
         _tray?.Dispose();
