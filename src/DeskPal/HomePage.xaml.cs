@@ -88,6 +88,8 @@ public sealed partial class HomePage : Page
         LivePanel.Visibility = wantLive ? Visibility.Visible : Visibility.Collapsed;
         LivePanel.Opacity = 0;
         Avatar.Opacity = 1;
+        SproutImage.Opacity = 1;
+        SproutHit.Visibility = Visibility.Collapsed;
         if (style != _style || Avatar.Source is null)
         {
             _style = style;
@@ -101,35 +103,56 @@ public sealed partial class HomePage : Page
         {
             if (_viewport is null)
             {
-                _viewport = new LiveViewport(LivePanel);
+                _viewport = new LiveViewport(LivePanel, home: true, centerX: 160);
                 _viewport.FirstFrame += OnFirstFrame;
                 _viewport.Failed += () =>
                 {
                     _live = false;
                     LivePanel.Visibility = Visibility.Collapsed;
+                    SproutHit.Visibility = Visibility.Collapsed;
                     Avatar.Opacity = 1;
+                    SproutImage.Opacity = 1;
                 };
+                ActualThemeChanged += (_, _) => TickGuard.Run("home-theme", () => { if (_viewport is { } v) v.Backdrop = Backdrop(); });
             }
+            _viewport.Backdrop = Backdrop();
+            _viewport.SproutStage = _ctx.Hub.Settings.SproutStage;
             _viewport.Show(XamlRoot?.RasterizationScale ?? 1.0);
         }
     }
 
+    // The swap chain area shows the window backdrop directly: the NavigationView content layer (LayerFillColorDefault,
+    // translucent) is not composed underneath it, so the empty surface looked darker than the page. Clearing to that
+    // layer colour, premultiplied, makes the surface match the page around it.
+    private Vortice.Mathematics.Color4 Backdrop() => ActualTheme switch
+    {
+        ElementTheme.Dark => new(0x3A / 255f * 0x4C / 255f, 0x3A / 255f * 0x4C / 255f, 0x3A / 255f * 0x4C / 255f, 0x4C / 255f),
+        ElementTheme.Light => new(0x80 / 255f, 0x80 / 255f, 0x80 / 255f, 0x80 / 255f),
+        _ => new(0, 0, 0, 0),
+    };
+
     private void OnFirstFrame()
     {
         var d = new Duration(TimeSpan.FromMilliseconds(150));
-        var fadeIn = new DoubleAnimation { From = 0, To = 1, Duration = d };
-        var fadeOut = new DoubleAnimation { From = 1, To = 0, Duration = d };
-        Storyboard.SetTarget(fadeIn, LivePanel);
-        Storyboard.SetTargetProperty(fadeIn, "Opacity");
-        Storyboard.SetTarget(fadeOut, Avatar);
-        Storyboard.SetTargetProperty(fadeOut, "Opacity");
         var sb = new Storyboard();
-        sb.Children.Add(fadeIn);
-        sb.Children.Add(fadeOut);
+        Fade(LivePanel, 0, 1);
+        Fade(Avatar, 1, 0);
+        var sprout3d = _viewport?.HasSprout == true;
+        if (sprout3d) Fade(SproutImage, 1, 0);
+        SproutHit.Visibility = sprout3d ? Visibility.Visible : Visibility.Collapsed;
+        Canvas.SetZIndex(SproutImage, sprout3d ? 0 : 1);
         sb.Begin();
 
+        void Fade(UIElement target, double from, double to)
+        {
+            var a = new DoubleAnimation { From = from, To = to, Duration = d };
+            Storyboard.SetTarget(a, target);
+            Storyboard.SetTargetProperty(a, "Opacity");
+            sb.Children.Add(a);
+        }
+
         if (!AppData.DebugPoke || _debugPokes > 0) return;
-        foreach (var at in new[] { 2.0, 5, 8 })
+        foreach (var at in new[] { 2.0, 5, 8, 11, 15 })
         {
             var n = ++_debugPokes;
             var t = DispatcherQueue.CreateTimer();
@@ -138,7 +161,9 @@ public sealed partial class HomePage : Page
             t.Tick += (_, _) => TickGuard.Run("debug-poke", () =>
             {
                 Logger.Log($"debug poke {n} (main window)");
-                Poke();
+                if (n == 4) Celebrate();
+                else if (n == 5) _viewport?.SproutHappy();
+                else Poke();
             });
             t.Start();
         }
@@ -146,11 +171,20 @@ public sealed partial class HomePage : Page
 
     private void OnStagePressed(object sender, PointerRoutedEventArgs e) => Poke();
 
+    private void OnStageDoubleTapped(object sender, DoubleTappedRoutedEventArgs e) => Celebrate();
+
+    private void OnSproutPressed(object sender, PointerRoutedEventArgs e) => _viewport?.SproutHappy();
+
+    private void Celebrate()
+    {
+        if (_live && LivePanel.Visibility == Visibility.Visible) _viewport?.Play("celebrate");
+    }
+
     private void Poke()
     {
         if (_live && LivePanel.Visibility == Visibility.Visible)
         {
-            _viewport?.Poke();
+            _viewport?.Poke(withClip: true);
             return;
         }
         var d = new Duration(TimeSpan.FromMilliseconds(650));

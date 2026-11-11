@@ -11,17 +11,21 @@
             <StackPanel Spacing="8" VerticalAlignment="Top">
                 <Grid>
                     <Grid x:Name="Stage" Width="320" Height="320" Background="Transparent"
-                          PointerPressed="OnStagePressed" AutomationProperties.Name="Bloop, click to poke">
+                          PointerPressed="OnStagePressed" DoubleTapped="OnStageDoubleTapped" AutomationProperties.Name="Bloop, click to poke">
                         <Image x:Name="Avatar" RenderTransformOrigin="0.5,1">
                             <Image.RenderTransform>
                                 <ScaleTransform x:Name="Squish" />
                             </Image.RenderTransform>
                         </Image>
-                        <SwapChainPanel x:Name="LivePanel" Width="320" Height="320" Opacity="0" Visibility="Collapsed"
-                                        IsHitTestVisible="False" />
                     </Grid>
                     <Image x:Name="SproutImage" Width="96" Height="96" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                            Margin="0,0,-40,0" IsHitTestVisible="False" />
+                    <!-- Wider than the stage so the 3D Sprout stands beside Bloop; Bloop stays centred at x = 160. -->
+                    <SwapChainPanel x:Name="LivePanel" Width="400" Height="320" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                    Margin="0,0,-80,0" Opacity="0" Visibility="Collapsed" IsHitTestVisible="False" />
+                    <Border x:Name="SproutHit" Width="80" Height="120" HorizontalAlignment="Left" VerticalAlignment="Top"
+                            Margin="300,140,-80,0" Background="Transparent" Visibility="Collapsed"
+                            PointerPressed="OnSproutPressed" AutomationProperties.Name="Sprout" />
                 </Grid>
             </StackPanel>
             <StackPanel Grid.Column="1" Spacing="16" MaxWidth="520" Padding="40,0,0,0">

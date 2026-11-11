@@ -403,7 +403,9 @@ public partial class App : Application
                 return;
             case SchedulerEventType.NudgeDone:
                 _anim?.Play("celebrate", 3000);
-                goto case SchedulerEventType.NudgeSkipped;
+                _card?.CelebrateThenHide();
+                ClearToast();
+                break;
             case SchedulerEventType.NudgeSkipped:
             case SchedulerEventType.NudgeSnoozed:
                 _card?.HideCard();

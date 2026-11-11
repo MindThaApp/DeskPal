@@ -41,6 +41,9 @@ public sealed class DeskPalSettings
 
     public WorkingHours WorkingHours { get; set; } = new();
     public string AvatarStyle { get; set; } = "flat";
+
+    // Growth stage of the 3D Sprout on Home (1 to 4). Fixed at 2 until growth is tracked.
+    public int SproutStage { get; set; } = 2;
     public bool UseNudgeCard { get; set; } = true;
     public bool AnimateTray { get; set; } = true;
     public CrashReportingMode CrashReports { get; set; } = CrashReportingMode.Ask;

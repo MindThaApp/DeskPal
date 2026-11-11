@@ -36,6 +36,8 @@ public sealed partial class NudgeCardWindow : Window
     private LiveViewport? _viewport;
     private long _liveRequestedTick;
     private int _debugPokes;
+    private bool _repeating;
+    private long _repeatUntilTick;
     private IntPtr _foregroundBefore;
     private readonly List<Microsoft.UI.Dispatching.DispatcherQueueTimer> _debugTimers = [];
 
@@ -83,6 +85,8 @@ public sealed partial class NudgeCardWindow : Window
         _timedEndTick = _shownAtTick + _timedSeconds * 1000L;
         CountdownPanel.Visibility = _timedSeconds > 0 ? Visibility.Visible : Visibility.Collapsed;
         DoneButton.IsEnabled = _timedSeconds == 0;
+        SnoozeButton.IsEnabled = SkipButton.IsEnabled = true;
+        _repeating = false;
         UpdateCountdown();
 
         if (AppData.IsDebugRun)
@@ -117,6 +121,7 @@ public sealed partial class NudgeCardWindow : Window
             _viewport ??= CreateViewport();
             _liveRequestedTick = Environment.TickCount64;
             _viewport.Show(GetDpiForWindow(_hwnd) / 96.0);
+            StartClips(nudge);
         }
         if (AppData.IsDebugRun)
         {
@@ -126,8 +131,58 @@ public sealed partial class NudgeCardWindow : Window
         }
     }
 
+    // A wave on arrival, then the clip that matches the nudge, repeated (or looped) while its countdown runs.
+    private void StartClips(Nudge nudge)
+    {
+        if (_viewport is null) return;
+        var (clip, loop, gap) = nudge switch
+        {
+            _ when nudge.Message == NudgeScheduler.LongCallMessage => ("star_jump", false, 0.8f),
+            _ when nudge.Kinds.Contains(NudgeKind.Walk) => ("walk", true, 0f),
+            { Stretch: { } s } => (s.Id switch
+            {
+                "side-bend" => "side_bend",
+                "shoulder-shrug" => "shoulder_shrug",
+                _ => "stretch_overhead",
+            }, false, 1.5f),
+            _ when nudge.Kinds.Contains(NudgeKind.Stretch) => ("stretch_overhead", false, 1.5f),
+            _ => ((string?)null, false, 0f),
+        };
+        _viewport.PlaySequence("wave");
+        if (clip is null) return;
+        if (loop) _viewport.Loop(clip);
+        else _viewport.Repeat(clip, gap);
+        _repeating = true;
+        _repeatUntilTick = _timedSeconds > 0 ? _timedEndTick : _shownAtTick + 12_000;
+    }
+
+    // Done on a live card: a high five, then a little celebration, then the card goes.
+    public void CelebrateThenHide()
+    {
+        if (_viewport is null || LivePanel.Visibility != Visibility.Visible || Stage3D.Failed)
+        {
+            HideCard();
+            return;
+        }
+        _nudge = null;
+        _repeating = false;
+        DoneButton.IsEnabled = SnoozeButton.IsEnabled = SkipButton.IsEnabled = false;
+        _viewport.PlaySequence("high_five", "celebrate");
+        var version = _loadVersion;
+        var timer = DispatcherQueue.CreateTimer();
+        timer.IsRepeating = false;
+        timer.Interval = TimeSpan.FromSeconds(3.9);
+        timer.Tick += (_, _) =>
+        {
+            timer.Stop();
+            TickGuard.Run("card-celebrate-hide", () => { if (version == _loadVersion) HideCard(); });
+        };
+        timer.Start();
+    }
+
     public void HideCard()
     {
+        _repeating = false;
         _timer.Stop();
         _nudge = null;
         _loadVersion++;
@@ -175,7 +230,7 @@ public sealed partial class NudgeCardWindow : Window
                 After(at, "debug-poke", () =>
                 {
                     Logger.Log($"debug poke {n}");
-                    _viewport?.Poke();
+                    _viewport?.Poke(withClip: false);
                     if (n == 1) After(1.5, "debug-poke-fg", () => LogForeground("after poke"));
                 }, once: true);
             }
@@ -187,7 +242,7 @@ public sealed partial class NudgeCardWindow : Window
         var p = e.GetCurrentPoint(AvatarSlot).Position;
         var hit = p.X >= 0 && p.Y >= 0 && p.X <= LivePanel.Width && p.Y <= LivePanel.Height;
         Logger.Log($"3d press at {p.X:F0},{p.Y:F0} hit={hit}");
-        if (hit) _viewport.Poke();
+        if (hit) _viewport.Poke(withClip: false);
     }
     private void OnRootPointerMoved(object sender, PointerRoutedEventArgs e)
     {
@@ -263,6 +318,11 @@ public sealed partial class NudgeCardWindow : Window
             return;
         }
         UpdateCountdown();
+        if (_repeating && Environment.TickCount64 >= _repeatUntilTick)
+        {
+            _repeating = false;
+            _viewport?.StopRepeat();
+        }
     }
 
     private void UpdateCountdown()
