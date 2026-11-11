@@ -44,7 +44,8 @@ A tray app with a friendly mascot that nudges the user to stretch, drink water, 
 Use "wellbeing tips" wording, no medical claims (simplifies Store certification).
 
 ## Tech
-- Preferred: **Tauri** (Rust + web UI). Small portable .exe, low memory for an all-day background app, can be packaged as MSIX later. Alternative: C# WinUI 3.
+- **WinUI 3 / .NET 10** (C#). Unpackaged portable beta first, packaged as MSIX for the Microsoft Store later.
+- Tauri was considered and dropped: its Windows toast support (action buttons, rich toasts) is weak.
 - Avoid Electron (too heavy for an always-on tray app).
 - Portable beta: single unsigned .exe; testers will see SmartScreen → "More info → Run anyway". Store release via MSIX + Partner Center (Microsoft signs it).
 
