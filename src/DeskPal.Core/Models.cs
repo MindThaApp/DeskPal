@@ -19,7 +19,7 @@ public sealed record Nudge(
     bool IsTest,
     DateTimeOffset ShownAt);
 
-public enum SchedulerEventType { NudgeShown, NudgeDone, NudgeSkipped, NudgeSnoozed, HoldStarted, HoldEnded }
+public enum SchedulerEventType { NudgeShown, NudgeDone, NudgeSkipped, NudgeSnoozed, HoldStarted, HoldEnded, EyeCue }
 
 public sealed record SchedulerEvent(SchedulerEventType Type, Nudge? Nudge = null, Hold? Hold = null);
 

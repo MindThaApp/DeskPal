@@ -37,26 +37,55 @@ public class SchedulerTests
     }
 
     [Fact]
-    public void Eyes_comes_due_first_at_20_minutes()
+    public void Eyes_is_a_silent_cue_at_20_minutes_not_a_nudge()
     {
         var (s, t, ev) = Make();
         Run(s, t, TimeSpan.FromMinutes(20));
-        Assert.Equal(NudgeKind.Eyes, s.Current!.Primary);
-        Assert.Equal(1, Shown(ev));
+        Assert.Null(s.Current);
+        Assert.Equal(0, Shown(ev));
+        Assert.Equal(1, ev.Count(e => e.Type == SchedulerEventType.EyeCue));
+        Assert.Equal(1, s.EyeBreaksToday);
     }
 
     [Fact]
-    public void Nudges_due_within_five_minutes_merge_into_one()
+    public void Movement_comes_at_40_minutes_with_water_folded_in()
     {
-        var settings = new DeskPalSettings { StretchMinutes = 30, EyesMinutes = 30, WaterMinutes = 33 };
-        var (s, t, ev) = Make(settings);
-        Run(s, t, TimeSpan.FromMinutes(30));
+        var (s, t, ev) = Make();
+        Run(s, t, TimeSpan.FromMinutes(40));
         var n = s.Current!;
         Assert.Equal(1, Shown(ev));
         Assert.Contains(NudgeKind.Water, n.Kinds);
         Assert.Contains(NudgeKind.Stretch, n.Kinds);
         Assert.Contains("grab some water while you're up", n.Message);
         Assert.StartsWith("Stretch time, ", n.Message);
+    }
+
+    [Fact]
+    public void Water_never_comes_on_its_own()
+    {
+        var settings = new DeskPalSettings { StretchMinutes = 60, WaterMinutes = 40 };
+        var (s, t, ev) = Make(settings);
+        Run(s, t, TimeSpan.FromMinutes(59));
+        Assert.Equal(0, Shown(ev));
+        Run(s, t, TimeSpan.FromMinutes(1));
+        Assert.Equal(1, Shown(ev));
+        Assert.All(ev.Where(e => e.Type == SchedulerEventType.NudgeShown), e => Assert.Contains(NudgeKind.Stretch, e.Nudge!.Kinds));
+    }
+
+    [Fact]
+    public void Everything_sits_on_the_20_minute_grid()
+    {
+        var (s, t, ev) = Make();
+        for (var i = 0; i < 120; i++)
+        {
+            t.Advance(TimeSpan.FromMinutes(1));
+            s.Tick();
+            if (s.Current is not null) s.Execute(new DoneCommand());
+        }
+        var cues = ev.Where(e => e.Type == SchedulerEventType.EyeCue).Select(e => (e.Nudge!.ShownAt - Start).TotalMinutes).ToList();
+        var shown = ev.Where(e => e.Type == SchedulerEventType.NudgeShown).Select(e => (e.Nudge!.ShownAt - Start).TotalMinutes).ToList();
+        Assert.Equal([20.0, 60.0, 100.0], cues);
+        Assert.Equal([40.0, 80.0, 120.0], shown);
     }
 
     [Fact]
@@ -69,33 +98,60 @@ public class SchedulerTests
     }
 
     [Fact]
-    public void Min_gap_delays_next_nudge_but_not_user_request()
+    public void At_most_two_visible_interruptions_an_hour()
     {
-        var settings = new DeskPalSettings { StretchMinutes = 30, EyesMinutes = 20, WaterMinutes = 45 };
-        var (s, t, ev) = Make(settings);
-        Run(s, t, TimeSpan.FromMinutes(20));
-        var first = s.Current!;
-        s.Execute(new DoneCommand(first.Id));
-        // eyes next due at 40; stretch at 30 (shown 20, so gap satisfied at 30)
-        Run(s, t, TimeSpan.FromMinutes(9));
-        Assert.Null(s.Current); // 29 min, nothing due
-        Run(s, t, TimeSpan.FromMinutes(1));
-        Assert.NotNull(s.Current); // 30 min, stretch due and 10 min since last shown
-
+        var (s, t, ev) = Make();
+        Run(s, t, TimeSpan.FromMinutes(40));
+        s.Execute(new SnoozeCommand()); // shown #1 at 40, back at 50 as #2
+        Run(s, t, TimeSpan.FromMinutes(10));
+        Assert.Equal(2, Shown(ev));
         s.Execute(new DoneCommand());
-        Assert.True(s.RequestNudge()); // immediately, gap ignored
+        Run(s, t, TimeSpan.FromMinutes(40)); // 90: movement was due at 80 but the hour already holds two
+        Assert.Equal(2, Shown(ev));
+        Assert.Null(s.Current);
+        Run(s, t, TimeSpan.FromMinutes(10)); // 100: the 40-minute one has aged out
+        Assert.Equal(3, Shown(ev));
+    }
+
+    [Fact]
+    public void Eye_cue_does_not_use_the_budget()
+    {
+        var (s, t, ev) = Make();
+        Run(s, t, TimeSpan.FromMinutes(40));
+        Assert.Equal(1, ev.Count(e => e.Type == SchedulerEventType.EyeCue));
+        Run(s, t, TimeSpan.FromMinutes(40));
+        s.Execute(new SnoozeCommand());
+        Run(s, t, TimeSpan.FromMinutes(10));
+        Assert.Equal(2, Shown(ev));
+    }
+
+    [Fact]
+    public void Eye_cue_respects_holds_and_a_visible_nudge()
+    {
+        var (s, t, ev) = Make();
+        s.StartHold("call", "In a call", t.GetLocalNow().AddMinutes(30), seated: true);
+        Run(s, t, TimeSpan.FromMinutes(25));
+        Assert.DoesNotContain(ev, e => e.Type == SchedulerEventType.EyeCue);
+        Assert.Equal(0, s.EyeBreaksToday);
+    }
+
+    [Fact]
+    public void Min_gap_does_not_apply_to_user_request()
+    {
+        var (s, t, ev) = Make();
+        Run(s, t, TimeSpan.FromMinutes(40));
+        s.Execute(new DoneCommand());
+        Assert.True(s.RequestNudge());
         Assert.True(s.Current!.IsTest);
     }
 
     [Fact]
-    public void Gap_blocks_a_nudge_that_comes_due_too_soon()
+    public void Test_nudge_does_not_swallow_the_schedule()
     {
-        var settings = new DeskPalSettings { StretchMinutes = 45, EyesMinutes = 20, WaterMinutes = 60 };
-        var (s, t, ev) = Make(settings);
-        Run(s, t, TimeSpan.FromMinutes(20));
-        s.Execute(new SkipCommand()); // eyes due again at 40
-        Run(s, t, TimeSpan.FromMinutes(25)); // 45: stretch due, merged window handled; eyes was due at 40 (shown 20)
-        Assert.NotNull(s.Current);
+        var (s, t, ev) = Make();
+        Assert.True(s.RequestNudge());
+        s.Execute(new DoneCommand());
+        Run(s, t, TimeSpan.FromMinutes(40));
         Assert.Equal(2, Shown(ev));
     }
 
@@ -122,30 +178,29 @@ public class SchedulerTests
         s.StartHold("manual", "Paused", t.GetLocalNow().AddMinutes(90));
         Run(s, t, TimeSpan.FromMinutes(89));
         Assert.Equal(0, Shown(ev));
-        Assert.True(s.PendingCount >= 3);
+        Assert.Equal(1, s.PendingCount);
         Run(s, t, TimeSpan.FromMinutes(2));
         Assert.Equal(1, Shown(ev));
-        Assert.Equal(3, s.Current!.Kinds.Count);
+        Assert.Equal(2, s.Current!.Kinds.Count);
         s.Execute(new DoneCommand());
         Run(s, t, TimeSpan.FromMinutes(5));
         Assert.Equal(1, Shown(ev));
     }
 
     [Fact]
-    public void Snooze_holds_five_minutes_then_one_nudge_returns()
+    public void Snooze_holds_ten_minutes_then_one_nudge_returns()
     {
         var (s, t, ev) = Make();
-        Run(s, t, TimeSpan.FromMinutes(20));
+        Run(s, t, TimeSpan.FromMinutes(40));
         s.Execute(new SnoozeCommand());
         Assert.Null(s.Current);
         Assert.Equal("snooze", s.Holds.Single().Source);
-        Run(s, t, TimeSpan.FromMinutes(4));
+        Run(s, t, TimeSpan.FromMinutes(9));
         Assert.Null(s.Current);
         Run(s, t, TimeSpan.FromMinutes(1));
         Assert.NotNull(s.Current);
         Assert.Equal(2, Shown(ev));
     }
-
     [Fact]
     public void Pause_and_resume_via_router()
     {
@@ -186,21 +241,21 @@ public class SchedulerTests
     [Fact]
     public void Walk_replaces_stretch_after_three_completed_stretches()
     {
-        var settings = new DeskPalSettings { StretchMinutes = 20, EyesMinutes = 60, WaterMinutes = 60 };
+        var settings = new DeskPalSettings { StretchMinutes = 40, WaterMinutes = 60 };
         settings.WorkingHours.End = new TimeOnly(23, 0);
         var (s, t, ev) = Make(settings);
         for (var i = 0; i < 3; i++)
         {
-            Run(s, t, TimeSpan.FromMinutes(20));
+            Run(s, t, TimeSpan.FromMinutes(40));
             Assert.Equal(NudgeKind.Stretch, s.Current!.Primary);
             s.Execute(new DoneCommand());
         }
         Assert.Equal(3, s.StretchesCompleted);
-        Run(s, t, TimeSpan.FromMinutes(20));
+        Run(s, t, TimeSpan.FromMinutes(40));
         Assert.Equal(NudgeKind.Walk, s.Current!.Primary);
         s.Execute(new DoneCommand());
         Assert.Equal(0, s.StretchesCompleted);
-        Run(s, t, TimeSpan.FromMinutes(20));
+        Run(s, t, TimeSpan.FromMinutes(40));
         Assert.Equal(NudgeKind.Stretch, s.Current!.Primary);
     }
 
@@ -208,7 +263,7 @@ public class SchedulerTests
     public void Stale_command_for_old_nudge_is_ignored()
     {
         var (s, t, _) = Make();
-        Run(s, t, TimeSpan.FromMinutes(20));
+        Run(s, t, TimeSpan.FromMinutes(40));
         Assert.False(s.Execute(new DoneCommand(Guid.NewGuid())));
         Assert.NotNull(s.Current);
     }
@@ -217,10 +272,74 @@ public class SchedulerTests
     public void Expire_clears_nudge_without_done_or_skip()
     {
         var (s, t, ev) = Make();
-        Run(s, t, TimeSpan.FromMinutes(20));
+        Run(s, t, TimeSpan.FromMinutes(40));
         s.Expire(s.Current!.Id);
         Assert.Null(s.Current);
         Assert.DoesNotContain(ev, e => e.Type is SchedulerEventType.NudgeDone or SchedulerEventType.NudgeSkipped);
+    }
+
+    private sealed class FakeCalls : ICallDetector
+    {
+        public bool InCall;
+        public bool IsInCall() => InCall;
+    }
+
+    private static void RunCall(CallMonitor m, NudgeScheduler s, FakeTime t, int minutes)
+    {
+        for (var i = 0; i < minutes; i++)
+        {
+            t.Advance(TimeSpan.FromMinutes(1));
+            m.Poll();
+            s.Tick();
+        }
+    }
+
+    [Fact]
+    public void Call_is_a_seated_hold_and_a_long_call_ends_with_one_merged_stretch()
+    {
+        var (s, t, ev) = Make();
+        var calls = new FakeCalls { InCall = true };
+        var m = new CallMonitor(calls, s, t);
+        RunCall(m, s, t, 45);
+        var hold = s.Holds.Single();
+        Assert.Equal("call", hold.Source);
+        Assert.Equal("In a call", hold.Reason);
+        Assert.True(hold.Seated);
+        Assert.Equal(0, Shown(ev));
+        Assert.DoesNotContain(ev, e => e.Type == SchedulerEventType.EyeCue);
+        calls.InCall = false;
+        m.Poll();
+        Assert.Equal(1, Shown(ev));
+        Assert.Equal(NudgeScheduler.LongCallMessage, s.Current!.Message);
+    }
+
+    [Fact]
+    public void Short_call_does_not_produce_the_long_call_nudge()
+    {
+        var (s, t, ev) = Make();
+        var calls = new FakeCalls { InCall = true };
+        var m = new CallMonitor(calls, s, t);
+        RunCall(m, s, t, 10);
+        calls.InCall = false;
+        m.Poll();
+        Assert.Equal(0, Shown(ev));
+        Assert.Null(s.Current);
+    }
+
+    [Fact]
+    public void Daily_counters_persist_and_reset_on_a_new_day()
+    {
+        var (s, t, _) = Make();
+        Run(s, t, TimeSpan.FromMinutes(40));
+        s.Execute(new DoneCommand());
+        Assert.Equal(1, s.StretchesToday);
+        Assert.Equal(1, s.EyeBreaksToday);
+        var s2 = new NudgeScheduler(t, new DeskPalSettings(), s.Snapshot());
+        Assert.Equal(1, s2.StretchesToday);
+        Assert.Equal(1, s2.EyeBreaksToday);
+        t.Advance(TimeSpan.FromDays(1));
+        Assert.Equal(0, s2.StretchesToday);
+        Assert.Equal(0, s2.EyeBreaksToday);
     }
 
     [Fact]
@@ -260,7 +379,7 @@ public class SchedulerTests
             var settingsPath = Path.Combine(dir, "settings.json");
             File.WriteAllText(settingsPath, "{ not json");
             var settings = JsonFileStore.Load<DeskPalSettings>(settingsPath, t);
-            Assert.Equal(30, settings.StretchMinutes);
+            Assert.Equal(40, settings.StretchMinutes);
             Assert.False(File.Exists(settingsPath));
             Assert.Single(Directory.GetFiles(dir, "settings.corrupt-*.json"));
         }
