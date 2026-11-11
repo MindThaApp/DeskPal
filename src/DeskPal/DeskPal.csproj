@@ -16,6 +16,7 @@
     <Nullable>enable</Nullable>
     <CopyDebugSymbolFilesFromPackages>false</CopyDebugSymbolFilesFromPackages>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DisableXamlRootNamespaceCheck>true</DisableXamlRootNamespaceCheck>
     <!-- No global using Sentry, no native crash handler (it would bypass the consent gate and the redaction), no build paths in the assembly. -->
     <SentryImplicitUsings>false</SentryImplicitUsings>
@@ -40,9 +41,13 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.5" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
     <Content Include="Assets\**\*.svg" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\Models\*.glb" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\Tray\manifest.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\deskpal.ico" CopyToOutputDirectory="PreserveNewest" />
+    <PackageReference Include="SharpGLTF.Core" Version="1.0.7" />
     <PackageReference Include="Svg.Skia" Version="5.2.3" />
+    <PackageReference Include="Vortice.D3DCompiler" Version="3.8.3" />
+    <PackageReference Include="Vortice.Direct3D11" Version="3.8.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeskPal.Core\DeskPal.Core.csproj" />
