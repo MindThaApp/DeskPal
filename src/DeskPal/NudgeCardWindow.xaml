@@ -21,7 +21,7 @@
             <Grid x:Name="AvatarSlot" Width="72" Height="72" VerticalAlignment="Top">
                 <Image x:Name="Avatar" />
                 <SwapChainPanel x:Name="LivePanel" Width="96" Height="96" Opacity="0" Visibility="Collapsed"
-                                AutomationProperties.Name="Bloop" PointerPressed="OnLivePressed" />
+                                AutomationProperties.Name="Bloop" IsHitTestVisible="False" />
             </Grid>
             <StackPanel Grid.Column="1" Spacing="4">
                 <TextBlock x:Name="TitleText" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />

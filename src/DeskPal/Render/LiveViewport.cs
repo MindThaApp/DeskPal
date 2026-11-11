@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Controls;
 using Vortice.Direct3D;
 using Vortice.Direct3D11;
@@ -10,8 +11,9 @@ using Vortice.Mathematics;
 
 namespace DeskPal.Render;
 
-// One live surface: a composition swap chain in a SwapChainPanel. There is no free-running loop: the frame
-// timer runs only while a breath, glance, spring or eye move is in progress, then stops (0 fps).
+// One live surface: a composition swap chain in a SwapChainPanel. There is no free-running loop: frames are driven by
+// the display (CompositionTarget.Rendering) only while a breath, glance, spring or eye move is in progress, then the
+// handler is detached (0 fps). All motion uses real elapsed time and fixed 1/240 s sub-steps.
 internal sealed class LiveViewport : IDisposable
 {
     private static readonly TimeSpan Teardown = TimeSpan.FromMinutes(2);
@@ -21,7 +23,12 @@ internal sealed class LiveViewport : IDisposable
     public static int Presents;
 
     private readonly SwapChainPanel _panel;
-    private readonly DispatcherQueueTimer _frameTimer;
+    private bool _rendering;
+    private double _lastPresent;
+    private double _minInterval;
+    private readonly List<double> _runIntervals = [];
+    private double _runStart;
+    private double _acc;
     private readonly DispatcherQueueTimer _teardownTimer;
     private readonly Stopwatch _clock = new();
     private Stage3D? _stage;
@@ -41,14 +48,12 @@ internal sealed class LiveViewport : IDisposable
     private double _envelope;
     private double _squash, _squashVel;
     private double _arm, _armVel;
-    private Vector2 _eye, _eyeTarget;
+    private Vector2 _eye, _eyeVel, _eyeTarget;
 
     public LiveViewport(SwapChainPanel panel)
     {
         _panel = panel;
         var dq = DispatcherQueue.GetForCurrentThread();
-        _frameTimer = dq.CreateTimer();
-        _frameTimer.Tick += (_, _) => TickGuard.Run("live-3d-frame", () => Guarded("frame", Step));
         _teardownTimer = dq.CreateTimer();
         _teardownTimer.IsRepeating = false;
         _teardownTimer.Interval = Teardown;
@@ -87,7 +92,7 @@ internal sealed class LiveViewport : IDisposable
             _lastTick = 0;
             _awakeUntil = AwakeSeconds;
             _envelope = 0;
-            _eye = _eyeTarget = Vector2.Zero;
+            _eye = _eyeTarget = _eyeVel = Vector2.Zero;
             _firstPending = true;
             RenderFrame();
             Kick();
@@ -101,14 +106,16 @@ internal sealed class LiveViewport : IDisposable
     public void Hide()
     {
         _visible = false;
-        _frameTimer.Stop();
+        StopLoop();
         if (_stage is not null) _teardownTimer.Start();
     }
 
     public void Poke()
     {
         if (!Live) return;
-        _squashVel -= 2.2;
+        // An impulse on top of the running wobble, never a reset.
+        _squashVel = Math.Max(_squashVel - 12, -24);
+        Logger.Log($"3d poke (loop {(_rendering ? "running" : "asleep")})");
         Wake();
     }
 
@@ -138,10 +145,45 @@ internal sealed class LiveViewport : IDisposable
 
     private void Kick()
     {
-        if (!Live || _frameTimer.IsRunning) return;
-        _lastTick = Now;
-        _frameTimer.Interval = TimeSpan.FromMilliseconds(33);
-        _frameTimer.Start();
+        if (!Live || _rendering) return;
+        _rendering = true;
+        _lastTick = _lastPresent = _runStart = Now;
+        _acc = 0;
+        _runIntervals.Clear();
+        _battery = OnBattery();
+        _minInterval = _battery ? 1.0 / 30 : 0;
+        CompositionTarget.Rendering += OnRendering;
+        Logger.Log("3d loop wake");
+    }
+
+    private void StopLoop()
+    {
+        if (!_rendering) return;
+        _rendering = false;
+        CompositionTarget.Rendering -= OnRendering;
+    }
+
+    private void OnRendering(object? sender, object e) => TickGuard.Run("live-3d-frame", () => Guarded("frame", Step));
+
+    private static bool OnBattery() => GetSystemPowerStatus(out var s) && s.ACLineStatus == 0;
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct SystemPowerStatus
+    {
+        public byte ACLineStatus, BatteryFlag, BatteryLifePercent, SystemStatusFlag;
+        public int BatteryLifeTime, BatteryFullLifeTime;
+    }
+
+    [DllImport("kernel32.dll")]
+    private static extern bool GetSystemPowerStatus(out SystemPowerStatus status);
+
+    private void LogRun()
+    {
+        if (_runIntervals.Count == 0) return;
+        var sorted = _runIntervals.OrderBy(x => x).ToArray();
+        var p95 = sorted[Math.Min(sorted.Length - 1, (int)(sorted.Length * 0.95))];
+        var dur = Now - _runStart;
+        Logger.Log($"3d loop idle: {_runIntervals.Count + 1} presents in {dur:F2} s ({(_runIntervals.Count + 1) / dur:F1}/s), interval ms mean {_runIntervals.Average():F1} p95 {p95:F1} max {sorted[^1]:F1}");
     }
 
     private void Guarded(string where, Action body)
@@ -153,7 +195,7 @@ internal sealed class LiveViewport : IDisposable
     private void Fail(string where, Exception ex)
     {
         _failed = true;
-        _frameTimer.Stop();
+        StopLoop();
         _teardownTimer.Stop();
         Stage3D.MarkFailed(where, ex);
         try { ReleaseGpu(); } catch { }
@@ -162,43 +204,58 @@ internal sealed class LiveViewport : IDisposable
 
     private void Step()
     {
-        if (!Live) { _frameTimer.Stop(); return; }
+        if (!Live) { StopLoop(); return; }
         var now = Now;
+        if (now - _lastPresent < _minInterval - 0.002) return;
         var dt = Math.Min(now - _lastTick, 0.1);
         _lastTick = now;
 
         var awake = now < _awakeUntil ? 1.0 : 0.0;
         _envelope += Math.Clamp(awake - _envelope, -dt, dt);
 
-        for (var t = 0.0; t < dt; t += 1.0 / 240)
+        const double h = 1.0 / 240;
+        _acc += dt;
+        while (_acc >= h)
         {
-            var h = Math.Min(1.0 / 240, dt - t);
-            _squashVel += (-220 * _squash - 9 * _squashVel) * h;
+            _acc -= h;
+            // Poke: about 7 Hz, damping ratio 0.3. Arms trail the squash a little softer.
+            _squashVel += (-1935 * _squash - 26.4 * _squashVel) * h;
             _squash += _squashVel * h;
-            _armVel += (-150 * (_arm + 3 * _squash) - 6 * _armVel) * h;
+            _armVel += (-990 * (_arm + 3 * _squash) - 15.7 * _armVel) * h;
             _arm += _armVel * h;
+            // Eyes and body: critically damped approach to the pointer goal (time constant about 0.1 s), speed capped.
+            var accel = 400f * (_eyeTarget - _eye) - 40f * _eyeVel;
+            _eyeVel += accel * (float)h;
+            var speed = _eyeVel.Length();
+            if (speed > 9f) _eyeVel *= 9f / speed;
+            _eye += _eyeVel * (float)h;
         }
-        _eye += (_eyeTarget - _eye) * (float)(1 - Math.Exp(-12 * dt));
 
         var springs = Math.Abs(_squash) > 1e-4 || Math.Abs(_squashVel) > 1e-3 || Math.Abs(_arm) > 1e-4 || Math.Abs(_armVel) > 1e-3
-            || Vector2.Distance(_eye, _eyeTarget) > 1e-3;
+            || Vector2.Distance(_eye, _eyeTarget) > 1e-3 || _eyeVel.Length() > 1e-2;
         if (!springs)
         {
             _squash = _squashVel = _arm = _armVel = 0;
             _eye = _eyeTarget;
+            _eyeVel = Vector2.Zero;
         }
 
+        if (now - _lastPresent < 0.25) _runIntervals.Add((now - _lastPresent) * 1000);
+        _lastPresent = now;
         RenderFrame();
 
         if (!springs && _envelope <= 0)
         {
-            _frameTimer.Stop();
+            LogRun();
+            StopLoop();
             return;
         }
-        // Springs and eyes at 30 fps; breathing alone at 15 fps.
-        _frameTimer.Interval = TimeSpan.FromMilliseconds(springs ? 33 : 66);
+        // Breathing alone is slow and time-based; springs and eyes run at the display rate (30 on battery).
+        var floor = _battery ? 1.0 / 30 : 0;
+        _minInterval = springs ? floor : 1.0 / 20;
     }
 
+    private bool _battery;
     private void RenderFrame()
     {
         if (_stage is not { } s || _swap is null || _rtv is null || _dsv is null || _msaa is null) return;
@@ -380,7 +437,7 @@ internal sealed class LiveViewport : IDisposable
     public void Dispose()
     {
         _visible = false;
-        _frameTimer.Stop();
+        StopLoop();
         _teardownTimer.Stop();
         ReleaseGpu();
     }

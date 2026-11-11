@@ -3,7 +3,6 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using SkiaSharp;
-using Vortice.D3DCompiler;
 using Vortice.Direct3D;
 using Vortice.Direct3D11;
 using Vortice.DXGI;
@@ -77,6 +76,10 @@ internal sealed class Stage3D : IDisposable
     public ID3D11Texture2D? Texture { get; init; }
     public ID3D11ShaderResourceView? TextureView { get; init; }
 
+    // Bytecode is built offline by tools\compile-shaders.ps1, so the runtime shader compiler is never loaded.
+    private static byte[] LoadShader(string name) =>
+        File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "Assets", "Shaders", name + ".cso"));
+
     public static void MarkFailed(string where, Exception ex)
     {
         Failed = true;
@@ -138,10 +141,10 @@ internal sealed class Stage3D : IDisposable
 
         var samples = d.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, 4) > 0 ? 4u : 1u;
 
-        var vsMesh = Compiler.Compile(Shaders.Mesh, "VS", "mesh", "vs_4_0", ShaderFlags.OptimizationLevel3);
-        var psMesh = Compiler.Compile(Shaders.Mesh, "PS", "mesh", "ps_4_0", ShaderFlags.OptimizationLevel3);
-        var vsShadow = Compiler.Compile(Shaders.Shadow, "VS", "shadow", "vs_4_0", ShaderFlags.OptimizationLevel3);
-        var psShadow = Compiler.Compile(Shaders.Shadow, "PS", "shadow", "ps_4_0", ShaderFlags.OptimizationLevel3);
+        var vsMesh = LoadShader("Mesh.VS");
+        var psMesh = LoadShader("Mesh.PS");
+        var vsShadow = LoadShader("Shadow.VS");
+        var psShadow = LoadShader("Shadow.PS");
 
         var meshLayout = d.CreateInputLayout(
         [
@@ -150,12 +153,12 @@ internal sealed class Stage3D : IDisposable
             new InputElementDescription("TEXCOORD", 0, Format.R32G32_Float, 24, 0),
             new InputElementDescription("BLENDINDICES", 0, Format.R32G32B32A32_Float, 32, 0),
             new InputElementDescription("BLENDWEIGHT", 0, Format.R32G32B32A32_Float, 48, 0),
-        ], vsMesh.Span);
+        ], vsMesh);
         var shadowLayout = d.CreateInputLayout(
         [
             new InputElementDescription("POSITION", 0, Format.R32G32B32_Float, 0, 0),
             new InputElementDescription("TEXCOORD", 0, Format.R32G32_Float, 12, 0),
-        ], vsShadow.Span);
+        ], vsShadow);
 
         var parts = model.Parts.Select(p => new GpuPart(p,
             d.CreateBuffer(p.Vertices, BindFlags.VertexBuffer),
@@ -186,11 +189,11 @@ internal sealed class Stage3D : IDisposable
             Model = model,
             Parts = parts,
             SampleCount = samples,
-            MeshVs = d.CreateVertexShader(vsMesh.Span),
-            MeshPs = d.CreatePixelShader(psMesh.Span),
+            MeshVs = d.CreateVertexShader(vsMesh),
+            MeshPs = d.CreatePixelShader(psMesh),
             MeshLayout = meshLayout,
-            ShadowVs = d.CreateVertexShader(vsShadow.Span),
-            ShadowPs = d.CreatePixelShader(psShadow.Span),
+            ShadowVs = d.CreateVertexShader(vsShadow),
+            ShadowPs = d.CreatePixelShader(psShadow),
             ShadowLayout = shadowLayout,
             ShadowQuad = d.CreateBuffer(quad, BindFlags.VertexBuffer),
             FrameCb = d.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<FrameConstants>(), BindFlags.ConstantBuffer)),
@@ -240,98 +243,4 @@ internal sealed class Stage3D : IDisposable
         Device.Dispose();
         Factory.Dispose();
     }
-}
-
-internal static class Shaders
-{
-    public const string Mesh = """
-        cbuffer Frame : register(b0)
-        {
-            row_major float4x4 ViewProj;
-            float3 LightDir; float Pad0;
-            float3 CameraPos; float Pad1;
-            float3 KeyColor; float Pad2;
-        };
-        cbuffer Draw : register(b1)
-        {
-            row_major float4x4 Joints[8];
-            float4 BaseColor;
-            float3 Offset; float Roughness;
-            float UseTexture; float Unlit; float2 Pad;
-        };
-        Texture2D Tex : register(t0);
-        SamplerState Smp : register(s0);
-
-        struct VSIn { float3 pos : POSITION; float3 nrm : NORMAL; float2 uv : TEXCOORD0; float4 j : BLENDINDICES; float4 w : BLENDWEIGHT; };
-        struct PSIn { float4 pos : SV_Position; float3 wpos : TEXCOORD1; float3 nrm : NORMAL; float2 uv : TEXCOORD0; };
-
-        PSIn VS(VSIn i)
-        {
-            float4x4 m = Joints[(int)i.j.x] * i.w.x + Joints[(int)i.j.y] * i.w.y + Joints[(int)i.j.z] * i.w.z + Joints[(int)i.j.w] * i.w.w;
-            float4 wp = mul(float4(i.pos + Offset, 1), m);
-            PSIn o;
-            o.pos = mul(wp, ViewProj);
-            o.wpos = wp.xyz;
-            o.nrm = mul(float4(i.nrm, 0), m).xyz;
-            o.uv = i.uv;
-            return o;
-        }
-
-        float3 ToSrgb(float3 c)
-        {
-            c = saturate(c);
-            return c <= 0.0031308 ? c * 12.92 : 1.055 * pow(c, 1.0 / 2.4) - 0.055;
-        }
-
-        float4 PS(PSIn i) : SV_Target
-        {
-            float3 albedo = BaseColor.rgb;
-            if (UseTexture > 0.5) albedo *= Tex.Sample(Smp, i.uv).rgb;
-            if (Unlit > 0.5) return float4(ToSrgb(albedo), 1);
-
-            float3 n = normalize(i.nrm);
-            float3 v = normalize(CameraPos - i.wpos);
-            if (dot(n, v) < 0) n = -n;
-            float3 l = normalize(LightDir);
-            float ndl = dot(n, l);
-            float wrap = saturate((ndl + 0.35) / 1.35);
-            float3 hemi = lerp(float3(0.30, 0.27, 0.24), float3(0.52, 0.56, 0.62), n.y * 0.5 + 0.5);
-
-            float3 h = normalize(l + v);
-            float a = Roughness * Roughness;
-            float a2 = a * a;
-            float ndh = saturate(dot(n, h));
-            float dd = ndh * ndh * (a2 - 1) + 1;
-            float D = a2 / (3.14159 * dd * dd);
-            float ndv = saturate(dot(n, v));
-            float nl = saturate(ndl);
-            float k = (Roughness + 1) * (Roughness + 1) / 8;
-            float G = (ndv / (ndv * (1 - k) + k)) * (nl / (nl * (1 - k) + k));
-            float F = 0.04 + 0.96 * pow(1 - saturate(dot(h, v)), 5);
-            float spec = D * G * F / max(4 * ndv * nl, 0.001) * nl;
-            float rim = pow(1 - ndv, 3) * 0.12;
-
-            float3 c = albedo * (KeyColor * wrap + hemi) + KeyColor * spec + rim * hemi;
-            return float4(ToSrgb(c), 1);
-        }
-        """;
-
-    public const string Shadow = """
-        cbuffer Frame : register(b0)
-        {
-            row_major float4x4 ViewProj;
-            float3 LightDir; float Pad0;
-            float3 CameraPos; float Pad1;
-            float3 KeyColor; float Pad2;
-        };
-        struct VSIn { float3 pos : POSITION; float2 uv : TEXCOORD0; };
-        struct PSIn { float4 pos : SV_Position; float2 uv : TEXCOORD0; };
-        PSIn VS(VSIn i) { PSIn o; o.pos = mul(float4(i.pos, 1), ViewProj); o.uv = i.uv; return o; }
-        float4 PS(PSIn i) : SV_Target
-        {
-            float r = length((i.uv - 0.5) * 2);
-            float a = 0.42 * (1 - smoothstep(0.1, 1.0, r));
-            return float4(0, 0, 0, a);
-        }
-        """;
 }

@@ -19,6 +19,7 @@ namespace DeskPal;
 
 public sealed partial class NudgeCardWindow : Window
 {
+    private static readonly RoutedEvent UIElementPointerPressed = UIElement.PointerPressedEvent;
     private const int WidthDip = 360;
     private const int HeightDip = 220;
     private const int MarginDip = 12;
@@ -34,6 +35,7 @@ public sealed partial class NudgeCardWindow : Window
     private long _loadVersion;
     private LiveViewport? _viewport;
     private long _liveRequestedTick;
+    private int _debugPokes;
     private IntPtr _foregroundBefore;
     private readonly List<Microsoft.UI.Dispatching.DispatcherQueueTimer> _debugTimers = [];
 
@@ -41,6 +43,8 @@ public sealed partial class NudgeCardWindow : Window
     {
         _router = router;
         InitializeComponent();
+        // handledEventsToo: a child that marks the press handled must not stop Bloop reacting.
+        Root.AddHandler(UIElementPointerPressed, new PointerEventHandler(OnRootPressed), true);
         _hwnd = WindowNative.GetWindowHandle(this);
         _timer.Tick += (s, e) => TickGuard.Run("nudge-card", () => OnTimer(s, e));
         if (AppData.Debug3D) After(10, "debug-3d-stats", LogStats, repeat: true);
@@ -164,21 +168,27 @@ public sealed partial class NudgeCardWindow : Window
         LogForeground("after card shown");
         if (AppData.DebugPoke)
         {
-            After(2, "debug-poke", () =>
+            // Pokes at 2, 5, 8 s, then two long gaps so the loop is fully asleep for the last two.
+            foreach (var at in new[] { 2.0, 5, 8, 21, 34 })
             {
-                Logger.Log("debug poke");
-                _viewport?.Poke();
-                After(1.5, "debug-poke-fg", () => LogForeground("after poke"));
-            });
+                var n = ++_debugPokes;
+                After(at, "debug-poke", () =>
+                {
+                    Logger.Log($"debug poke {n}");
+                    _viewport?.Poke();
+                    if (n == 1) After(1.5, "debug-poke-fg", () => LogForeground("after poke"));
+                }, once: true);
+            }
         }
     }
-
-    private void OnLivePressed(object sender, PointerRoutedEventArgs e)
+    private void OnRootPressed(object sender, PointerRoutedEventArgs e)
     {
-        _viewport?.Poke();
-        e.Handled = true;
+        if (_viewport is null || LivePanel.Visibility != Visibility.Visible) return;
+        var p = e.GetCurrentPoint(AvatarSlot).Position;
+        var hit = p.X >= 0 && p.Y >= 0 && p.X <= LivePanel.Width && p.Y <= LivePanel.Height;
+        Logger.Log($"3d press at {p.X:F0},{p.Y:F0} hit={hit}");
+        if (hit) _viewport.Poke();
     }
-
     private void OnRootPointerMoved(object sender, PointerRoutedEventArgs e)
     {
         if (_viewport is null || LivePanel.Visibility != Visibility.Visible) return;
@@ -202,12 +212,16 @@ public sealed partial class NudgeCardWindow : Window
         Logger.Log($"{label}; private {p.PrivateMemorySize64 / 1048576.0:F1} MB, working set {p.WorkingSet64 / 1048576.0:F1} MB");
     }
 
-    private void After(double seconds, string name, Action action, bool repeat = false)
+    private void After(double seconds, string name, Action action, bool repeat = false, bool once = false)
     {
         var timer = DispatcherQueue.CreateTimer();
         timer.IsRepeating = repeat;
         timer.Interval = TimeSpan.FromSeconds(seconds);
-        timer.Tick += (_, _) => TickGuard.Run(name, action);
+        timer.Tick += (_, _) =>
+        {
+            if (once) timer.Stop();
+            TickGuard.Run(name, action);
+        };
         _debugTimers.Add(timer);
         timer.Start();
     }
