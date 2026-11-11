@@ -104,4 +104,17 @@ public sealed class DeskPalState
     public DateOnly CountersDate { get; set; }
     public int StretchesToday { get; set; }
     public int EyeBreaksToday { get; set; }
+    public int WalksToday { get; set; }
+    public MainWindowUi Ui { get; set; } = new();
+}
+
+// Main window bits that live in state.json next to the counters; the app copies them onto every snapshot it saves.
+public sealed class MainWindowUi
+{
+    public bool FirstRunShown { get; set; }
+    public bool CloseHintShown { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+    public int Width { get; set; }
+    public int Height { get; set; }
 }

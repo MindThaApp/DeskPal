@@ -295,7 +295,7 @@ public sealed partial class NudgeCardWindow : Window
         return File.Exists(flat) ? flat : null;
     }
 
-    private static async Task<SvgImageSource?> LoadAvatarAsync(string style, string name)
+    internal static async Task<SvgImageSource?> LoadAvatarAsync(string style, string name, int pixels = 160)
     {
         var path = ResolveAvatarPath(style, name);
         if (path is null) return null;
@@ -305,7 +305,7 @@ public sealed partial class NudgeCardWindow : Window
             using var stream = new InMemoryRandomAccessStream();
             await stream.WriteAsync(bytes.AsBuffer());
             stream.Seek(0);
-            var source = new SvgImageSource { RasterizePixelWidth = 160, RasterizePixelHeight = 160 };
+            var source = new SvgImageSource { RasterizePixelWidth = pixels, RasterizePixelHeight = pixels };
             var status = await source.SetSourceAsync(stream);
             return status == SvgImageSourceLoadStatus.Success ? source : null;
         }

@@ -10,7 +10,8 @@ public static class AppData
     public static readonly bool Debug3D = HasArg("--debug-3d") || Debug3DFail;
     public static readonly bool DebugPoke = HasArg("--debug-poke");
     public static readonly bool DebugSettings = HasArg("--debug-settings");
-    public static readonly bool IsDebugRun = DebugSettings || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || Debug3D || DebugPoke;
+    public static readonly bool DebugMain = HasArg("--debug-main");
+    public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || Debug3D || DebugPoke;
 
     // Debug runs keep their own state and log so they never touch the real ones.
     public static readonly string Dir = Path.Combine(

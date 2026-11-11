@@ -32,6 +32,7 @@ public sealed class NudgeScheduler : ICommandRouter
     private DateOnly _countersDate;
     private int _stretchesToday;
     private int _eyeBreaksToday;
+    private int _walksToday;
 
     public NudgeScheduler(TimeProvider time, DeskPalSettings settings, DeskPalState? state = null)
     {
@@ -42,6 +43,7 @@ public sealed class NudgeScheduler : ICommandRouter
         _countersDate = state?.CountersDate ?? default;
         _stretchesToday = state?.StretchesToday ?? 0;
         _eyeBreaksToday = state?.EyeBreaksToday ?? 0;
+        _walksToday = state?.WalksToday ?? 0;
         var now = Now;
         RollDay(now);
         ApplyDue(now);
@@ -63,6 +65,11 @@ public sealed class NudgeScheduler : ICommandRouter
     public int EyeBreaksToday
     {
         get { lock (_gate) { RollDay(Now); return _eyeBreaksToday; } }
+    }
+
+    public int WalksToday
+    {
+        get { lock (_gate) { RollDay(Now); return _walksToday; } }
     }
 
     private DateTimeOffset Now => _time.GetLocalNow();
@@ -136,6 +143,7 @@ public sealed class NudgeScheduler : ICommandRouter
                 CountersDate = _countersDate,
                 StretchesToday = _stretchesToday,
                 EyeBreaksToday = _eyeBreaksToday,
+                WalksToday = _walksToday,
             };
         }
     }
@@ -314,6 +322,7 @@ public sealed class NudgeScheduler : ICommandRouter
         _countersDate = today;
         _stretchesToday = 0;
         _eyeBreaksToday = 0;
+        _walksToday = 0;
     }
 
     private bool Pause(PauseCommand c)
@@ -350,7 +359,7 @@ public sealed class NudgeScheduler : ICommandRouter
                 if (type == SchedulerEventType.NudgeDone)
                 {
                     RollDay(now);
-                    if (nudge.Kinds.Contains(NudgeKind.Walk)) StretchesCompleted = 0;
+                    if (nudge.Kinds.Contains(NudgeKind.Walk)) { StretchesCompleted = 0; _walksToday++; }
                     else if (nudge.Kinds.Contains(NudgeKind.Stretch)) StretchesCompleted++;
                     if (nudge.Kinds.Contains(NudgeKind.Walk) || nudge.Kinds.Contains(NudgeKind.Stretch)) _stretchesToday++;
                 }

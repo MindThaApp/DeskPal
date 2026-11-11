@@ -24,7 +24,8 @@ public partial class App : Application
     private TaskbarIcon? _tray;
     private NudgeCardWindow? _card;
     private EyeCuePillWindow? _pill;
-    private TodayWindow? _today;
+    private MainWindow? _main;
+    private MainWindowUi _ui = new();
     private SettingsHub _hub = null!;
     private SettingsWindow? _settingsWindow;
     private CrashReportingMode _appliedCrashMode;
@@ -60,7 +61,7 @@ public partial class App : Application
         };
 
         var sid = WindowsIdentity.GetCurrent().User?.Value ?? Environment.UserName;
-        var mutexName = "DeskPal-" + sid + (AppData.DebugSettings ? "-debug-settings" : AppData.IsDebugRun ? "-debug" : "");
+        var mutexName = "DeskPal-" + sid + (AppData.DebugSettings ? "-debug-settings" : AppData.DebugMain ? "-debug-main" : AppData.IsDebugRun ? "-debug" : "");
         _instanceMutex = new Mutex(true, mutexName, out var created);
         if (!created) Environment.Exit(0);
         InitializeComponent();
@@ -99,6 +100,7 @@ public partial class App : Application
         // The pipeline check always sends: it only runs in the debug data root, with a test exception.
         CrashReporting.Apply(AppData.DebugCrash ? CrashReportingMode.Always : _settings.CrashReports);
         var state = JsonFileStore.Load<DeskPalState>(AppData.StatePath, TimeProvider.System);
+        _ui = state.Ui ??= new MainWindowUi();
         _scheduler = new NudgeScheduler(TimeProvider.System, _settings, state);
         _router = _scheduler;
         _hub = new SettingsHub(_settings, _scheduler);
@@ -118,7 +120,7 @@ public partial class App : Application
             ToolTipText = "Desk Pal",
             ContextFlyout = BuildMenu(),
             Icon = _baseIcon,
-            LeftClickCommand = new ActionCommand(OpenToday),
+            LeftClickCommand = new ActionCommand(() => OpenMain()),
         };
         _tray.ForceCreate();
 
@@ -148,6 +150,13 @@ public partial class App : Application
     private void StartDebugTriggers()
     {
         if (AppData.DebugSettings) OpenSettings();
+        if (AppData.DebugMain) OpenMain();
+        else if (!_ui.FirstRunShown)
+        {
+            _ui.FirstRunShown = true;
+            SaveState();
+            OpenMain();
+        }
         if (AppData.DebugEyeCue)
         {
             _debugEyeTimer = _dq.CreateTimer();
@@ -212,6 +221,9 @@ public partial class App : Application
     {
         var menu = new MenuFlyout();
 
+        var open = new MenuFlyoutItem { Text = "Open Desk Pal", FontWeight = Microsoft.UI.Text.FontWeights.Bold };
+        open.Click += (_, _) => OpenMain();
+
         var test = new MenuFlyoutItem { Text = "Test nudge" };
         test.Click += (_, _) => _router.Execute(new TestNudgeCommand());
 
@@ -246,8 +258,10 @@ public partial class App : Application
         exit.Click += (_, _) => ExitApp();
 
         var settingsItem = new MenuFlyoutItem { Text = "Settings…" };
-        settingsItem.Click += (_, _) => OpenSettings();
+        settingsItem.Click += (_, _) => OpenMain("settings");
 
+        menu.Items.Add(open);
+        menu.Items.Add(new MenuFlyoutSeparator());
         menu.Items.Add(test);
         menu.Items.Add(pause);
         menu.Items.Add(_resumeItem);
@@ -412,7 +426,12 @@ public partial class App : Application
 
     private void SaveState()
     {
-        try { JsonFileStore.Save(AppData.StatePath, _scheduler.Snapshot()); }
+        try
+        {
+            var snapshot = _scheduler.Snapshot();
+            snapshot.Ui = _ui;
+            JsonFileStore.Save(AppData.StatePath, snapshot);
+        }
         catch (Exception ex) { Logger.Log("state save failed: " + ex.Message); }
     }
 
@@ -572,20 +591,34 @@ public partial class App : Application
         }
     }
 
-    private void OpenToday()
+    private void OpenMain(string? page = null)
     {
         _dq.TryEnqueue(() =>
         {
             try
             {
-                _today ??= new TodayWindow(_scheduler, OpenSettings);
-                _today.Toggle();
+                _main ??= new MainWindow(
+                    new MainContext(_scheduler, _hub, tag => _main?.Navigate(tag), ShowEyeCue),
+                    _ui, SaveState, ShowStillHereToast);
+                _main.ShowMain(page);
             }
             catch (Exception ex)
             {
-                Logger.Log("today window failed: " + ex.Message);
+                Logger.Log("main window failed: " + ex.Message);
             }
         });
+    }
+
+    private static void ShowStillHereToast()
+    {
+        try
+        {
+            AppNotificationManager.Default.Show(new AppNotificationBuilder().AddText("Desk Pal is still here in the tray.").BuildNotification());
+        }
+        catch (Exception ex)
+        {
+            Logger.Log("close hint failed: " + ex.Message);
+        }
     }
 
     private sealed class ActionCommand(Action action) : ICommand
@@ -608,7 +641,7 @@ public partial class App : Application
         _icons?.Dispose();
         _card?.Close();
         _pill?.Close();
-        _today?.Close();
+        _main?.Quit();
         _settingsWindow?.Quit();
         _toastTimer?.Stop();
         Logger.Log("exit");

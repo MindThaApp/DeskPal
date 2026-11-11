@@ -32,6 +32,8 @@ internal sealed class CrashReporting
         .OfType<System.Reflection.AssemblyMetadataAttribute>()
         .FirstOrDefault(static a => a.Key == "DpBetaTag")?.Value ?? string.Empty;
 
+    public static string ReleaseText => CrashReportRelease.Release(System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3) ?? "0.0.0", BetaTag);
+
     private static readonly object Gate = new();
     private static readonly CrashReportRedactor Redactor = CrashReportRedactor.ForThisPc(AppContext.BaseDirectory);
     private static readonly CrashReportOutbox Outbox = new(new PendingCrashReports(Path.Combine(AppData.Dir, "CrashReports", "pending")));
