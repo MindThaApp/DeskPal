@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Windows.Input;
 using System.Security.Principal;
 using DeskPal.Core;
 using H.NotifyIcon;
@@ -12,6 +13,7 @@ namespace DeskPal;
 
 public partial class App : Application
 {
+    private const string ToastTag = "nudge";
     private static Mutex? _instanceMutex;
 
     private DispatcherQueue _dq = null!;
@@ -21,6 +23,13 @@ public partial class App : Application
     private readonly IBusyStateProvider _busy = new ShellBusyStateProvider();
     private TaskbarIcon? _tray;
     private NudgeCardWindow? _card;
+    private EyeCuePillWindow? _pill;
+    private TodayWindow? _today;
+    private CallMonitor _calls = null!;
+    private Icon? _baseIcon;
+    private Icon? _eyesIcon;
+    private DispatcherQueueTimer? _toastTimer;
+    private Guid? _toastNudgeId;
     private DispatcherQueueTimer? _tickTimer;
     private DispatcherQueueTimer? _busyTimer;
     private MenuFlyoutItem? _resumeItem;
@@ -42,6 +51,7 @@ public partial class App : Application
         var state = JsonFileStore.Load<DeskPalState>(AppData.StatePath, TimeProvider.System);
         _scheduler = new NudgeScheduler(TimeProvider.System, _settings, state);
         _router = _scheduler;
+        _calls = new CallMonitor(new RegistryCallDetector(), _scheduler, TimeProvider.System);
         _scheduler.Event += e => _dq.TryEnqueue(() => OnSchedulerEvent(e));
 
         var manager = AppNotificationManager.Default;
@@ -49,11 +59,13 @@ public partial class App : Application
         manager.Register();
 
         var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "deskpal.ico");
+        _baseIcon = new Icon(iconPath);
         _tray = new TaskbarIcon
         {
             ToolTipText = "Desk Pal",
             ContextFlyout = BuildMenu(),
-            Icon = new Icon(iconPath),
+            Icon = _baseIcon,
+            LeftClickCommand = new ActionCommand(OpenToday),
         };
         _tray.ForceCreate();
 
@@ -136,6 +148,7 @@ public partial class App : Application
         bool busy;
         try { busy = _busy.IsBusy(); }
         catch { busy = false; }
+        _calls.Poll();
         if (busy)
             _scheduler.StartHold("dnd", "Focus Assist or full screen", TimeProvider.System.GetLocalNow().AddSeconds(75));
         else
@@ -168,13 +181,20 @@ public partial class App : Application
         Logger.Log($"{e.Type} {e.Nudge?.Title ?? e.Hold?.Source}");
         switch (e.Type)
         {
+            case SchedulerEventType.EyeCue:
+                ShowEyeCue();
+                SaveState();
+                return;
             case SchedulerEventType.NudgeShown:
+                _pill?.Dismiss();
+                SetEyesIcon(false);
                 if (e.Nudge is not null) PresentAsync(e.Nudge);
                 return;
             case SchedulerEventType.NudgeDone:
             case SchedulerEventType.NudgeSkipped:
             case SchedulerEventType.NudgeSnoozed:
                 _card?.HideCard();
+                ClearToast();
                 break;
         }
         SaveState();
@@ -193,16 +213,7 @@ public partial class App : Application
         {
             try
             {
-                if (_card is null)
-                {
-                    _card = new NudgeCardWindow(_router);
-                    _card.Expired += id =>
-                    {
-                        Logger.Log("card auto-hidden");
-                        _scheduler.Expire(id);
-                    };
-                }
-                await _card.ShowNudgeAsync(nudge, _settings.AvatarStyle);
+                await ShowCardAsync(nudge);
                 return;
             }
             catch (Exception ex)
@@ -210,20 +221,101 @@ public partial class App : Application
                 Logger.Log("card failed, using toast: " + ex.Message);
             }
         }
-        ShowToast(nudge);
+        await ShowToastAsync(nudge);
     }
 
-    private static void ShowToast(Nudge nudge)
+    private Task ShowCardAsync(Nudge nudge)
     {
-        var id = nudge.Id.ToString();
-        var builder = new AppNotificationBuilder().AddText(nudge.Title).AddText(nudge.Message);
-        if (nudge.Instruction is not null) builder.AddText(nudge.Instruction);
-        var toast = builder
-            .AddButton(new AppNotificationButton("Done").AddArgument("action", "done").AddArgument("id", id))
-            .AddButton(new AppNotificationButton("Snooze 5 min").AddArgument("action", "snooze").AddArgument("id", id))
-            .AddButton(new AppNotificationButton("Skip").AddArgument("action", "skip").AddArgument("id", id))
-            .BuildNotification();
-        AppNotificationManager.Default.Show(toast);
+        if (_card is null)
+        {
+            _card = new NudgeCardWindow(_router);
+            _card.Expired += id =>
+            {
+                Logger.Log("card auto-hidden");
+                _scheduler.Expire(id);
+            };
+        }
+        return _card.ShowNudgeAsync(nudge, _settings.AvatarStyle);
+    }
+
+    private async Task ShowToastAsync(Nudge nudge)
+    {
+        try
+        {
+            await AppNotificationManager.Default.RemoveByTagAndGroupAsync(ToastTag, ToastTag);
+            var id = nudge.Id.ToString();
+            var builder = new AppNotificationBuilder()
+                .AddArgument("action", "open")
+                .AddArgument("id", id)
+                .AddText(nudge.Title)
+                .AddText(nudge.Message);
+            if (nudge.Instruction is not null) builder.AddText(nudge.Instruction);
+            var toast = builder
+                .AddButton(new AppNotificationButton("Start").SetButtonStyle(AppNotificationButtonStyle.Success).AddArgument("action", "start").AddArgument("id", id))
+                .AddButton(new AppNotificationButton("In 10 min").AddArgument("action", "snooze").AddArgument("id", id))
+                .AddButton(new AppNotificationButton("Skip").AddArgument("action", "skip").AddArgument("id", id))
+                .BuildNotification();
+            toast.Tag = ToastTag;
+            toast.Group = ToastTag;
+            toast.Expiration = DateTimeOffset.Now.AddMinutes(10);
+            AppNotificationManager.Default.Show(toast);
+            ArmToastTimer(nudge.Id);
+        }
+        catch (Exception ex)
+        {
+            Logger.Log("toast failed: " + ex.Message);
+        }
+    }
+
+    // An ignored toast must not leave the scheduler waiting on it forever.
+    private void ArmToastTimer(Guid id)
+    {
+        _toastNudgeId = id;
+        _toastTimer ??= _dq.CreateTimer();
+        _toastTimer.Stop();
+        _toastTimer.IsRepeating = false;
+        _toastTimer.Interval = TimeSpan.FromMinutes(10);
+        _toastTimer.Tick -= OnToastExpired;
+        _toastTimer.Tick += OnToastExpired;
+        _toastTimer.Start();
+    }
+
+    private void OnToastExpired(DispatcherQueueTimer sender, object args)
+    {
+        if (_toastNudgeId is { } id && _card?.CurrentId != id)
+        {
+            Logger.Log("toast expired");
+            _scheduler.Expire(id);
+        }
+        ClearToast();
+    }
+
+    private void ClearToast()
+    {
+        _toastTimer?.Stop();
+        if (_toastNudgeId is null) return;
+        _toastNudgeId = null;
+        _ = RemoveToastAsync();
+    }
+
+    private static async Task RemoveToastAsync()
+    {
+        try { await AppNotificationManager.Default.RemoveByTagAndGroupAsync(ToastTag, ToastTag); }
+        catch (Exception ex) { Logger.Log("toast remove failed: " + ex.Message); }
+    }
+
+    private async void OpenCardFor(Guid? id)
+    {
+        if (_scheduler.Current is not { } nudge || (id is not null && id != nudge.Id)) return;
+        try
+        {
+            await ShowCardAsync(nudge);
+            ClearToast();
+        }
+        catch (Exception ex)
+        {
+            Logger.Log("card failed from toast: " + ex.Message);
+        }
     }
 
     private void OnNotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
@@ -231,16 +323,87 @@ public partial class App : Application
         var action = args.Arguments.TryGetValue("action", out var a) ? a : "";
         Guid? id = args.Arguments.TryGetValue("id", out var raw) && Guid.TryParse(raw, out var g) ? g : null;
         Logger.Log($"toast action: {action}");
-        Command? command = action switch
+        switch (action)
         {
-            "done" => new DoneCommand(id),
-            "snooze" => new SnoozeCommand(id),
-            "skip" => new SkipCommand(id),
-            _ => null,
-        };
-        if (command is not null) _dq.TryEnqueue(() => _router.Execute(command));
+            case "open":
+            case "start":
+                _dq.TryEnqueue(() => OpenCardFor(id));
+                break;
+            case "snooze":
+                _dq.TryEnqueue(() => _router.Execute(new SnoozeCommand(id)));
+                break;
+            case "skip":
+                _dq.TryEnqueue(() => _router.Execute(new SkipCommand(id)));
+                break;
+        }
     }
 
+    private void ShowEyeCue()
+    {
+        try
+        {
+            if (_pill is null)
+            {
+                _pill = new EyeCuePillWindow();
+                _pill.Finished += clicked =>
+                {
+                    Logger.Log(clicked ? "eye cue clicked" : "eye cue faded");
+                    SetEyesIcon(false);
+                };
+            }
+            _pill.ShowCue();
+            SetEyesIcon(true);
+        }
+        catch (Exception ex)
+        {
+            Logger.Log("eye cue failed: " + ex.Message);
+        }
+    }
+
+    private void SetEyesIcon(bool eyes)
+    {
+        if (_tray is null || _baseIcon is null) return;
+        _eyesIcon ??= MakeEyesIcon();
+        _tray.Icon = eyes ? _eyesIcon : _baseIcon;
+    }
+
+    private static Icon MakeEyesIcon()
+    {
+        using var bmp = new Bitmap(32, 32);
+        using (var g = Graphics.FromImage(bmp))
+        {
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.FillEllipse(Brushes.SeaGreen, 0, 0, 31, 31);
+            g.FillEllipse(Brushes.White, 3, 9, 12, 14);
+            g.FillEllipse(Brushes.White, 17, 9, 12, 14);
+            g.FillEllipse(Brushes.Black, 7, 13, 6, 6);
+            g.FillEllipse(Brushes.Black, 21, 13, 6, 6);
+        }
+        return Icon.FromHandle(bmp.GetHicon());
+    }
+
+    private void OpenToday()
+    {
+        _dq.TryEnqueue(() =>
+        {
+            try
+            {
+                _today ??= new TodayWindow(_scheduler);
+                _today.Toggle();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("today window failed: " + ex.Message);
+            }
+        });
+    }
+
+    private sealed class ActionCommand(Action action) : ICommand
+    {
+        public event EventHandler? CanExecuteChanged { add { } remove { } }
+        public bool CanExecute(object? parameter) => true;
+        public void Execute(object? parameter) => action();
+    }
     private void ExitApp()
     {
         _tickTimer?.Stop();
@@ -249,6 +412,9 @@ public partial class App : Application
         AppNotificationManager.Default.Unregister();
         _tray?.Dispose();
         _card?.Close();
+        _pill?.Close();
+        _today?.Close();
+        _toastTimer?.Stop();
         Logger.Log("exit");
         Exit();
     }

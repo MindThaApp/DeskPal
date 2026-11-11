@@ -70,6 +70,7 @@ public sealed partial class NudgeCardWindow : Window
         _timedSeconds = nudge.TimedSeconds ?? 0;
         _timedEndTick = _shownAtTick + _timedSeconds * 1000L;
         CountdownPanel.Visibility = _timedSeconds > 0 ? Visibility.Visible : Visibility.Collapsed;
+        DoneButton.IsEnabled = _timedSeconds == 0;
         UpdateCountdown();
 
         Avatar.Source = null;
@@ -138,6 +139,7 @@ public sealed partial class NudgeCardWindow : Window
         if (_timedSeconds <= 0) return;
         var leftMs = Math.Max(0, _timedEndTick - Environment.TickCount64);
         CountdownText.Text = $"{(int)Math.Ceiling(leftMs / 1000.0)} s";
+        if (leftMs == 0) DoneButton.IsEnabled = true;
         Ring.Value = 100.0 * (1 - leftMs / (_timedSeconds * 1000.0));
     }
 
