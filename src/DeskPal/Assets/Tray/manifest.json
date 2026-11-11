@@ -1,0 +1,12 @@
+{
+  "walk": {"frames": 8, "frameMs": 100},
+  "jumps": {"frames": 8, "frameMs": 90},
+  "drink": {"frames": 8, "frameMs": 150},
+  "water-plant": {"frames": 8, "frameMs": 130},
+  "stretch": {"frames": 8, "frameMs": 140},
+  "fresh-air": {"frames": 8, "frameMs": 140},
+  "eyes": {"frames": 8, "frameMs": 150, "holdMs": [150, 150, 150, 150, 500, 500, 150, 150]},
+  "sleep": {"frames": 6, "frameMs": 150, "holdMs": [300, 300, 300, 300, 300, 300]},
+  "idle-blink": {"frames": 2, "frameMs": 150, "holdMs": [2500, 150]},
+  "celebrate": {"frames": 8, "frameMs": 100}
+}

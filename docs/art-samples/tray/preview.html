@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desk Pal tray icon loops</title>
+<style>
+  body { margin: 0; padding: 24px; font: 14px/1.4 "Segoe UI", system-ui, sans-serif; background: #e9ecf1; color: #22324a; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  p { margin: 0 0 16px; }
+  .controls { margin-bottom: 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: #fff; border-radius: 10px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .card h2 { font-size: 15px; margin: 0 0 2px; }
+  .meta { font-size: 12px; color: #5b6b82; margin-bottom: 10px; }
+  .row { display: flex; gap: 12px; align-items: stretch; }
+  .big { width: 128px; height: 128px; flex: none; background: #f7f9fc; border-radius: 8px; }
+  .strips { display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: center; }
+  .strip { display: flex; align-items: center; gap: 14px; height: 48px; padding: 0 14px; border-radius: 4px; }
+  .strip.light { background: #F3F3F3; border: 1px solid #ddd; }
+  .strip.dark { background: #202020; border: 1px solid #202020; }
+  .strip img { display: block; }
+  .frames { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .frames img { width: 40px; height: 40px; background: #f7f9fc; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>Desk Pal tray icon loops</h1>
+<p>Each loop plays at 16, 24 and 32 px on light and dark taskbar strips, with a 128 px view and the individual frames.</p>
+<div class="controls">
+  <label><input type="checkbox" id="play" checked> Play</label>
+  <label>Speed <select id="speed"><option value="2">0.5x</option><option value="1" selected>1x</option><option value="0.5">2x</option></select></label>
+</div>
+<div class="grid" id="grid"></div>
+<script>
+  var BASE = "../../../src/DeskPal/Assets/Tray/";
+  var LOOPS = {
+    "walk": { frames: 8, frameMs: 100 },
+    "jumps": { frames: 8, frameMs: 90 },
+    "drink": { frames: 8, frameMs: 150 },
+    "water-plant": { frames: 8, frameMs: 130 },
+    "stretch": { frames: 8, frameMs: 140 },
+    "fresh-air": { frames: 8, frameMs: 140 },
+    "eyes": { frames: 8, frameMs: 150, holdMs: [150, 150, 150, 150, 500, 500, 150, 150] },
+    "sleep": { frames: 6, frameMs: 150, holdMs: [300, 300, 300, 300, 300, 300] },
+    "idle-blink": { frames: 2, frameMs: 150, holdMs: [2500, 150] },
+    "celebrate": { frames: 8, frameMs: 100 }
+  };
+  var SIZES = [16, 24, 32];
+  var grid = document.getElementById("grid");
+  var play = document.getElementById("play");
+  var speed = document.getElementById("speed");
+
+  function img(size) {
+    var el = document.createElement("img");
+    el.width = size; el.height = size; el.alt = "";
+    return el;
+  }
+
+  Object.keys(LOOPS).forEach(function (name) {
+    var loop = LOOPS[name];
+    var card = document.createElement("div");
+    card.className = "card";
+    var h = document.createElement("h2");
+    h.textContent = name;
+    var meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = loop.frames + " frames, " + loop.frameMs + " ms per frame" +
+      (loop.holdMs ? ", hold " + loop.holdMs.join("/") + " ms" : "");
+    var row = document.createElement("div");
+    row.className = "row";
+    var targets = [];
+    var big = img(128);
+    big.className = "big";
+    targets.push(big);
+    row.appendChild(big);
+    var strips = document.createElement("div");
+    strips.className = "strips";
+    ["light", "dark"].forEach(function (tone) {
+      var strip = document.createElement("div");
+      strip.className = "strip " + tone;
+      SIZES.forEach(function (s) {
+        var el = img(s);
+        targets.push(el);
+        strip.appendChild(el);
+      });
+      strips.appendChild(strip);
+    });
+    row.appendChild(strips);
+    var frames = document.createElement("div");
+    frames.className = "frames";
+    var urls = [];
+    for (var i = 1; i <= loop.frames; i++) {
+      var url = BASE + name + "-" + i + ".svg";
+      urls.push(url);
+      var f = img(40);
+      f.src = url;
+      f.title = name + "-" + i;
+      frames.appendChild(f);
+    }
+    card.appendChild(h);
+    card.appendChild(meta);
+    card.appendChild(row);
+    card.appendChild(frames);
+    grid.appendChild(card);
+
+    var index = 0;
+    function show() {
+      targets.forEach(function (t) { t.src = urls[index]; });
+    }
+    function delay() {
+      var ms = loop.holdMs ? loop.holdMs[index] : loop.frameMs;
+      return ms * parseFloat(speed.value);
+    }
+    function tick() {
+      if (play.checked) {
+        index = (index + 1) % urls.length;
+        show();
+      }
+      setTimeout(tick, delay());
+    }
+    show();
+    setTimeout(tick, delay());
+  });
+</script>
+</body>
+</html>
