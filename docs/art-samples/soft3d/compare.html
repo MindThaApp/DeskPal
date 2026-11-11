@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avatar style comparison</title>
+<style>
+body{margin:0;padding:24px;font:14px/1.4 "Segoe UI",system-ui,sans-serif;background:#E9ECF1;color:#1F2733}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:28px 0 8px}
+p{margin:0 0 8px;color:#56606E}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.panel{display:flex;align-items:flex-end;gap:20px;padding:20px;border-radius:12px}
+.light{background:#F7F8FA;color:#56606E}
+.dark{background:#1E222A;color:#A9B2C0}
+figure{margin:0;text-align:center}
+figcaption{font-size:12px;margin-top:6px}
+img{display:block;margin:0 auto}
+.big{height:240px;width:auto}
+.small{height:64px;width:auto}
+</style>
+</head>
+<body>
+<h1>Avatar style comparison</h1>
+<p>Flat originals next to the soft 3D set, at 240 px and 64 px, on light and dark backgrounds.</p>
+<div id="out"></div>
+<script>
+var flat = "../../../src/DeskPal/Assets/Characters/";
+var soft = flat + "soft3d/";
+var names = [
+  ["Bloop, idle", "bloop-idle.svg"],
+  ["Bloop, walk", "bloop-walk.svg"],
+  ["Bloop, wave", "bloop-wave.svg"],
+  ["Bloop, overhead reach", "bloop-stretch-overhead-reach.svg"],
+  ["Bloop, shoulder shrug", "bloop-stretch-shoulder-shrug.svg"],
+  ["Bloop, side bend", "bloop-stretch-side-bend.svg"],
+  ["Sprout, seedling", "sprout-growth-1-seedling.svg"],
+  ["Sprout, young", "sprout-growth-2-young.svg"],
+  ["Sprout, bushy", "sprout-growth-3-bushy.svg"],
+  ["Sprout, bloom", "sprout-growth-4-bloom.svg"],
+  ["Sprout, happy", "sprout-mood-happy.svg"],
+  ["Sprout, thirsty", "sprout-mood-thirsty.svg"],
+  ["Sprout, celebrating", "sprout-mood-celebrating.svg"],
+  ["Sprout, sleepy", "sprout-mood-sleepy.svg"]
+];
+function fig(src, cls, label) {
+  return '<figure><img class="' + cls + '" src="' + src + '" alt="' + label + '"><figcaption>' + label + '</figcaption></figure>';
+}
+function panel(theme, file) {
+  return '<div class="panel ' + theme + '">' +
+    fig(flat + file, "big", "Flat 240") + fig(soft + file, "big", "Soft 3D 240") +
+    fig(flat + file, "small", "Flat 64") + fig(soft + file, "small", "Soft 3D 64") + '</div>';
+}
+var html = "";
+names.forEach(function (n) {
+  html += "<h2>" + n[0] + '</h2><div class="row">' + panel("light", n[1]) + panel("dark", n[1]) + "</div>";
+});
+document.getElementById("out").innerHTML = html;
+</script>
+</body>
+</html>

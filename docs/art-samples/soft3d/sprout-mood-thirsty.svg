@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-64 -90 128 154" width="240" height="288">
+<defs>
+<radialGradient id="st3d-shadow"><stop offset="0" stop-color="#2A1A10" stop-opacity=".45"/><stop offset=".55" stop-color="#2A1A10" stop-opacity=".2"/><stop offset="1" stop-color="#2A1A10" stop-opacity="0"/></radialGradient>
+<linearGradient id="st3d-stem" gradientUnits="userSpaceOnUse" x1="2" y1="-24" x2="14" y2="-12"><stop offset="0" stop-color="#A9B95F"/><stop offset=".5" stop-color="#8A9A45"/><stop offset="1" stop-color="#6E7D34"/></linearGradient>
+<linearGradient id="st3d-leafa" gradientUnits="userSpaceOnUse" x1="-12" y1="-20" x2="-3" y2="-3"><stop offset="0" stop-color="#D3D684"/><stop offset=".5" stop-color="#B5B85E"/><stop offset="1" stop-color="#8E9244"/></linearGradient>
+<linearGradient id="st3d-leafb" gradientUnits="userSpaceOnUse" x1="31" y1="-33" x2="25" y2="-13"><stop offset="0" stop-color="#D3D684"/><stop offset=".5" stop-color="#B5B85E"/><stop offset="1" stop-color="#8E9244"/></linearGradient>
+<radialGradient id="st3d-drop" gradientUnits="userSpaceOnUse" cx="-40" cy="-34" r="11"><stop offset="0" stop-color="#D2ECFC"/><stop offset=".45" stop-color="#6FB7E8"/><stop offset="1" stop-color="#4589C4"/></radialGradient>
+<linearGradient id="st3d-pot" gradientUnits="userSpaceOnUse" x1="-23" y1="0" x2="23" y2="0"><stop offset="0" stop-color="#BC7042"/><stop offset=".26" stop-color="#E29C6A"/><stop offset=".58" stop-color="#C97B4A"/><stop offset="1" stop-color="#96532E"/></linearGradient>
+<linearGradient id="st3d-rim" gradientUnits="userSpaceOnUse" x1="-29" y1="0" x2="29" y2="0"><stop offset="0" stop-color="#A85E33"/><stop offset=".26" stop-color="#D38D5B"/><stop offset=".58" stop-color="#B5683A"/><stop offset="1" stop-color="#824527"/></linearGradient>
+<linearGradient id="st3d-rimv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE2C8" stop-opacity=".3"/><stop offset=".45" stop-color="#FFE2C8" stop-opacity="0"/><stop offset="1" stop-color="#4A2512" stop-opacity=".28"/></linearGradient>
+<linearGradient id="st3d-cast" gradientUnits="userSpaceOnUse" x1="0" y1="13" x2="0" y2="23"><stop offset="0" stop-color="#5A2E16" stop-opacity=".55"/><stop offset="1" stop-color="#5A2E16" stop-opacity="0"/></linearGradient>
+<linearGradient id="st3d-base" gradientUnits="userSpaceOnUse" x1="0" y1="38" x2="0" y2="62"><stop offset="0" stop-color="#4A2512" stop-opacity="0"/><stop offset="1" stop-color="#4A2512" stop-opacity=".3"/></linearGradient>
+<radialGradient id="st3d-spec"><stop offset="0" stop-color="#FFF" stop-opacity=".4"/><stop offset="1" stop-color="#FFF" stop-opacity="0"/></radialGradient>
+<clipPath id="st3d-clip"><path d="M-23 10 L23 10 L17 60 Q0 62 -17 60 Z"/><rect x="-29" y="0" width="58" height="14" rx="4"/></clipPath>
+<filter id="st3d-grain" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="7"/><feColorMatrix type="matrix" values="0 0 0 0 .2 0 0 0 0 .08 0 0 0 0 0 .46 0 0 0 -.15"/></filter>
+</defs>
+<ellipse cx="3" cy="60" rx="30" ry="4" fill="url(#st3d-shadow)"/>
+<path d="M0 0 Q4 -25 18 -35" fill="none" stroke="url(#st3d-stem)" stroke-width="4" stroke-linecap="round"/>
+<path d="M6 -20 Q-14 -18 -20 0 Q-4 -6 6 -20 Z" fill="url(#st3d-leafa)"/>
+<path d="M3.5 -18 Q-9 -13.5 -17 -3" fill="none" stroke="#E4E6A8" stroke-opacity=".65" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M18 -35 Q36 -30 38 -10 Q24 -18 18 -35 Z" fill="url(#st3d-leafb)"/>
+<path d="M21 -32 Q31.5 -25.5 36 -13.5" fill="none" stroke="#E4E6A8" stroke-opacity=".65" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M-38 -44 Q-46 -30 -38 -27 Q-30 -30 -38 -44 Z" fill="url(#st3d-drop)"/>
+<ellipse cx="-40.6" cy="-33.6" rx="1.1" ry="2.3" transform="rotate(14 -40.6 -33.6)" fill="#FFF" fill-opacity=".85"/>
+<path d="M-34.6 -32.5 Q-34 -29.6 -37 -28.4" fill="none" stroke="#DDF1FF" stroke-opacity=".6" stroke-width=".9" stroke-linecap="round"/>
+<path d="M-23 10 L23 10 L17 60 Q0 62 -17 60 Z" fill="url(#st3d-pot)"/>
+<path d="M-23 10 L23 10 L17 60 Q0 62 -17 60 Z" fill="url(#st3d-base)"/>
+<path d="M-23 10 L23 10 L21.6 23 L-21.6 23 Z" fill="url(#st3d-cast)"/>
+<ellipse cx="-11.5" cy="37" rx="4.5" ry="19" fill="url(#st3d-spec)"/>
+<path d="M21.3 19 L16.6 58" fill="none" stroke="#FFD3B0" stroke-opacity=".4" stroke-width="1.3" stroke-linecap="round"/>
+<rect x="-29" y="0" width="58" height="14" rx="4" fill="url(#st3d-rim)"/>
+<rect x="-29" y="0" width="58" height="14" rx="4" fill="url(#st3d-rimv)"/>
+<path d="M-24.5 2.6 L4 2.6" fill="none" stroke="#FFE9D6" stroke-opacity=".55" stroke-width="1.5" stroke-linecap="round"/>
+<rect x="-29" y="0" width="58" height="62" fill="#000" fill-opacity=".03" clip-path="url(#st3d-clip)" filter="url(#st3d-grain)"/>
+<line x1="-13" y1="30" x2="-5" y2="30" stroke="#3A2A20" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="5" y1="30" x2="13" y2="30" stroke="#3A2A20" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M-6 42 Q-3 39 0 42 Q3 45 6 42" fill="none" stroke="#3A2A20" stroke-width="2" stroke-linecap="round"/>
+</svg>

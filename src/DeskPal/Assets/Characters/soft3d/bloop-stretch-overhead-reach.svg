@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 140" width="240" height="210">
+<defs>
+<radialGradient id="bor3d-body" gradientUnits="userSpaceOnUse" cx="-11.4" cy="-14" r="64" fx="-16.2" fy="-21"><stop offset="0" stop-color="#BDDDFB"/><stop offset=".45" stop-color="#7FB3E8"/><stop offset=".8" stop-color="#6BA1DF"/><stop offset="1" stop-color="#5387C8"/></radialGradient>
+<linearGradient id="bor3d-arm0" gradientUnits="userSpaceOnUse" x1="-22.9" y1="-51" x2="-10.7" y2="-46.6"><stop offset="0" stop-color="#A3CDF5"/><stop offset=".5" stop-color="#7FB3E8"/><stop offset="1" stop-color="#5A8FCE"/></linearGradient>
+<linearGradient id="bor3d-arm1" gradientUnits="userSpaceOnUse" x1="10.7" y1="-46.6" x2="22.9" y2="-51"><stop offset="0" stop-color="#6FA5DE"/><stop offset=".55" stop-color="#6298D8"/><stop offset="1" stop-color="#4878B8"/></linearGradient>
+<radialGradient id="bor3d-shadow"><stop offset="0" stop-color="#16233C" stop-opacity=".42"/><stop offset=".55" stop-color="#16233C" stop-opacity=".2"/><stop offset="1" stop-color="#16233C" stop-opacity="0"/></radialGradient>
+<radialGradient id="bor3d-spec"><stop offset="0" stop-color="#FFF" stop-opacity=".85"/><stop offset=".5" stop-color="#FFF" stop-opacity=".35"/><stop offset="1" stop-color="#FFF" stop-opacity="0"/></radialGradient>
+<linearGradient id="bor3d-rim" gradientUnits="userSpaceOnUse" x1="-5.7" y1="-7" x2="31.4" y2="33.8"><stop offset="0" stop-color="#D6ECFF" stop-opacity="0"/><stop offset=".62" stop-color="#D6ECFF" stop-opacity="0"/><stop offset="1" stop-color="#D6ECFF" stop-opacity=".75"/></linearGradient>
+<radialGradient id="bor3d-cheek"><stop offset="0" stop-color="#F9B4C5"/><stop offset=".6" stop-color="#F4A6B8" stop-opacity=".95"/><stop offset="1" stop-color="#F4A6B8" stop-opacity="0"/></radialGradient>
+<clipPath id="bor3d-clip"><ellipse cx="0" cy="0" rx="40" ry="42"/></clipPath>
+<filter id="bor3d-grain" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0 0 0 -.075"/></filter>
+</defs>
+<ellipse cx="3" cy="43.5" rx="44.8" ry="8.5" fill="url(#bor3d-shadow)"/>
+<path d="M-28 -18 Q-20 -40 -12 -62" fill="none" stroke="url(#bor3d-arm0)" stroke-width="9" stroke-linecap="round"/>
+<path d="M-22.5 -40.9 Q-18.8 -51 -15.1 -61.1" fill="none" stroke="#FFF" stroke-opacity=".3" stroke-width="2" stroke-linecap="round"/>
+<path d="M28 -18 Q20 -40 12 -62" fill="none" stroke="url(#bor3d-arm1)" stroke-width="9" stroke-linecap="round"/>
+<path d="M22.7 -41 Q18.9 -51.3 15.2 -61.7" fill="none" stroke="#D6ECFF" stroke-opacity=".4" stroke-width="1.6" stroke-linecap="round"/>
+<ellipse cx="0" cy="0" rx="40" ry="42" fill="url(#bor3d-body)"/>
+<rect x="-40" y="-42" width="80" height="84" fill="#000" fill-opacity=".03" clip-path="url(#bor3d-clip)" filter="url(#bor3d-grain)"/>
+<ellipse cx="0" cy="0" rx="38.6" ry="40.6" fill="none" stroke="url(#bor3d-rim)" stroke-width="2.6"/>
+<ellipse cx="-18.1" cy="-24.5" rx="15" ry="8" transform="rotate(-30 -18.1 -24.5)" fill="url(#bor3d-spec)"/>
+<ellipse cx="-26.2" cy="-15.8" rx="2.2" ry="3.4" transform="rotate(32 -26.2 -15.8)" fill="#FFF" fill-opacity=".7"/>
+<ellipse cx="-25" cy="8" rx="7.2" ry="3.8" fill="url(#bor3d-cheek)"/>
+<ellipse cx="25" cy="8" rx="7.2" ry="3.8" fill="url(#bor3d-cheek)"/>
+<path d="M-19 -6 Q-14 -1 -9 -6" fill="none" stroke="#22324A" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M9 -6 Q14 -1 19 -6" fill="none" stroke="#22324A" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M-8 12 Q0 20 8 12" fill="none" stroke="#22324A" stroke-width="2" stroke-linecap="round"/>
+</svg>

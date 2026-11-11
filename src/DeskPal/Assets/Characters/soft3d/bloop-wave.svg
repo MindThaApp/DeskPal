@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 140" width="240" height="210">
+<defs>
+<radialGradient id="bwv3d-body" gradientUnits="userSpaceOnUse" cx="-12" cy="-11.3" r="64" fx="-17" fy="-17"><stop offset="0" stop-color="#BDDDFB"/><stop offset=".45" stop-color="#7FB3E8"/><stop offset=".8" stop-color="#6BA1DF"/><stop offset="1" stop-color="#5387C8"/></radialGradient>
+<linearGradient id="bwv3d-arm0" gradientUnits="userSpaceOnUse" x1="-50.8" y1="16.4" x2="-38.2" y2="19.6"><stop offset="0" stop-color="#A3CDF5"/><stop offset=".5" stop-color="#7FB3E8"/><stop offset="1" stop-color="#5A8FCE"/></linearGradient>
+<linearGradient id="bwv3d-arm1" gradientUnits="userSpaceOnUse" x1="39.9" y1="-29.1" x2="52.7" y2="-26.7"><stop offset="0" stop-color="#6FA5DE"/><stop offset=".55" stop-color="#6298D8"/><stop offset="1" stop-color="#4878B8"/></linearGradient>
+<radialGradient id="bwv3d-shadow"><stop offset="0" stop-color="#16233C" stop-opacity=".42"/><stop offset=".55" stop-color="#16233C" stop-opacity=".2"/><stop offset="1" stop-color="#16233C" stop-opacity="0"/></radialGradient>
+<radialGradient id="bwv3d-spec"><stop offset="0" stop-color="#FFF" stop-opacity=".85"/><stop offset=".5" stop-color="#FFF" stop-opacity=".35"/><stop offset="1" stop-color="#FFF" stop-opacity="0"/></radialGradient>
+<linearGradient id="bwv3d-rim" gradientUnits="userSpaceOnUse" x1="-6" y1="-5.7" x2="33" y2="27.4"><stop offset="0" stop-color="#D6ECFF" stop-opacity="0"/><stop offset=".62" stop-color="#D6ECFF" stop-opacity="0"/><stop offset="1" stop-color="#D6ECFF" stop-opacity=".75"/></linearGradient>
+<radialGradient id="bwv3d-eye" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#40587C"/><stop offset=".55" stop-color="#22324A"/><stop offset="1" stop-color="#121C2E"/></radialGradient>
+<radialGradient id="bwv3d-cheek"><stop offset="0" stop-color="#F9B4C5"/><stop offset=".6" stop-color="#F4A6B8" stop-opacity=".95"/><stop offset="1" stop-color="#F4A6B8" stop-opacity="0"/></radialGradient>
+<clipPath id="bwv3d-clip"><ellipse cx="0" cy="0" rx="42" ry="34"/></clipPath>
+<filter id="bwv3d-grain" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0 0 0 -.075"/></filter>
+</defs>
+<ellipse cx="3" cy="35.5" rx="47" ry="8.5" fill="url(#bwv3d-shadow)"/>
+<path d="M-38 6 Q-48 18 -44 30" fill="none" stroke="url(#bwv3d-arm0)" stroke-width="9" stroke-linecap="round"/>
+<path d="M-44.4 10.8 Q-48.9 19.4 -47.2 28.2" fill="none" stroke="#FFF" stroke-opacity=".3" stroke-width="2" stroke-linecap="round"/>
+<path d="M36 -8 Q50 -24 46 -42" fill="none" stroke="url(#bwv3d-arm1)" stroke-width="9" stroke-linecap="round"/>
+<path d="M45.3 -16.5 Q51.4 -28.5 49.1 -41.5" fill="none" stroke="#D6ECFF" stroke-opacity=".4" stroke-width="1.6" stroke-linecap="round"/>
+<ellipse cx="0" cy="0" rx="42" ry="34" fill="url(#bwv3d-body)"/>
+<rect x="-42" y="-34" width="84" height="68" fill="#000" fill-opacity=".03" clip-path="url(#bwv3d-clip)" filter="url(#bwv3d-grain)"/>
+<ellipse cx="0" cy="0" rx="40.6" ry="32.6" fill="none" stroke="url(#bwv3d-rim)" stroke-width="2.6"/>
+<ellipse cx="-19" cy="-19.8" rx="15" ry="8" transform="rotate(-30 -19 -19.8)" fill="url(#bwv3d-spec)"/>
+<ellipse cx="-27.5" cy="-12.8" rx="2.2" ry="3.4" transform="rotate(32 -27.5 -12.8)" fill="#FFF" fill-opacity=".7"/>
+<ellipse cx="-25" cy="8" rx="7.2" ry="3.8" fill="url(#bwv3d-cheek)"/>
+<ellipse cx="25" cy="8" rx="7.2" ry="3.8" fill="url(#bwv3d-cheek)"/>
+<circle cx="-14" cy="-6" r="4.5" fill="url(#bwv3d-eye)"/>
+<circle cx="14" cy="-6" r="4.5" fill="url(#bwv3d-eye)"/>
+<circle cx="-12.5" cy="-7.5" r="1.5" fill="#FFF"/>
+<circle cx="15.5" cy="-7.5" r="1.5" fill="#FFF"/>
+<circle cx="-15.4" cy="-4.2" r=".7" fill="#FFF" fill-opacity=".45"/>
+<circle cx="12.6" cy="-4.2" r=".7" fill="#FFF" fill-opacity=".45"/>
+<path d="M-8 12 Q0 20 8 12" fill="none" stroke="#22324A" stroke-width="2" stroke-linecap="round"/>
+</svg>
