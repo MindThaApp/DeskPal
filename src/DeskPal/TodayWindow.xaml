@@ -10,7 +10,13 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock Text="Today" FontSize="18" FontWeight="SemiBold" />
+        <Grid>
+            <TextBlock Text="Today" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" />
+            <Button x:Name="GearButton" HorizontalAlignment="Right" Padding="8,4" Click="OnSettings"
+                    AutomationProperties.Name="Open settings" ToolTipService.ToolTip="Settings">
+                <FontIcon Glyph="&#xE713;" FontSize="14" />
+            </Button>
+        </Grid>
         <StackPanel Grid.Row="1" Spacing="6">
             <TextBlock x:Name="NextText" TextWrapping="Wrap" />
             <TextBlock x:Name="StretchText" />

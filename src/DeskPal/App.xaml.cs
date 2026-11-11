@@ -25,6 +25,9 @@ public partial class App : Application
     private NudgeCardWindow? _card;
     private EyeCuePillWindow? _pill;
     private TodayWindow? _today;
+    private SettingsHub _hub = null!;
+    private SettingsWindow? _settingsWindow;
+    private CrashReportingMode _appliedCrashMode;
     private CallMonitor _calls = null!;
     private Icon? _baseIcon;
     private TrayIcons? _icons;
@@ -57,7 +60,7 @@ public partial class App : Application
         };
 
         var sid = WindowsIdentity.GetCurrent().User?.Value ?? Environment.UserName;
-        var mutexName = "DeskPal-" + sid + (AppData.IsDebugRun ? "-debug" : "");
+        var mutexName = "DeskPal-" + sid + (AppData.DebugSettings ? "-debug-settings" : AppData.IsDebugRun ? "-debug" : "");
         _instanceMutex = new Mutex(true, mutexName, out var created);
         if (!created) Environment.Exit(0);
         InitializeComponent();
@@ -88,11 +91,19 @@ public partial class App : Application
     {
         _dq = DispatcherQueue.GetForCurrentThread();
         _settings = JsonFileStore.Load<DeskPalSettings>(AppData.SettingsPath, TimeProvider.System);
+        if (_settings.Migrate())
+        {
+            try { JsonFileStore.Save(AppData.SettingsPath, _settings); }
+            catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
+        }
         // The pipeline check always sends: it only runs in the debug data root, with a test exception.
         CrashReporting.Apply(AppData.DebugCrash ? CrashReportingMode.Always : _settings.CrashReports);
         var state = JsonFileStore.Load<DeskPalState>(AppData.StatePath, TimeProvider.System);
         _scheduler = new NudgeScheduler(TimeProvider.System, _settings, state);
         _router = _scheduler;
+        _hub = new SettingsHub(_settings, _scheduler);
+        _appliedCrashMode = _settings.CrashReports;
+        _hub.Changed += OnSettingsChanged;
         _calls = new CallMonitor(new RegistryCallDetector(), _scheduler, TimeProvider.System);
         _scheduler.Event += e => _dq.TryEnqueue(() => OnSchedulerEvent(e));
 
@@ -136,6 +147,7 @@ public partial class App : Application
 
     private void StartDebugTriggers()
     {
+        if (AppData.DebugSettings) OpenSettings();
         if (AppData.DebugEyeCue)
         {
             _debugEyeTimer = _dq.CreateTimer();
@@ -233,12 +245,16 @@ public partial class App : Application
         var exit = new MenuFlyoutItem { Text = "Exit" };
         exit.Click += (_, _) => ExitApp();
 
+        var settingsItem = new MenuFlyoutItem { Text = "Settings…" };
+        settingsItem.Click += (_, _) => OpenSettings();
+
         menu.Items.Add(test);
         menu.Items.Add(pause);
         menu.Items.Add(_resumeItem);
         menu.Items.Add(style);
         menu.Items.Add(_animateItem);
         menu.Items.Add(_crashItem);
+        menu.Items.Add(settingsItem);
         menu.Items.Add(new MenuFlyoutSeparator());
         menu.Items.Add(exit);
         menu.Opening += (_, _) => UpdateTray();
@@ -255,29 +271,52 @@ public partial class App : Application
     private void SetStyle(string style)
     {
         _settings.AvatarStyle = style;
-        RefreshStyleChecks();
-        try { JsonFileStore.Save(AppData.SettingsPath, _settings); }
-        catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
+        _hub.Commit(false);
     }
 
     // On sends reports (and the ones waiting from Ask); off is Never, which keeps and sends nothing.
     private void ToggleCrashReports()
     {
-        var on = _settings.CrashReports != CrashReportingMode.Always;
-        _settings.CrashReports = on ? CrashReportingMode.Always : CrashReportingMode.Never;
-        RefreshCrashCheck();
-        try { JsonFileStore.Save(AppData.SettingsPath, _settings); }
-        catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
-        CrashReporting.Apply(_settings.CrashReports);
-        if (on) CrashReporting.SendPending();
+        _settings.CrashReports = _settings.CrashReports != CrashReportingMode.Always ? CrashReportingMode.Always : CrashReportingMode.Never;
+        _hub.Commit(false);
     }
 
     private void ToggleAnimateTray()
     {
         _settings.AnimateTray = _animateItem?.IsChecked ?? !_settings.AnimateTray;
-        try { JsonFileStore.Save(AppData.SettingsPath, _settings); }
-        catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
-        _anim?.Stop();
+        _hub.Commit(false);
+    }
+
+    // Runs after every settings change, whether it came from the tray menu or the settings page.
+    private void OnSettingsChanged()
+    {
+        RefreshStyleChecks();
+        RefreshCrashCheck();
+        if (_animateItem is not null) _animateItem.IsChecked = _settings.AnimateTray;
+        if (!_settings.AnimateTray) _anim?.Stop();
+        if (_settings.CrashReports != _appliedCrashMode)
+        {
+            _appliedCrashMode = _settings.CrashReports;
+            CrashReporting.Apply(_settings.CrashReports);
+            if (_settings.CrashReports == CrashReportingMode.Always) CrashReporting.SendPending();
+        }
+        UpdateTray();
+    }
+
+    private void OpenSettings()
+    {
+        _dq.TryEnqueue(() =>
+        {
+            try
+            {
+                _settingsWindow ??= new SettingsWindow(_hub);
+                _settingsWindow.ShowSettings();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("settings window failed: " + ex.Message);
+            }
+        });
     }
 
     private bool IsPausedUntilTomorrow() =>
@@ -539,7 +578,7 @@ public partial class App : Application
         {
             try
             {
-                _today ??= new TodayWindow(_scheduler);
+                _today ??= new TodayWindow(_scheduler, OpenSettings);
                 _today.Toggle();
             }
             catch (Exception ex)
@@ -570,6 +609,7 @@ public partial class App : Application
         _card?.Close();
         _pill?.Close();
         _today?.Close();
+        _settingsWindow?.Quit();
         _toastTimer?.Stop();
         Logger.Log("exit");
         Exit();

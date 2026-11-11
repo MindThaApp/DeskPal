@@ -15,12 +15,14 @@ public sealed partial class TodayWindow : Window
 
     private readonly NudgeScheduler _scheduler;
     private readonly IntPtr _hwnd;
+    private readonly Action _openSettings;
     private long _hiddenTick;
     private bool _visible;
 
-    public TodayWindow(NudgeScheduler scheduler)
+    public TodayWindow(NudgeScheduler scheduler, Action openSettings)
     {
         _scheduler = scheduler;
+        _openSettings = openSettings;
         InitializeComponent();
         _hwnd = WindowNative.GetWindowHandle(this);
 
@@ -90,6 +92,12 @@ public sealed partial class TodayWindow : Window
         var holds = _scheduler.Holds;
         HoldsText.Text = holds.Count == 0 ? "No holds" : "Holding: " + string.Join(", ", holds.Select(h => h.Reason));
         PauseButton.Content = _scheduler.ManualHold is null ? "Pause 30 min" : "Resume";
+    }
+
+    private void OnSettings(object sender, RoutedEventArgs e)
+    {
+        HideToday();
+        _openSettings();
     }
 
     private void OnPause(object sender, RoutedEventArgs e)
