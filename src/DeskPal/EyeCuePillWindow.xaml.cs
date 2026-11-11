@@ -17,6 +17,7 @@ public sealed partial class EyeCuePillWindow : Window
 
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMilliseconds(250) };
     private readonly IntPtr _hwnd;
+    private readonly Storyboard _fade = new();
     private long _endTick;
     private bool _active;
     private bool _fading;
@@ -26,6 +27,17 @@ public sealed partial class EyeCuePillWindow : Window
         InitializeComponent();
         _hwnd = WindowNative.GetWindowHandle(this);
         _timer.Tick += (_, _) => OnTimer();
+
+        var fade = new DoubleAnimation { From = 1, To = 0, Duration = new Duration(TimeSpan.FromMilliseconds(700)) };
+        Storyboard.SetTarget(fade, Root);
+        Storyboard.SetTargetProperty(fade, "Opacity");
+        _fade.Children.Add(fade);
+        _fade.Completed += (_, _) =>
+        {
+            if (!_active || !_fading) return;
+            Dismiss();
+            Finished?.Invoke(false);
+        };
 
         var presenter = OverlappedPresenter.Create();
         presenter.SetBorderAndTitleBar(false, false);
@@ -58,6 +70,8 @@ public sealed partial class EyeCuePillWindow : Window
         var margin = (int)(MarginDip * scale);
         var work = DisplayArea.Primary.WorkArea;
         AppWindow.MoveAndResize(new RectInt32(work.X + work.Width - w - margin, work.Y + work.Height - h - margin, w, h));
+        // A finished fade holds Opacity at 0 (HoldEnd) until the storyboard is stopped.
+        _fade.Stop();
         Root.Opacity = 1;
         AppWindow.Show(false);
         SetWindowPos(_hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
@@ -85,18 +99,7 @@ public sealed partial class EyeCuePillWindow : Window
         Update();
         if (Environment.TickCount64 < _endTick) return;
         _fading = true;
-        var fade = new DoubleAnimation { From = 1, To = 0, Duration = new Duration(TimeSpan.FromMilliseconds(700)) };
-        Storyboard.SetTarget(fade, Root);
-        Storyboard.SetTargetProperty(fade, "Opacity");
-        var sb = new Storyboard();
-        sb.Children.Add(fade);
-        sb.Completed += (_, _) =>
-        {
-            if (!_active) return;
-            Dismiss();
-            Finished?.Invoke(false);
-        };
-        sb.Begin();
+        _fade.Begin();
     }
 
     private void Update()

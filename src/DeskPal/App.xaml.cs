@@ -32,16 +32,46 @@ public partial class App : Application
     private Guid? _toastNudgeId;
     private DispatcherQueueTimer? _tickTimer;
     private DispatcherQueueTimer? _busyTimer;
+    private DispatcherQueueTimer? _debugEyeTimer;
+    private DispatcherQueueTimer? _debugNudgeTimer;
     private MenuFlyoutItem? _resumeItem;
     private ToggleMenuFlyoutItem? _flatItem;
     private ToggleMenuFlyoutItem? _softItem;
 
     public App()
     {
+        AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+            LogCrash("domain unhandled (terminating=" + e.IsTerminating + ")", e.ExceptionObject as Exception);
+        TaskScheduler.UnobservedTaskException += (_, e) =>
+        {
+            LogCrash("unobserved task", e.Exception);
+            e.SetObserved();
+        };
+
         var sid = WindowsIdentity.GetCurrent().User?.Value ?? Environment.UserName;
-        _instanceMutex = new Mutex(true, "DeskPal-" + sid, out var created);
+        var mutexName = "DeskPal-" + sid + (AppData.IsDebugRun ? "-debug" : "");
+        _instanceMutex = new Mutex(true, mutexName, out var created);
         if (!created) Environment.Exit(0);
         InitializeComponent();
+        UnhandledException += OnUiUnhandledException;
+    }
+
+    private static void OnUiUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    {
+        LogCrash("ui unhandled", e.Exception, e.Message);
+        // A throwing UI event handler should not take the tray app down; corrupt-state exceptions still crash.
+        e.Handled = e.Exception is not (OutOfMemoryException or AccessViolationException
+            or System.Runtime.InteropServices.SEHException or InvalidProgramException);
+    }
+
+    private static void LogCrash(string kind, Exception? ex, string? message = null)
+    {
+        if (ex is null)
+        {
+            Logger.Log($"CRASH {kind}: {message}");
+            return;
+        }
+        Logger.Log($"CRASH {kind}: {ex.GetType().FullName}: {ex.Message}{Environment.NewLine}{ex}");
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
@@ -60,6 +90,7 @@ public partial class App : Application
 
         var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "deskpal.ico");
         _baseIcon = new Icon(iconPath);
+        _eyesIcon = MakeEyesIcon();
         _tray = new TaskbarIcon
         {
             ToolTipText = "Desk Pal",
@@ -82,6 +113,40 @@ public partial class App : Application
 
         UpdateTray();
         Logger.Log("started");
+        StartDebugTriggers();
+    }
+
+    private void StartDebugTriggers()
+    {
+        if (AppData.DebugEyeCue)
+        {
+            _debugEyeTimer = _dq.CreateTimer();
+            _debugEyeTimer.Interval = TimeSpan.FromSeconds(3);
+            _debugEyeTimer.Tick += (t, _) =>
+            {
+                if (t.Interval != TimeSpan.FromSeconds(40))
+                {
+                    t.Stop();
+                    t.Interval = TimeSpan.FromSeconds(40);
+                    t.Start();
+                }
+                Logger.Log("debug eye cue");
+                ShowEyeCue();
+            };
+            _debugEyeTimer.Start();
+        }
+        if (AppData.DebugNudge)
+        {
+            _debugNudgeTimer = _dq.CreateTimer();
+            _debugNudgeTimer.IsRepeating = false;
+            _debugNudgeTimer.Interval = TimeSpan.FromSeconds(3);
+            _debugNudgeTimer.Tick += (_, _) =>
+            {
+                var ok = _router.Execute(new TestNudgeCommand());
+                Logger.Log("debug nudge " + (ok ? "requested" : "refused"));
+            };
+            _debugNudgeTimer.Start();
+        }
     }
 
     private MenuFlyout BuildMenu()
@@ -362,9 +427,10 @@ public partial class App : Application
 
     private void SetEyesIcon(bool eyes)
     {
-        if (_tray is null || _baseIcon is null) return;
-        _eyesIcon ??= MakeEyesIcon();
-        _tray.Icon = eyes ? _eyesIcon : _baseIcon;
+        if (_tray is null || _baseIcon is null || _eyesIcon is null) return;
+        // Assigning TaskbarIcon.Icon disposes the previous Icon, so swap the shown handle instead.
+        try { _tray.UpdateIcon(eyes ? _eyesIcon : _baseIcon); }
+        catch (Exception ex) { Logger.Log("tray icon swap failed: " + ex.Message); }
     }
 
     private static Icon MakeEyesIcon()
@@ -408,6 +474,8 @@ public partial class App : Application
     {
         _tickTimer?.Stop();
         _busyTimer?.Stop();
+        _debugEyeTimer?.Stop();
+        _debugNudgeTimer?.Stop();
         AppNotificationManager.Default.NotificationInvoked -= OnNotificationInvoked;
         AppNotificationManager.Default.Unregister();
         _tray?.Dispose();
