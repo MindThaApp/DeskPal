@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avatar style comparison: photoreal</title>
+<style>
+body{margin:0;padding:24px;font:14px/1.4 "Segoe UI",system-ui,sans-serif;background:#E9ECF1;color:#1F2733}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:28px 0 8px}
+p{margin:0 0 8px;color:#56606E}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.panel{display:flex;align-items:flex-end;gap:20px;padding:20px;border-radius:12px}
+.light{background:#F7F8FA;color:#56606E}
+.dark{background:#1E222A;color:#A9B2C0}
+figure{margin:0;text-align:center}
+figcaption{font-size:12px;margin-top:6px}
+img{display:block;margin:0 auto}
+.big{height:240px;width:auto}
+.small{height:96px;width:auto}
+.photo{border-radius:10px}
+</style>
+</head>
+<body>
+<h1>Avatar style comparison: photoreal</h1>
+<p>Flat originals, the soft 3D set and the photoreal renders side by side, at 240 px and 96 px, on light and dark backgrounds.</p>
+<div id="out"></div>
+<script>
+var flat = "../../../src/DeskPal/Assets/Characters/";
+var soft = flat + "soft3d/";
+var names = [
+  ["Bloop, idle", "bloop-idle"],
+  ["Bloop, wave", "bloop-wave"],
+  ["Bloop, walk", "bloop-walk"],
+  ["Bloop, overhead reach", "bloop-stretch-overhead-reach"],
+  ["Bloop, shoulder shrug", "bloop-stretch-shoulder-shrug"],
+  ["Bloop, side bend", "bloop-stretch-side-bend"],
+  ["Sprout, seedling", "sprout-growth-1-seedling"],
+  ["Sprout, young", "sprout-growth-2-young"],
+  ["Sprout, bushy", "sprout-growth-3-bushy"],
+  ["Sprout, bloom", "sprout-growth-4-bloom"],
+  ["Sprout, happy", "sprout-mood-happy"],
+  ["Sprout, thirsty", "sprout-mood-thirsty"],
+  ["Sprout, sleepy", "sprout-mood-sleepy"],
+  ["Sprout, celebrating", "sprout-mood-celebrating"]
+];
+function fig(src, cls, label) {
+  return '<figure><img class="' + cls + '" src="' + src + '" alt="' + label + '"><figcaption>' + label + '</figcaption></figure>';
+}
+function triple(name, cls, size) {
+  return fig(flat + name + ".svg", cls, "Flat " + size) +
+    fig(soft + name + ".svg", cls, "Soft 3D " + size) +
+    fig(name + ".png", cls + " photo", "Photoreal " + size);
+}
+function panel(theme, name) {
+  return '<div class="panel ' + theme + '">' + triple(name, "big", 240) + triple(name, "small", 96) + '</div>';
+}
+var html = "";
+names.forEach(function (n) {
+  html += "<h2>" + n[0] + '</h2><div class="row">' + panel("light", n[1]) + panel("dark", n[1]) + "</div>";
+});
+document.getElementById("out").innerHTML = html;
+</script>
+</body>
+</html>
