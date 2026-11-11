@@ -203,3 +203,12 @@ No template includes HTTP, AskAi or email steps.
 - **Sibling contract:** `ping`, `list`, `run` and `import` only. `launch` and `export` stay internal. Freezing them is a doc task on AP's side when work starts.
 - **AP not running:** the connect times out, so Desk Pal skips the run and counts it. There's no `ap run` fallback, because without the app `ap` runs the shortcut itself in a console.
 - **Weather read** exists (WeatherActions / WeatherService), so the lunch-walk template is feasible.
+
+## Rule: links and buttons that lead to Automation Portal (owner rule)
+
+- **Installed:** HKCR\automationportal exists with "URL Protocol", or the package family `34458MindtheApp.AutomationPortal_24e29cj9741rt` is installed.
+  - Open the app via `shell:AppsFolder\34458MindtheApp.AutomationPortal_24e29cj9741rt!App`.
+  - Use `automationportal://run|pick` for specific actions.
+- **Not installed:** open the Store page `ms-windows-store://pdp/?ProductId=9PB9C8FHG105`, with `https://apps.microsoft.com/detail/9PB9C8FHG105` as the web fallback.
+  - The listing may show "not found" until certification passes; keep the link.
+  - Never fall back to any other download source.
