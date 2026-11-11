@@ -7,25 +7,47 @@ cbuffer Frame : register(b0)
 };
 cbuffer Draw : register(b1)
 {
-    row_major float4x4 Joints[8];
     float4 BaseColor;
-    float3 Offset; float Roughness;
-    float UseTexture; float Unlit; float2 Pad;
+    float Roughness; float UseTexture; float Unlit; float Pad3;
+    uint MorphBase; uint MorphCount; uint VertexCount; uint Pad4;
+    float4 MorphWeights[3];
+};
+cbuffer Skin : register(b2)
+{
+    row_major float4x4 Joints[24];
 };
 Texture2D Tex : register(t0);
+Buffer<float4> Morphs : register(t1);
 SamplerState Smp : register(s0);
 
 struct VSIn { float3 pos : POSITION; float3 nrm : NORMAL; float2 uv : TEXCOORD0; float4 j : BLENDINDICES; float4 w : BLENDWEIGHT; };
 struct PSIn { float4 pos : SV_Position; float3 wpos : TEXCOORD1; float3 nrm : NORMAL; float2 uv : TEXCOORD0; };
 
-PSIn VS(VSIn i)
+PSIn VS(VSIn i, uint vid : SV_VertexID)
 {
+    float3 p = i.pos;
+    float3 n = i.nrm;
+    [unroll] for (uint g = 0; g < 3; g++)
+    {
+        float4 w4 = MorphWeights[g];
+        [unroll] for (uint c = 0; c < 4; c++)
+        {
+            uint t = g * 4 + c;
+            float w = w4[c];
+            [branch] if (t < MorphCount && w != 0)
+            {
+                uint at = MorphBase + (t * VertexCount + vid) * 2;
+                p += w * Morphs.Load(at).xyz;
+                n += w * Morphs.Load(at + 1).xyz;
+            }
+        }
+    }
     float4x4 m = Joints[(int)i.j.x] * i.w.x + Joints[(int)i.j.y] * i.w.y + Joints[(int)i.j.z] * i.w.z + Joints[(int)i.j.w] * i.w.w;
-    float4 wp = mul(float4(i.pos + Offset, 1), m);
+    float4 wp = mul(float4(p, 1), m);
     PSIn o;
     o.pos = mul(wp, ViewProj);
     o.wpos = wp.xyz;
-    o.nrm = mul(float4(i.nrm, 0), m).xyz;
+    o.nrm = mul(float4(n, 0), m).xyz;
     o.uv = i.uv;
     return o;
 }

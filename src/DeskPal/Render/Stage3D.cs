@@ -9,8 +9,11 @@ using Vortice.DXGI;
 
 namespace DeskPal.Render;
 
-[InlineArray(8)]
+[InlineArray(GltfModel.MaxJoints)]
 internal struct JointArray { private Matrix4x4 _e; }
+
+[InlineArray(3)]
+internal struct MorphWeightArray { private Vector4 _e; }
 
 [StructLayout(LayoutKind.Sequential)]
 internal struct FrameConstants
@@ -27,23 +30,98 @@ internal struct FrameConstants
 [StructLayout(LayoutKind.Sequential)]
 internal struct DrawConstants
 {
-    public JointArray Joints;
     public Vector4 BaseColor;
-    public Vector3 Offset;
     public float Roughness;
     public float UseTexture;
     public float Unlit;
-    public Vector2 Pad;
+    public float Pad3;
+    public uint MorphBase;
+    public uint MorphCount;
+    public uint VertexCount;
+    public uint Pad4;
+    public MorphWeightArray MorphWeights;
 }
 
-internal sealed class GpuPart(ModelPart part, ID3D11Buffer vb, ID3D11Buffer ib)
+[StructLayout(LayoutKind.Sequential)]
+internal struct SkinConstants
+{
+    public JointArray Joints;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal struct ShadowConstants
+{
+    public Vector4 Placement;
+    public Vector4 Strength;
+}
+
+internal sealed class GpuPart(ModelPart part, ID3D11Buffer vb, ID3D11Buffer ib, uint morphBase)
 {
     public ModelPart Part { get; } = part;
     public ID3D11Buffer Vertices { get; } = vb;
     public ID3D11Buffer Indices { get; } = ib;
+    public uint MorphBase { get; } = morphBase;
 }
 
-// The one shared graphics device, shaders and character data. Created lazily on a worker thread, released
+internal sealed class GpuModel : IDisposable
+{
+    public required GltfModel Model { get; init; }
+    public required GpuPart[] Parts { get; init; }
+    public ID3D11Buffer? Morphs { get; init; }
+    public ID3D11ShaderResourceView? MorphView { get; init; }
+    public ID3D11Texture2D? Texture { get; init; }
+    public ID3D11ShaderResourceView? TextureView { get; init; }
+
+    public static GpuModel Create(ID3D11Device d, ID3D11DeviceContext ctx, GltfModel model)
+    {
+        var deltas = new List<Vector4>();
+        var parts = new GpuPart[model.Parts.Length];
+        for (var i = 0; i < parts.Length; i++)
+        {
+            var p = model.Parts[i];
+            parts[i] = new GpuPart(p, d.CreateBuffer(p.Vertices, BindFlags.VertexBuffer), d.CreateBuffer(p.Indices, BindFlags.IndexBuffer), (uint)deltas.Count);
+            deltas.AddRange(p.MorphDeltas);
+        }
+
+        ID3D11Buffer? morphs = null;
+        ID3D11ShaderResourceView? morphView = null;
+        if (deltas.Count > 0)
+        {
+            morphs = d.CreateBuffer(deltas.ToArray(), BindFlags.ShaderResource);
+            morphView = d.CreateShaderResourceView(morphs, new ShaderResourceViewDescription(morphs, Format.R32G32B32A32_Float, 0, (uint)deltas.Count));
+        }
+
+        ID3D11Texture2D? tex = null;
+        ID3D11ShaderResourceView? srv = null;
+        if (model.Texture is { } png)
+        {
+            var bounds = SKBitmap.DecodeBounds(png);
+            using var bmp = SKBitmap.Decode(png, new SKImageInfo(bounds.Width, bounds.Height, SKColorType.Rgba8888, SKAlphaType.Premul))
+                ?? throw new InvalidDataException("model texture did not decode");
+            tex = d.CreateTexture2D(new Texture2DDescription(Format.R8G8B8A8_UNorm_SRgb, (uint)bmp.Width, (uint)bmp.Height, 1, 0,
+                BindFlags.ShaderResource | BindFlags.RenderTarget, ResourceUsage.Default, CpuAccessFlags.None, 1, 0, ResourceOptionFlags.GenerateMips));
+            ctx.UpdateSubresource(tex, 0, null, bmp.GetPixels(), (uint)bmp.RowBytes, 0);
+            srv = d.CreateShaderResourceView(tex);
+            ctx.GenerateMips(srv);
+        }
+        return new GpuModel { Model = model, Parts = parts, Morphs = morphs, MorphView = morphView, Texture = tex, TextureView = srv };
+    }
+
+    public void Dispose()
+    {
+        foreach (var p in Parts)
+        {
+            p.Vertices.Dispose();
+            p.Indices.Dispose();
+        }
+        MorphView?.Dispose();
+        Morphs?.Dispose();
+        TextureView?.Dispose();
+        Texture?.Dispose();
+    }
+}
+
+// The one shared graphics device, shaders and model data. Created lazily on a worker thread, released
 // when the last live surface lets go. Any failure marks 3D as failed for the rest of the session.
 internal sealed class Stage3D : IDisposable
 {
@@ -56,8 +134,8 @@ internal sealed class Stage3D : IDisposable
     public required IDXGIFactory2 Factory { get; init; }
     public required ID3D11Device Device { get; init; }
     public required ID3D11DeviceContext Context { get; init; }
-    public required BloopModel Model { get; init; }
-    public required GpuPart[] Parts { get; init; }
+    public required GpuModel Bloop { get; init; }
+    public GpuModel? Sprout { get; init; }
     public required uint SampleCount { get; init; }
     public required ID3D11VertexShader MeshVs { get; init; }
     public required ID3D11PixelShader MeshPs { get; init; }
@@ -68,13 +146,13 @@ internal sealed class Stage3D : IDisposable
     public required ID3D11Buffer ShadowQuad { get; init; }
     public required ID3D11Buffer FrameCb { get; init; }
     public required ID3D11Buffer DrawCb { get; init; }
+    public required ID3D11Buffer SkinCb { get; init; }
+    public required ID3D11Buffer ShadowCb { get; init; }
     public required ID3D11BlendState Blend { get; init; }
     public required ID3D11RasterizerState Raster { get; init; }
     public required ID3D11DepthStencilState DepthOn { get; init; }
     public required ID3D11DepthStencilState DepthOff { get; init; }
     public required ID3D11SamplerState Sampler { get; init; }
-    public ID3D11Texture2D? Texture { get; init; }
-    public ID3D11ShaderResourceView? TextureView { get; init; }
 
     // Bytecode is built offline by tools\compile-shaders.ps1, so the runtime shader compiler is never loaded.
     private static byte[] LoadShader(string name) =>
@@ -124,8 +202,16 @@ internal sealed class Stage3D : IDisposable
     private static Stage3D Create()
     {
         var sw = Stopwatch.StartNew();
-        var path = BloopModel.FindModelPath() ?? throw new FileNotFoundException("bloop model missing");
-        var model = BloopModel.Load(path);
+        var bloopModel = GltfModel.Load(GltfModel.FindModelPath("bloop") ?? throw new FileNotFoundException("bloop model missing"));
+        GltfModel? sproutModel = null;
+        try
+        {
+            if (GltfModel.FindModelPath("sprout") is { } sproutPath) sproutModel = GltfModel.Load(sproutPath);
+        }
+        catch (Exception ex)
+        {
+            Logger.Log($"3d sprout model did not load, keeping the flat sprout: {ex.GetType().Name}: {ex.Message}");
+        }
 
         var factory = DXGI.CreateDXGIFactory1<IDXGIFactory6>();
         factory.EnumAdapterByGpuPreference(0, GpuPreference.MinimumPower, out IDXGIAdapter1? adapter).CheckError();
@@ -160,34 +246,16 @@ internal sealed class Stage3D : IDisposable
             new InputElementDescription("TEXCOORD", 0, Format.R32G32_Float, 12, 0),
         ], vsShadow);
 
-        var parts = model.Parts.Select(p => new GpuPart(p,
-            d.CreateBuffer(p.Vertices, BindFlags.VertexBuffer),
-            d.CreateBuffer(p.Indices, BindFlags.IndexBuffer))).ToArray();
-
-        const float sx = 0.075f, sz = 0.05f, y = 0.0002f;
-        float[] quad = [-sx, y, -sz, 0, 0, sx, y, -sz, 1, 0, -sx, y, sz, 0, 1, sx, y, sz, 1, 1];
-
-        ID3D11Texture2D? tex = null;
-        ID3D11ShaderResourceView? srv = null;
-        if (model.Texture is { } png)
-        {
-            var bounds = SKBitmap.DecodeBounds(png);
-            using var bmp = SKBitmap.Decode(png, new SKImageInfo(bounds.Width, bounds.Height, SKColorType.Rgba8888, SKAlphaType.Premul))
-                ?? throw new InvalidDataException("face texture did not decode");
-            tex = d.CreateTexture2D(new Texture2DDescription(Format.R8G8B8A8_UNorm_SRgb, (uint)bmp.Width, (uint)bmp.Height, 1, 0,
-                BindFlags.ShaderResource | BindFlags.RenderTarget, ResourceUsage.Default, CpuAccessFlags.None, 1, 0, ResourceOptionFlags.GenerateMips));
-            ctx.UpdateSubresource(tex, 0, null, bmp.GetPixels(), (uint)bmp.RowBytes, 0);
-            srv = d.CreateShaderResourceView(tex);
-            ctx.GenerateMips(srv);
-        }
+        const float y = 0.0002f;
+        float[] quad = [-1, y, -1, 0, 0, 1, y, -1, 1, 0, -1, y, 1, 0, 1, 1, y, 1, 1, 1];
 
         var stage = new Stage3D
         {
             Factory = factory,
             Device = d,
             Context = ctx,
-            Model = model,
-            Parts = parts,
+            Bloop = GpuModel.Create(d, ctx, bloopModel),
+            Sprout = sproutModel is null ? null : GpuModel.Create(d, ctx, sproutModel),
             SampleCount = samples,
             MeshVs = d.CreateVertexShader(vsMesh),
             MeshPs = d.CreatePixelShader(psMesh),
@@ -198,15 +266,15 @@ internal sealed class Stage3D : IDisposable
             ShadowQuad = d.CreateBuffer(quad, BindFlags.VertexBuffer),
             FrameCb = d.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<FrameConstants>(), BindFlags.ConstantBuffer)),
             DrawCb = d.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<DrawConstants>(), BindFlags.ConstantBuffer)),
+            SkinCb = d.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<SkinConstants>(), BindFlags.ConstantBuffer)),
+            ShadowCb = d.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<ShadowConstants>(), BindFlags.ConstantBuffer)),
             Blend = d.CreateBlendState(new BlendDescription(Vortice.Direct3D11.Blend.One, Vortice.Direct3D11.Blend.InverseSourceAlpha)),
             Raster = d.CreateRasterizerState(new RasterizerDescription(CullMode.None, FillMode.Solid) { MultisampleEnable = samples > 1 }),
             DepthOn = d.CreateDepthStencilState(DepthStencilDescription.Default),
             DepthOff = d.CreateDepthStencilState(DepthStencilDescription.None),
             Sampler = d.CreateSamplerState(SamplerDescription.LinearClamp),
-            Texture = tex,
-            TextureView = srv,
         };
-        Logger.Log($"3d device ready: {info.Description}, {d.FeatureLevel}, msaa {samples}x, {model.Parts.Length} parts, {sw.ElapsedMilliseconds} ms");
+        Logger.Log($"3d device ready: {info.Description}, {d.FeatureLevel}, msaa {samples}x, bloop {bloopModel.Parts.Length} parts {bloopModel.Clips.Count} clips, sprout {(sproutModel is null ? "none" : sproutModel.Parts.Length + " parts")}, {sw.ElapsedMilliseconds} ms");
         return stage;
     }
 
@@ -218,18 +286,15 @@ internal sealed class Stage3D : IDisposable
             Context.Flush();
         }
         catch { }
-        foreach (var p in Parts)
-        {
-            p.Vertices.Dispose();
-            p.Indices.Dispose();
-        }
-        TextureView?.Dispose();
-        Texture?.Dispose();
+        Bloop.Dispose();
+        Sprout?.Dispose();
         Sampler.Dispose();
         DepthOff.Dispose();
         DepthOn.Dispose();
         Raster.Dispose();
         Blend.Dispose();
+        ShadowCb.Dispose();
+        SkinCb.Dispose();
         DrawCb.Dispose();
         FrameCb.Dispose();
         ShadowQuad.Dispose();
