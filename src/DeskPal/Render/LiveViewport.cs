@@ -70,8 +70,18 @@ internal sealed class LiveViewport : IDisposable
         }
         try
         {
-            _stage ??= await Stage3D.AcquireAsync();
-            if (!_visible || version != _showVersion) return;
+            if (_stage is null)
+            {
+                var stage = await Stage3D.AcquireAsync();
+                if (_stage is null) _stage = stage;
+                else Stage3D.Release();
+            }
+            if (version != _showVersion) return;
+            if (!_visible)
+            {
+                _teardownTimer.Start();
+                return;
+            }
             EnsureSwapChain(scale);
             _clock.Restart();
             _lastTick = 0;
