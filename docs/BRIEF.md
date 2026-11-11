@@ -57,4 +57,4 @@ Use "wellbeing tips" wording, no medical claims (simplifies Store certification)
 5. Focus mode, meeting/DND awareness, MSIX packaging
 
 ## First step
-Scaffold the Tauri project, get a tray icon showing, fire one test toast with Done/Snooze buttons, and build a portable .exe to confirm the toolchain works end to end on Windows.
+Scaffold the WinUI 3 project, get a tray icon showing, fire one test toast with Done/Snooze buttons, and build a portable .exe to confirm the toolchain works end to end on Windows.
