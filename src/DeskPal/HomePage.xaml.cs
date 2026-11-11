@@ -52,7 +52,7 @@ public sealed partial class HomePage : Page
         }
     }
 
-    private string Style => AppData.Debug3D ? "3d" : _ctx.Hub.Settings.AvatarStyle;
+    private string CurrentStyle => AppData.Debug3D ? "3d" : _ctx.Hub.Settings.AvatarStyle;
 
     private void Refresh()
     {
@@ -80,7 +80,7 @@ public sealed partial class HomePage : Page
 
     private async Task LoadStyleAsync()
     {
-        var style = Style;
+        var style = CurrentStyle;
         var version = ++_loadVersion;
         var wantLive = style == "3d" && !Stage3D.Failed;
         if (!wantLive) _viewport?.Hide();
