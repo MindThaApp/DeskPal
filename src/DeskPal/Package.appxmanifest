@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap desktop com rescap">
+
+  <!-- Partner Center identity (Store ID 9P25MTVTB600). Store versions keep the fourth field at 0. -->
+  <Identity Name="34458MindtheApp.DeskPal" Publisher="CN=FE63C3BB-418B-484C-852F-E7985F260BC3" Version="1.0.0.0" />
+
+  <Properties>
+    <DisplayName>Desk Pal</DisplayName>
+    <PublisherDisplayName>MindtheApp</PublisherDisplayName>
+    <Logo>Assets\Store\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
+      <uap:VisualElements
+        DisplayName="Desk Pal"
+        Description="A friendly desk buddy that nudges you to stretch, rest your eyes and take breaks"
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Store\Square150x150Logo.png"
+        Square44x44Logo="Assets\Store\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Store\Wide310x150Logo.png" Square71x71Logo="Assets\Store\Square71x71Logo.png" Square310x310Logo="Assets\Store\Square310x310Logo.png" />
+        <uap:SplashScreen Image="Assets\Store\SplashScreen.png" />
+      </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="deskpal">
+            <uap:DisplayName>Desk Pal</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+        <!-- App notifications: clicking a toast activates this COM class (AppNotificationManager.Register). -->
+        <desktop:Extension Category="windows.toastNotificationActivation">
+          <desktop:ToastNotificationActivation ToastActivatorCLSID="D6AF674B-1E30-4DD5-80BD-6DB2D5459EE8" />
+        </desktop:Extension>
+        <com:Extension Category="windows.comServer">
+          <com:ComServer>
+            <com:ExeServer Executable="DeskPal.exe" DisplayName="Desk Pal" Arguments="----AppNotificationActivated:">
+              <com:Class Id="D6AF674B-1E30-4DD5-80BD-6DB2D5459EE8" />
+            </com:ExeServer>
+          </com:ComServer>
+        </com:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>

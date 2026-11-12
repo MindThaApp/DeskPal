@@ -3,7 +3,7 @@ using Microsoft.Win32;
 
 namespace DeskPal;
 
-// The deskpal: link scheme: per-user registration (portable app, so no package manifest) and hand-off to a running copy.
+// The deskpal: link scheme: per-user registration for the portable build (the Store package declares it in its manifest) and hand-off to a running copy.
 public static class DeskPalProtocol
 {
     private const string KeyPath = @"Software\Classes\deskpal";
@@ -12,7 +12,8 @@ public static class DeskPalProtocol
     // is absent, or when its command points to a DeskPal.exe that no longer exists. Never replaces a working registration, never deletes.
     public static void RegisterInBackground()
     {
-        if (AppData.IsDebugRun) return;
+        // The Store package declares the scheme in its manifest; a packaged copy writes nothing to the registry.
+        if (AppData.IsDebugRun || PackagedApp.IsPackaged) return;
         var exe = Environment.ProcessPath;
         if (string.IsNullOrEmpty(exe)) return;
         _ = Task.Run(() =>

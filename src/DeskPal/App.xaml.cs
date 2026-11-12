@@ -66,7 +66,7 @@ public partial class App : Application
         _instanceMutex = new Mutex(true, mutexName, out var created);
         if (!created)
         {
-            var arg = DeskPalLink.FindArg(Environment.GetCommandLineArgs().Skip(1));
+            var arg = PackagedApp.StartLinkArg();
             if (arg is not null) DeskPalProtocol.ForwardToRunning(DeskPalLink.Parse(arg));
             Environment.Exit(0);
         }
@@ -173,7 +173,7 @@ public partial class App : Application
     // Launched with a deskpal: link and no copy running: show the page. Only "open" does anything; other links open Home.
     private void HandleStartLink()
     {
-        var arg = DeskPalLink.FindArg(Environment.GetCommandLineArgs().Skip(1));
+        var arg = PackagedApp.StartLinkArg();
         if (arg is null) return;
         var link = DeskPalLink.Parse(arg);
         if (!link.Supported) Logger.Log("unsupported link");
