@@ -13,6 +13,8 @@ The biggest gain is not the AP team's list. AP knows about calls, calendar and s
 
 ## 2. Integration contract v1
 
+> The implemented contract is [DESKPAL-PIPE-CONTRACT.md](DESKPAL-PIPE-CONTRACT.md). Where the two differ (command names, ranges, the event set), that file wins.
+
 **Use the pipe for machines and the URI for humans.** This deliberately differs from the Power Plan Manager pattern (URI plus status pipe): a URI has no caller identity, so it must never change state silently. AP's action group talks to the pipe.
 
 ### Pipe `DeskPal-<user SID>`
