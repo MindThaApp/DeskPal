@@ -17,13 +17,59 @@ public class NudgeAutoHideTests
     }
 
     [Fact]
-    public void TimedExerciseRunsFirst()
+    public void UntouchedTimedExerciseHidesAfterTheHideTime()
+    {
+        var h = new NudgeAutoHide();
+        h.Start(0, 20, timedSeconds: 30);
+        Assert.False(h.Engaged);
+        Assert.False(h.Expired(19_999));
+        Assert.True(h.Expired(20_000));
+    }
+
+    [Fact]
+    public void EngagingStartsTheExerciseAndHoldsTheCard()
     {
         var h = new NudgeAutoHide();
         h.Start(0, 10, timedSeconds: 30);
-        Assert.False(h.Expired(39_999));
-        Assert.Equal(1, h.Fraction(5_000));
-        Assert.True(h.Expired(40_000));
+        Assert.True(h.Engage(5_000));
+        Assert.False(h.Engage(6_000)); // only the first engagement starts it
+        Assert.Equal(35_000, h.ExerciseEndMs);
+        Assert.Equal(1, h.Fraction(20_000));
+        Assert.False(h.Expired(44_999));
+        Assert.True(h.Expired(45_000));
+    }
+
+    [Fact]
+    public void EngagingWhilePausedHoldsUntilTheExerciseEnds()
+    {
+        var h = new NudgeAutoHide();
+        h.Start(0, 20, timedSeconds: 30);
+        h.Pause(15_000);
+        Assert.True(h.Engage(15_000));
+        h.Resume(16_000);
+        Assert.False(h.Expired(64_999));
+        Assert.True(h.Expired(65_000));
+    }
+
+    [Fact]
+    public void ResumeAfterTheExerciseKeepsAtLeastFiveSeconds()
+    {
+        var h = new NudgeAutoHide();
+        h.Start(0, 20, timedSeconds: 30);
+        h.Engage(0);
+        h.Pause(49_000);
+        h.Resume(80_000);
+        Assert.False(h.Expired(84_999));
+        Assert.True(h.Expired(85_000));
+    }
+
+    [Fact]
+    public void EngageDoesNothingWithoutATimedExercise()
+    {
+        var h = new NudgeAutoHide();
+        h.Start(0, 20);
+        Assert.False(h.Engage(1_000));
+        Assert.True(h.Expired(20_000));
     }
 
     [Fact]
