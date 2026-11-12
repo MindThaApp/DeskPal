@@ -66,6 +66,8 @@ internal sealed class BloopBuddyWindow : Window
     private int _hopCount;
 
     private Func<Vector2>? _debugCursor;
+    private int _debugTicks;
+    private double _debugTickLog;
 
     public BloopBuddyWindow(IntPtr owner, Func<string> style)
     {
@@ -103,6 +105,11 @@ internal sealed class BloopBuddyWindow : Window
         DwmSetWindowAttribute(_hwnd, 33, ref noRound, sizeof(int));
         var noBorder = unchecked((int)0xFFFFFFFE);
         DwmSetWindowAttribute(_hwnd, 34, ref noBorder, sizeof(int));
+        // Blur-behind with an empty region: no blur, but DWM now honours the content's per-pixel alpha.
+        var empty = CreateRectRgn(0, 0, -1, -1);
+        var blur = new BlurBehind { Flags = 0x1 | 0x2, Enable = true, RgnBlur = empty };
+        DwmEnableBlurBehindWindow(_hwnd, ref blur);
+        DeleteObject(empty);
 
         _timer = DispatcherQueue.GetForCurrentThread().CreateTimer();
         _timer.Interval = TimeSpan.FromMilliseconds(15);
@@ -241,6 +248,16 @@ internal sealed class BloopBuddyWindow : Window
         var now = Now;
         var dt = (float)Math.Clamp(now - _last, 0, 0.05);
         _last = now;
+        if (AppData.DebugBloopDrag)
+        {
+            _debugTicks++;
+            if (now - _debugTickLog >= 0.5)
+            {
+                Log($"{_mode} ticks {_debugTicks}");
+                _debugTicks = 0;
+                _debugTickLog = now;
+            }
+        }
         var stretch = 0f;
         var stretchDir = new Vector2(0, 1);
 
@@ -540,6 +557,21 @@ internal sealed class BloopBuddyWindow : Window
 
     [DllImport("dwmapi.dll")]
     private static extern int DwmSetWindowAttribute(IntPtr hWnd, int attribute, ref int value, int size);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct BlurBehind
+    {
+        public uint Flags;
+        [MarshalAs(UnmanagedType.Bool)] public bool Enable;
+        public IntPtr RgnBlur;
+        [MarshalAs(UnmanagedType.Bool)] public bool TransitionOnMaximized;
+    }
+
+    [DllImport("dwmapi.dll")]
+    private static extern int DwmEnableBlurBehindWindow(IntPtr hWnd, ref BlurBehind blur);
+
+    [DllImport("gdi32.dll")]
+    private static extern IntPtr CreateRectRgn(int left, int top, int right, int bottom);
 }
 
 // A backdrop that is fully clear, so the window shows only what its content draws.
