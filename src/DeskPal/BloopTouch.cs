@@ -37,11 +37,13 @@ internal sealed class BloopTouch
     private BodyRegion _region;
     private IBloopReactor? _active;
     private uint? _pointerId;
+    private double _lastUp = double.NegativeInfinity;
+    private Vector2 _lastDown;
 
     // relativeTo: the element whose DIP space regions use (defaults to the surface). accept: optional filter on the
     // press point, for surfaces that also hold buttons.
     public BloopTouch(UIElement surface, Func<IBloopReactor?> reactor, UIElement? relativeTo = null,
-        Func<Vector2, bool>? accept = null, bool handledEventsToo = false)
+        Func<Vector2, bool>? accept = null, bool handledEventsToo = false, bool attach = true)
     {
         _surface = surface;
         _reactor = reactor;
@@ -51,6 +53,9 @@ internal sealed class BloopTouch
         _holdTimer.Interval = TimeSpan.FromMilliseconds(50);
         _holdTimer.IsRepeating = true;
         _holdTimer.Tick += (_, _) => TickGuard.Run("bloop-hold", () => Emit(_classifier.Tick(Now)));
+        // attach: false leaves pointer events to the owner, which feeds samples itself (the floating Bloop window,
+        // whose own press-hold-move rule decides when a press is a window drag instead of a gesture).
+        if (!attach) return;
         surface.AddHandler(UIElement.PointerPressedEvent, new PointerEventHandler(OnPressed), handledEventsToo);
         surface.AddHandler(UIElement.PointerMovedEvent, new PointerEventHandler(OnMoved), true);
         surface.AddHandler(UIElement.PointerReleasedEvent, new PointerEventHandler(OnReleased), true);
@@ -113,8 +118,14 @@ internal sealed class BloopTouch
     {
         _active = _reactor();
         if (_active is not { Ready: true }) return false;
-        _region = _active.RegionAt(p);
-        if (_region == BodyRegion.None) return false;
+        var region = _active.RegionAt(p);
+        // A quick follow-up tap on the same spot keeps its region even if that part has just moved away
+        // (a raised hand, a spinning body), so a tap chain never drops a tap.
+        if (region == BodyRegion.None && Now - _lastUp <= GestureClassifier.MultiTapGapSeconds
+            && Vector2.Distance(p, _lastDown) <= 40) region = _region;
+        if (region == BodyRegion.None) return false;
+        _region = region;
+        _lastDown = p;
         _classifier.Down(p, Now);
         _holdTimer.Start();
         return true;
@@ -126,10 +137,17 @@ internal sealed class BloopTouch
         Emit(_classifier.Move(p, Now));
     }
 
+    public void SampleCancel()
+    {
+        _holdTimer.Stop();
+        Emit(_classifier.Cancel(Now));
+    }
+
     public void SampleUp(Vector2 p)
     {
         _holdTimer.Stop();
         if (!_classifier.IsDown) return;
+        _lastUp = Now;
         Emit(_classifier.Up(p, Now));
     }
 

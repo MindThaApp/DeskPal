@@ -125,6 +125,12 @@ public sealed class MainWindow : Window
     {
         var scale = GetDpiForWindow(WindowNative.GetWindowHandle(this)) / 96.0;
         var rect = new RectInt32(_ui.X, _ui.Y, _ui.Width, _ui.Height);
+        if (AppData.DebugGesture is not null)
+        {
+            // Scripted gesture runs stay off the desktop; frames are checked through --debug-3d-dump.
+            AppWindow.MoveAndResize(new RectInt32(-6000, 100, (int)(1000 * scale), (int)(700 * scale)));
+            return;
+        }
         if (_ui.Width >= 400 && _ui.Height >= 300)
         {
             var work = DisplayArea.GetFromRect(rect, DisplayAreaFallback.Nearest).WorkArea;

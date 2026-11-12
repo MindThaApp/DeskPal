@@ -56,6 +56,9 @@ internal sealed class BloopMotion
     private bool _patting, _tickling;
     private int _dragArm; // 0 none, 1 viewer's left arm, 2 right
     private Vector2 _dragShoulder, _dragRestHand;
+    // Procedural raise or wave for the viewer's-left hand (the high_five and wave clips use the other one).
+    private double _armRaiseStart, _armRaiseUntil;
+    private bool _armRaiseWave;
 
     public BloopMotion(GltfModel model, BloopAnimator anim, bool clips)
     {
@@ -104,12 +107,13 @@ internal sealed class BloopMotion
         _settleAt = double.PositiveInfinity;
         _patting = _tickling = false;
         _dragArm = 0;
+        _armRaiseUntil = 0;
         Array.Clear(_mw);
         Array.Clear(_mUntil);
         Array.Clear(_mSustain);
     }
 
-    public bool Busy =>
+    public bool Busy => _armRaiseUntil > 0 ||
         _squash.Moving || _roll.Moving || _pitch.Moving || _yaw.Moving || _hop.Moving || _dent.Moving || _armLeft.Moving || _armRight.Moving
         || _hold > 1e-3f || _holdTarget > 0 || _melt > 1e-3f || _meltTarget > 0 || _now < _shakeUntil || _now < _swayUntil
         || !double.IsPositiveInfinity(_settleAt) || MorphsActive();
@@ -149,6 +153,17 @@ internal sealed class BloopMotion
             BloopSounds.Play("purr");
         }
         if ((_tickling || _meltTarget > 0) && !_patting && now > _rubUntil) EndRub();
+        if (_dragArm == 0 && _armRaiseUntil > 0)
+        {
+            if (now >= _armRaiseUntil) { _armRaiseUntil = 0; _armLeft.Target = 0; }
+            else
+            {
+                // Viewer's-left arm: a negative turn about the view axis lifts it up and out.
+                var up = (float)Math.Min(1, (now - _armRaiseStart) / 0.12);
+                var wiggle = _armRaiseWave ? 0.35f * MathF.Sin(2 * MathF.PI * 2.6f * (float)(now - _armRaiseStart)) : 0;
+                _armLeft.Target = -(1.9f + wiggle) * up;
+            }
+        }
 
         _hold += (_holdTarget - _hold) * Math.Min(1, dt * (_holdTarget > _hold ? 6 : 14));
         _melt += (_meltTarget - _melt) * Math.Min(1, dt * 3);
@@ -331,7 +346,8 @@ internal sealed class BloopMotion
                 return;
             case TapMood.Giggle when hand:
                 ContactBump(e.Position, region, 0.6f);
-                Clip("wave");
+                if (region == BodyRegion.LeftHand) RaiseLeft(wave: true, 1.3);
+                else Clip("wave");
                 Pulse(M.MouthSmile, 1, 1.2);
                 BloopSounds.Play("hop");
                 return;
@@ -399,7 +415,8 @@ internal sealed class BloopMotion
             }
             case BodyRegion.LeftHand:
             case BodyRegion.RightHand:
-                Clip("high_five");
+                if (region == BodyRegion.LeftHand) RaiseLeft(wave: false, 0.7);
+                else Clip("high_five");
                 Pulse(M.MouthGrin, 1, 1.0);
                 BloopSounds.Play("clap");
                 break;
@@ -410,6 +427,13 @@ internal sealed class BloopMotion
                 BloopSounds.Play("hop");
                 break;
         }
+    }
+
+    private void RaiseLeft(bool wave, double seconds)
+    {
+        _armRaiseStart = _now;
+        _armRaiseUntil = _now + seconds;
+        _armRaiseWave = wave;
     }
 
     private void Rub(BodyRegion region)
@@ -534,10 +558,10 @@ internal sealed class BloopMotion
         }
         else
         {
-            _squash.V -= 18 * s;
+            _squash.V -= 13 * s;
             _dentNode = JellyTop;
             _dentDir = new Vector3(0, -1, 0);
-            _dent.V -= 0.6f * s;
+            _dent.V -= 0.4f * s;
             Pulse(M.Squish, 1, 0.45);
             Pulse(M.EyesSqueeze, 0.7f, 0.4);
             BloopSounds.Play("whoosh");
@@ -579,7 +603,7 @@ internal sealed class BloopMotion
             MoveWorld(pose, world, model, _root, new Vector3(0, Math.Max(_hop.X, -0.002f), 0));
         }
         if (_dentNode >= 0 && MathF.Abs(_dent.X) > 1e-5f) MoveWorld(pose, world, model, _dentNode, _dentDir * -_dent.X);
-        if (ArmL >= 0 && MathF.Abs(_armLeft.X) > 1e-4f) RotateWorld(pose, world, model, ArmFor(1), Quaternion.CreateFromAxisAngle(Vector3.UnitZ, _armLeft.X));
+        if (ArmL >= 0 && ArmR >= 0 && MathF.Abs(_armLeft.X) > 1e-4f) RotateWorld(pose, world, model, ArmFor(1), Quaternion.CreateFromAxisAngle(Vector3.UnitZ, _armLeft.X));
         if (ArmR >= 0 && MathF.Abs(_armRight.X) > 1e-4f) RotateWorld(pose, world, model, ArmFor(2), Quaternion.CreateFromAxisAngle(Vector3.UnitZ, _armRight.X));
 
         if (_meshNode >= 0)

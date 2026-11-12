@@ -41,6 +41,9 @@ internal sealed class BloopBuddyWindow : Window
     private readonly DispatcherQueueTimer _timer;
     private readonly Stopwatch _clock = Stopwatch.StartNew();
     private LiveViewport? _viewport;
+    private readonly BloopTouch _touch;
+    private bool _gesturing;
+    private Vector2 _lastLocal;
     private string _loadedStyle = "";
     private long _loadVersion;
 
@@ -85,6 +88,10 @@ internal sealed class BloopBuddyWindow : Window
         _body.PointerPressed += OnPressed;
         _body.PointerReleased += OnReleased;
         _body.PointerCaptureLost += OnCaptureLost;
+        _body.PointerMoved += OnMoved;
+        // Gestures on the live Bloop (tap, hold, pet, swipe) use the shared regions and reactions; a press that
+        // turns into a window drag (the rule in the frame loop) is cancelled as a gesture.
+        _touch = new BloopTouch(_live, () => _viewport is { Ready: true } v && _live.Visibility == Visibility.Visible ? v : null, attach: false);
         _root.Children.Add(_body);
         Content = _root;
 
@@ -268,6 +275,11 @@ internal sealed class BloopBuddyWindow : Window
             {
                 _mode = Mode.Dragging;
                 _grab = _pressCursor - _pos;
+                if (_gesturing)
+                {
+                    _gesturing = false;
+                    _touch.SampleCancel();
+                }
                 Log("drag start");
             }
         }
@@ -418,7 +430,22 @@ internal sealed class BloopBuddyWindow : Window
         if (_mode == Mode.Hidden) return;
         _body.CapturePointer(e.Pointer);
         Press(Cursor());
+        _lastLocal = Local(e);
+        _gesturing = _touch.SampleDown(_lastLocal);
         e.Handled = true;
+    }
+
+    private void OnMoved(object sender, PointerRoutedEventArgs e)
+    {
+        if (!_gesturing || !_pressed || _mode == Mode.Dragging) return;
+        _lastLocal = Local(e);
+        _touch.SampleMove(_lastLocal);
+    }
+
+    private Vector2 Local(PointerRoutedEventArgs e)
+    {
+        var p = e.GetCurrentPoint(_live).Position;
+        return new Vector2((float)p.X, (float)p.Y);
     }
 
     private void OnReleased(object sender, PointerRoutedEventArgs e)
@@ -447,6 +474,12 @@ internal sealed class BloopBuddyWindow : Window
             _restUntil = Now + (_exiting ? 0 : RestSeconds);
             _mode = Mode.Resting;
             Log("drag end");
+            return;
+        }
+        if (_gesturing)
+        {
+            _gesturing = false;
+            _touch.SampleUp(_lastLocal);
             return;
         }
         if (Vector2.Distance(Cursor(), _pressCursor) <= DragThresholdDip * _scale) Poke();

@@ -108,7 +108,7 @@ internal static class DebugGestures
             case "swipe-down":
             {
                 var d = gesture[6..] switch { "left" => new Vector2(-1, 0), "right" => new Vector2(1, 0), "up" => new Vector2(0, -1), _ => new Vector2(0, 1) };
-                var start = p - d * 45;
+                var start = p - d * (d.Y < 0 ? 20 : 45);
                 After(dq, 0, () => touch.SampleDown(start));
                 for (var i = 1; i <= 6; i++)
                 {
@@ -125,12 +125,16 @@ internal static class DebugGestures
         }
     }
 
+    // Timers are kept here: an unreferenced DispatcherQueueTimer can be collected before it fires.
+    private static readonly List<DispatcherQueueTimer> Timers = [];
+
     private static void After(DispatcherQueue dq, double seconds, Action action)
     {
         var t = dq.CreateTimer();
+        Timers.Add(t);
         t.IsRepeating = false;
         t.Interval = TimeSpan.FromSeconds(Math.Max(0.001, seconds));
-        t.Tick += (_, _) => TickGuard.Run("debug-gesture", action);
+        t.Tick += (_, _) => { Timers.Remove(t); TickGuard.Run("debug-gesture", action); };
         t.Start();
     }
 }
