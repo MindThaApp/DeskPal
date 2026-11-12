@@ -227,6 +227,7 @@ public class ControlParserTests
         Assert.Equal(@"C:\Tools\script-runner.exe", exe.AppId);
         Assert.Equal("script-runner", exe.DisplayName);
         Assert.Null(new CallerInfo(3, null, null).AppId);
+        Assert.Equal("AutomationPortal", new CallerInfo(4, @"C:\Temp\AutomationPortal.exe", null).DisplayName);
     }
 }
 

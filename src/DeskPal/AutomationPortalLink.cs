@@ -150,7 +150,7 @@ public sealed class AutomationPortalLink : IControlHost, IDisposable
 
     // ---- links that lead to Automation Portal (owner rule in docs/INTEGRATION-AUTOMATION-PORTAL.md) ----
 
-    public const string PackageFamily = "34458MindtheApp.AutomationPortal_24e29cj9741rt";
+    public const string PackageFamily = CallerInfo.AutomationPortalPackageFamily;
     private const string StoreLink = "ms-windows-store://pdp/?ProductId=9PB9C8FHG105";
     private const string WebLink = "https://apps.microsoft.com/detail/9PB9C8FHG105";
 

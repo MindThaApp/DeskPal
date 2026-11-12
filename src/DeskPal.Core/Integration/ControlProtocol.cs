@@ -140,6 +140,8 @@ public static class ControlParser
 // Who is on the other end of the pipe. AppId is what approvals are remembered by.
 public sealed record CallerInfo(int ProcessId, string? ExePath, string? PackageFamily)
 {
+    public const string AutomationPortalPackageFamily = "34458MindtheApp.AutomationPortal_24e29cj9741rt";
+
     public string? AppId => PackageFamily is { Length: > 0 } f ? "pkg:" + f : ExePath is { Length: > 0 } p ? p : null;
 
     public string DisplayName => DisplayNameFor(AppId);
@@ -147,7 +149,8 @@ public sealed record CallerInfo(int ProcessId, string? ExePath, string? PackageF
     public static string DisplayNameFor(string? appId)
     {
         if (string.IsNullOrEmpty(appId)) return "An unknown app";
-        if (appId.Contains("AutomationPortal", StringComparison.OrdinalIgnoreCase)) return "Automation Portal";
+        // Only the Store package is named as Automation Portal; any exe could call itself that, so exes show their file name.
+        if (string.Equals(appId, "pkg:" + AutomationPortalPackageFamily, StringComparison.OrdinalIgnoreCase)) return "Automation Portal";
         if (appId.StartsWith("pkg:", StringComparison.Ordinal))
         {
             var family = appId[4..];
