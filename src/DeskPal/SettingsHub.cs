@@ -9,6 +9,12 @@ public sealed class SettingsHub(DeskPalSettings settings, NudgeScheduler schedul
 
     public event Action? Changed;
 
+    // Set once the Automation Portal link is running; the settings page reads its skipped-events count.
+    public AutomationPortalLink? Link { get; set; }
+
+    // Tells every view to refresh without saving anything.
+    public void RaiseChanged() => Changed?.Invoke();
+
     public void Commit(bool reminders)
     {
         try { JsonFileStore.Save(AppData.SettingsPath, Settings); }

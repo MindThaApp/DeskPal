@@ -103,10 +103,65 @@ public sealed partial class SettingsPage : Page
         AddSwitch("Animate tray icon", "Let the tray icon move while a nudge is showing",
             () => _s.AnimateTray, b => { _s.AnimateTray = b; _hub.Commit(false); });
 
+        Root.Children.Add(Header("Automation Portal"));
+        AddSwitch("Share events with Automation Portal", "Lets shortcuts react to breaks, focus and pauses on this PC. Only counts and times are shared",
+            () => _s.ShareEventsWithAutomationPortal, b => { _s.ShareEventsWithAutomationPortal = b; _hub.Commit(false); });
+        AddSwitch("Allow Automation Portal and other apps to control Desk Pal", "They can start a break, turn focus on or off, and pause. Each app asks you once",
+            () => _s.AllowExternalControl, b => { _s.AllowExternalControl = b; _hub.Commit(false); });
+        AddAutomationPortalCard();
+
         Root.Children.Add(Header("Privacy"));
         AddSwitch("Send crash reports", "Help fix problems by sending a report when the app crashes",
             () => _s.CrashReports == CrashReportingMode.Always,
             b => { _s.CrashReports = b ? CrashReportingMode.Always : CrashReportingMode.Never; _hub.Commit(false); });
+    }
+
+    private void AddAutomationPortalCard()
+    {
+        var content = new StackPanel { Spacing = 8 };
+        content.Children.Add(TitleBlock("Apps you allowed", "Apps that may change Desk Pal. Remove one to be asked again"));
+        var list = new StackPanel { Spacing = 4 };
+        content.Children.Add(list);
+        var skipped = Secondary("");
+        content.Children.Add(skipped);
+        var installed = AutomationPortalLink.IsInstalled();
+        var link = new HyperlinkButton { Content = installed ? "Open Automation Portal" : "Get Automation Portal", Padding = new Thickness(0) };
+        link.Click += (_, _) => TickGuard.Run("open-automation-portal", AutomationPortalLink.OpenOrGet);
+        content.Children.Add(link);
+        Root.Children.Add(new Border { Style = (Style)Resources["CardBorder"], Child = content });
+
+        _syncs.Add(() =>
+        {
+            list.Children.Clear();
+            if (_s.ApprovedControlApps.Count == 0) list.Children.Add(Secondary("None yet"));
+            foreach (var app in _s.ApprovedControlApps.ToList())
+            {
+                var row = new Grid { ColumnSpacing = 12 };
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                var name = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+                name.Children.Add(new TextBlock { Text = DeskPal.Core.Integration.CallerInfo.DisplayNameFor(app) });
+                var path = Secondary(app);
+                path.TextWrapping = TextWrapping.NoWrap;
+                path.TextTrimming = TextTrimming.CharacterEllipsis;
+                name.Children.Add(path);
+                var remove = new Button { Content = "Remove" };
+                AutomationProperties.SetName(remove, "Remove " + DeskPal.Core.Integration.CallerInfo.DisplayNameFor(app));
+                remove.Click += (_, _) =>
+                {
+                    _s.ApprovedControlApps.RemoveAll(a => string.Equals(a, app, StringComparison.OrdinalIgnoreCase));
+                    _hub.Commit(false);
+                };
+                Grid.SetColumn(remove, 1);
+                row.Children.Add(name);
+                row.Children.Add(remove);
+                list.Children.Add(row);
+            }
+            var n = _hub.Link?.EventsSkippedToday ?? 0;
+            skipped.Text = n == 1 ? "1 event skipped today (Automation Portal wasn't available)"
+                : $"{n} events skipped today (Automation Portal wasn't available)";
+            skipped.Visibility = _s.ShareEventsWithAutomationPortal || n > 0 ? Visibility.Visible : Visibility.Collapsed;
+        });
     }
 
     private static TextBlock Header(string text) => new()

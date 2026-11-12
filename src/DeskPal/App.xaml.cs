@@ -30,6 +30,7 @@ public partial class App : Application
     private SettingsWindow? _settingsWindow;
     private CrashReportingMode _appliedCrashMode;
     private CallMonitor _calls = null!;
+    private AutomationPortalLink? _link;
     private Icon? _baseIcon;
     private TrayIcons? _icons;
     private TrayAnimator? _anim;
@@ -107,6 +108,17 @@ public partial class App : Application
         _hub.Changed += OnSettingsChanged;
         _calls = new CallMonitor(new RegistryCallDetector(), _scheduler, TimeProvider.System);
         _scheduler.Event += e => _dq.TryEnqueue(() => OnSchedulerEvent(e));
+        try
+        {
+            _link = new AutomationPortalLink(_dq, _hub, _scheduler);
+            _hub.Link = _link;
+            _link.Start();
+        }
+        catch (Exception ex)
+        {
+            Logger.Log("automation portal link failed: " + ex.Message);
+            CrashReporting.CaptureCrash(ex, "AutomationPortalLink", handled: true);
+        }
 
         var manager = AppNotificationManager.Default;
         manager.NotificationInvoked += OnNotificationInvoked;
@@ -134,7 +146,7 @@ public partial class App : Application
 
         _tickTimer = _dq.CreateTimer();
         _tickTimer.Interval = TimeSpan.FromSeconds(5);
-        _tickTimer.Tick += (_, _) => TickGuard.Run("scheduler", () => { _scheduler.Tick(); UpdateTray(); });
+        _tickTimer.Tick += (_, _) => TickGuard.Run("scheduler", () => { _scheduler.Tick(); _link?.Tick(); UpdateTray(); });
         _tickTimer.Start();
 
         _busyTimer = _dq.CreateTimer();
@@ -658,6 +670,7 @@ public partial class App : Application
         _main?.Quit();
         _settingsWindow?.Quit();
         _toastTimer?.Stop();
+        try { _link?.Dispose(); } catch (Exception ex) { Logger.Log("automation portal link stop failed: " + ex.Message); }
         Logger.Log("exit");
         Exit();
     }
