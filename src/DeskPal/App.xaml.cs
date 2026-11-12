@@ -110,6 +110,7 @@ public partial class App : Application
         _scheduler = new NudgeScheduler(TimeProvider.System, _settings, state);
         _router = _scheduler;
         _hub = new SettingsHub(_settings, _scheduler);
+        BloopSounds.Attach(_hub, _scheduler);
         _appliedCrashMode = _settings.CrashReports;
         _hub.Changed += OnSettingsChanged;
         _calls = new CallMonitor(new RegistryCallDetector(), _scheduler, TimeProvider.System);
@@ -244,6 +245,7 @@ public partial class App : Application
             {
                 if (AppData.DebugQuickPanel) ShowQuick();
                 else ShowMenu();
+                if (AppData.DebugQuickPanel && AppData.DebugBloopDrag) DebugBloopDrag();
             });
             _debugPanelTimer.Start();
         }
@@ -613,6 +615,22 @@ public partial class App : Application
             _quick.ShowPanel(anchor);
         }
         catch (Exception ex) { Logger.Log("quick panel failed: " + ex.Message); }
+    }
+
+    // Debug: 3 s after the panel opens, pull Bloop up and left; with --debug-bloop-exit, close the panel 1.6 s later
+    // while Bloop is still away.
+    private void DebugBloopDrag()
+    {
+        void After(double seconds, string name, Action action)
+        {
+            var timer = _dq.CreateTimer();
+            timer.IsRepeating = false;
+            timer.Interval = TimeSpan.FromSeconds(seconds);
+            timer.Tick += (_, _) => { timer.Stop(); TickGuard.Run(name, action); };
+            timer.Start();
+        }
+        After(3, "debug-bloop-drag", () => _quick?.DebugDragBloop(new System.Numerics.Vector2(-420, -260)));
+        if (AppData.DebugBloopExit) After(4.6, "debug-bloop-exit", () => _quick?.HidePanel());
     }
 
     private void ShowMenu()

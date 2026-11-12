@@ -46,6 +46,11 @@ public readonly record struct TrayAnchor(int Left, int Top, int Right, int Botto
     private static extern bool GetCursorPos(out Point point);
 }
 
+public enum TaskbarEdge { Bottom, Top, Left, Right }
+
+// The card's rect, its monitor's work area and the tray icon, all in physical pixels, plus the monitor's scale.
+public sealed record PanelPlacement(RectInt32 Card, RectInt32 Work, TaskbarEdge Edge, double Scale, RectInt32 Anchor);
+
 // Shared behaviour of the two tray panels: borderless acrylic popup that opens next to the tray icon, takes focus,
 // and hides on click outside, on Esc and when told to. The window is created once and only ever hidden.
 public sealed class TrayPanelHost
@@ -68,7 +73,9 @@ public sealed class TrayPanelHost
         _hwnd = WindowNative.GetWindowHandle(window);
 
         var presenter = OverlappedPresenter.Create();
-        presenter.SetBorderAndTitleBar(false, false);
+        // A border without a title bar keeps DWM's rounded corners and soft shadow; the hard edge line is then
+        // switched off below, so the card has no light outline around it.
+        presenter.SetBorderAndTitleBar(true, false);
         presenter.IsResizable = false;
         presenter.IsMaximizable = false;
         presenter.IsMinimizable = false;
@@ -80,12 +87,23 @@ public sealed class TrayPanelHost
         SetWindowLongPtr(_hwnd, GWL_EXSTYLE, new IntPtr(ex | WS_EX_TOOLWINDOW));
         var round = 2; // DWMWCP_ROUND
         DwmSetWindowAttribute(_hwnd, 33, ref round, sizeof(int));
+        var noBorder = unchecked((int)0xFFFFFFFE); // DWMWA_COLOR_NONE
+        DwmSetWindowAttribute(_hwnd, 34 /* DWMWA_BORDER_COLOR */, ref noBorder, sizeof(int));
 
         window.Activated += (_, e) => TickGuard.Run("tray-panel-activation", () => OnActivated(e.WindowActivationState));
         root.KeyDown += OnKeyDown;
     }
 
     public bool IsOpen { get; private set; }
+
+    public IntPtr Hwnd => _hwnd;
+
+    // Where the card last went, the work area around it and which edge the taskbar is on.
+    public PanelPlacement? Placement { get; private set; }
+
+    public event Action<PanelPlacement>? Placed;
+
+    public event Action? Hidden;
 
     // A click on the tray icon deactivates an open panel before the icon's own click arrives; that click is the "toggle off".
     public bool JustDeactivated => Environment.TickCount64 - _deactivatedTick < 400;
@@ -108,6 +126,7 @@ public sealed class TrayPanelHost
         if (!IsOpen) return;
         IsOpen = false;
         _window.AppWindow.Hide();
+        Hidden?.Invoke();
     }
 
     // Re-measures the content (for panels whose height changes) and keeps the same edge against the taskbar.
@@ -149,23 +168,33 @@ public sealed class TrayPanelHost
         var mon = info.Monitor;
 
         int x, y;
-        if (work.Bottom < mon.Bottom) { x = cx - w / 2; y = work.Bottom - h - gap; }
-        else if (work.Top > mon.Top) { x = cx - w / 2; y = work.Top + gap; }
-        else if (work.Right < mon.Right) { x = work.Right - w - gap; y = cy - h / 2; }
-        else if (work.Left > mon.Left) { x = work.Left + gap; y = cy - h / 2; }
+        TaskbarEdge edge;
+        if (work.Bottom < mon.Bottom) edge = TaskbarEdge.Bottom;
+        else if (work.Top > mon.Top) edge = TaskbarEdge.Top;
+        else if (work.Right < mon.Right) edge = TaskbarEdge.Right;
+        else if (work.Left > mon.Left) edge = TaskbarEdge.Left;
         else
         {
             // Auto-hidden taskbar: the whole monitor is work area, so go by the nearest screen edge.
             var dl = cx - mon.Left; var dr = mon.Right - cx; var dt = cy - mon.Top; var db = mon.Bottom - cy;
             var min = Math.Min(Math.Min(dl, dr), Math.Min(dt, db));
-            if (min == db) { x = cx - w / 2; y = work.Bottom - h - gap; }
-            else if (min == dt) { x = cx - w / 2; y = work.Top + gap; }
-            else if (min == dr) { x = work.Right - w - gap; y = cy - h / 2; }
-            else { x = work.Left + gap; y = cy - h / 2; }
+            edge = min == db ? TaskbarEdge.Bottom : min == dt ? TaskbarEdge.Top : min == dr ? TaskbarEdge.Right : TaskbarEdge.Left;
+        }
+        switch (edge)
+        {
+            case TaskbarEdge.Bottom: x = cx - w / 2; y = work.Bottom - h - gap; break;
+            case TaskbarEdge.Top: x = cx - w / 2; y = work.Top + gap; break;
+            case TaskbarEdge.Right: x = work.Right - w - gap; y = cy - h / 2; break;
+            default: x = work.Left + gap; y = cy - h / 2; break;
         }
         x = Math.Max(work.Left + gap, Math.Min(x, work.Right - w - gap));
         y = Math.Max(work.Top + gap, Math.Min(y, work.Bottom - h - gap));
         _window.AppWindow.MoveAndResize(new RectInt32(x, y, w, h));
+        var placement = new PanelPlacement(new RectInt32(x, y, w, h),
+            new RectInt32(work.Left, work.Top, work.Right - work.Left, work.Bottom - work.Top), edge, scale,
+            new RectInt32(anchor.Left, anchor.Top, anchor.Right - anchor.Left, anchor.Bottom - anchor.Top));
+        Placement = placement;
+        Placed?.Invoke(placement);
     }
 
     private const int GWL_EXSTYLE = -20;

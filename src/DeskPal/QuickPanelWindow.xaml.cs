@@ -24,8 +24,6 @@ public sealed partial class QuickPanelWindow : Window
     private readonly TrayContext _ctx;
     private readonly TrayPanelHost _host;
     private readonly (ProgressRing Ring, TextBlock Count, TextBlock Name)[] _stats;
-    private string _style = "";
-    private long _loadVersion;
 
     public QuickPanelWindow(TrayContext ctx)
     {
@@ -33,7 +31,18 @@ public sealed partial class QuickPanelWindow : Window
         InitializeComponent();
         _stats = [BuildStat(StretchStat, "Stretches"), BuildStat(EyeStat, "Eye breaks"), BuildStat(WalkStat, "Walks")];
         _host = new TrayPanelHost(this, Root, 320);
+        _host.Placed += p => TickGuard.Run("quick-bloop-place", () => _bloop?.Replace(p));
+        _host.Hidden += () => TickGuard.Run("quick-bloop-leave", () => _bloop?.Leave());
+        Closed += (_, _) => _bloop?.Close();
+        SoundButton.Visibility = SoundsSetting is null ? Visibility.Collapsed : Visibility.Visible;
     }
+
+    // Bloop sits in its own clear window beside the card, so the card holds only text and buttons.
+    private BloopBuddyWindow? _bloop;
+
+    // The interaction sounds switch lives in the shared settings; the toggle shows only when that setting exists.
+    private static readonly System.Reflection.PropertyInfo? SoundsSetting =
+        typeof(DeskPalSettings).GetProperty("InteractionSounds") is { PropertyType: var t } prop && t == typeof(bool) ? prop : null;
 
     public bool IsOpen => _host.IsOpen;
 
@@ -44,9 +53,36 @@ public sealed partial class QuickPanelWindow : Window
         Refresh();
         _host.Show(anchor);
         StretchButton.Focus(FocusState.Programmatic);
+        if (_host.Placement is { } placement)
+        {
+            _bloop ??= new BloopBuddyWindow(_host.Hwnd, () => _ctx.Hub.Settings.AvatarStyle);
+            _bloop.ShowAt(placement);
+        }
     }
 
     public void HidePanel() => _host.Hide();
+
+    // Debug only: pulls Bloop away through the drag code, and with --debug-bloop-exit closes the panel while away.
+    public void DebugDragBloop(System.Numerics.Vector2 by) => _bloop?.DebugDrag(by);
+
+    private void OnSound(object sender, RoutedEventArgs e) => TickGuard.Run("quick-sound", () =>
+    {
+        if (SoundsSetting is null) return;
+        var on = (bool)SoundsSetting.GetValue(_ctx.Hub.Settings)!;
+        SoundsSetting.SetValue(_ctx.Hub.Settings, !on);
+        _ctx.Hub.Commit(false);
+        UpdateSound();
+    });
+
+    private void UpdateSound()
+    {
+        if (SoundsSetting is null) return;
+        var on = (bool)SoundsSetting.GetValue(_ctx.Hub.Settings)!;
+        SoundIcon.Glyph = on ? "" : "";
+        var name = on ? "Interaction sounds on. Turn off" : "Interaction sounds off. Turn on";
+        AutomationProperties.SetName(SoundButton, name);
+        ToolTipService.SetToolTip(SoundButton, on ? "Sounds on" : "Sounds off");
+    }
 
     public void Refresh()
     {
@@ -60,18 +96,8 @@ public sealed partial class QuickPanelWindow : Window
         var paused = s.ManualHold is not null;
         PauseButton.Content = paused ? "Resume" : "Pause 30 min";
         AutomationProperties.SetName(PauseButton, paused ? "Resume reminders" : "Pause 30 minutes");
-        _ = LoadAvatarAsync();
+        UpdateSound();
         _host.Relayout();
-    }
-
-    private async Task LoadAvatarAsync()
-    {
-        var style = AppData.Debug3D ? "3d" : _ctx.Hub.Settings.AvatarStyle;
-        if (style == _style && Avatar.Source is not null) return;
-        _style = style;
-        var version = ++_loadVersion;
-        var source = await NudgeCardWindow.LoadAvatarAsync(style, "bloop-idle", 256);
-        if (version == _loadVersion) Avatar.Source = source;
     }
 
     private static (ProgressRing, TextBlock, TextBlock) BuildStat(StackPanel host, string name)
@@ -96,22 +122,6 @@ public sealed partial class QuickPanelWindow : Window
         stat.Count.Text = goal > 0 ? $"{done}/{goal}" : done.ToString();
         var text = goal > 0 ? $"{stat.Name.Text}: {done} of {goal} today" : $"{stat.Name.Text}: {done} today, no goal";
         AutomationProperties.SetName(stat.Count.Parent as FrameworkElement ?? stat.Count, text);
-    }
-
-    private void OnAvatarPressed(object sender, PointerRoutedEventArgs e)
-    {
-        var d = new Duration(TimeSpan.FromMilliseconds(650));
-        var ease = new ElasticEase { EasingMode = EasingMode.EaseOut, Oscillations = 3, Springiness = 4 };
-        var sy = new DoubleAnimation { From = 0.78, To = 1, Duration = d, EasingFunction = ease };
-        var sx = new DoubleAnimation { From = 1.14, To = 1, Duration = d, EasingFunction = ease };
-        Storyboard.SetTarget(sy, Squish);
-        Storyboard.SetTargetProperty(sy, "ScaleY");
-        Storyboard.SetTarget(sx, Squish);
-        Storyboard.SetTargetProperty(sx, "ScaleX");
-        var sb = new Storyboard();
-        sb.Children.Add(sy);
-        sb.Children.Add(sx);
-        sb.Begin();
     }
 
     private void OnStretch(object sender, RoutedEventArgs e) => TickGuard.Run("quick-stretch", () =>

@@ -12,20 +12,16 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" ColumnSpacing="14">
+        <Grid Grid.Row="0" ColumnSpacing="8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Grid Width="72" Height="72" Background="Transparent" PointerPressed="OnAvatarPressed"
-                  AutomationProperties.Name="Bloop" AutomationProperties.AccessibilityView="Raw">
-                <Image x:Name="Avatar" Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
-                    <Image.RenderTransform>
-                        <ScaleTransform x:Name="Squish" />
-                    </Image.RenderTransform>
-                </Image>
-            </Grid>
-            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+            <Button x:Name="SoundButton" Grid.Column="1" VerticalAlignment="Top" Width="32" Height="32" Padding="0"
+                    Background="Transparent" BorderThickness="0" Click="OnSound" Visibility="Collapsed">
+                <FontIcon x:Name="SoundIcon" FontSize="14" Glyph="&#xE767;" />
+            </Button>
+            <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="4">
                 <TextBlock x:Name="StatusText" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" />
                 <TextBlock x:Name="SubText" FontSize="12" Opacity="0.7" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" />
             </StackPanel>

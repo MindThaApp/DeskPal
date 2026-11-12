@@ -14,6 +14,10 @@ public static class AppData
     public static readonly bool DebugMain = HasArg("--debug-main");
     public static readonly bool DebugQuickPanel = HasArg("--debug-quickpanel");
     public static readonly bool DebugTrayMenu = HasArg("--debug-traymenu");
+    // With --debug-quickpanel: drag Bloop away through the drag code (no real input), and optionally close the
+    // panel while it is away.
+    public static readonly bool DebugBloopDrag = HasArg("--debug-bloop-drag");
+    public static readonly bool DebugBloopExit = HasArg("--debug-bloop-exit");
     public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke;
 
     // Debug runs keep their own state and log so they never touch the real ones.
