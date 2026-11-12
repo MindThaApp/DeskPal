@@ -46,6 +46,7 @@ public sealed class DeskPalSettings
     public int SproutStage { get; set; } = 2;
     public bool UseNudgeCard { get; set; } = true;
     public bool AnimateTray { get; set; } = true;
+    public bool InteractionSounds { get; set; } = true;
     public CrashReportingMode CrashReports { get; set; } = CrashReportingMode.Ask;
 
     // Automation Portal: both off until the user turns them on.

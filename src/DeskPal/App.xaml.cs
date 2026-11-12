@@ -110,6 +110,7 @@ public partial class App : Application
         _scheduler = new NudgeScheduler(TimeProvider.System, _settings, state);
         _router = _scheduler;
         _hub = new SettingsHub(_settings, _scheduler);
+        BloopSounds.Attach(_hub, _scheduler);
         _appliedCrashMode = _settings.CrashReports;
         _hub.Changed += OnSettingsChanged;
         _calls = new CallMonitor(new RegistryCallDetector(), _scheduler, TimeProvider.System);

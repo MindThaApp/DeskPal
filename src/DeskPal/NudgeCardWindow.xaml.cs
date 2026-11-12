@@ -19,7 +19,6 @@ namespace DeskPal;
 
 public sealed partial class NudgeCardWindow : Window
 {
-    private static readonly RoutedEvent UIElementPointerPressed = UIElement.PointerPressedEvent;
     private const int WidthDip = 360;
     private const int HeightDip = 220;
     private const int MarginDip = 12;
@@ -36,6 +35,7 @@ public sealed partial class NudgeCardWindow : Window
     private LiveViewport? _viewport;
     private long _liveRequestedTick;
     private int _debugPokes;
+    private readonly BloopTouch _touch;
     private bool _repeating;
     private long _repeatUntilTick;
     private IntPtr _foregroundBefore;
@@ -46,7 +46,10 @@ public sealed partial class NudgeCardWindow : Window
         _router = router;
         InitializeComponent();
         // handledEventsToo: a child that marks the press handled must not stop Bloop reacting.
-        Root.AddHandler(UIElementPointerPressed, new PointerEventHandler(OnRootPressed), true);
+        // Touches on Bloop (the live surface only) go through the shared gesture path; buttons keep their own presses.
+        _touch = new BloopTouch(Root, () => _viewport is { Ready: true } v && LivePanel.Visibility == Visibility.Visible ? v : null,
+            relativeTo: LivePanel, accept: p => p.X >= 0 && p.Y >= 0 && p.X <= LivePanel.Width && p.Y <= LivePanel.Height,
+            handledEventsToo: true);
         _hwnd = WindowNative.GetWindowHandle(this);
         _timer.Tick += (s, e) => TickGuard.Run("nudge-card", () => OnTimer(s, e));
         if (AppData.Debug3D) After(10, "debug-3d-stats", LogStats, repeat: true);
@@ -235,14 +238,6 @@ public sealed partial class NudgeCardWindow : Window
                 }, once: true);
             }
         }
-    }
-    private void OnRootPressed(object sender, PointerRoutedEventArgs e)
-    {
-        if (_viewport is null || LivePanel.Visibility != Visibility.Visible) return;
-        var p = e.GetCurrentPoint(AvatarSlot).Position;
-        var hit = p.X >= 0 && p.Y >= 0 && p.X <= LivePanel.Width && p.Y <= LivePanel.Height;
-        Logger.Log($"3d press at {p.X:F0},{p.Y:F0} hit={hit}");
-        if (hit) _viewport.Poke(withClip: false);
     }
     private void OnRootPointerMoved(object sender, PointerRoutedEventArgs e)
     {

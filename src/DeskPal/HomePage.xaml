@@ -11,12 +11,8 @@
             <StackPanel Spacing="8" VerticalAlignment="Top">
                 <Grid>
                     <Grid x:Name="Stage" Width="320" Height="320" Background="Transparent"
-                          PointerPressed="OnStagePressed" DoubleTapped="OnStageDoubleTapped" AutomationProperties.Name="Bloop, click to poke">
-                        <Image x:Name="Avatar" RenderTransformOrigin="0.5,1">
-                            <Image.RenderTransform>
-                                <ScaleTransform x:Name="Squish" />
-                            </Image.RenderTransform>
-                        </Image>
+                          AutomationProperties.Name="Bloop, tap, hold, pet or swipe">
+                        <Image x:Name="Avatar" />
                     </Grid>
                     <Image x:Name="SproutImage" Width="96" Height="96" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                            Margin="0,0,-40,0" IsHitTestVisible="False" />
@@ -27,6 +23,12 @@
                             Margin="300,140,-80,0" Background="Transparent" Visibility="Collapsed"
                             PointerPressed="OnSproutPressed" AutomationProperties.Name="Sprout" />
                 </Grid>
+                <Button x:Name="SoundButton" HorizontalAlignment="Left" Click="OnToggleSound" Padding="8,4">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <FontIcon x:Name="SoundIcon" FontSize="14" />
+                        <TextBlock x:Name="SoundText" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
             <StackPanel Grid.Column="1" Spacing="16" MaxWidth="520" Padding="40,0,0,0">
                 <TextBlock x:Name="GreetingText" FontSize="28" FontWeight="SemiBold" TextWrapping="Wrap" />

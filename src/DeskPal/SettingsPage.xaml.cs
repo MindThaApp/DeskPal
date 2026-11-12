@@ -102,6 +102,8 @@ public sealed partial class SettingsPage : Page
             i => { _s.AvatarStyle = i == 2 ? "3d" : i == 1 ? "soft3d" : "flat"; _hub.Commit(false); });
         AddSwitch("Animate tray icon", "Let the tray icon move while a nudge is showing",
             () => _s.AnimateTray, b => { _s.AnimateTray = b; _hub.Commit(false); });
+        AddSwitch("Bloop sounds", "Soft sounds when you poke, pat or swipe Bloop. Quiet during calls and Focus Assist",
+            () => _hub.InteractionSounds, b => _hub.InteractionSounds = b);
 
         Root.Children.Add(Header("Automation Portal"));
         AddSwitch("Share events with Automation Portal", "Lets shortcuts react to breaks, focus and pauses on this PC. Only counts and times are shared",

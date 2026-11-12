@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using DeskPal.Core;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using Microsoft.UI.Dispatching;
@@ -14,7 +15,7 @@ namespace DeskPal.Render;
 // One live surface: a composition swap chain in a SwapChainPanel. There is no free-running loop: frames are driven by
 // the display (CompositionTarget.Rendering) only while a breath, clip, blink, spring or eye move is in progress, then the
 // handler is detached (0 fps). All motion uses real elapsed time; springs use fixed 1/240 s sub-steps.
-internal sealed class LiveViewport : IDisposable
+internal sealed class LiveViewport : IDisposable, IBloopReactor
 {
     private static readonly TimeSpan Teardown = TimeSpan.FromMinutes(2);
     private const double AwakeSeconds = 10;
@@ -68,7 +69,10 @@ internal sealed class LiveViewport : IDisposable
     private double _lastBlinkWake = double.NegativeInfinity;
     private double _nextFidget;
     private double _sproutPulse = -1;
-    private double _squash, _squashVel;
+    private BloopMotion? _motion;
+    private Matrix4x4[] _world = [];
+    private Matrix4x4 _viewProj;
+    private bool _jointsLogged;
     private Vector2 _eye, _eyeVel, _eyeTarget;
 
     public LiveViewport(SwapChainPanel panel, bool home = false, double centerX = double.NaN)
@@ -130,6 +134,9 @@ internal sealed class LiveViewport : IDisposable
                     _runClips.Add(name);
                     Logger.Log($"3d clip {name}{(_home ? " (home)" : " (card)")}");
                 };
+                _motion = new BloopMotion(_anim.Model, _anim, clips: true) { Project = ProjectNode };
+                _world = new Matrix4x4[_anim.Model.Nodes.Length];
+                _viewProj = default;
             }
             if (_stage.Sprout is { } sprout && _sproutPose?.W.Length != sprout.Model.Nodes.Length) _sproutPose = new Pose(sprout.Model);
             _anim.Reset();
@@ -142,7 +149,7 @@ internal sealed class LiveViewport : IDisposable
             _nextFidget = NextFidgetGap();
             _envelope = 0;
             _sproutPulse = -1;
-            _squash = _squashVel = 0;
+            _motion?.Reset();
             _eye = _eyeTarget = _eyeVel = Vector2.Zero;
             foreach (var request in _pending) request(_anim);
             _pending.Clear();
@@ -168,11 +175,9 @@ internal sealed class LiveViewport : IDisposable
     public void Poke(bool withClip)
     {
         if (!Live) return;
-        // An impulse on top of the running wobble, never a reset.
-        _squashVel = Math.Max(_squashVel - 12, -24);
         Logger.Log($"3d poke (loop {(_rendering ? "running" : "asleep")})");
-        if (withClip && _anim is { } a && a.CurrentClip is null or "poke_squish") a.Play("poke_squish");
-        Wake();
+        var at = PointFor(BodyRegion.Belly) ?? Vector2.Zero;
+        React(new GestureEvent(GestureKind.Tap, at, at, Count: 1), BodyRegion.Belly);
     }
 
     public void Play(string clip, float weight = 1) => Request(a => a.Play(clip, weight));
@@ -210,6 +215,75 @@ internal sealed class LiveViewport : IDisposable
         if (!Live) return;
         _eyeTarget = Vector2.Zero;
         Kick();
+    }
+
+    // IBloopReactor: touches land in the panel's DIPs; regions come from the current skinned pose projected to screen.
+    public bool Ready => Live && _motion is not null && _viewProj != default;
+
+    public BodyRegion RegionAt(Vector2 p)
+    {
+        if (!Ready) return BodyRegion.None;
+        var j = Joints();
+        if (AppData.DebugGesture is not null && !_jointsLogged)
+        {
+            _jointsLogged = true;
+            Logger.Log($"3d joints top {j.Top} bottom {j.Bottom} center {j.Center} half {j.HalfWidth:F1} hands {j.LeftHand} {j.RightHand}");
+        }
+        return BodyMap.FromJoints(p, j);
+    }
+
+    public Vector2? PointFor(BodyRegion region)
+    {
+        if (!Ready) return null;
+        var j = Joints();
+        return region switch
+        {
+            BodyRegion.LeftHand => j.LeftHand,
+            BodyRegion.RightHand => j.RightHand,
+            _ => BodyMap.Denormalize(BodyMap.AnchorFor(region), j),
+        };
+    }
+
+    public void React(in GestureEvent e, BodyRegion region)
+    {
+        if (!Ready || _motion is null) return;
+        _motion.Joints = Joints();
+        _motion.React(e, region);
+        Wake();
+    }
+
+    private Vector2 ProjectNode(int node)
+    {
+        if (node < 0 || node >= _world.Length) return Vector2.Zero;
+        var v = Vector4.Transform(new Vector4(_world[node].Translation, 1), _viewProj);
+        if (Math.Abs(v.W) < 1e-6f) return Vector2.Zero;
+        return new Vector2((float)((v.X / v.W + 1) / 2 * _panel.Width), (float)((1 - v.Y / v.W) / 2 * _panel.Height));
+    }
+
+    private BodyJoints Joints()
+    {
+        var m = _motion!;
+        var center = ProjectNode(m.Body);
+        var top = ProjectNode(m.JellyTop);
+        top = center + (top - center) * 1.3f;
+        var ground = ProjectNode(m.Root);
+        var bottom = ground.Y > center.Y + 2 ? ground : center + (ProjectNode(m.JellyBottom) - center) * 1.3f;
+        var half = Math.Max(Math.Abs(ProjectNode(m.JellyL).X - center.X), Math.Abs(ProjectNode(m.JellyR).X - center.X)) * 1.15f;
+        if (half < 4) half = 0.4f * Math.Max(8, bottom.Y - top.Y);
+        var a = ProjectNode(m.HandL);
+        var b = ProjectNode(m.HandR);
+        var (left, right) = a.X <= b.X ? (a, b) : (b, a);
+        return new BodyJoints(top, bottom, center, half, left, right, Math.Max(8, 0.32f * half));
+    }
+
+    // Debug only (--debug-gesture with --debug-3d-dump): frames to save after an injected gesture, with a label.
+    private readonly List<(double At, string Label)> _dumpRequests = [];
+
+    public void RequestDumps(string label, params double[] after)
+    {
+        if (!AppData.Debug3DDump) return;
+        foreach (var a in after) _dumpRequests.Add((Now + a, label));
+        Wake();
     }
 
     private void Request(Action<BloopAnimator> request)
@@ -370,9 +444,7 @@ internal sealed class LiveViewport : IDisposable
         while (_acc >= h)
         {
             _acc -= h;
-            // Poke: about 7 Hz, damping ratio 0.3.
-            _squashVel += (-1935 * _squash - 26.4 * _squashVel) * h;
-            _squash += _squashVel * h;
+            _motion?.Step((float)h);
             // Body turn: critically damped approach to the pointer goal (time constant about 0.1 s), speed capped.
             var accel = 400f * (_eyeTarget - _eye) - 40f * _eyeVel;
             _eyeVel += accel * (float)h;
@@ -381,11 +453,11 @@ internal sealed class LiveViewport : IDisposable
             _eye += _eyeVel * (float)h;
         }
 
-        var springs = Math.Abs(_squash) > 1e-4 || Math.Abs(_squashVel) > 1e-3
-            || Vector2.Distance(_eye, _eyeTarget) > 1e-3 || _eyeVel.Length() > 1e-2;
-        if (!springs)
+        _motion?.Update(now, (float)dt);
+        var eyeMoving = Vector2.Distance(_eye, _eyeTarget) > 1e-3 || _eyeVel.Length() > 1e-2;
+        var springs = eyeMoving || _motion is { Busy: true };
+        if (!eyeMoving)
         {
-            _squash = _squashVel = 0;
             _eye = _eyeTarget;
             _eyeVel = Vector2.Zero;
         }
@@ -434,17 +506,10 @@ internal sealed class LiveViewport : IDisposable
         var model = s.Bloop.Model;
         var pose = _anim.Evaluate();
 
-        var body = model.NodeIndex("body");
-        if (body >= 0)
-        {
-            var sy = (float)(1 + Math.Max(_squash, -0.4));
-            var sxz = 1 / MathF.Sqrt(sy);
-            pose.S[body] *= new Vector3(sxz, sy, sxz);
-            var turn = Quaternion.CreateFromYawPitchRoll(0.35f * _eye.X, 0.15f * _eye.Y, 0);
-            pose.R[body] = Quaternion.Concatenate(pose.R[body], turn);
-        }
+        if (_world.Length != model.Nodes.Length) _world = new Matrix4x4[model.Nodes.Length];
+        _motion?.Apply(pose, _world, model, _eye);
 
-        Span<Matrix4x4> world = stackalloc Matrix4x4[model.Nodes.Length];
+        Span<Matrix4x4> world = _world;
         model.ComputeWorld(pose, world);
         var skin = new SkinConstants();
         Span<Matrix4x4> joints = skin.Joints;
@@ -457,9 +522,10 @@ internal sealed class LiveViewport : IDisposable
         var unit = 2 * top / _height;
         var cx = (float)(_centerX / _panel.Width * _width);
         var proj = Matrix4x4.CreatePerspectiveOffCenter(-cx * unit, (_width - cx) * unit, -top, top, near, 1f);
+        _viewProj = view * proj;
         var frame = new FrameConstants
         {
-            ViewProj = view * proj,
+            ViewProj = _viewProj,
             LightDir = Vector3.Normalize(new Vector3(-0.55f, 0.8f, 0.55f)),
             CameraPos = camPos,
             KeyColor = new Vector3(1.0f, 0.97f, 0.92f),
@@ -530,7 +596,23 @@ internal sealed class LiveViewport : IDisposable
         {
             if (s.SampleCount > 1) ctx.ResolveSubresource(back, 0, _msaa, 0, Format.B8G8R8A8_UNorm);
             else ctx.CopyResource(back, _msaa);
-            if (AppData.Debug3DDump && Now >= _nextDump && _dumps < 16) DumpFrame(s, back);
+            if (AppData.Debug3DDump)
+            {
+                if (AppData.DebugGesture is null)
+                {
+                    if (Now >= _nextDump && _dumps < 16) DumpFrame(s, back, null);
+                }
+                else
+                {
+                    for (var i = 0; i < _dumpRequests.Count; i++)
+                    {
+                        if (Now < _dumpRequests[i].At || _dumps >= 120) continue;
+                        DumpFrame(s, back, _dumpRequests[i].Label);
+                        _dumpRequests.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
         }
         _swap.Present(1, PresentFlags.None).CheckError();
         Interlocked.Increment(ref Presents);
@@ -581,7 +663,7 @@ internal sealed class LiveViewport : IDisposable
 
     // Debug only (--debug-3d-dump): reads the presented image back into a new PNG in %TEMP%, about every 1.5 s while
     // frames are running, so the render can be checked when the screen cannot be captured. Never overwrites a file.
-    private void DumpFrame(Stage3D s, ID3D11Texture2D back)
+    private void DumpFrame(Stage3D s, ID3D11Texture2D back, string? label)
     {
         _nextDump = Now + 1.5;
         _dumps++;
@@ -594,7 +676,7 @@ internal sealed class LiveViewport : IDisposable
             using var bmp = new SkiaSharp.SKBitmap(new SkiaSharp.SKImageInfo((int)_width, (int)_height, SkiaSharp.SKColorType.Bgra8888, SkiaSharp.SKAlphaType.Premul));
             for (var y = 0; y < _height; y++)
                 unsafe { Buffer.MemoryCopy((byte*)map.DataPointer + y * map.RowPitch, (byte*)bmp.GetPixels() + y * bmp.RowBytes, bmp.RowBytes, _width * 4); }
-            var path = Path.Combine(Path.GetTempPath(), $"dp-3d-{(_home ? "home" : "card")}-{Environment.ProcessId}-{Now:00.0}s-{_anim?.CurrentClip ?? "idle"}.png");
+            var path = Path.Combine(Path.GetTempPath(), $"dp-3d-{(_home ? "home" : "card")}-{Environment.ProcessId}-{Now:00.0}s-{label ?? _anim?.CurrentClip ?? "idle"}-{_dumps}.png");
             using var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write);
             bmp.Encode(file, SkiaSharp.SKEncodedImageFormat.Png, 100);
             Logger.Log($"3d frame dump {Path.GetFileName(path)}");

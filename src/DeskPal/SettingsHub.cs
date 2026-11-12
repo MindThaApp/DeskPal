@@ -12,6 +12,18 @@ public sealed class SettingsHub(DeskPalSettings settings, NudgeScheduler schedul
     // Set once the Automation Portal link is running; the settings page reads its skipped-events count.
     public AutomationPortalLink? Link { get; set; }
 
+    // Bloop's interaction sounds. Setting it saves and tells every view (speaker toggles bind to this).
+    public bool InteractionSounds
+    {
+        get => Settings.InteractionSounds;
+        set
+        {
+            if (Settings.InteractionSounds == value) return;
+            Settings.InteractionSounds = value;
+            Commit(false);
+        }
+    }
+
     // Tells every view to refresh without saving anything.
     public void RaiseChanged() => Changed?.Invoke();
 

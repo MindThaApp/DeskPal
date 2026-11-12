@@ -187,9 +187,10 @@ internal sealed class BloopAnimator
 {
     private const float Fade = 0.2f;
 
-    private sealed class Layer(AnimationClip clip, float weight, bool loop)
+    private sealed class Layer(AnimationClip clip, float weight, bool loop, float fade = Fade)
     {
         public AnimationClip Clip { get; } = clip;
+        public float FadeTime { get; } = fade;
         public float MaxWeight { get; } = weight;
         public bool Loop { get; } = loop;
         public float Time;
@@ -200,9 +201,9 @@ internal sealed class BloopAnimator
         {
             get
             {
-                if (FadeOutLeft >= 0) return FadeFrom * FadeOutLeft / Fade;
-                var w = Math.Min(1, Time / Fade);
-                if (!Loop) w = Math.Min(w, (Clip.Duration - Time) / Fade);
+                if (FadeOutLeft >= 0) return FadeFrom * FadeOutLeft / FadeTime;
+                var w = Math.Min(1, Time / FadeTime);
+                if (!Loop) w = Math.Min(w, (Clip.Duration - Time) / FadeTime);
                 return Math.Clamp(w, 0, 1) * MaxWeight;
             }
         }
@@ -211,7 +212,7 @@ internal sealed class BloopAnimator
         {
             if (FadeOutLeft >= 0) return;
             FadeFrom = Weight;
-            FadeOutLeft = Fade;
+            FadeOutLeft = FadeTime;
         }
     }
 
@@ -223,7 +224,8 @@ internal sealed class BloopAnimator
     private readonly Queue<(AnimationClip Clip, float Weight, bool Loop)> _queue = new();
     private float _baseTime;
     private Layer? _current;
-    private Layer? _previous;
+    // Outgoing actions still fading out; a fast run of interrupts never drops one mid-fade (that popped).
+    private readonly Layer?[] _fading = new Layer?[3];
     private AnimationClip? _repeat;
     private float _repeatGap;
     private float _gapLeft;
@@ -241,14 +243,19 @@ internal sealed class BloopAnimator
     public GltfModel Model => _model;
     public event Action<string>? ClipStarted;
 
-    public bool ActionActive => _current is not null || _previous is not null || _queue.Count > 0 || _repeat is not null;
+    public bool ActionActive => _current is not null || FadingAny || _queue.Count > 0 || _repeat is not null;
+
+    private bool FadingAny => _fading[0] is not null || _fading[1] is not null || _fading[2] is not null;
+
+    public float CurrentProgress => _current is { } c && c.Clip.Duration > 0 ? c.Time / c.Clip.Duration : 1;
     public bool Blinking => _blinkTime >= 0;
     public string? CurrentClip => _current?.Clip.Name;
 
     public void Reset()
     {
         _queue.Clear();
-        _current = _previous = null;
+        _current = null;
+        Array.Clear(_fading);
         _repeat = null;
         _blinkTime = -1;
     }
@@ -293,11 +300,12 @@ internal sealed class BloopAnimator
         if (_base is not null && _base.Duration > 0)
             _baseTime = (_baseTime + dt * baseRate) % _base.Duration;
 
-        if (_previous is not null)
+        for (var i = 0; i < _fading.Length; i++)
         {
-            _previous.Time += dt;
-            _previous.FadeOutLeft -= dt;
-            if (_previous.FadeOutLeft <= 0) _previous = null;
+            if (_fading[i] is not { } f) continue;
+            f.Time += dt;
+            f.FadeOutLeft -= dt;
+            if (f.FadeOutLeft <= 0) _fading[i] = null;
         }
 
         if (_current is { } cur)
@@ -340,16 +348,38 @@ internal sealed class BloopAnimator
         }
     }
 
+    // Starts a reaction clip now, crossfading over the current action in `fade` seconds. Nothing queues behind a
+    // long clip: the queue is dropped, but a repeat (a nudge card demo) carries on after the reaction ends.
+    public void Interrupt(string name, float weight = 1, float fade = 0.12f)
+    {
+        if (!_model.Clips.TryGetValue(name, out var clip) || clip.Duration <= 0) return;
+        _queue.Clear();
+        Begin(clip, weight, false, fade);
+        _gapLeft = _repeatGap;
+    }
+
     private void StartNext()
     {
         if (_queue.Count == 0) return;
         var (clip, weight, loop) = _queue.Dequeue();
+        Begin(clip, weight, loop, Fade);
+    }
+
+    private void Begin(AnimationClip clip, float weight, bool loop, float fade)
+    {
         if (_current is not null)
         {
             _current.StartFadeOut();
-            _previous = _current;
+            // Reuse a free slot, else replace the faintest fading layer.
+            var slot = 0;
+            for (var i = 0; i < _fading.Length; i++)
+            {
+                if (_fading[i] is null) { slot = i; break; }
+                if (_fading[i]!.Weight < _fading[slot]!.Weight) slot = i;
+            }
+            _fading[slot] = _current;
         }
-        _current = new Layer(clip, weight, loop);
+        _current = new Layer(clip, weight, loop, fade);
         ClipStarted?.Invoke(clip.Name);
     }
 
@@ -357,7 +387,7 @@ internal sealed class BloopAnimator
     {
         _pose.Reset(_model);
         _base?.Sample(_baseTime, _pose);
-        Mix(_previous);
+        foreach (var f in _fading) Mix(f);
         Mix(_current);
         if (_blink is not null && _blinkTime >= 0)
         {

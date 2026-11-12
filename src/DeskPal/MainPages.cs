@@ -133,9 +133,12 @@ public sealed class BloopPage : Page
             buttons.Add((key, button));
             row.Children.Add(button);
         }
+        var sounds = new ToggleSwitch { Header = "Bloop sounds", OnContent = "On", OffContent = "Off", IsOn = ctx.Hub.InteractionSounds };
+        sounds.Toggled += (_, _) => ctx.Hub.InteractionSounds = sounds.IsOn;
         ctx.Hub.Changed += () =>
         {
             foreach (var (key, b) in buttons) b.IsChecked = Current(settings) == key;
+            if (sounds.IsOn != ctx.Hub.InteractionSounds) sounds.IsOn = ctx.Hub.InteractionSounds;
         };
 
         Content = PageKit.Scroll(new StackPanel
@@ -144,7 +147,8 @@ public sealed class BloopPage : Page
             {
                 PageKit.Title("Bloop"),
                 PageKit.Heading("Look"), row,
-                PageKit.Heading("Play"), PageKit.Body("Click Bloop on the Home page to poke it, and watch its eyes follow your pointer."),
+                PageKit.Heading("Play"), PageKit.Body("On the Home page, tap Bloop's belly, head, cheeks, hands or feet, tap a few times in a row, hold, pet it back and forth, or swipe across it. Each one gets its own reaction, and its eyes follow your pointer."),
+                sounds,
                 PageKit.Heading("Bond"), PageKit.Body("Bond level: coming soon.", 0.7),
                 PageKit.Heading("Evolution"), PageKit.Body("Evolution: coming soon.", 0.7),
             },

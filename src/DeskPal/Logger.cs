@@ -18,13 +18,18 @@ public static class AppData
     // panel while it is away.
     public static readonly bool DebugBloopDrag = HasArg("--debug-bloop-drag");
     public static readonly bool DebugBloopExit = HasArg("--debug-bloop-exit");
-    public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke;
+    // --debug-gesture=<region>:<gesture>[,...] (or "all"): synthetic gestures fed to the Home Bloop's own touch handler.
+    public static readonly string? DebugGesture = ArgValue("--debug-gesture=");
+    public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugGesture is not null;
 
     // Debug runs keep their own state and log so they never touch the real ones.
     public static readonly string Dir = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeskPal", IsDebugRun ? "debug" : "");
     public static readonly string SettingsPath = Path.Combine(Dir, "settings.json");
     public static readonly string StatePath = Path.Combine(Dir, "state.json");
+
+    private static string? ArgValue(string prefix) =>
+        Environment.GetCommandLineArgs().Skip(1).FirstOrDefault(a => a.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))?[prefix.Length..];
 
     private static bool HasArg(string name) =>
         Environment.GetCommandLineArgs().Skip(1).Any(a => string.Equals(a, name, StringComparison.OrdinalIgnoreCase));

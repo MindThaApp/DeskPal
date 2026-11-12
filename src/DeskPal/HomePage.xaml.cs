@@ -3,6 +3,7 @@ using DeskPal.Core;
 using DeskPal.Render;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 
@@ -25,13 +26,19 @@ public sealed partial class HomePage : Page
     private string _style = "";
     private long _loadVersion;
     private int _debugPokes;
+    private readonly Bloop2D _flat;
+    private readonly BloopTouch _touch;
+    private bool _debugGesturesStarted;
 
     public HomePage(MainContext ctx)
     {
         _ctx = ctx;
         InitializeComponent();
+        _flat = new Bloop2D(Avatar, Stage, () => _style, 640);
+        _touch = new BloopTouch(Stage, CurrentReactor);
+        UpdateSoundButton();
         _timer.Tick += (_, _) => TickGuard.Run("home-refresh", Refresh);
-        _ctx.Hub.Changed += () => { if (_active) TickGuard.Run("home-settings", () => { Refresh(); _ = LoadStyleAsync(); }); };
+        _ctx.Hub.Changed += () => { UpdateSoundButton(); if (_active) TickGuard.Run("home-settings", () => { Refresh(); _ = LoadStyleAsync(); }); };
     }
 
     // Called when the page is on screen and the window is showing; false lets the 3D surface go to sleep.
@@ -83,6 +90,7 @@ public sealed partial class HomePage : Page
             var sprout = await NudgeCardWindow.LoadAvatarAsync(style, "sprout-mood-happy", 192);
             if (version != _loadVersion) return;
             Avatar.Source = bloop;
+            _flat.ResetPictures();
             SproutImage.Source = sprout;
         }
         if (wantLive && _active)
@@ -105,6 +113,7 @@ public sealed partial class HomePage : Page
             _viewport.SproutStage = _ctx.Hub.Settings.SproutStage;
             _viewport.Show(XamlRoot?.RasterizationScale ?? 1.0);
         }
+        else if (_active) StartDebugGestures();
     }
 
     // The swap chain area shows the window backdrop directly: the NavigationView content layer (LayerFillColorDefault,
@@ -137,6 +146,7 @@ public sealed partial class HomePage : Page
             sb.Children.Add(a);
         }
 
+        StartDebugGestures();
         if (!AppData.DebugPoke || _debugPokes > 0) return;
         foreach (var at in new[] { 2.0, 5, 8, 11, 15 })
         {
@@ -155,9 +165,26 @@ public sealed partial class HomePage : Page
         }
     }
 
-    private void OnStagePressed(object sender, PointerRoutedEventArgs e) => Poke();
+    // The live 3D Bloop once it is on screen, else the picture.
+    private IBloopReactor? CurrentReactor() =>
+        _live && LivePanel.Visibility == Visibility.Visible && _viewport is { Ready: true } v ? v : _flat;
 
-    private void OnStageDoubleTapped(object sender, DoubleTappedRoutedEventArgs e) => Celebrate();
+    private void StartDebugGestures()
+    {
+        if (AppData.DebugGesture is null || _debugGesturesStarted) return;
+        _debugGesturesStarted = true;
+        DebugGestures.Run(_touch, CurrentReactor, _live ? _viewport : null);
+    }
+
+    private void UpdateSoundButton()
+    {
+        var on = _ctx.Hub.InteractionSounds;
+        SoundIcon.Glyph = on ? "\uE767" : "\uE74F";
+        SoundText.Text = on ? "Sounds on" : "Sounds off";
+        AutomationProperties.SetName(SoundButton, on ? "Bloop sounds on, click to mute" : "Bloop sounds off, click to turn on");
+    }
+
+    private void OnToggleSound(object sender, RoutedEventArgs e) => _ctx.Hub.InteractionSounds = !_ctx.Hub.InteractionSounds;
 
     private void OnSproutPressed(object sender, PointerRoutedEventArgs e) => _viewport?.SproutHappy();
 
@@ -166,25 +193,11 @@ public sealed partial class HomePage : Page
         if (_live && LivePanel.Visibility == Visibility.Visible) _viewport?.Play("celebrate");
     }
 
+    // Debug pokes go through the same touch path as a real tap on the belly.
     private void Poke()
     {
-        if (_live && LivePanel.Visibility == Visibility.Visible)
-        {
-            _viewport?.Poke(withClip: true);
-            return;
-        }
-        var d = new Duration(TimeSpan.FromMilliseconds(650));
-        var ease = new ElasticEase { EasingMode = EasingMode.EaseOut, Oscillations = 3, Springiness = 4 };
-        var sy = new DoubleAnimation { From = 0.78, To = 1, Duration = d, EasingFunction = ease };
-        var sx = new DoubleAnimation { From = 1.14, To = 1, Duration = d, EasingFunction = ease };
-        Storyboard.SetTarget(sy, Squish);
-        Storyboard.SetTargetProperty(sy, "ScaleY");
-        Storyboard.SetTarget(sx, Squish);
-        Storyboard.SetTargetProperty(sx, "ScaleX");
-        var sb = new Storyboard();
-        sb.Children.Add(sy);
-        sb.Children.Add(sx);
-        sb.Begin();
+        if (CurrentReactor()?.PointFor(BodyRegion.Belly) is not { } p) return;
+        if (_touch.SampleDown(p)) _touch.SampleUp(p);
     }
 
     private void OnPointerMoved(object sender, PointerRoutedEventArgs e)
