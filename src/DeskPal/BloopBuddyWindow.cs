@@ -77,6 +77,8 @@ internal static class BloopStage
 // is only hidden.
 internal sealed class BloopBuddyWindow : Window
 {
+    // The window is a clear square bigger than Bloop's body, so moves that reach out (arms overhead, side bends,
+    // star jumps) stay inside it; the 3D panel fills the window and draws Bloop at body size in the middle.
     private const double WindowDip = 150;
     private const double BodyDip = 112;
     private const double HitRadiusDip = 64;
@@ -91,9 +93,13 @@ internal sealed class BloopBuddyWindow : Window
     private readonly IntPtr _hwnd;
     private BloopClaim? _claim;
     private readonly Grid _root = new();
-    private readonly Grid _body = new() { Width = BodyDip, Height = BodyDip, Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent) };
-    private readonly Image _avatar = new() { Stretch = Stretch.Uniform, IsHitTestVisible = false };
-    private readonly SwapChainPanel _live = new() { Width = BodyDip, Height = BodyDip, IsHitTestVisible = false, Opacity = 0, Visibility = Visibility.Collapsed };
+    private readonly Grid _body = new() { Width = WindowDip, Height = WindowDip, Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent) };
+    private readonly Image _avatar = new()
+    {
+        Width = BodyDip, Height = BodyDip, Stretch = Stretch.Uniform, IsHitTestVisible = false,
+        HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center,
+    };
+    private readonly SwapChainPanel _live = new() { Width = WindowDip, Height = WindowDip, IsHitTestVisible = false, Opacity = 0, Visibility = Visibility.Collapsed };
     private readonly MatrixTransform _shape = new();
     private readonly TranslateTransform _drift = new();
     private readonly DispatcherQueueTimer _timer;
@@ -151,6 +157,7 @@ internal sealed class BloopBuddyWindow : Window
         // turns into a window drag (the rule in the frame loop) is cancelled as a gesture.
         _touch = new BloopTouch(_live, () => _viewport is { Ready: true } v && _live.Visibility == Visibility.Visible ? v : null, attach: false);
         _root.Children.Add(_body);
+        _root.Loaded += (_, _) => { if (_root.XamlRoot is { } x) { x.Changed -= OnXamlRootChanged; x.Changed += OnXamlRootChanged; } };
         Content = _root;
 
         _hwnd = WindowNative.GetWindowHandle(this);
@@ -201,7 +208,6 @@ internal sealed class BloopBuddyWindow : Window
     {
         _claim = claim;
         _size = claim.Size;
-        _body.Width = _body.Height = _live.Width = _live.Height = BodyDip * _size;
         SetWindowLongPtr(_hwnd, GWLP_HWNDPARENT, claim.Owner);
         var wasShown = _mode != Mode.Hidden;
         ShowAt(claim.Placement);
@@ -234,7 +240,13 @@ internal sealed class BloopBuddyWindow : Window
     {
         _placement = placement;
         _scale = placement.Scale;
+        var oldPx = _sizePx;
         _sizePx = (int)Math.Round(WindowDip * _size * _scale);
+        Layout();
+        // Moving between cards of different sizes (quick panel, reminder card): the window is resized around
+        // Bloop's middle, so the body, the 3D panel and the click circle all stay centred in it.
+        var resized = _mode != Mode.Hidden && oldPx != _sizePx;
+        if (resized) _pos += new Vector2((oldPx - _sizePx) / 2f);
         _home = HomeFor(placement);
         _exiting = false;
         _fadeStart = -1;
@@ -257,6 +269,7 @@ internal sealed class BloopBuddyWindow : Window
             return;
         }
         ApplyRegion();
+        if (resized) MoveWindow(force: true);
         if (_mode == Mode.Hopping) StartHop();
         Log("reopen");
     }
@@ -519,6 +532,37 @@ internal sealed class BloopBuddyWindow : Window
         _shownY = y;
     }
 
+    // The scale XAML lays this window out at; it can differ from the card's (another monitor, a Remote Desktop
+    // session that changed the display scale), so sizes in DIPs are worked out from the window's pixel size.
+    private double XamlScale => _root.XamlRoot?.RasterizationScale is > 0 and var r ? r : GetDpiForWindow(_hwnd) / 96.0;
+
+    // Body, avatar and 3D panel sized from the window's pixel size at the window's own scale.
+    private void Layout()
+    {
+        if (_sizePx <= 0) return;
+        var xs = XamlScale;
+        _layoutScale = xs;
+        var windowDip = _sizePx / xs;
+        var bodyDip = windowDip * BodyDip / WindowDip;
+        _body.Width = _body.Height = _live.Width = _live.Height = windowDip;
+        _avatar.Width = _avatar.Height = bodyDip;
+        if (_viewport is not null) _viewport.BodyShare = BodyDip / WindowDip;
+    }
+
+    private double _layoutScale;
+
+    // The window's display scale changed (WM_DPICHANGED, a Remote Desktop reconnect): keep the pixel size, redo the
+    // layout, the click circle and the 3D swap chain.
+    private void OnXamlRootChanged(XamlRoot sender, XamlRootChangedEventArgs args)
+    {
+        if (_mode == Mode.Hidden || Math.Abs(XamlScale - _layoutScale) < 0.001) return;
+        Layout();
+        MoveWindow(force: true);
+        ApplyRegion();
+        _viewport?.Resize(XamlScale);
+        Log($"scale changed to {XamlScale:F2}");
+    }
+
     // Only a circle around Bloop takes clicks; outside it they reach whatever is underneath.
     private void ApplyRegion()
     {
@@ -627,7 +671,7 @@ internal sealed class BloopBuddyWindow : Window
         _live.Visibility = Visibility.Visible;
         if (_viewport is null)
         {
-            _viewport = new LiveViewport(_live);
+            _viewport = new LiveViewport(_live) { BodyShare = BodyDip / WindowDip };
             _viewport.FirstFrame += () => TickGuard.Run("bloop-buddy-first-frame", () =>
             {
                 _live.Opacity = 1;
@@ -642,7 +686,8 @@ internal sealed class BloopBuddyWindow : Window
                 Log("3d failed, 2D shown");
             });
         }
-        _viewport.Show(GetDpiForWindow(_hwnd) / 96.0);
+        Layout();
+        _viewport.Show(XamlScale);
         claim.Clips?.Invoke(_viewport);
     }
 

@@ -30,7 +30,8 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
 
     private readonly SwapChainPanel _panel;
     private readonly bool _home;
-    private readonly double _centerX;
+    // Where Bloop's middle sits across the panel, as a share of its width, so it holds when the panel is resized.
+    private readonly double _centerShare;
     private readonly Random _random = new();
     private bool _rendering;
     private double _lastPresent;
@@ -79,7 +80,7 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
     {
         _panel = panel;
         _home = home;
-        _centerX = double.IsNaN(centerX) ? panel.Width / 2 : centerX;
+        _centerShare = double.IsNaN(centerX) || !(panel.Width > 0) ? 0.5 : centerX / panel.Width;
         var dq = DispatcherQueue.GetForCurrentThread();
         _teardownTimer = dq.CreateTimer();
         _teardownTimer.IsRepeating = false;
@@ -218,6 +219,21 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
     }
 
     // IBloopReactor: touches land in the panel's DIPs; regions come from the current skinned pose projected to screen.
+    // Share of the panel height Bloop's framing square takes. Below 1 the panel is bigger than Bloop and leaves
+    // room around it for moves that reach out (arms overhead, star jumps); Bloop keeps the same on-screen size.
+    public double BodyShare { get; set; } = 1;
+
+    // The panel was resized or its display scale changed: rebuilds the swap chain at the new pixel size and redraws.
+    public void Resize(double scale)
+    {
+        if (!_visible || _stage is null || _swap is null) return;
+        Guarded("resize", () =>
+        {
+            EnsureSwapChain(scale);
+            RenderFrame();
+        });
+    }
+
     public bool Ready => Live && _motion is not null && _viewProj != default;
 
     public BodyRegion RegionAt(Vector2 p)
@@ -519,9 +535,10 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
         var view = Matrix4x4.CreateLookAt(camPos, new Vector3(0, 0.042f, 0), Vector3.UnitY);
         const float near = 0.01f;
         var top = near * MathF.Tan(15f * MathF.PI / 180);
-        var unit = 2 * top / _height;
-        var cx = (float)(_centerX / _panel.Width * _width);
-        var proj = Matrix4x4.CreatePerspectiveOffCenter(-cx * unit, (_width - cx) * unit, -top, top, near, 1f);
+        var unit = 2 * top / (float)(_height * Math.Clamp(BodyShare, 0.1, 1));
+        var cx = (float)(_centerShare * _width);
+        var half = _height / 2f * unit;
+        var proj = Matrix4x4.CreatePerspectiveOffCenter(-cx * unit, (_width - cx) * unit, -half, half, near, 1f);
         _viewProj = view * proj;
         var frame = new FrameConstants
         {

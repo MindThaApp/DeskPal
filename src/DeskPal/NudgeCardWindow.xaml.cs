@@ -22,7 +22,7 @@ public sealed partial class NudgeCardWindow : Window
 {
     private const int WidthDip = 300;
     private const int MarginDip = 12;
-    private const double BloopSize = 0.65;
+    private const double BloopSize = 1.6; // Bloop shows each move clearly next to the card
 
     private readonly ICommandRouter _router;
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMilliseconds(100) };
@@ -52,7 +52,7 @@ public sealed partial class NudgeCardWindow : Window
 
         // Never takes focus from the user's app; same soft card as the quick panel, with no light outline.
         CardChrome.Apply(this, _hwnd, CardChrome.Round, noActivate: true);
-        Root.PointerEntered += (_, _) => TickGuard.Run("nudge-hover-in", () => { _hovered = true; UpdatePause(); });
+        Root.PointerEntered += (_, _) => TickGuard.Run("nudge-hover-in", () => { _hovered = true; Engage(); UpdatePause(); });
         Root.PointerExited += (_, _) => TickGuard.Run("nudge-hover-out", () => { _hovered = false; UpdatePause(); });
     }
 
@@ -76,7 +76,7 @@ public sealed partial class NudgeCardWindow : Window
 
         _shownAtTick = Environment.TickCount64;
         _timedSeconds = nudge.TimedSeconds ?? 0;
-        _timedEndTick = _shownAtTick + _timedSeconds * 1000L;
+        _timedEndTick = long.MaxValue; // set when the user engages
         CountdownPanel.Visibility = _timedSeconds > 0 ? Visibility.Visible : Visibility.Collapsed;
         DoneButton.IsEnabled = _timedSeconds == 0;
         SnoozeButton.IsEnabled = MoreButton.IsEnabled = true;
@@ -141,12 +141,15 @@ public sealed partial class NudgeCardWindow : Window
             _ when nudge.Kinds.Contains(NudgeKind.Stretch) => ("stretch_overhead", false, 1.5f),
             _ => ((string?)null, false, 0f),
         };
+        // Debug runs only: DESKPAL_DEBUG_CLIP picks the move Bloop shows, to check each one fits on screen.
+        if (AppData.IsDebugRun && Environment.GetEnvironmentVariable("DESKPAL_DEBUG_CLIP") is { Length: > 0 } debugClip) clip = debugClip;
         viewport.PlaySequence("wave");
         if (clip is null) return;
         if (loop) viewport.Loop(clip);
         else viewport.Repeat(clip, gap);
         _repeating = true;
-        _repeatUntilTick = _timedSeconds > 0 ? _timedEndTick : _shownAtTick + 12_000;
+        _repeatUntilTick = _timedSeconds > 0 && _autoHide.Engaged ? _timedEndTick
+            : _shownAtTick + (_timedSeconds > 0 ? HideSeconds() * 1000L : 12_000);
     }
 
     // Done: a high five from Bloop beside the card, then a little celebration, then the card goes.
@@ -191,7 +194,7 @@ public sealed partial class NudgeCardWindow : Window
     private void FadeOutAndExpire()
     {
         if (_nudge is not { } nudge) return;
-        Logger.Log("card countdown ran out");
+        Logger.Log($"card countdown ran out after {(Environment.TickCount64 - _shownAtTick) / 1000.0:F1} s (engaged {_autoHide.Engaged})");
         _repeating = false;
         _timer.Stop();
         _autoHide.Stop();
@@ -289,7 +292,7 @@ public sealed partial class NudgeCardWindow : Window
         if (_nudge is null) return;
         var now = Environment.TickCount64;
         var busy = BloopStage.Owns(this) && BloopStage.Window is { IsBusy: true };
-        if (busy != _bloopBusy) { _bloopBusy = busy; UpdatePause(); }
+        if (busy != _bloopBusy) { _bloopBusy = busy; if (busy) Engage(); UpdatePause(); }
         if (_autoHide.Expired(now))
         {
             FadeOutAndExpire();
@@ -301,6 +304,19 @@ public sealed partial class NudgeCardWindow : Window
             _repeating = false;
             BloopStage.LiveFor(this)?.StopRepeat();
         }
+    }
+
+    // The user hovered the card, touched Bloop or used a card button: a timed exercise starts its own countdown now,
+    // and Bloop keeps showing the move until it ends.
+    private void Engage()
+    {
+        if (_nudge is null) return;
+        var now = Environment.TickCount64;
+        if (!_autoHide.Engage(now)) return;
+        _timedEndTick = _autoHide.ExerciseEndMs;
+        if (_repeating) _repeatUntilTick = _timedEndTick;
+        if (AppData.IsDebugRun) Logger.Log($"card engaged, exercise runs {_timedSeconds} s");
+        UpdateCountdown();
     }
 
     // The countdown waits while the pointer is on the card or Bloop is pressed, dragged or away.
@@ -318,7 +334,7 @@ public sealed partial class NudgeCardWindow : Window
         var now = Environment.TickCount64;
         HideLineScale.ScaleX = _autoHide.Fraction(now);
         if (_timedSeconds <= 0) return;
-        var leftMs = Math.Max(0, _timedEndTick - now);
+        var leftMs = _autoHide.Engaged ? Math.Max(0, _timedEndTick - now) : _timedSeconds * 1000L;
         CountdownText.Text = $"{(int)Math.Ceiling(leftMs / 1000.0)} s";
         if (leftMs == 0) DoneButton.IsEnabled = true;
         Ring.Value = 100.0 * (1 - leftMs / (_timedSeconds * 1000.0));
