@@ -11,6 +11,7 @@ public sealed class NudgeScheduler : ICommandRouter
     public const string SnoozeSource = "snooze";
     public const string ManualSource = "manual";
     public const string CallSource = "call";
+    public const string FocusSource = "focus";
     public const string LongCallMessage = "That was a long one. Stretch?";
 
     private static readonly NudgeKind[] Scheduled = [NudgeKind.Stretch, NudgeKind.Eyes, NudgeKind.Water];
@@ -108,6 +109,11 @@ public sealed class NudgeScheduler : ICommandRouter
     public Hold? ManualHold
     {
         get { lock (_gate) return _holds.FirstOrDefault(h => h.Source == ManualSource); }
+    }
+
+    public Hold? FocusHold
+    {
+        get { lock (_gate) return _holds.FirstOrDefault(h => h.Source == FocusSource); }
     }
 
     public int PendingCount
@@ -272,6 +278,9 @@ public sealed class NudgeScheduler : ICommandRouter
             case TestNudgeCommand: return RequestNudge();
             case PauseCommand c: return Pause(c);
             case ResumeCommand: return EndHold(ManualSource);
+            case BreakNowCommand c: return BreakNow(c.Kind);
+            case FocusCommand c when c.Minutes > 0: StartHold(FocusSource, "Focus", Now.AddMinutes(c.Minutes)); return true;
+            case FocusOffCommand: return EndHold(FocusSource);
             default: return false;
         }
     }
@@ -282,6 +291,17 @@ public sealed class NudgeScheduler : ICommandRouter
         {
             if (Current is not null) return false;
             Show([NudgeKind.Stretch], Now, isTest: true, longCall: false);
+            return true;
+        }
+    }
+
+    private bool BreakNow(NudgeKind kind)
+    {
+        if (kind is not (NudgeKind.Stretch or NudgeKind.Water or NudgeKind.Eyes or NudgeKind.Walk)) return false;
+        lock (_gate)
+        {
+            if (Current is not null) return false;
+            Show([kind], Now, isTest: false, longCall: false);
             return true;
         }
     }
@@ -362,6 +382,7 @@ public sealed class NudgeScheduler : ICommandRouter
                     if (nudge.Kinds.Contains(NudgeKind.Walk)) { StretchesCompleted = 0; _walksToday++; }
                     else if (nudge.Kinds.Contains(NudgeKind.Stretch)) StretchesCompleted++;
                     if (nudge.Kinds.Contains(NudgeKind.Walk) || nudge.Kinds.Contains(NudgeKind.Stretch)) _stretchesToday++;
+                    else if (nudge.Primary == NudgeKind.Eyes) _eyeBreaksToday++;
                 }
             }
             Current = null;

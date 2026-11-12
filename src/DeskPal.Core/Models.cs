@@ -30,6 +30,11 @@ public sealed record SkipCommand(Guid? NudgeId = null) : Command;
 public sealed record TestNudgeCommand : Command;
 public sealed record PauseCommand(int? Minutes = null, bool UntilTomorrow = false) : Command;
 public sealed record ResumeCommand : Command;
+// Shows a break of this kind now (Stretch, Water, Eyes or Walk), outside the usual timers. Refused while a nudge is showing.
+public sealed record BreakNowCommand(NudgeKind Kind) : Command;
+// Focus is a hold of its own source, so it ends by itself and doesn't cancel a pause.
+public sealed record FocusCommand(int Minutes) : Command;
+public sealed record FocusOffCommand : Command;
 
 public interface ICommandRouter
 {

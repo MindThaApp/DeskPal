@@ -48,6 +48,13 @@ public sealed class DeskPalSettings
     public bool AnimateTray { get; set; } = true;
     public CrashReportingMode CrashReports { get; set; } = CrashReportingMode.Ask;
 
+    // Automation Portal: both off until the user turns them on.
+    public const int MaxApprovedApps = 20;
+    public bool ShareEventsWithAutomationPortal { get; set; }
+    public bool AllowExternalControl { get; set; }
+    // Apps the user allowed once to change Desk Pal over the control pipe: "pkg:<package family>" or a full exe path.
+    public List<string> ApprovedControlApps { get; set; } = [];
+
     public int MovementMinutes => Math.Clamp(StretchMinutes, MovementMin, MovementMax);
 
     public bool IsScheduled(NudgeKind kind) => kind switch
@@ -83,6 +90,12 @@ public sealed class DeskPalSettings
         if (WalkAfterStretches != 0 && Array.IndexOf(WalkChoices, WalkAfterStretches) < 0) { WalkAfterStretches = RecommendedWalkAfter; changed = true; }
         if (Array.IndexOf(SitStandChoices, SitStandMinutes) < 0) { SitStandMinutes = RecommendedSitStandMinutes; changed = true; }
         if (!Enum.IsDefined(Water)) { Water = WaterMode.WithBreaks; changed = true; }
+        var apps = (ApprovedControlApps ?? [])
+            .Where(a => !string.IsNullOrWhiteSpace(a) && a.Length <= 1024)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Take(MaxApprovedApps)
+            .ToList();
+        if (ApprovedControlApps is null || apps.Count != ApprovedControlApps.Count) { ApprovedControlApps = apps; changed = true; }
         return changed;
     }
 
