@@ -245,7 +245,7 @@ public partial class App : Application
             {
                 if (AppData.DebugQuickPanel) ShowQuick();
                 else ShowMenu();
-                if (AppData.DebugQuickPanel && AppData.DebugBloopDrag) DebugBloopDrag();
+                if (AppData.DebugQuickPanel && (AppData.DebugBloopDrag || AppData.DebugBloopActivate)) DebugBloopDrag();
             });
             _debugPanelTimer.Start();
         }
@@ -629,6 +629,13 @@ public partial class App : Application
             timer.Tick += (_, _) => { timer.Stop(); TickGuard.Run(name, action); };
             timer.Start();
         }
+        if (AppData.DebugBloopActivate)
+        {
+            After(2, "debug-bloop-activate", () => _quick?.DebugActivateBloop());
+            After(3, "debug-bloop-check", () => Logger.Log($"bloop activate check: panel open = {_quick?.IsOpen}"));
+            After(6, "debug-bloop-check2", () => Logger.Log($"bloop activate check later: panel open = {_quick?.IsOpen}"));
+        }
+        if (!AppData.DebugBloopDrag) return;
         After(3, "debug-bloop-drag", () => _quick?.DebugDragBloop(new System.Numerics.Vector2(-420, -260)));
         if (AppData.DebugBloopExit) After(4.6, "debug-bloop-exit", () => _quick?.HidePanel());
     }

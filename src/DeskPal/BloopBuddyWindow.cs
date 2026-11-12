@@ -105,6 +105,7 @@ internal sealed class BloopBuddyWindow : Window
         AppWindow.SetPresenter(presenter);
         AppWindow.IsShownInSwitchers = false;
         StripFrame();
+        SetWindowSubclass(_hwnd, s_noActivate, new UIntPtr(1), UIntPtr.Zero);
 
         // Owned by the card, so Bloop always stays above it, even when it is dragged over the card.
         SetWindowLongPtr(_hwnd, GWLP_HWNDPARENT, owner);
@@ -124,6 +125,31 @@ internal sealed class BloopBuddyWindow : Window
     }
 
     public bool IsShown => _mode != Mode.Hidden;
+
+    public IntPtr Hwnd => _hwnd;
+
+    // True while a press, hold or drag on Bloop is in progress.
+    public bool IsInteracting => _pressed || _mode == Mode.Dragging;
+
+    public long LastReleaseTick { get; private set; }
+
+    private static readonly SubclassProc s_noActivate = NoActivateProc;
+    private const uint WM_MOUSEACTIVATE = 0x21;
+    private static IntPtr NoActivateProc(IntPtr hWnd, uint msg, IntPtr w, IntPtr l, UIntPtr id, UIntPtr data)
+        => msg == WM_MOUSEACTIVATE ? new IntPtr(3 /* MA_NOACTIVATE */) : DefSubclassProc(hWnd, msg, w, l);
+
+    // Debug: sends the activation query a real press makes to this window and logs the answer (3 = no activation).
+    // It then holds a press for 1.5 s, while the host runs its deactivation handler.
+    public void DebugMouseActivate()
+    {
+        Logger.Log($"bloop WM_MOUSEACTIVATE answer {SendMessage(_hwnd, WM_MOUSEACTIVATE, _hwnd, new IntPtr(0x0201 << 16 | 1)).ToInt64()}");
+        Press(_pos + new Vector2(_sizePx / 2f));
+        var rel = DispatcherQueue.CreateTimer();
+        rel.IsRepeating = false;
+        rel.Interval = TimeSpan.FromMilliseconds(1500);
+        rel.Tick += (_, _) => TickGuard.Run("bloop-debug-activate-release", () => { rel.Stop(); Release(); });
+        rel.Start();
+    }
 
     // The card opened or moved. A fresh open starts at home; a reopen during the exit keeps Bloop where it is
     // and sends it home from there.
@@ -466,6 +492,7 @@ internal sealed class BloopBuddyWindow : Window
 
     private void Release()
     {
+        LastReleaseTick = Environment.TickCount64;
         if (!_pressed) return;
         _pressed = false;
         if (_mode == Mode.Dragging)
@@ -566,6 +593,17 @@ internal sealed class BloopBuddyWindow : Window
 
     [DllImport("user32.dll")]
     private static extern bool GetCursorPos(out Point point);
+
+    private delegate IntPtr SubclassProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, UIntPtr id, UIntPtr data);
+
+    [DllImport("comctl32.dll")]
+    private static extern bool SetWindowSubclass(IntPtr hWnd, SubclassProc proc, UIntPtr id, UIntPtr data);
+
+    [DllImport("comctl32.dll")]
+    private static extern IntPtr DefSubclassProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
     [DllImport("user32.dll")]
     private static extern uint GetDpiForWindow(IntPtr hWnd);

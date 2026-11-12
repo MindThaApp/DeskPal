@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
+using DeskPal.Core;
 using Windows.Graphics;
 using Windows.System;
 using WinRT.Interop;
@@ -64,6 +65,7 @@ public sealed class TrayPanelHost
     private TrayAnchor _anchor;
     private bool _activatedOnce;
     private long _deactivatedTick;
+    private Microsoft.UI.Dispatching.DispatcherQueueTimer? _watch;
 
     public TrayPanelHost(Window window, FrameworkElement root, int widthDip)
     {
@@ -96,6 +98,14 @@ public sealed class TrayPanelHost
 
     public bool IsOpen { get; private set; }
 
+    // A floating companion window (Bloop) that may take the foreground without dismissing the card.
+    public IntPtr CompanionHwnd { get; set; }
+    public Func<bool>? CompanionInteracting { get; set; }
+    public Func<long>? CompanionReleaseTick { get; set; }
+
+    private bool Interacting => CompanionInteracting?.Invoke() ?? false;
+    private long SinceRelease => CompanionReleaseTick is { } f ? Environment.TickCount64 - f() : long.MaxValue;
+
     public IntPtr Hwnd => _hwnd;
 
     // Where the card last went, the work area around it and which edge the taskbar is on.
@@ -125,6 +135,7 @@ public sealed class TrayPanelHost
     {
         if (!IsOpen) return;
         IsOpen = false;
+        _watch?.Stop();
         _window.AppWindow.Hide();
         Hidden?.Invoke();
     }
@@ -139,8 +150,47 @@ public sealed class TrayPanelHost
     {
         if (state != WindowActivationState.Deactivated) { _activatedOnce = true; return; }
         if (!IsOpen || !_activatedOnce) return;
+        var fg0 = GetForegroundWindow();
+        if (AppData.IsDebugRun) Logger.Log($"panel deactivated fg={fg0} card={_hwnd} companion={CompanionHwnd} interacting={Interacting}");
+        if (!PanelDismissRule.ShouldDismiss(fg0, _hwnd, CompanionHwnd, Interacting, SinceRelease))
+        {
+            // Bloop is being used: keep the card, and watch for the real outside click that may follow.
+            StartWatch();
+            return;
+        }
         _deactivatedTick = Environment.TickCount64;
         Hide();
+    }
+
+    // Debug: runs the deactivation handler in-process, as the shell does when another window takes the foreground.
+    public void DebugDeactivate() => OnActivated(WindowActivationState.Deactivated);
+
+    private void StartWatch()
+    {
+        _watch ??= CreateWatch();
+        if (!_watch.IsRunning) _watch.Start();
+    }
+
+    private Microsoft.UI.Dispatching.DispatcherQueueTimer CreateWatch()
+    {
+        var t = _window.DispatcherQueue.CreateTimer();
+        t.Interval = TimeSpan.FromMilliseconds(100);
+        t.Tick += (_, _) => TickGuard.Run("tray-panel-watch", WatchTick);
+        return t;
+    }
+
+    private void WatchTick()
+    {
+        if (!IsOpen) { _watch?.Stop(); return; }
+        var fg = GetForegroundWindow();
+        if (fg == _hwnd) { _watch?.Stop(); return; }
+        if (PanelDismissRule.ShouldDismiss(fg, _hwnd, CompanionHwnd, Interacting, SinceRelease))
+        {
+            _deactivatedTick = Environment.TickCount64;
+            Hide();
+        }
+        else if (PanelDismissRule.ShouldReclaimFocus(fg, CompanionHwnd, Interacting, SinceRelease))
+            SetForegroundWindow(_hwnd);
     }
 
     private void OnKeyDown(object sender, KeyRoutedEventArgs e)
@@ -225,6 +275,9 @@ public sealed class TrayPanelHost
 
     [DllImport("user32.dll")]
     private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetForegroundWindow();
 
     [DllImport("user32.dll")]
     private static extern IntPtr MonitorFromRect(ref Rect rect, uint flags);

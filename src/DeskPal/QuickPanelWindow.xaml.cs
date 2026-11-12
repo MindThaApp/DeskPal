@@ -55,7 +55,13 @@ public sealed partial class QuickPanelWindow : Window
         StretchButton.Focus(FocusState.Programmatic);
         if (_host.Placement is { } placement)
         {
-            _bloop ??= new BloopBuddyWindow(_host.Hwnd, () => _ctx.Hub.Settings.AvatarStyle);
+            if (_bloop is null)
+            {
+                _bloop = new BloopBuddyWindow(_host.Hwnd, () => _ctx.Hub.Settings.AvatarStyle);
+                _host.CompanionHwnd = _bloop.Hwnd;
+                _host.CompanionInteracting = () => _bloop.IsInteracting;
+                _host.CompanionReleaseTick = () => _bloop.LastReleaseTick;
+            }
             _bloop.ShowAt(placement);
         }
     }
@@ -63,6 +69,8 @@ public sealed partial class QuickPanelWindow : Window
     public void HidePanel() => _host.Hide();
 
     // Debug only: pulls Bloop away through the drag code, and with --debug-bloop-exit closes the panel while away.
+    public void DebugActivateBloop() { _bloop?.DebugMouseActivate(); _host.DebugDeactivate(); }
+
     public void DebugDragBloop(System.Numerics.Vector2 by) => _bloop?.DebugDrag(by);
 
     private void OnSound(object sender, RoutedEventArgs e) => TickGuard.Run("quick-sound", () =>

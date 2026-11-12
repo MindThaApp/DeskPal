@@ -17,7 +17,8 @@ public static class AppData
     // With --debug-quickpanel: drag Bloop away through the drag code (no real input), and optionally close the
     // panel while it is away.
     public static readonly bool DebugBloopDrag = HasArg("--debug-bloop-drag");
-    public static readonly bool DebugBloopExit = HasArg("--debug-bloop-exit");
+    public static readonly bool DebugBloopActivate = HasArg("--debug-bloop-activate");
+    public static readonly bool DebugBloopExit =HasArg("--debug-bloop-exit");
     // --debug-gesture=<region>:<gesture>[,...] (or "all"): synthetic gestures fed to the Home Bloop's own touch handler.
     public static readonly string? DebugGesture = ArgValue("--debug-gesture=");
     public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugGesture is not null;
