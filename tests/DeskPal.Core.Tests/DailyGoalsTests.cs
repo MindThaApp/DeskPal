@@ -9,8 +9,8 @@ public class DailyGoalsTests
     public void DefaultsFollowIntervalsAcrossWorkingHours()
     {
         var goals = DailyGoals.For(new DeskPalSettings());
-        Assert.Equal(17, goals.Stretches);
-        Assert.Equal(25, goals.EyeBreaks);
+        Assert.Equal(15, goals.Stretches);
+        Assert.Equal(22, goals.EyeBreaks);
         Assert.Equal(5, goals.Walks);
     }
 
