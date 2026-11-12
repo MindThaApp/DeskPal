@@ -2,6 +2,7 @@ using System.Drawing;
 using System.Windows.Input;
 using System.Security.Principal;
 using DeskPal.Core;
+using DeskPal.Core.Integration;
 using H.NotifyIcon;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -63,7 +64,12 @@ public partial class App : Application
         var sid = WindowsIdentity.GetCurrent().User?.Value ?? Environment.UserName;
         var mutexName = "DeskPal-" + sid + (AppData.DebugSettings ? "-debug-settings" : AppData.DebugMain ? "-debug-main" : AppData.DebugQuickPanel ? "-debug-quickpanel" : AppData.DebugTrayMenu ? "-debug-traymenu" : AppData.IsDebugRun ? "-debug" : "");
         _instanceMutex = new Mutex(true, mutexName, out var created);
-        if (!created) Environment.Exit(0);
+        if (!created)
+        {
+            var arg = DeskPalLink.FindArg(Environment.GetCommandLineArgs().Skip(1));
+            if (arg is not null) DeskPalProtocol.ForwardToRunning(DeskPalLink.Parse(arg));
+            Environment.Exit(0);
+        }
         InitializeComponent();
         UnhandledException += OnUiUnhandledException;
     }
@@ -112,6 +118,7 @@ public partial class App : Application
         {
             _link = new AutomationPortalLink(_dq, _hub, _scheduler);
             _hub.Link = _link;
+            _link.OpenPage = (page, _) => OpenMain(page);
             _link.Start();
         }
         catch (Exception ex)
@@ -158,6 +165,18 @@ public partial class App : Application
         UpdateTray();
         Logger.Log("started");
         StartDebugTriggers();
+        DeskPalProtocol.RegisterInBackground();
+        HandleStartLink();
+    }
+
+    // Launched with a deskpal: link and no copy running: show the page. Only "open" does anything; other links open Home.
+    private void HandleStartLink()
+    {
+        var arg = DeskPalLink.FindArg(Environment.GetCommandLineArgs().Skip(1));
+        if (arg is null) return;
+        var link = DeskPalLink.Parse(arg);
+        if (!link.Supported) Logger.Log("unsupported link");
+        OpenMain(link.Page);
     }
 
     private void StartDebugTriggers()

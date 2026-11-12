@@ -30,16 +30,17 @@ public static class ControlCommands
     public const string FocusOff = "focus.off";
     public const string Pause = "pause";
     public const string Resume = "resume";
+    public const string Open = "open";
 
     public const int FocusDefault = 25, FocusMin = 5, FocusMax = 120;
     public const int PauseDefault = 30, PauseMin = 5, PauseMax = 480;
 
-    public static IReadOnlyList<string> All { get; } = [Ping, Status, BreakStart, FocusOn, FocusOff, Pause, Resume];
+    public static IReadOnlyList<string> All { get; } = [Ping, Status, Open, BreakStart, FocusOn, FocusOff, Pause, Resume];
 
-    public static bool IsReadOnly(string cmd) => cmd is Ping or Status;
+    public static bool IsReadOnly(string cmd) => cmd is Ping or Status or Open;
 }
 
-public sealed record ControlCommand(string Name, NudgeKind? Kind = null, int? Minutes = null)
+public sealed record ControlCommand(string Name, NudgeKind? Kind = null, int? Minutes = null, string? Page = null, string? Section = null)
 {
     public bool IsReadOnly => ControlCommands.IsReadOnly(Name);
 }
@@ -96,6 +97,17 @@ public static class ControlParser
                 case ControlCommands.FocusOff:
                 case ControlCommands.Resume:
                     return Ok(new ControlCommand(cmd));
+                case ControlCommands.Open:
+                {
+                    string? page = null, section = null;
+                    if (hasArgs)
+                    {
+                        if (args.TryGetProperty("page", out var pg) && pg.ValueKind == JsonValueKind.String) page = pg.GetString();
+                        if (args.TryGetProperty("section", out var sc) && sc.ValueKind == JsonValueKind.String) section = sc.GetString();
+                    }
+                    var norm = DeskPalLink.NormalizePage(page);
+                    return Ok(new ControlCommand(cmd, Page: norm, Section: DeskPalLink.NormalizeSection(norm, section)));
+                }
                 case ControlCommands.BreakStart:
                 {
                     if (!hasArgs || !args.TryGetProperty("kind", out var k) || k.ValueKind != JsonValueKind.String)

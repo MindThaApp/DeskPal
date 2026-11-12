@@ -35,8 +35,12 @@ public sealed class AutomationPortalLink : IControlHost, IDisposable
 
         var version = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3) ?? "0.0.0";
         _control = new ControlService(scheduler, settings, this, TimeProvider.System, version, "portable");
+        _control.OpenRequested = (page, section) => OpenPage?.Invoke(page, section);
         _server = new ControlPipeServer(PipeNames.DeskPal(sid, AppData.IsDebugRun ? AppData.Dir : null), _control.HandleAsync, OnBackgroundError);
     }
+
+    // Raised on the UI thread for the read-only "open" command.
+    public Action<string, string?>? OpenPage { get; set; }
 
     public int EventsSkippedToday => _forwarder.SkippedToday;
 

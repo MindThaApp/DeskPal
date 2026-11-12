@@ -96,6 +96,7 @@ Error reply:
 |---|---|---|---|
 | `ping` | none | `{"app":"DeskPal","version":"0.12.0","contract":1}` | no |
 | `status` | none | `"status"` | no |
+| `open` | `page` (optional): `home` \| `today` \| `bloop` \| `garden` \| `settings` \| `about`; `section` (optional, `automation` with `settings`). An unknown page opens Home. | `"shown"` | no |
 | `break.start` | `kind` (required): `stretch` \| `water` \| `eyes` \| `walk` | `"shown"` | yes |
 | `focus.on` | `minutes` (25, clamped to 5–120) | `"started"` or `"renewed"` | yes |
 | `focus.off` | none | `"stopped"` or `"not-active"` | yes |
@@ -111,7 +112,7 @@ Error reply:
 
 ### Permission
 
-The read-only commands `ping` and `status` always work. The other commands need both of these:
+The read-only commands `ping`, `status` and `open` always work. `open` only shows the Desk Pal window; it never changes state. It is what a second `deskpal:` launch sends to the running copy. The other commands need both of these:
 
 1. The setting "Allow Automation Portal and other apps to control Desk Pal" (off by default; `status.allowExternalControl` shows it). If it is off, the reply is `not-allowed`.
 2. A one-time approval for the calling app. Desk Pal finds the caller with `GetNamedPipeClientProcessId`, then its package family name (packaged apps) or full exe path. The first time, it shows a card: "Allow <app> to control Desk Pal?" with **Allow** and **Not now**.

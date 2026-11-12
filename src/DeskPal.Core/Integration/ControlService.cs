@@ -47,6 +47,9 @@ public sealed class ControlService
         _edition = edition;
     }
 
+    // Set by the app: shows the main window on a page. Called on the UI thread.
+    public Action<string, string?>? OpenRequested { get; set; }
+
     public async Task<ControlReply> HandleAsync(string? line, CallerInfo caller)
     {
         var parsed = ControlParser.Parse(line);
@@ -59,6 +62,13 @@ public sealed class ControlService
         }
         if (cmd.Name == ControlCommands.Status)
             return ControlReply.Done("status", await _host.RunOnUiAsync(BuildStatus).ConfigureAwait(false));
+
+        if (cmd.Name == ControlCommands.Open)
+        {
+            // Only shows a window; it never changes state, so it needs neither the setting nor an approval.
+            await _host.RunOnUiAsync(() => { OpenRequested?.Invoke(cmd.Page ?? "home", cmd.Section); return true; }).ConfigureAwait(false);
+            return ControlReply.Done("shown", null);
+        }
 
         if (!_host.AllowExternalControl)
             return ControlReply.Fail(ControlErrors.NotAllowed, "Turn on \"Allow Automation Portal and other apps to control Desk Pal\" in Desk Pal Settings.");
