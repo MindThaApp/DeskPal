@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid ColumnSpacing="4">
             <Grid.ColumnDefinitions>
@@ -49,7 +50,7 @@
                     AutomationProperties.Name="Snooze 10 minutes" ToolTipService.ToolTip="Snooze 10 minutes" Click="OnSnooze" />
         </Grid>
         <!-- How long until the card hides by itself: a thin line along the bottom edge that shrinks to the left. -->
-        <Rectangle x:Name="HideLine" Grid.Row="2" Height="2" VerticalAlignment="Bottom" Margin="0,0,6,-6"
+        <Rectangle x:Name="HideLine" Grid.Row="3" Height="2" Margin="0,4,6,0" HorizontalAlignment="Stretch"
                    Fill="{ThemeResource AccentFillColorDefaultBrush}" Opacity="0.6" IsHitTestVisible="False"
                    AutomationProperties.AccessibilityView="Raw">
             <Rectangle.RenderTransform>
