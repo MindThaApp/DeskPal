@@ -64,7 +64,7 @@ public sealed class ControlReply
         if (Error is not null) o["error"] = Error;
         if (Message is not null) o["message"] = Message;
         if (Status is not null) o["status"] = Status.DeepClone();
-        return o.ToJsonString();
+        return o.ToJsonString(DeskPalEvent.Compact);
     }
 }
 

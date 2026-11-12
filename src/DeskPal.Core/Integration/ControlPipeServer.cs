@@ -85,20 +85,24 @@ public sealed class ControlPipeServer : IDisposable
         {
             if (!await _slots.WaitAsync(0).ConfigureAwait(false))
             {
-                await ReplyAsync(pipe, ControlReply.Fail(ControlErrors.Busy, "Too many requests at once.")).ConfigureAwait(false);
+                await ReplyAsync(pipe, ControlReply.Fail(ControlErrors.Busy, "Too many requests at once."), drain: false).ConfigureAwait(false);
                 return;
             }
             try
             {
                 var (status, line) = await PipeLines.ReadLineAsync(pipe, MaxRequestBytes, ReadTimeout, _stop.Token).ConfigureAwait(false);
-                ControlReply reply;
                 switch (status)
                 {
                     case PipeLines.ReadStatus.Empty: return;
-                    case PipeLines.ReadStatus.TooLarge: reply = ControlReply.Fail(ControlErrors.TooLarge, "Requests are limited to 64 KB."); break;
-                    case PipeLines.ReadStatus.TimedOut: reply = ControlReply.Fail(ControlErrors.Timeout, "No complete request arrived in time."); break;
-                    default: reply = await HandleSafelyAsync(line!, CallerOf(pipe)).ConfigureAwait(false); break;
+                    // The client may still be writing and not reading: answer without waiting for it, then close.
+                    case PipeLines.ReadStatus.TooLarge:
+                        await ReplyAsync(pipe, ControlReply.Fail(ControlErrors.TooLarge, "Requests are limited to 64 KB."), drain: false).ConfigureAwait(false);
+                        return;
+                    case PipeLines.ReadStatus.TimedOut:
+                        await ReplyAsync(pipe, ControlReply.Fail(ControlErrors.Timeout, "No complete request arrived in time."), drain: false).ConfigureAwait(false);
+                        return;
                 }
+                var reply = await HandleSafelyAsync(line!, CallerOf(pipe)).ConfigureAwait(false);
                 await ReplyAsync(pipe, reply).ConfigureAwait(false);
             }
             finally { _slots.Release(); }
@@ -124,10 +128,16 @@ public sealed class ControlPipeServer : IDisposable
         }
     }
 
-    private async Task ReplyAsync(NamedPipeServerStream pipe, ControlReply reply)
+    // Draining is bounded: a client that never reads can't hold a slot for long (closing the pipe ends the wait).
+    private async Task ReplyAsync(NamedPipeServerStream pipe, ControlReply reply, bool drain = true)
     {
         await PipeLines.WriteLineAsync(pipe, reply.ToJson(), ReadTimeout, _stop.Token).ConfigureAwait(false);
-        if (OperatingSystem.IsWindows()) { try { pipe.WaitForPipeDrain(); } catch (IOException) { } }
+        if (!drain || !OperatingSystem.IsWindows()) return;
+        var wait = Task.Run(() =>
+        {
+            try { pipe.WaitForPipeDrain(); } catch (Exception ex) when (ex is IOException or ObjectDisposedException or InvalidOperationException) { }
+        });
+        await Task.WhenAny(wait, Task.Delay(ReadTimeout)).ConfigureAwait(false);
     }
 
     public static CallerInfo CallerOf(NamedPipeServerStream pipe)

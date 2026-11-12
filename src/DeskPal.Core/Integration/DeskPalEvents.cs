@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -26,6 +27,9 @@ public enum EventCause { User, External, Schedule }
 // One event. Data holds only the event's own fields (wellbeing counts and times, never titles or app names).
 public sealed record DeskPalEvent(string Name, DateTimeOffset At, EventCause Cause, JsonObject Data)
 {
+    // Plain JSON for a pipe, not HTML: "+" in the offset stays "+".
+    public static readonly JsonSerializerOptions Compact = new() { WriteIndented = false, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+
     public static string FormatTime(DateTimeOffset at) => at.ToString("yyyy-MM-dd'T'HH:mm:sszzz", CultureInfo.InvariantCulture);
 
     public static string CauseText(EventCause cause) => cause switch
@@ -45,7 +49,7 @@ public sealed record DeskPalEvent(string Name, DateTimeOffset At, EventCause Cau
             ["cause"] = CauseText(Cause),
         };
         foreach (var (key, value) in Data) o[key] = value?.DeepClone();
-        return o.ToJsonString(new JsonSerializerOptions { WriteIndented = false });
+        return o.ToJsonString(Compact);
     }
 }
 
