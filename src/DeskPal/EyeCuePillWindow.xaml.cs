@@ -32,27 +32,16 @@ public sealed partial class EyeCuePillWindow : Window
         Storyboard.SetTarget(fade, Root);
         Storyboard.SetTargetProperty(fade, "Opacity");
         _fade.Children.Add(fade);
-        _fade.Completed += (_, _) =>
+        _fade.Completed += (_, _) => TickGuard.Run("eye-cue-fade", () =>
         {
             if (!_active || !_fading) return;
             Dismiss();
             Finished?.Invoke(false);
-        };
+        });
 
-        var presenter = OverlappedPresenter.Create();
-        presenter.SetBorderAndTitleBar(false, false);
-        presenter.IsResizable = false;
-        presenter.IsMaximizable = false;
-        presenter.IsMinimizable = false;
-        presenter.IsAlwaysOnTop = true;
-        AppWindow.SetPresenter(presenter);
-        AppWindow.IsShownInSwitchers = false;
-
-        // Tool window plus no-activate: no taskbar button and it never takes focus.
-        var ex = GetWindowLongPtr(_hwnd, GWL_EXSTYLE).ToInt64();
-        SetWindowLongPtr(_hwnd, GWL_EXSTYLE, new IntPtr(ex | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE));
-        var round = 3; // DWMWCP_ROUNDSMALL
-        DwmSetWindowAttribute(_hwnd, 33, ref round, sizeof(int));
+        // Tool window plus no-activate: no taskbar button and it never takes focus. Same soft card as the nudge card,
+        // with no light outline.
+        CardChrome.Apply(this, _hwnd, CardChrome.RoundSmall, noActivate: true);
     }
 
     // True when the user clicked it, false when it faded out on its own.

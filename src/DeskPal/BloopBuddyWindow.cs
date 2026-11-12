@@ -13,10 +13,68 @@ using WinRT.Interop;
 
 namespace DeskPal;
 
-// Bloop next to the quick panel card, in a window of its own with nothing drawn around it: no frame, no backdrop,
-// no box. It never takes activation, so pressing or dragging it never closes the card. Only a circle around Bloop
-// takes clicks; the rest of the window lets them through. Hold and drag pulls it anywhere in the work area; a while
-// after letting go it hops back home. When the card closes it hops home, fades and hides. The window is only hidden.
+// What a card asks of the shared Bloop: the card window and where it is, the picture or model to show, and what
+// the live model should play once it is up.
+internal sealed record BloopClaim(object Surface, IntPtr Owner, PanelPlacement Placement, string Style, string Asset,
+    Action<LiveViewport>? Clips = null, double Size = 1);
+
+// There is one Bloop window for the whole app. The card that opened last owns it, and Bloop hops over to that card.
+// When that card closes, Bloop hops back to the card that is still open (if any) and plays its clips again; when no
+// card is left, it hops home, fades and hides. A card that closes while it does not own Bloop changes nothing.
+internal static class BloopStage
+{
+    private static BloopBuddyWindow? s_window;
+    private static readonly List<BloopClaim> s_claims = [];
+
+    public static BloopBuddyWindow? Window => s_window;
+
+    private static BloopClaim? Top => s_claims.Count > 0 ? s_claims[^1] : null;
+
+    public static bool Owns(object surface) => Top?.Surface == surface;
+
+    // The live model, while this card owns Bloop and the model is showing.
+    public static LiveViewport? LiveFor(object surface) => Owns(surface) ? s_window?.Live : null;
+
+    public static void Claim(BloopClaim claim)
+    {
+        s_claims.RemoveAll(c => c.Surface == claim.Surface);
+        s_claims.Add(claim);
+        s_window ??= new BloopBuddyWindow();
+        s_window.ShowFor(claim);
+    }
+
+    // The card moved without closing.
+    public static void Move(object surface, PanelPlacement placement)
+    {
+        var i = s_claims.FindIndex(c => c.Surface == surface);
+        if (i < 0) return;
+        s_claims[i] = s_claims[i] with { Placement = placement };
+        if (i == s_claims.Count - 1) s_window?.Replace(placement);
+    }
+
+    public static void Release(object surface)
+    {
+        var owned = Owns(surface);
+        s_claims.RemoveAll(c => c.Surface == surface);
+        if (!owned || s_window is null) return;
+        if (Top is { } next) s_window.ShowFor(next);
+        else s_window.Leave();
+    }
+
+    public static void CloseAll()
+    {
+        s_claims.Clear();
+        s_window?.HideNow();
+        s_window?.Close();
+        s_window = null;
+    }
+}
+
+// Bloop next to a card (the quick panel or a nudge), in a window of its own with nothing drawn around it: no frame,
+// no backdrop, no box. It never takes activation, so pressing or dragging it never closes the card. Only a circle
+// around Bloop takes clicks; the rest of the window lets them through. Hold and drag pulls it anywhere in the work
+// area; a while after letting go it hops back home. When the card closes it hops home, fades and hides. The window
+// is only hidden.
 internal sealed class BloopBuddyWindow : Window
 {
     private const double WindowDip = 150;
@@ -31,7 +89,7 @@ internal sealed class BloopBuddyWindow : Window
     private enum Mode { Hidden, Home, Dragging, Resting, Hopping }
 
     private readonly IntPtr _hwnd;
-    private readonly Func<string> _style;
+    private BloopClaim? _claim;
     private readonly Grid _root = new();
     private readonly Grid _body = new() { Width = BodyDip, Height = BodyDip, Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent) };
     private readonly Image _avatar = new() { Stretch = Stretch.Uniform, IsHitTestVisible = false };
@@ -52,6 +110,7 @@ internal sealed class BloopBuddyWindow : Window
     private Vector2 _pos, _vel, _home, _restAt;
     private int _sizePx;
     private double _scale = 1;
+    private double _size = 1;
     private double _last;
     private bool _exiting;
     private double _restUntil;
@@ -72,9 +131,8 @@ internal sealed class BloopBuddyWindow : Window
     private int _debugTicks;
     private double _debugTickLog;
 
-    public BloopBuddyWindow(IntPtr owner, Func<string> style)
+    public BloopBuddyWindow()
     {
-        _style = style;
         Title = "Bloop";
         SystemBackdrop = new ClearBackdrop();
 
@@ -107,8 +165,6 @@ internal sealed class BloopBuddyWindow : Window
         StripFrame();
         SetWindowSubclass(_hwnd, s_noActivate, new UIntPtr(1), UIntPtr.Zero);
 
-        // Owned by the card, so Bloop always stays above it, even when it is dragged over the card.
-        SetWindowLongPtr(_hwnd, GWLP_HWNDPARENT, owner);
         var noRound = 1; // DWMWCP_DONOTROUND
         DwmSetWindowAttribute(_hwnd, 33, ref noRound, sizeof(int));
         var noBorder = unchecked((int)0xFFFFFFFE);
@@ -132,6 +188,27 @@ internal sealed class BloopBuddyWindow : Window
     public bool IsInteracting => _pressed || _mode == Mode.Dragging;
 
     public long LastReleaseTick { get; private set; }
+
+    // Pressed, dragged, or resting where it was dropped: someone is playing with Bloop.
+    public bool IsBusy => _pressed || _mode is Mode.Dragging or Mode.Resting;
+
+    // The live model while it is the one showing.
+    public LiveViewport? Live => _viewport is not null && _live.Visibility == Visibility.Visible && _mode != Mode.Hidden ? _viewport : null;
+
+    // A card takes Bloop: owned by that card, so Bloop always stays above it, even when dragged over it. Shows the
+    // card's picture or model and starts its clips; if Bloop is already out, it hops over to the new card.
+    public void ShowFor(BloopClaim claim)
+    {
+        _claim = claim;
+        _size = claim.Size;
+        _body.Width = _body.Height = _live.Width = _live.Height = BodyDip * _size;
+        SetWindowLongPtr(_hwnd, GWLP_HWNDPARENT, claim.Owner);
+        var wasShown = _mode != Mode.Hidden;
+        ShowAt(claim.Placement);
+        if (!wasShown) return;
+        if (_mode == Mode.Home && Vector2.Distance(_pos, _home) > 40 * _scale) StartHop();
+        _ = LoadAvatarAsync();
+    }
 
     private static readonly SubclassProc s_noActivate = NoActivateProc;
     private const uint WM_MOUSEACTIVATE = 0x21;
@@ -157,7 +234,7 @@ internal sealed class BloopBuddyWindow : Window
     {
         _placement = placement;
         _scale = placement.Scale;
-        _sizePx = (int)Math.Round(WindowDip * _scale);
+        _sizePx = (int)Math.Round(WindowDip * _size * _scale);
         _home = HomeFor(placement);
         _exiting = false;
         _fadeStart = -1;
@@ -251,7 +328,7 @@ internal sealed class BloopBuddyWindow : Window
     {
         var c = p.Card;
         float s = _sizePx;
-        var perch = (float)(PerchDip * _scale);
+        var perch = (float)(PerchDip * _size * _scale);
         var workMidX = p.Work.X + p.Work.Width / 2f;
         var workMidY = p.Work.Y + p.Work.Height / 2f;
         var alongX = c.X + c.Width / 2f > workMidX ? c.X + c.Width * 0.25f : c.X + c.Width * 0.75f;
@@ -270,7 +347,7 @@ internal sealed class BloopBuddyWindow : Window
     private Vector2 Clamp(Vector2 at)
     {
         if (_placement is not { } p) return at;
-        var margin = (float)((WindowDip - BodyDip) / 2 * _scale);
+        var margin = (float)((WindowDip - BodyDip) / 2 * _size * _scale);
         var x = Math.Clamp(at.X, p.Work.X - margin, Math.Max(p.Work.X - margin, p.Work.X + p.Work.Width - _sizePx + margin));
         var y = Math.Clamp(at.Y, p.Work.Y - margin, Math.Max(p.Work.Y - margin, p.Work.Y + p.Work.Height - _sizePx + margin));
         return new Vector2(x, y);
@@ -445,7 +522,7 @@ internal sealed class BloopBuddyWindow : Window
     // Only a circle around Bloop takes clicks; outside it they reach whatever is underneath.
     private void ApplyRegion()
     {
-        var r = (int)Math.Round(HitRadiusDip * _scale);
+        var r = (int)Math.Round(HitRadiusDip * _size * _scale);
         var c = _sizePx / 2;
         var region = CreateEllipticRgn(c - r, c - r, c + r, c + r);
         if (SetWindowRgn(_hwnd, region, true) == 0) DeleteObject(region);
@@ -528,17 +605,19 @@ internal sealed class BloopBuddyWindow : Window
 
     private async Task LoadAvatarAsync()
     {
-        var style = AppData.Debug3D ? "3d" : _style();
-        var live = style == "3d" && !Stage3D.Failed;
-        if (style != _loadedStyle || _avatar.Source is null)
+        if (_claim is not { } claim) return;
+        var style = AppData.Debug3D ? "3d" : claim.Style;
+        var live = style == "3d" && !Stage3D.Failed && claim.Asset.StartsWith("bloop", StringComparison.OrdinalIgnoreCase);
+        var key = style + "/" + claim.Asset;
+        if (key != _loadedStyle || _avatar.Source is null)
         {
-            _loadedStyle = style;
+            _loadedStyle = key;
             var version = ++_loadVersion;
-            _avatar.Opacity = 1;
-            var source = await NudgeCardWindow.LoadAvatarAsync(style, "bloop-idle", 256);
+            if (_live.Opacity < 1 || !live) _avatar.Opacity = 1;
+            var source = await NudgeCardWindow.LoadAvatarAsync(style, claim.Asset, 256);
             if (version == _loadVersion) _avatar.Source = source;
         }
-        if (_mode == Mode.Hidden) return;
+        if (_mode == Mode.Hidden || _claim != claim) return;
         if (!live)
         {
             _live.Visibility = Visibility.Collapsed;
@@ -564,6 +643,7 @@ internal sealed class BloopBuddyWindow : Window
             });
         }
         _viewport.Show(GetDpiForWindow(_hwnd) / 96.0);
+        claim.Clips?.Invoke(_viewport);
     }
 
     private void StripFrame()

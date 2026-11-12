@@ -31,14 +31,15 @@ public sealed partial class QuickPanelWindow : Window
         InitializeComponent();
         _stats = [BuildStat(StretchStat, "Stretches"), BuildStat(EyeStat, "Eye breaks"), BuildStat(WalkStat, "Walks")];
         _host = new TrayPanelHost(this, Root, 320);
-        _host.Placed += p => TickGuard.Run("quick-bloop-place", () => _bloop?.Replace(p));
-        _host.Hidden += () => TickGuard.Run("quick-bloop-leave", () => _bloop?.Leave());
-        Closed += (_, _) => _bloop?.Close();
+        _host.Placed += p => TickGuard.Run("quick-bloop-place", () => BloopStage.Move(this, p));
+        _host.Hidden += () => TickGuard.Run("quick-bloop-leave", () => BloopStage.Release(this));
+        Closed += (_, _) => BloopStage.CloseAll();
         SoundButton.Visibility = SoundsSetting is null ? Visibility.Collapsed : Visibility.Visible;
     }
 
-    // Bloop sits in its own clear window beside the card, so the card holds only text and buttons.
-    private BloopBuddyWindow? _bloop;
+    // Bloop sits in its own clear window beside the card (shared with the nudge card), so the card holds only text
+    // and buttons.
+    private static BloopBuddyWindow? Bloop => BloopStage.Window;
 
     // The interaction sounds switch lives in the shared settings; the toggle shows only when that setting exists.
     private static readonly System.Reflection.PropertyInfo? SoundsSetting =
@@ -55,23 +56,22 @@ public sealed partial class QuickPanelWindow : Window
         StretchButton.Focus(FocusState.Programmatic);
         if (_host.Placement is { } placement)
         {
-            if (_bloop is null)
+            BloopStage.Claim(new BloopClaim(this, _host.Hwnd, placement, _ctx.Hub.Settings.AvatarStyle, "bloop-idle"));
+            if (Bloop is { } bloop)
             {
-                _bloop = new BloopBuddyWindow(_host.Hwnd, () => _ctx.Hub.Settings.AvatarStyle);
-                _host.CompanionHwnd = _bloop.Hwnd;
-                _host.CompanionInteracting = () => _bloop.IsInteracting;
-                _host.CompanionReleaseTick = () => _bloop.LastReleaseTick;
+                _host.CompanionHwnd = bloop.Hwnd;
+                _host.CompanionInteracting = () => bloop.IsInteracting;
+                _host.CompanionReleaseTick = () => bloop.LastReleaseTick;
             }
-            _bloop.ShowAt(placement);
         }
     }
 
     public void HidePanel() => _host.Hide();
 
     // Debug only: pulls Bloop away through the drag code, and with --debug-bloop-exit closes the panel while away.
-    public void DebugActivateBloop() { _bloop?.DebugMouseActivate(); _host.DebugDeactivate(); }
+    public void DebugActivateBloop() { Bloop?.DebugMouseActivate(); _host.DebugDeactivate(); }
 
-    public void DebugDragBloop(System.Numerics.Vector2 by) => _bloop?.DebugDrag(by);
+    public void DebugDragBloop(System.Numerics.Vector2 by) => Bloop?.DebugDrag(by);
 
     private void OnSound(object sender, RoutedEventArgs e) => TickGuard.Run("quick-sound", () =>
     {

@@ -424,7 +424,7 @@ public partial class App : Application
     {
         if (_card is null)
         {
-            _card = new NudgeCardWindow(_router);
+            _card = new NudgeCardWindow(_router) { HideSeconds = () => _settings.HideNudgeSeconds };
             _card.Expired += id =>
             {
                 Logger.Log("card auto-hidden");

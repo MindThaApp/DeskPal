@@ -25,6 +25,8 @@ public sealed class DeskPalSettings
     public static readonly int[] EyesChoices = [20, 30];
     public static readonly int[] WalkChoices = [2, 3, 4];
     public static readonly int[] SitStandChoices = [30, 45, 60];
+    public const int RecommendedHideNudgeSeconds = 20;
+    public static readonly int[] HideNudgeChoices = [10, 20, 30, 60];
 
     // 0 means the file was written before versions existed.
     public int SettingsVersion { get; set; }
@@ -45,6 +47,8 @@ public sealed class DeskPalSettings
     // Growth stage of the 3D Sprout on Home (1 to 4). Fixed at 2 until growth is tracked.
     public int SproutStage { get; set; } = 2;
     public bool UseNudgeCard { get; set; } = true;
+    // How long a reminder card stays up with nobody using it before it hides by itself.
+    public int HideNudgeSeconds { get; set; } = RecommendedHideNudgeSeconds;
     public bool AnimateTray { get; set; } = true;
     public bool InteractionSounds { get; set; } = true;
     public CrashReportingMode CrashReports { get; set; } = CrashReportingMode.Ask;
@@ -90,6 +94,7 @@ public sealed class DeskPalSettings
         if (Array.IndexOf(EyesChoices, EyesMinutes) < 0) { EyesMinutes = RecommendedEyesMinutes; changed = true; }
         if (WalkAfterStretches != 0 && Array.IndexOf(WalkChoices, WalkAfterStretches) < 0) { WalkAfterStretches = RecommendedWalkAfter; changed = true; }
         if (Array.IndexOf(SitStandChoices, SitStandMinutes) < 0) { SitStandMinutes = RecommendedSitStandMinutes; changed = true; }
+        if (Array.IndexOf(HideNudgeChoices, HideNudgeSeconds) < 0) { HideNudgeSeconds = RecommendedHideNudgeSeconds; changed = true; }
         if (!Enum.IsDefined(Water)) { Water = WaterMode.WithBreaks; changed = true; }
         var apps = (ApprovedControlApps ?? [])
             .Where(a => !string.IsNullOrWhiteSpace(a) && a.Length <= 1024)

@@ -1,14 +1,12 @@
 using System.Diagnostics;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using DeskPal.Core;
 using DeskPal.Render;
-using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Graphics;
@@ -17,27 +15,30 @@ using WinRT.Interop;
 
 namespace DeskPal;
 
+// A small reminder card near the tray corner: a title, a one or two line hint, Done and Snooze, and the rest under
+// "...". Bloop stands beside it in the shared Bloop window (BloopStage), on the side away from the taskbar, and plays
+// the exercise there. A thin line along the bottom counts down; when nobody uses the card it fades out by itself.
 public sealed partial class NudgeCardWindow : Window
 {
-    private const int WidthDip = 360;
-    private const int HeightDip = 220;
+    private const int WidthDip = 300;
     private const int MarginDip = 12;
-    private static readonly TimeSpan AutoHide = TimeSpan.FromMinutes(2);
+    private const double BloopSize = 0.65;
 
     private readonly ICommandRouter _router;
-    private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMilliseconds(250) };
+    private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMilliseconds(100) };
     private readonly IntPtr _hwnd;
+    private readonly NudgeAutoHide _autoHide = new();
     private Nudge? _nudge;
     private long _shownAtTick;
     private long _timedEndTick;
     private int _timedSeconds;
     private long _loadVersion;
-    private LiveViewport? _viewport;
-    private long _liveRequestedTick;
-    private int _debugPokes;
-    private readonly BloopTouch _touch;
     private bool _repeating;
     private long _repeatUntilTick;
+    private bool _hovered;
+    private bool _bloopBusy;
+    private string _style = "flat";
+    private PanelPlacement? _placement;
     private IntPtr _foregroundBefore;
     private readonly List<Microsoft.UI.Dispatching.DispatcherQueueTimer> _debugTimers = [];
 
@@ -45,51 +46,43 @@ public sealed partial class NudgeCardWindow : Window
     {
         _router = router;
         InitializeComponent();
-        // handledEventsToo: a child that marks the press handled must not stop Bloop reacting.
-        // Touches on Bloop (the live surface only) go through the shared gesture path; buttons keep their own presses.
-        _touch = new BloopTouch(Root, () => _viewport is { Ready: true } v && LivePanel.Visibility == Visibility.Visible ? v : null,
-            relativeTo: LivePanel, accept: p => p.X >= 0 && p.Y >= 0 && p.X <= LivePanel.Width && p.Y <= LivePanel.Height,
-            handledEventsToo: true);
         _hwnd = WindowNative.GetWindowHandle(this);
         _timer.Tick += (s, e) => TickGuard.Run("nudge-card", () => OnTimer(s, e));
         if (AppData.Debug3D) After(10, "debug-3d-stats", LogStats, repeat: true);
 
-        var presenter = OverlappedPresenter.Create();
-        presenter.SetBorderAndTitleBar(false, false);
-        presenter.IsResizable = false;
-        presenter.IsMaximizable = false;
-        presenter.IsMinimizable = false;
-        presenter.IsAlwaysOnTop = true;
-        AppWindow.SetPresenter(presenter);
-        AppWindow.IsShownInSwitchers = false;
-
-        // Tool window with no-activate: no taskbar button and clicks never take focus from the user's app.
-        var ex = GetWindowLongPtr(_hwnd, GWL_EXSTYLE).ToInt64();
-        SetWindowLongPtr(_hwnd, GWL_EXSTYLE, new IntPtr(ex | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE));
-        var round = DWMWCP_ROUND;
-        DwmSetWindowAttribute(_hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref round, sizeof(int));
+        // Never takes focus from the user's app; same soft card as the quick panel, with no light outline.
+        CardChrome.Apply(this, _hwnd, CardChrome.Round, noActivate: true);
+        Root.PointerEntered += (_, _) => TickGuard.Run("nudge-hover-in", () => { _hovered = true; UpdatePause(); });
+        Root.PointerExited += (_, _) => TickGuard.Run("nudge-hover-out", () => { _hovered = false; UpdatePause(); });
     }
 
     public event Action<Guid>? Expired;
 
     public Guid? CurrentId => _nudge?.Id;
 
+    // Seconds a card left alone stays up; read from the settings when each card opens.
+    public Func<int> HideSeconds { get; set; } = () => DeskPalSettings.RecommendedHideNudgeSeconds;
+
     public async Task ShowNudgeAsync(Nudge nudge, string style)
     {
         _nudge = nudge;
+        _style = style;
         var version = ++_loadVersion;
         TitleText.Text = nudge.Title;
-        MessageText.Text = nudge.Message;
-        InstructionText.Text = nudge.Instruction ?? "";
-        InstructionText.Visibility = nudge.Instruction is null ? Visibility.Collapsed : Visibility.Visible;
+        var hint = string.IsNullOrWhiteSpace(nudge.Instruction) ? nudge.Message : nudge.Instruction!;
+        HintText.Text = hint;
+        HintText.Visibility = string.IsNullOrWhiteSpace(hint) ? Visibility.Collapsed : Visibility.Visible;
+        ToolTipService.SetToolTip(HintText, string.IsNullOrWhiteSpace(nudge.Instruction) ? null : nudge.Message + "\n" + nudge.Instruction);
 
         _shownAtTick = Environment.TickCount64;
         _timedSeconds = nudge.TimedSeconds ?? 0;
         _timedEndTick = _shownAtTick + _timedSeconds * 1000L;
         CountdownPanel.Visibility = _timedSeconds > 0 ? Visibility.Visible : Visibility.Collapsed;
         DoneButton.IsEnabled = _timedSeconds == 0;
-        SnoozeButton.IsEnabled = SkipButton.IsEnabled = true;
+        SnoozeButton.IsEnabled = MoreButton.IsEnabled = true;
         _repeating = false;
+        _hovered = _bloopBusy = false;
+        _autoHide.Start(_shownAtTick, HideSeconds(), _timedSeconds);
         UpdateCountdown();
 
         if (AppData.IsDebugRun)
@@ -98,46 +91,43 @@ public sealed partial class NudgeCardWindow : Window
             LogStats("before card");
         }
 
-        var live = style == "3d" && !Stage3D.Failed && nudge.AssetName.StartsWith("bloop", StringComparison.OrdinalIgnoreCase);
-        var slot = style == "3d" ? 96 : 72;
-        AvatarColumn.Width = new GridLength(slot);
-        AvatarSlot.Width = AvatarSlot.Height = slot;
-        LivePanel.Visibility = live ? Visibility.Visible : Visibility.Collapsed;
-        LivePanel.Opacity = 0;
-        Avatar.Opacity = 1;
-
-        Avatar.Source = null;
-        var avatar = await LoadAvatarAsync(style, nudge.AssetName);
+        await Task.Yield();
         if (version != _loadVersion) return;
-        Avatar.Source = avatar;
 
         Place();
         Root.Opacity = 0;
-        Slide.Y = 24;
+        Slide.Y = 8;
         AppWindow.Show(false);
         SetWindowPos(_hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
+        Place();
         PlayEntrance();
         _timer.Start();
+        if (_placement is { } placement)
+            BloopStage.Claim(new BloopClaim(this, _hwnd, placement, style, nudge.AssetName, v => StartClips(nudge, v), BloopSize));
 
-        if (live)
-        {
-            _viewport ??= CreateViewport();
-            _liveRequestedTick = Environment.TickCount64;
-            _viewport.Show(GetDpiForWindow(_hwnd) / 96.0);
-            StartClips(nudge);
-        }
         if (AppData.IsDebugRun)
         {
             var r = AppWindow.Position;
             var s = AppWindow.Size;
             Logger.Log($"card rect {r.X} {r.Y} {s.Width} {s.Height}");
+            if (BloopStage.Window is { } w) Logger.Log($"card bloop hwnd 0x{w.Hwnd:X}");
+            After(2, "debug-card-fg", () => LogForeground("after card shown"), once: true);
+            if (AppData.DebugPoke)
+                foreach (var at in new[] { 2.0, 5, 8 })
+                    After(at, "debug-poke", () => BloopStage.LiveFor(this)?.Poke(withClip: false), once: true);
+            // Debug only: drives the shared Bloop through its own drag code while the card is up.
+            if (AppData.DebugBloopDrag) After(4, "debug-card-bloop-drag", () =>
+            {
+                BloopStage.Window?.DebugDrag(new System.Numerics.Vector2(-300, -180));
+                After(0.6, "debug-card-bloop-check", () => Logger.Log($"card during bloop drag: open={_nudge is not null} paused={_autoHide.Paused}"), once: true);
+            }, once: true);
         }
     }
 
     // A wave on arrival, then the clip that matches the nudge, repeated (or looped) while its countdown runs.
-    private void StartClips(Nudge nudge)
+    private void StartClips(Nudge nudge, LiveViewport viewport)
     {
-        if (_viewport is null) return;
+        if (_nudge != nudge) return;
         var (clip, loop, gap) = nudge switch
         {
             _ when nudge.Message == NudgeScheduler.LongCallMessage => ("star_jump", false, 0.8f),
@@ -151,102 +141,76 @@ public sealed partial class NudgeCardWindow : Window
             _ when nudge.Kinds.Contains(NudgeKind.Stretch) => ("stretch_overhead", false, 1.5f),
             _ => ((string?)null, false, 0f),
         };
-        _viewport.PlaySequence("wave");
+        viewport.PlaySequence("wave");
         if (clip is null) return;
-        if (loop) _viewport.Loop(clip);
-        else _viewport.Repeat(clip, gap);
+        if (loop) viewport.Loop(clip);
+        else viewport.Repeat(clip, gap);
         _repeating = true;
         _repeatUntilTick = _timedSeconds > 0 ? _timedEndTick : _shownAtTick + 12_000;
     }
 
-    // Done on a live card: a high five, then a little celebration, then the card goes.
+    // Done: a high five from Bloop beside the card, then a little celebration, then the card goes.
     public void CelebrateThenHide()
     {
-        if (_viewport is null || LivePanel.Visibility != Visibility.Visible || Stage3D.Failed)
+        if (BloopStage.LiveFor(this) is not { } viewport || Stage3D.Failed)
         {
             HideCard();
             return;
         }
         _nudge = null;
         _repeating = false;
-        DoneButton.IsEnabled = SnoozeButton.IsEnabled = SkipButton.IsEnabled = false;
-        _viewport.PlaySequence("high_five", "celebrate");
+        _autoHide.Stop();
+        DoneButton.IsEnabled = SnoozeButton.IsEnabled = MoreButton.IsEnabled = false;
+        viewport.PlaySequence("high_five", "celebrate");
         var version = _loadVersion;
         var timer = DispatcherQueue.CreateTimer();
         timer.IsRepeating = false;
         timer.Interval = TimeSpan.FromSeconds(3.9);
-        timer.Tick += (_, _) =>
+        timer.Tick += (_, _) => TickGuard.Run("card-celebrate-hide", () =>
         {
             timer.Stop();
-            TickGuard.Run("card-celebrate-hide", () => { if (version == _loadVersion) HideCard(); });
-        };
+            if (version == _loadVersion) HideCard();
+        });
         timer.Start();
     }
 
+    // Hides the card; Bloop hops back to the card's side, fades and hides (or goes back to the quick panel).
     public void HideCard()
     {
         _repeating = false;
         _timer.Stop();
+        _autoHide.Stop();
         _nudge = null;
         _loadVersion++;
-        _viewport?.Hide();
+        BloopStage.Release(this);
         AppWindow.Hide();
         if (AppData.IsDebugRun) LogStats("card hidden");
     }
 
-    private LiveViewport CreateViewport()
+    // Nobody used the card: it fades out, then hides, and the scheduler hears it went unanswered.
+    private void FadeOutAndExpire()
     {
-        var viewport = new LiveViewport(LivePanel);
-        viewport.FirstFrame += OnFirstFrame;
-        viewport.Failed += () =>
-        {
-            LivePanel.Visibility = Visibility.Collapsed;
-            LivePanel.Opacity = 0;
-            Avatar.Opacity = 1;
-        };
-        return viewport;
-    }
-
-    private void OnFirstFrame()
-    {
-        Logger.Log($"3d first frame {Environment.TickCount64 - _liveRequestedTick} ms after show");
-        var duration = new Duration(TimeSpan.FromMilliseconds(150));
-        var fadeIn = new DoubleAnimation { From = 0, To = 1, Duration = duration };
-        var fadeOut = new DoubleAnimation { From = 1, To = 0, Duration = duration };
-        Storyboard.SetTarget(fadeIn, LivePanel);
-        Storyboard.SetTargetProperty(fadeIn, "Opacity");
-        Storyboard.SetTarget(fadeOut, Avatar);
-        Storyboard.SetTargetProperty(fadeOut, "Opacity");
+        if (_nudge is not { } nudge) return;
+        Logger.Log("card countdown ran out");
+        _repeating = false;
+        _timer.Stop();
+        _autoHide.Stop();
+        var version = ++_loadVersion;
+        BloopStage.Release(this);
+        var fade = new DoubleAnimation { To = 0, Duration = new Duration(TimeSpan.FromMilliseconds(200)) };
+        Storyboard.SetTarget(fade, Root);
+        Storyboard.SetTargetProperty(fade, "Opacity");
         var sb = new Storyboard();
-        sb.Children.Add(fadeIn);
-        sb.Children.Add(fadeOut);
-        sb.Begin();
-
-        if (!AppData.IsDebugRun) return;
-        LogForeground("after card shown");
-        if (AppData.DebugPoke)
+        sb.Children.Add(fade);
+        sb.Completed += (_, _) => TickGuard.Run("card-fade-out", () =>
         {
-            // Pokes at 2, 5, 8 s, then two long gaps so the loop is fully asleep for the last two.
-            foreach (var at in new[] { 2.0, 5, 8, 21, 34 })
-            {
-                var n = ++_debugPokes;
-                After(at, "debug-poke", () =>
-                {
-                    Logger.Log($"debug poke {n}");
-                    _viewport?.Poke(withClip: false);
-                    if (n == 1) After(1.5, "debug-poke-fg", () => LogForeground("after poke"));
-                }, once: true);
-            }
-        }
+            if (version != _loadVersion) return;
+            _nudge = null;
+            AppWindow.Hide();
+            Expired?.Invoke(nudge.Id);
+        });
+        sb.Begin();
     }
-    private void OnRootPointerMoved(object sender, PointerRoutedEventArgs e)
-    {
-        if (_viewport is null || LivePanel.Visibility != Visibility.Visible) return;
-        var p = e.GetCurrentPoint(LivePanel).Position;
-        _viewport.LookAt(new Vector2((float)((p.X - 48) / 150), (float)((p.Y - 40) / 100)));
-    }
-
-    private void OnRootPointerExited(object sender, PointerRoutedEventArgs e) => _viewport?.LookAway();
 
     private void LogForeground(string when)
     {
@@ -267,31 +231,49 @@ public sealed partial class NudgeCardWindow : Window
         var timer = DispatcherQueue.CreateTimer();
         timer.IsRepeating = repeat;
         timer.Interval = TimeSpan.FromSeconds(seconds);
-        timer.Tick += (_, _) =>
+        timer.Tick += (_, _) => TickGuard.Run(name, () =>
         {
             if (once) timer.Stop();
-            TickGuard.Run(name, action);
-        };
+            action();
+        });
         _debugTimers.Add(timer);
         timer.Start();
     }
 
+    // In the tray corner of the main screen, as tall as the content needs. The taskbar edge decides the corner and
+    // which side Bloop stands on.
     private void Place()
     {
         var scale = GetDpiForWindow(_hwnd) / 96.0;
-        var w = (int)(WidthDip * scale);
-        var h = (int)(HeightDip * scale);
+        var area = DisplayArea.Primary;
+        var work = area.WorkArea;
+        var mon = area.OuterBounds;
+        var edge = work.Y + work.Height < mon.Y + mon.Height ? TaskbarEdge.Bottom
+            : work.Y > mon.Y ? TaskbarEdge.Top
+            : work.X + work.Width < mon.X + mon.Width ? TaskbarEdge.Right
+            : work.X > mon.X ? TaskbarEdge.Left
+            : TaskbarEdge.Bottom;
+        Root.Measure(new Windows.Foundation.Size(WidthDip, double.PositiveInfinity));
+        var w = (int)Math.Round(WidthDip * scale);
+        var hDip = Root.DesiredSize.Height is > 40 and var d ? d : 110;
+        var h = (int)Math.Ceiling(hDip * scale);
         var margin = (int)(MarginDip * scale);
-        var work = DisplayArea.Primary.WorkArea;
-        AppWindow.MoveAndResize(new RectInt32(work.X + work.Width - w - margin, work.Y + work.Height - h - margin, w, h));
+        var x = edge == TaskbarEdge.Left ? work.X + margin : work.X + work.Width - w - margin;
+        var y = edge == TaskbarEdge.Top ? work.Y + margin : work.Y + work.Height - h - margin;
+        var rect = new RectInt32(x, y, w, h);
+        AppWindow.MoveAndResize(rect);
+        var changed = _placement?.Card != rect;
+        _placement = new PanelPlacement(rect, work, edge, scale, rect);
+        if (changed && _nudge is not null) BloopStage.Move(this, _placement);
     }
 
+    // A short, gentle fade and rise: no bounce, no flash.
     private void PlayEntrance()
     {
         var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
-        var duration = new Duration(TimeSpan.FromMilliseconds(260));
+        var duration = new Duration(TimeSpan.FromMilliseconds(200));
         var fade = new DoubleAnimation { From = 0, To = 1, Duration = duration, EasingFunction = ease };
-        var slide = new DoubleAnimation { From = 24, To = 0, Duration = duration, EasingFunction = ease };
+        var slide = new DoubleAnimation { From = 8, To = 0, Duration = duration, EasingFunction = ease };
         Storyboard.SetTarget(fade, Root);
         Storyboard.SetTargetProperty(fade, "Opacity");
         Storyboard.SetTarget(slide, Slide);
@@ -305,25 +287,38 @@ public sealed partial class NudgeCardWindow : Window
     private void OnTimer(object? sender, object e)
     {
         if (_nudge is null) return;
-        if (Environment.TickCount64 - _shownAtTick >= AutoHide.TotalMilliseconds)
+        var now = Environment.TickCount64;
+        var busy = BloopStage.Owns(this) && BloopStage.Window is { IsBusy: true };
+        if (busy != _bloopBusy) { _bloopBusy = busy; UpdatePause(); }
+        if (_autoHide.Expired(now))
         {
-            var id = _nudge.Id;
-            HideCard();
-            Expired?.Invoke(id);
+            FadeOutAndExpire();
             return;
         }
         UpdateCountdown();
-        if (_repeating && Environment.TickCount64 >= _repeatUntilTick)
+        if (_repeating && now >= _repeatUntilTick)
         {
             _repeating = false;
-            _viewport?.StopRepeat();
+            BloopStage.LiveFor(this)?.StopRepeat();
         }
+    }
+
+    // The countdown waits while the pointer is on the card or Bloop is pressed, dragged or away.
+    private void UpdatePause()
+    {
+        if (_nudge is null) return;
+        var now = Environment.TickCount64;
+        if (_hovered || _bloopBusy) _autoHide.Pause(now);
+        else _autoHide.Resume(now);
+        HideLine.Opacity = _autoHide.Paused ? 0.25 : 0.6;
     }
 
     private void UpdateCountdown()
     {
+        var now = Environment.TickCount64;
+        HideLineScale.ScaleX = _autoHide.Fraction(now);
         if (_timedSeconds <= 0) return;
-        var leftMs = Math.Max(0, _timedEndTick - Environment.TickCount64);
+        var leftMs = Math.Max(0, _timedEndTick - now);
         CountdownText.Text = $"{(int)Math.Ceiling(leftMs / 1000.0)} s";
         if (leftMs == 0) DoneButton.IsEnabled = true;
         Ring.Value = 100.0 * (1 - leftMs / (_timedSeconds * 1000.0));
@@ -370,19 +365,8 @@ public sealed partial class NudgeCardWindow : Window
         }
     }
 
-    private const int GWL_EXSTYLE = -20;
-    private const long WS_EX_TOOLWINDOW = 0x80;
-    private const long WS_EX_NOACTIVATE = 0x08000000;
-    private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
-    private const int DWMWCP_ROUND = 2;
     private static readonly IntPtr HWND_TOPMOST = new(-1);
     private const uint SWP_NOSIZE = 0x1, SWP_NOMOVE = 0x2, SWP_NOACTIVATE = 0x10, SWP_SHOWWINDOW = 0x40;
-
-    [DllImport("user32.dll", EntryPoint = "GetWindowLongPtrW")]
-    private static extern IntPtr GetWindowLongPtr(IntPtr hWnd, int index);
-
-    [DllImport("user32.dll", EntryPoint = "SetWindowLongPtrW")]
-    private static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int index, IntPtr value);
 
     [DllImport("user32.dll")]
     private static extern uint GetDpiForWindow(IntPtr hWnd);
@@ -392,8 +376,4 @@ public sealed partial class NudgeCardWindow : Window
 
     [DllImport("user32.dll")]
     private static extern bool SetWindowPos(IntPtr hWnd, IntPtr after, int x, int y, int cx, int cy, uint flags);
-
-    [DllImport("dwmapi.dll")]
-    private static extern int DwmSetWindowAttribute(IntPtr hWnd, int attribute, ref int value, int size);
 }
-

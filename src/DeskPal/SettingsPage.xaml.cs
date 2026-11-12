@@ -97,6 +97,11 @@ public sealed partial class SettingsPage : Page
         Root.Children.Add(Header("Appearance"));
         AddChoice("Nudge style", "How a nudge appears", ["Card", "Toast"],
             () => _s.UseNudgeCard ? 0 : 1, i => { _s.UseNudgeCard = i == 0; _hub.Commit(false); });
+        var hideChoices = DeskPalSettings.HideNudgeChoices;
+        AddChoice("Hide reminders after", "A reminder card you leave alone hides by itself",
+            hideChoices.Select(v => $"{v} s" + (v == DeskPalSettings.RecommendedHideNudgeSeconds ? " ★ Recommended" : "")).ToArray(),
+            () => Math.Max(0, Array.IndexOf(hideChoices, _s.HideNudgeSeconds)),
+            i => { _s.HideNudgeSeconds = hideChoices[i]; _hub.Commit(false); });
         AddChoice("Avatar style", "How Bloop is drawn", ["Flat", "Soft 3D", "3D (beta)"],
             () => _s.AvatarStyle == "3d" ? 2 : _s.AvatarStyle == "soft3d" ? 1 : 0,
             i => { _s.AvatarStyle = i == 2 ? "3d" : i == 1 ? "soft3d" : "flat"; _hub.Commit(false); });
