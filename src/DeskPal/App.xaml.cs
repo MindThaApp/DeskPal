@@ -183,7 +183,7 @@ public partial class App : Application
     private void StartDebugTriggers()
     {
         if (AppData.DebugSettings) OpenSettings();
-        if (AppData.DebugMain) OpenMain();
+        if (AppData.DebugMain) OpenMain(AppData.DebugPage);
         else if (!_ui.FirstRunShown)
         {
             _ui.FirstRunShown = true;

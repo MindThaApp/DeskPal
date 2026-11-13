@@ -21,11 +21,15 @@ public static class AppData
     public static readonly bool DebugBloopExit =HasArg("--debug-bloop-exit");
     // --debug-gesture=<region>:<gesture>[,...] (or "all"): synthetic gestures fed to the Home Bloop's own touch handler.
     public static readonly string? DebugGesture = ArgValue("--debug-gesture=");
+    // --debug-page=<home|bloop|garden|settings>: with --debug-main, opens the main window on that page.
+    public static readonly string? DebugPage = ArgValue("--debug-page=");
     public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugGesture is not null;
 
     // Debug runs keep their own state and log so they never touch the real ones.
-    public static readonly string Dir = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeskPal", IsDebugRun ? "debug" : "");
+    // DESKPAL_DEBUG_DATA_DIR moves the debug root elsewhere (e.g. a temp folder); it is ignored outside debug runs.
+    public static readonly string Dir = IsDebugRun && Environment.GetEnvironmentVariable("DESKPAL_DEBUG_DATA_DIR") is { Length: > 0 } custom
+        ? custom
+        : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeskPal", IsDebugRun ? "debug" : "");
     public static readonly string SettingsPath = Path.Combine(Dir, "settings.json");
     public static readonly string StatePath = Path.Combine(Dir, "state.json");
 
