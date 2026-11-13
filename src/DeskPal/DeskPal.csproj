@@ -52,6 +52,11 @@
   <Target Name="DpDropSkiaSymbols" AfterTargets="Publish">
     <Delete Files="$(PublishDir)libSkiaSharp.pdb" />
   </Target>
+  <!-- The Windows App SDK pulls in its on-device ML runtime (onnxruntime.dll, DirectML.dll, ~40 MB); Desk Pal never uses it. -->
+  <ItemGroup Condition="'$(DeskPalStore)' == 'true'">
+    <PackageReference Include="Microsoft.WindowsAppSDK.ML" Version="2.6.5" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.Windows.AI.MachineLearning" Version="2.4.89" ExcludeAssets="all" />
+  </ItemGroup>
   <ItemGroup Condition="'$(DpBetaTag)' != ''">
     <AssemblyMetadata Include="DpBetaTag" Value="$(DpBetaTag)" />
   </ItemGroup>
