@@ -45,6 +45,10 @@ public sealed class DeskPalSettings
     public string AvatarStyle { get; set; } = "flat";
     // BCP-47 tag of the display language; empty follows Windows.
     public string Language { get; set; } = "";
+    // Set while a language switch is unconfirmed: the tag to go back to (empty = follow Windows) and when the switch happened.
+    // Both null when nothing is pending, which is also how files from before this existed load.
+    public string? PendingLanguageRevert { get; set; }
+    public DateTimeOffset? PendingLanguageRevertAt { get; set; }
 
     // Growth stage of the 3D Sprout on Home (1 to 4). Fixed at 2 until growth is tracked.
     public int SproutStage { get; set; } = 2;
