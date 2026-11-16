@@ -37,7 +37,7 @@ internal static class HatMeshes
 
     private static void Beanie(List<ModelPart> parts)
     {
-        const float cut = -0.0085f, crown = 3.6f, t = 0.0014f;
+        const float cut = -0.014f, crown = 1.7f, t = 0.0014f, snugX = 0.59f, snugZ = 1.12f;
         var r = HeadRadii + new Vector3(t);
         var cosMax = (cut - HeadCentre.Y) / r.Y;
         var thetaMax = MathF.Acos(Math.Clamp(cosMax, -1, 1));
@@ -45,15 +45,15 @@ internal static class HatMeshes
         {
             var th = u * thetaMax;
             var ph = v * MathF.Tau;
-            var p = HeadCentre + new Vector3(r.X * MathF.Sin(th) * MathF.Cos(ph), r.Y * MathF.Cos(th), r.Z * MathF.Sin(th) * MathF.Sin(ph));
+            var p = HeadCentre + new Vector3(snugX * r.X * MathF.Sin(th) * MathF.Cos(ph), r.Y * MathF.Cos(th), snugZ * r.Z * MathF.Sin(th) * MathF.Sin(ph));
             p.Y = cut + crown * (p.Y - cut);
             return p;
         }
         var top = Shell(0, 0).Y;
         parts.Add(Surface("beanie", Shell, p => new Vector3(0, cut, 0) + (p with { Y = 0 }) * 0.2f, Srgb(0xEE, 0x7F, 0x86), 0.85f));
 
-        var ringX = r.X * MathF.Sin(thetaMax);
-        var ringZ = r.Z * MathF.Sin(thetaMax);
+        var ringX = snugX * r.X * MathF.Sin(thetaMax);
+        var ringZ = snugZ * r.Z * MathF.Sin(thetaMax);
         const float tubeY = 0.0042f, tubeOut = 0.0030f;
         Vector3 Path(float v) => new(ringX * MathF.Cos(v * MathF.Tau), cut + 0.0012f, ringZ * MathF.Sin(v * MathF.Tau));
         Vector3 Cuff(float u, float v)
@@ -74,7 +74,7 @@ internal static class HatMeshes
 
     private static void PartyHat(List<ModelPart> parts)
     {
-        const float height = 0.060f, rx = 0.023f, rz = 0.019f, sink = 0.006f;
+        const float height = 0.022f, rx = 0.0174f, rz = 0.0145f, sink = 0.004f;
         var tilt = Matrix4x4.CreateRotationZ(-10f * MathF.PI / 180, new Vector3(0, -sink, 0));
         float[] bands = [0, 0.22f, 0.34f, 0.56f, 0.68f, 1];
         for (var b = 0; b < bands.Length - 1; b++)
@@ -97,7 +97,7 @@ internal static class HatMeshes
             return Vector3.Transform(new Vector3(rx * u * MathF.Cos(ph), -sink, rz * u * MathF.Sin(ph)), tilt);
         }
         parts.Add(Surface("party-base", Base, _ => Vector3.Transform(new Vector3(0, 0.02f, 0), tilt), Srgb(0x8C, 0x7C, 0xF0), 0.55f));
-        parts.Add(Sphere("party-pompom", Vector3.Transform(new Vector3(0, -sink + height + 0.003f, 0), tilt), new Vector3(0.0072f),
+        parts.Add(Sphere("party-pompom", Vector3.Transform(new Vector3(0, -sink + height + 0.002f, 0), tilt), new Vector3(0.0050f),
             Srgb(0xFF, 0x8F, 0xA8), 0.9f));
     }
 
