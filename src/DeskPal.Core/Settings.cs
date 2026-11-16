@@ -71,6 +71,9 @@ public sealed class DeskPalSettings
     // Desk Pal Evolution (Pro): trial start and the cached Store answer. See ProLicence.
     public ProLicenceRecord Pro { get; set; } = new();
 
+    // Bloop and Sprout customisation (Pro). Kept when Pro lapses; read through CharacterLook.Effective.
+    public LookSettings Look { get; set; } = new();
+
     public int MovementMinutes => Math.Clamp(StretchMinutes, MovementMin, MovementMax);
 
     public bool IsScheduled(NudgeKind kind) => kind switch
