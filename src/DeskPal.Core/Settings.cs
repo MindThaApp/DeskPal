@@ -138,6 +138,8 @@ public sealed class DeskPalState
     public int WalksToday { get; set; }
     // Total care points earned (see NudgeReward); files from before this existed load as 0.
     public int CarePoints { get; set; }
+    // Daily history, best streaks and weekly recap bookkeeping; files from before this existed load empty.
+    public StreakBook Streaks { get; set; } = new();
     public MainWindowUi Ui { get; set; } = new();
 }
 

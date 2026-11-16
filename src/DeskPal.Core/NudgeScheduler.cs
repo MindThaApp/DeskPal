@@ -35,6 +35,7 @@ public sealed class NudgeScheduler : ICommandRouter
     private int _eyeBreaksToday;
     private int _walksToday;
     private bool _snoozedPending;
+    private readonly StreakBook _book;
 
     public NudgeScheduler(TimeProvider time, DeskPalSettings settings, DeskPalState? state = null)
     {
@@ -47,6 +48,8 @@ public sealed class NudgeScheduler : ICommandRouter
         _eyeBreaksToday = state?.EyeBreaksToday ?? 0;
         _walksToday = state?.WalksToday ?? 0;
         CarePoints = state?.CarePoints ?? 0;
+        _book = state?.Streaks ?? new StreakBook();
+        _book.Normalize();
         var now = Now;
         RollDay(now);
         ApplyDue(now);
@@ -154,6 +157,7 @@ public sealed class NudgeScheduler : ICommandRouter
                 EyeBreaksToday = _eyeBreaksToday,
                 WalksToday = _walksToday,
                 CarePoints = CarePoints,
+                Streaks = _book,
             };
         }
     }
@@ -169,6 +173,7 @@ public sealed class NudgeScheduler : ICommandRouter
     {
         lock (_gate)
         {
+            if (source == ManualSource) { RollDay(Now); _book.PausedDate = _countersDate; }
             var hold = new Hold(source, reason, until, seated);
             var index = _holds.FindIndex(h => h.Source == source);
             if (index >= 0)
@@ -343,10 +348,69 @@ public sealed class NudgeScheduler : ICommandRouter
     {
         var today = DateOnly.FromDateTime(now.Date);
         if (today == _countersDate) return;
+        if (_countersDate != default) _book.Archive(RecordFor(_countersDate, _book.PausedDate == _countersDate));
         _countersDate = today;
         _stretchesToday = 0;
         _eyeBreaksToday = 0;
         _walksToday = 0;
+    }
+
+    private DayRecord RecordFor(DateOnly date, bool paused)
+    {
+        var goals = DailyGoals.For(_settings);
+        return new DayRecord
+        {
+            Date = date,
+            Stretches = _stretchesToday, EyeBreaks = _eyeBreaksToday, Walks = _walksToday,
+            GoalStretches = goals.Stretches, GoalEyes = goals.EyeBreaks, GoalWalks = goals.Walks,
+            Relaxed = paused || Array.IndexOf(_settings.WorkingHours.Days, date.DayOfWeek) < 0,
+        };
+    }
+
+    // Current and best streaks per goal and overall. Updates the stored bests; a new best is reported until acknowledged.
+    public StreakSummary Streaks
+    {
+        get
+        {
+            lock (_gate)
+            {
+                var now = Now;
+                RollDay(now);
+                return _book.Summarize(RecordFor(_countersDate, _book.PausedDate == _countersDate));
+            }
+        }
+    }
+
+    public void AcknowledgeStreakBests()
+    {
+        lock (_gate) _book.AcknowledgeBests();
+    }
+
+    public WeekRecap? LastWeekRecap(DayOfWeek firstDay)
+    {
+        lock (_gate)
+        {
+            RollDay(Now);
+            return StreakMath.BuildRecap(_book.History, _countersDate, firstDay);
+        }
+    }
+
+    public bool RecapDue(DayOfWeek firstDay)
+    {
+        lock (_gate)
+        {
+            RollDay(Now);
+            return _book.RecapDue(_countersDate, firstDay);
+        }
+    }
+
+    public void MarkRecapShown(DayOfWeek firstDay)
+    {
+        lock (_gate)
+        {
+            RollDay(Now);
+            _book.MarkRecapShown(_countersDate, firstDay);
+        }
     }
 
     private bool Pause(PauseCommand c)
