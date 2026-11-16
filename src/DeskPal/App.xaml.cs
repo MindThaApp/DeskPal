@@ -96,6 +96,8 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        // A tray app: closing the setup wizard or the keep-language prompt (the only windows open) must not end the process.
+        DispatcherShutdownMode = DispatcherShutdownMode.OnExplicitShutdown;
         _dq = DispatcherQueue.GetForCurrentThread();
         _settings = JsonFileStore.Load<DeskPalSettings>(AppData.SettingsPath, TimeProvider.System);
         if (_settings.Migrate())
