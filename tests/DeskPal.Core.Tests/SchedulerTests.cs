@@ -479,7 +479,7 @@ public class SchedulerTests
         calls.InCall = false;
         m.Poll();
         Assert.Equal(1, Shown(ev));
-        Assert.Equal(NudgeScheduler.LongCallMessage, s.Current!.Message);
+        Assert.True(s.Current!.IsLongCall);
     }
 
     [Fact]

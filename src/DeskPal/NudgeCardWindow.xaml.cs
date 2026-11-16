@@ -130,7 +130,7 @@ public sealed partial class NudgeCardWindow : Window
         if (_nudge != nudge) return;
         var (clip, loop, gap) = nudge switch
         {
-            _ when nudge.Message == NudgeScheduler.LongCallMessage => ("star_jump", false, 0.8f),
+            _ when nudge.IsLongCall => ("star_jump", false, 0.8f),
             _ when nudge.Kinds.Contains(NudgeKind.Walk) => ("walk", true, 0f),
             { Stretch: { } s } => (s.Id switch
             {

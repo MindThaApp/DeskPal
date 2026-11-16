@@ -508,7 +508,7 @@ public sealed class NudgeScheduler : ICommandRouter
             _ => "bloop-idle",
         };
 
-        var nudge = new Nudge(Guid.NewGuid(), kinds, primary, title, message, extra, stretch, timed, asset, isTest, now, !isTest && _snoozedPending);
+        var nudge = new Nudge(Guid.NewGuid(), kinds, primary, title, message, extra, stretch, timed, asset, isTest, now, !isTest && _snoozedPending, longCall);
         if (!isTest) _snoozedPending = false;
         Current = nudge;
         if (!isTest)

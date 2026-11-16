@@ -385,7 +385,7 @@ public partial class App : Application
 
     private string LoopFor(Nudge nudge)
     {
-        if (nudge.Message == NudgeScheduler.LongCallMessage) return "jumps";
+        if (nudge.IsLongCall) return "jumps";
         if (nudge.Kinds.Contains(NudgeKind.Walk)) return ++_walkNudges % 2 == 0 ? "fresh-air" : "walk";
         if (nudge.Kinds.Contains(NudgeKind.Water)) return "drink";
         if (nudge.Kinds.Contains(NudgeKind.Stretch)) return "stretch";

@@ -18,7 +18,8 @@ public sealed record Nudge(
     string AssetName,
     bool IsTest,
     DateTimeOffset ShownAt,
-    bool WasSnoozed = false);
+    bool WasSnoozed = false,
+    bool IsLongCall = false);
 
 public enum SchedulerEventType { NudgeShown, NudgeDone, NudgeSkipped, NudgeSnoozed, HoldStarted, HoldEnded, EyeCue }
 
