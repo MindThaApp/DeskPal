@@ -71,6 +71,8 @@
     <Content Include="Assets\Shaders\*.cso" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\Tray\manifest.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\deskpal.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\Flags\*.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
     <PackageReference Include="SharpGLTF.Core" Version="1.0.7" />
     <PackageReference Include="Svg.Skia" Version="5.2.3" />
     <PackageReference Include="Vortice.Direct3D11" Version="3.8.3" />
