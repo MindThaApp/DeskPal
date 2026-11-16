@@ -827,4 +827,96 @@
     <value>Zakończ</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Main_Nav_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Navigation item; product name, keep as is</comment>
+  </data>
+  <data name="Pro_Badge" xml:space="preserve">
+    <value>Pro</value>
+    <comment>Small badge next to paid features; keep short</comment>
+  </data>
+  <data name="Pro_Title" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Product name, keep as is</comment>
+  </data>
+  <data name="Pro_Intro" xml:space="preserve">
+    <value>Dopasuj Desk Pal do siebie. Jeden zakup odblokowuje wszystkie funkcje Pro, teraz i w przyszłości.</value>
+  </data>
+  <data name="Pro_Status_Free" xml:space="preserve">
+    <value>Korzystasz z wersji bezpłatnej. Wszystko, czego używasz dziś, pozostaje bezpłatne.</value>
+  </data>
+  <data name="Pro_Status_Trial" xml:space="preserve">
+    <value>Okres próbny Pro: pozostało dni: {0}.</value>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
+  </data>
+  <data name="Pro_Status_TrialLastDay" xml:space="preserve">
+    <value>Okres próbny Pro: ostatni dzień.</value>
+  </data>
+  <data name="Pro_Status_TrialEnded" xml:space="preserve">
+    <value>Okres próbny Pro się zakończył. Twoje wybory są zapisane i wrócą, gdy kupisz Pro.</value>
+  </data>
+  <data name="Pro_Status_Owned" xml:space="preserve">
+    <value>Pro jest odblokowane. Dziękujemy za wspieranie Desk Pal!</value>
+  </data>
+  <data name="Pro_Includes" xml:space="preserve">
+    <value>Co daje Pro</value>
+  </data>
+  <data name="Pro_Feature_Custom" xml:space="preserve">
+    <value>Twój własny styl: urządź Bloopa i Desk Pal po swojemu.</value>
+  </data>
+  <data name="Pro_Feature_Stretch" xml:space="preserve">
+    <value>Rozciąganie z Bloopem (wkrótce).</value>
+  </data>
+  <data name="Pro_Feature_Future" xml:space="preserve">
+    <value>Wszystkie przyszłe funkcje Pro bez dodatkowych opłat.</value>
+  </data>
+  <data name="Pro_AlwaysFree" xml:space="preserve">
+    <value>Zawsze za darmo</value>
+  </data>
+  <data name="Pro_AlwaysFreeText" xml:space="preserve">
+    <value>Wszystkie przypomnienia, czas wyciszenia, pierścienie celów, serie, Bloop i Sprout, cztery etapy ogrodu oraz 7 dni historii.</value>
+  </data>
+  <data name="Pro_TryFree" xml:space="preserve">
+    <value>Wypróbuj Pro za darmo przez 7 dni</value>
+  </data>
+  <data name="Pro_Buy" xml:space="preserve">
+    <value>Kup Pro</value>
+  </data>
+  <data name="Pro_BuyPrice" xml:space="preserve">
+    <value>Kup Pro — {0}</value>
+    <comment>Button; {0} = price from the Store, e.g. £3.99</comment>
+  </data>
+  <data name="Pro_Restore" xml:space="preserve">
+    <value>Przywróć zakup</value>
+  </data>
+  <data name="Pro_OneTime" xml:space="preserve">
+    <value>Jednorazowy zakup. Bez subskrypcji.</value>
+  </data>
+  <data name="Pro_Msg_TrialStarted" xml:space="preserve">
+    <value>Twój 7-dniowy okres próbny Pro już trwa. Miłego korzystania!</value>
+  </data>
+  <data name="Pro_Msg_Thanks" xml:space="preserve">
+    <value>Dziękujemy! Pro jest odblokowane.</value>
+  </data>
+  <data name="Pro_Msg_NotPurchased" xml:space="preserve">
+    <value>Nie dokonano zakupu.</value>
+  </data>
+  <data name="Pro_Msg_StoreError" xml:space="preserve">
+    <value>Nie można połączyć się ze Sklepem Microsoft. Spróbuj ponownie później.</value>
+  </data>
+  <data name="Pro_Msg_NoStore" xml:space="preserve">
+    <value>Zakupy wymagają wersji Desk Pal ze Sklepu Microsoft.</value>
+  </data>
+  <data name="Pro_Msg_Restored" xml:space="preserve">
+    <value>Pro jest odblokowane na tym koncie.</value>
+  </data>
+  <data name="Pro_Msg_NothingToRestore" xml:space="preserve">
+    <value>Nie znaleziono zakupu Desk Pal Evolution na tym koncie.</value>
+  </data>
+  <data name="Pro_SettingsName" xml:space="preserve">
+    <value>Funkcje Pro</value>
+  </data>
+  <data name="Pro_SeeMore" xml:space="preserve">
+    <value>Zobacz Pro</value>
+  </data>
 </root>

@@ -805,4 +805,96 @@
     <value>Voltooien</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Main_Nav_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Navigation item; product name, keep as is</comment>
+  </data>
+  <data name="Pro_Badge" xml:space="preserve">
+    <value>Pro</value>
+    <comment>Small badge next to paid features; keep short</comment>
+  </data>
+  <data name="Pro_Title" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Product name, keep as is</comment>
+  </data>
+  <data name="Pro_Intro" xml:space="preserve">
+    <value>Maak Desk Pal helemaal van jou. Eén aankoop ontgrendelt alle Pro-functies, nu en in de toekomst.</value>
+  </data>
+  <data name="Pro_Status_Free" xml:space="preserve">
+    <value>Je gebruikt de gratis versie. Alles wat je nu gebruikt, blijft gratis.</value>
+  </data>
+  <data name="Pro_Status_Trial" xml:space="preserve">
+    <value>Pro-proefperiode: nog {0} dagen.</value>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
+  </data>
+  <data name="Pro_Status_TrialLastDay" xml:space="preserve">
+    <value>Pro-proefperiode: laatste dag.</value>
+  </data>
+  <data name="Pro_Status_TrialEnded" xml:space="preserve">
+    <value>Je Pro-proefperiode is afgelopen. Je keuzes blijven bewaard en komen terug zodra je Pro neemt.</value>
+  </data>
+  <data name="Pro_Status_Owned" xml:space="preserve">
+    <value>Pro is ontgrendeld. Bedankt dat je Desk Pal steunt!</value>
+  </data>
+  <data name="Pro_Includes" xml:space="preserve">
+    <value>Wat Pro toevoegt</value>
+  </data>
+  <data name="Pro_Feature_Custom" xml:space="preserve">
+    <value>Je eigen stijl: maak Bloop en Desk Pal zoals jij het wilt.</value>
+  </data>
+  <data name="Pro_Feature_Stretch" xml:space="preserve">
+    <value>Rekken met Bloop (binnenkort).</value>
+  </data>
+  <data name="Pro_Feature_Future" xml:space="preserve">
+    <value>Alle toekomstige Pro-functies, zonder extra kosten.</value>
+  </data>
+  <data name="Pro_AlwaysFree" xml:space="preserve">
+    <value>Altijd gratis</value>
+  </data>
+  <data name="Pro_AlwaysFreeText" xml:space="preserve">
+    <value>Alle herinneringen, rustige tijden, doelringen, reeksen, Bloop en Sprout, de vier fasen van de tuin en 7 dagen geschiedenis.</value>
+  </data>
+  <data name="Pro_TryFree" xml:space="preserve">
+    <value>Probeer Pro 7 dagen gratis</value>
+  </data>
+  <data name="Pro_Buy" xml:space="preserve">
+    <value>Pro nemen</value>
+  </data>
+  <data name="Pro_BuyPrice" xml:space="preserve">
+    <value>Pro nemen — {0}</value>
+    <comment>Button; {0} = price from the Store, e.g. £3.99</comment>
+  </data>
+  <data name="Pro_Restore" xml:space="preserve">
+    <value>Aankoop herstellen</value>
+  </data>
+  <data name="Pro_OneTime" xml:space="preserve">
+    <value>Eenmalige aankoop. Geen abonnement.</value>
+  </data>
+  <data name="Pro_Msg_TrialStarted" xml:space="preserve">
+    <value>Je Pro-proefperiode van 7 dagen is begonnen. Veel plezier!</value>
+  </data>
+  <data name="Pro_Msg_Thanks" xml:space="preserve">
+    <value>Bedankt! Pro is ontgrendeld.</value>
+  </data>
+  <data name="Pro_Msg_NotPurchased" xml:space="preserve">
+    <value>Er is niets gekocht.</value>
+  </data>
+  <data name="Pro_Msg_StoreError" xml:space="preserve">
+    <value>De Microsoft Store is niet bereikbaar. Probeer het later opnieuw.</value>
+  </data>
+  <data name="Pro_Msg_NoStore" xml:space="preserve">
+    <value>Voor aankopen heb je de Microsoft Store-versie van Desk Pal nodig.</value>
+  </data>
+  <data name="Pro_Msg_Restored" xml:space="preserve">
+    <value>Pro is ontgrendeld voor dit account.</value>
+  </data>
+  <data name="Pro_Msg_NothingToRestore" xml:space="preserve">
+    <value>Er is geen aankoop van Desk Pal Evolution gevonden voor dit account.</value>
+  </data>
+  <data name="Pro_SettingsName" xml:space="preserve">
+    <value>Pro-functies</value>
+  </data>
+  <data name="Pro_SeeMore" xml:space="preserve">
+    <value>Bekijk Pro</value>
+  </data>
 </root>

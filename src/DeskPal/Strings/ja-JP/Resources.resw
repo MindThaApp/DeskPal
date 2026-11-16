@@ -827,4 +827,96 @@
     <value>完了</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Main_Nav_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Navigation item; product name, keep as is</comment>
+  </data>
+  <data name="Pro_Badge" xml:space="preserve">
+    <value>Pro</value>
+    <comment>Small badge next to paid features; keep short</comment>
+  </data>
+  <data name="Pro_Title" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Product name, keep as is</comment>
+  </data>
+  <data name="Pro_Intro" xml:space="preserve">
+    <value>Desk Pal を自分らしく。一度の購入で、今後追加されるものも含めてすべての Pro 機能が使えます。</value>
+  </data>
+  <data name="Pro_Status_Free" xml:space="preserve">
+    <value>無料版をご利用中です。今お使いの機能はこれからも無料です。</value>
+  </data>
+  <data name="Pro_Status_Trial" xml:space="preserve">
+    <value>Pro 体験版：残り {0} 日</value>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
+  </data>
+  <data name="Pro_Status_TrialLastDay" xml:space="preserve">
+    <value>Pro 体験版：最終日</value>
+  </data>
+  <data name="Pro_Status_TrialEnded" xml:space="preserve">
+    <value>Pro 体験版は終了しました。選んだ設定は保存されており、Pro を購入すると元に戻ります。</value>
+  </data>
+  <data name="Pro_Status_Owned" xml:space="preserve">
+    <value>Pro が有効になりました。Desk Pal を応援してくださりありがとうございます！</value>
+  </data>
+  <data name="Pro_Includes" xml:space="preserve">
+    <value>Pro で追加されるもの</value>
+  </data>
+  <data name="Pro_Feature_Custom" xml:space="preserve">
+    <value>自分好みの見た目：Bloop と Desk Pal を好きなスタイルに。</value>
+  </data>
+  <data name="Pro_Feature_Stretch" xml:space="preserve">
+    <value>Bloop と一緒にストレッチ（近日公開）</value>
+  </data>
+  <data name="Pro_Feature_Future" xml:space="preserve">
+    <value>今後の Pro 機能もすべて追加料金なし。</value>
+  </data>
+  <data name="Pro_AlwaysFree" xml:space="preserve">
+    <value>ずっと無料</value>
+  </data>
+  <data name="Pro_AlwaysFreeText" xml:space="preserve">
+    <value>すべてのリマインダー、休息時間、目標リング、連続記録、Bloop と Sprout、ガーデンの 4 つの段階、7 日間の履歴。</value>
+  </data>
+  <data name="Pro_TryFree" xml:space="preserve">
+    <value>Pro を 7 日間無料で試す</value>
+  </data>
+  <data name="Pro_Buy" xml:space="preserve">
+    <value>Pro を入手</value>
+  </data>
+  <data name="Pro_BuyPrice" xml:space="preserve">
+    <value>Pro を入手 — {0}</value>
+    <comment>Button; {0} = price from the Store, e.g. £3.99</comment>
+  </data>
+  <data name="Pro_Restore" xml:space="preserve">
+    <value>購入を復元</value>
+  </data>
+  <data name="Pro_OneTime" xml:space="preserve">
+    <value>買い切りです。サブスクリプションではありません。</value>
+  </data>
+  <data name="Pro_Msg_TrialStarted" xml:space="preserve">
+    <value>7 日間の Pro 体験版が始まりました。お楽しみください！</value>
+  </data>
+  <data name="Pro_Msg_Thanks" xml:space="preserve">
+    <value>ありがとうございます！Pro が有効になりました。</value>
+  </data>
+  <data name="Pro_Msg_NotPurchased" xml:space="preserve">
+    <value>購入は行われませんでした。</value>
+  </data>
+  <data name="Pro_Msg_StoreError" xml:space="preserve">
+    <value>Microsoft Store に接続できませんでした。しばらくしてからもう一度お試しください。</value>
+  </data>
+  <data name="Pro_Msg_NoStore" xml:space="preserve">
+    <value>購入には Microsoft Store 版の Desk Pal が必要です。</value>
+  </data>
+  <data name="Pro_Msg_Restored" xml:space="preserve">
+    <value>このアカウントで Pro が有効になっています。</value>
+  </data>
+  <data name="Pro_Msg_NothingToRestore" xml:space="preserve">
+    <value>このアカウントでは Desk Pal Evolution の購入が見つかりませんでした。</value>
+  </data>
+  <data name="Pro_SettingsName" xml:space="preserve">
+    <value>Pro 機能</value>
+  </data>
+  <data name="Pro_SeeMore" xml:space="preserve">
+    <value>Pro を見る</value>
+  </data>
 </root>
