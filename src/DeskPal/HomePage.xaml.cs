@@ -24,6 +24,7 @@ public sealed partial class HomePage : Page
     private bool _active;
     private bool _live;
     private string _style = "";
+    private string _lookKey = "";
     private long _loadVersion;
     private int _debugPokes;
     private readonly Bloop2D _flat;
@@ -137,9 +138,11 @@ public sealed partial class HomePage : Page
         Avatar.Opacity = 1;
         SproutImage.Opacity = 1;
         SproutHit.Visibility = Visibility.Collapsed;
-        if (style != _style || Avatar.Source is null)
+        var lookKey = Looks.Current.Key;
+        if (style != _style || lookKey != _lookKey || Avatar.Source is null)
         {
             _style = style;
+            _lookKey = lookKey;
             var bloop = await NudgeCardWindow.LoadAvatarAsync(style, "bloop-idle", 640);
             var sprout = await NudgeCardWindow.LoadAvatarAsync(style, "sprout-mood-happy", 192);
             if (version != _loadVersion) return;

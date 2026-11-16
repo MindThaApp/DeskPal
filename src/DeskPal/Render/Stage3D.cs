@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using DeskPal.Core;
 using SkiaSharp;
 using Vortice.Direct3D;
 using Vortice.Direct3D11;
@@ -107,8 +108,43 @@ internal sealed class GpuModel : IDisposable
         return new GpuModel { Model = model, Parts = parts, Morphs = morphs, MorphView = morphView, Texture = tex, TextureView = srv };
     }
 
+    private readonly Dictionary<ColourShift, (ID3D11Texture2D Texture, ID3D11ShaderResourceView View)> _tinted = [];
+
+    // The model's texture with a colour shift applied (Bloop's body colour, Sprout's pot), made on first use and kept
+    // until the model is released. Null shift is the original texture. Must run on the thread that renders.
+    public ID3D11ShaderResourceView? TextureFor(ID3D11Device d, ID3D11DeviceContext ctx, ColourShift? shift)
+    {
+        if (shift is null || Model.Texture is not { } png) return TextureView;
+        if (_tinted.TryGetValue(shift, out var made)) return made.View;
+        var bounds = SKBitmap.DecodeBounds(png);
+        using var bmp = SKBitmap.Decode(png, new SKImageInfo(bounds.Width, bounds.Height, SKColorType.Rgba8888, SKAlphaType.Unpremul))
+            ?? throw new InvalidDataException("model texture did not decode");
+        var pixels = bmp.GetPixelSpan().ToArray();
+        for (var i = 0; i + 3 < pixels.Length; i += 4)
+        {
+            var (r, g, b) = shift.Apply(pixels[i], pixels[i + 1], pixels[i + 2]);
+            pixels[i] = r;
+            pixels[i + 1] = g;
+            pixels[i + 2] = b;
+        }
+        var tex = d.CreateTexture2D(new Texture2DDescription(Format.R8G8B8A8_UNorm_SRgb, (uint)bmp.Width, (uint)bmp.Height, 1, 0,
+            BindFlags.ShaderResource | BindFlags.RenderTarget, ResourceUsage.Default, CpuAccessFlags.None, 1, 0, ResourceOptionFlags.GenerateMips));
+        Marshal.Copy(pixels, 0, bmp.GetPixels(), pixels.Length);
+        ctx.UpdateSubresource(tex, 0, null, bmp.GetPixels(), (uint)bmp.RowBytes, 0);
+        var srv = d.CreateShaderResourceView(tex);
+        ctx.GenerateMips(srv);
+        _tinted[shift] = (tex, srv);
+        return srv;
+    }
+
     public void Dispose()
     {
+        foreach (var (tex, view) in _tinted.Values)
+        {
+            view.Dispose();
+            tex.Dispose();
+        }
+        _tinted.Clear();
         foreach (var p in Parts)
         {
             p.Vertices.Dispose();
@@ -278,6 +314,26 @@ internal sealed class Stage3D : IDisposable
         return stage;
     }
 
+    private readonly Dictionary<BloopHat, GpuModel?> _hats = [];
+
+    // A hat for the live Bloop, built on first use and kept with the device. Null for no hat or if it cannot be built.
+    public GpuModel? Hat(BloopHat hat)
+    {
+        if (hat == BloopHat.None) return null;
+        if (_hats.TryGetValue(hat, out var made)) return made;
+        GpuModel? gm = null;
+        try
+        {
+            if (HatMeshes.Build(hat) is { } model) gm = GpuModel.Create(Device, Context, model);
+        }
+        catch (Exception ex)
+        {
+            Logger.Log($"3d hat {hat} could not be built: {ex.GetType().Name}: {ex.Message}");
+        }
+        _hats[hat] = gm;
+        return gm;
+    }
+
     public void Dispose()
     {
         try
@@ -286,6 +342,8 @@ internal sealed class Stage3D : IDisposable
             Context.Flush();
         }
         catch { }
+        foreach (var hat in _hats.Values) hat?.Dispose();
+        _hats.Clear();
         Bloop.Dispose();
         Sprout?.Dispose();
         Sampler.Dispose();

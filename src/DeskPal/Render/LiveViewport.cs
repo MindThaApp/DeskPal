@@ -49,6 +49,7 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
     private BloopAnimator? _anim;
     private Pose? _sproutPose;
     private Matrix4x4[]? _sproutWorld;
+    private Pose? _hatPose;
     private readonly List<Action<BloopAnimator>> _pending = [];
     private IDXGISwapChain1? _swap;
     private ID3D11Texture2D? _msaa;
@@ -89,6 +90,31 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
         _sleepTimer = dq.CreateTimer();
         _sleepTimer.IsRepeating = false;
         _sleepTimer.Tick += (_, _) => TickGuard.Run("live-3d-sleep", () => Guarded("sleep", OnSleepTimer));
+        Looks.Changed += Redraw;
+    }
+
+    private CharacterLook? _look;
+
+    // The look to draw: null follows the chosen look (Looks.Current); a preview can set its own.
+    public CharacterLook? Look
+    {
+        get => _look;
+        set
+        {
+            if (_look == value) return;
+            _look = value;
+            Redraw();
+        }
+    }
+
+    private CharacterLook ActiveLook => _look ?? Looks.Current;
+
+    // Draws again in a new look without restarting Bloop's move.
+    private void Redraw()
+    {
+        if (!Live) return;
+        Wake();
+        Kick();
     }
 
     public event Action? FirstFrame;
@@ -581,7 +607,21 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
         ctx.PSSetSampler(0, s.Sampler);
 
         ctx.UpdateSubresource(in skin, s.SkinCb);
-        DrawModel(s.Bloop, pose, null);
+        var look = ActiveLook;
+        DrawModel(s.Bloop, pose, null, s.Bloop.TextureFor(s.Device, ctx, look.BloopShift));
+        if (s.Hat(look.Hat) is { } hat && model.NodeIndex("socket.head") is var socket and >= 0)
+        {
+            // The hat is modelled in the head socket's space, so the socket's world matrix places it.
+            var at = world[socket];
+            if (_hatPose?.W.Length != hat.Model.Nodes.Length) _hatPose = new Pose(hat.Model);
+            DrawModel(hat, _hatPose, _ =>
+            {
+                var placed = new SkinConstants();
+                placed.Joints[0] = at;
+                ctx.UpdateSubresource(in placed, s.SkinCb);
+                return true;
+            });
+        }
 
         if (sprout is not null && _sproutPose is { } sp)
         {
@@ -606,7 +646,7 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
                 placed.Joints[0] = sproutWorld[part.Node] * place;
                 ctx.UpdateSubresource(in placed, s.SkinCb);
                 return true;
-            });
+            }, sprout.TextureFor(s.Device, ctx, look.PotShift));
         }
 
         using (var back = _swap.GetBuffer<ID3D11Texture2D>(0))
@@ -647,9 +687,10 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
             ctx.Draw(4, 0);
         }
 
-        void DrawModel(GpuModel gm, Pose p, Func<ModelPart, bool>? prepare)
+        void DrawModel(GpuModel gm, Pose p, Func<ModelPart, bool>? prepare, ID3D11ShaderResourceView? texture = null)
         {
-            if (gm.TextureView is not null) ctx.PSSetShaderResource(0, gm.TextureView);
+            texture ??= gm.TextureView;
+            if (texture is not null) ctx.PSSetShaderResource(0, texture);
             if (gm.MorphView is not null) ctx.VSSetShaderResource(1, gm.MorphView);
             var draw = new DrawConstants();
             foreach (var part in gm.Parts)
@@ -658,7 +699,7 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
                 if (prepare is not null && !prepare(mp)) continue;
                 draw.BaseColor = mp.BaseColor;
                 draw.Roughness = Math.Clamp(mp.Roughness, 0.05f, 1f);
-                draw.UseTexture = mp.Textured && gm.TextureView is not null ? 1 : 0;
+                draw.UseTexture = mp.Textured && texture is not null ? 1 : 0;
                 draw.Unlit = mp.Kind == PartKind.Glint ? 1 : 0;
                 draw.MorphBase = part.MorphBase;
                 draw.MorphCount = (uint)mp.MorphCount;
@@ -785,6 +826,7 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
 
     public void Dispose()
     {
+        Looks.Changed -= Redraw;
         _visible = false;
         StopLoop();
         _teardownTimer.Stop();
