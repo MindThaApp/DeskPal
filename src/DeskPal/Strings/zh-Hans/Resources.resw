@@ -964,4 +964,70 @@
   <data name="Home_RecapBest" xml:space="preserve">
     <value>最佳连续记录：{0}</value>
   </data>
+  <data name="Custom_Title" xml:space="preserve">
+    <value>自定义</value>
+  </data>
+  <data name="Custom_Intro" xml:space="preserve">
+    <value>选择 Bloop 的颜色、帽子和 Sprout 的花盆。轻点任意选项，先在这里预览。</value>
+  </data>
+  <data name="Custom_PreviewName" xml:space="preserve">
+    <value>Bloop 和 Sprout 预览</value>
+  </data>
+  <data name="Custom_Colour" xml:space="preserve">
+    <value>Bloop 的颜色</value>
+  </data>
+  <data name="Custom_Hat" xml:space="preserve">
+    <value>帽子</value>
+  </data>
+  <data name="Custom_Pot" xml:space="preserve">
+    <value>Sprout 的花盆</value>
+  </data>
+  <data name="Custom_Colour_Blue" xml:space="preserve">
+    <value>天空蓝</value>
+  </data>
+  <data name="Custom_Colour_Mint" xml:space="preserve">
+    <value>薄荷绿</value>
+  </data>
+  <data name="Custom_Colour_Peach" xml:space="preserve">
+    <value>蜜桃色</value>
+  </data>
+  <data name="Custom_Colour_Lilac" xml:space="preserve">
+    <value>淡紫色</value>
+  </data>
+  <data name="Custom_Colour_Sunny" xml:space="preserve">
+    <value>阳光黄</value>
+  </data>
+  <data name="Custom_Colour_Bubblegum" xml:space="preserve">
+    <value>泡泡糖粉</value>
+  </data>
+  <data name="Custom_Hat_None" xml:space="preserve">
+    <value>不戴帽子</value>
+  </data>
+  <data name="Custom_Hat_Beanie" xml:space="preserve">
+    <value>暖暖毛线帽</value>
+  </data>
+  <data name="Custom_Hat_PartyHat" xml:space="preserve">
+    <value>派对帽</value>
+  </data>
+  <data name="Custom_Hat_LeafSprig" xml:space="preserve">
+    <value>小叶枝</value>
+  </data>
+  <data name="Custom_Pot_Terracotta" xml:space="preserve">
+    <value>陶土色</value>
+  </data>
+  <data name="Custom_Pot_SkyGlaze" xml:space="preserve">
+    <value>天蓝釉</value>
+  </data>
+  <data name="Custom_Pot_Cream" xml:space="preserve">
+    <value>奶油色</value>
+  </data>
+  <data name="Custom_Locked" xml:space="preserve">
+    <value>在这里试试任何造型。有了 Pro，你的选择会显示在 Bloop 和 Sprout 出现的所有地方。</value>
+  </data>
+  <data name="Custom_SavedForPro" xml:space="preserve">
+    <value>你的造型已保存，获得 Pro 后就会回来。</value>
+  </data>
+  <data name="Custom_Keep" xml:space="preserve">
+    <value>保留这个造型</value>
+  </data>
 </root>

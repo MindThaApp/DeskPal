@@ -964,4 +964,70 @@
   <data name="Home_RecapBest" xml:space="preserve">
     <value>Лучшая серия: {0}</value>
   </data>
+  <data name="Custom_Title" xml:space="preserve">
+    <value>Настроить</value>
+  </data>
+  <data name="Custom_Intro" xml:space="preserve">
+    <value>Выбери цвет Bloop, шапку и горшок для Sprout. Нажми на любой вариант, чтобы сначала увидеть его здесь.</value>
+  </data>
+  <data name="Custom_PreviewName" xml:space="preserve">
+    <value>Предпросмотр Bloop и Sprout</value>
+  </data>
+  <data name="Custom_Colour" xml:space="preserve">
+    <value>Цвет Bloop</value>
+  </data>
+  <data name="Custom_Hat" xml:space="preserve">
+    <value>Шапка</value>
+  </data>
+  <data name="Custom_Pot" xml:space="preserve">
+    <value>Горшок Sprout</value>
+  </data>
+  <data name="Custom_Colour_Blue" xml:space="preserve">
+    <value>Небесно-голубой</value>
+  </data>
+  <data name="Custom_Colour_Mint" xml:space="preserve">
+    <value>Мятный</value>
+  </data>
+  <data name="Custom_Colour_Peach" xml:space="preserve">
+    <value>Персиковый</value>
+  </data>
+  <data name="Custom_Colour_Lilac" xml:space="preserve">
+    <value>Сиреневый</value>
+  </data>
+  <data name="Custom_Colour_Sunny" xml:space="preserve">
+    <value>Солнечно-жёлтый</value>
+  </data>
+  <data name="Custom_Colour_Bubblegum" xml:space="preserve">
+    <value>Розовая жвачка</value>
+  </data>
+  <data name="Custom_Hat_None" xml:space="preserve">
+    <value>Без шапки</value>
+  </data>
+  <data name="Custom_Hat_Beanie" xml:space="preserve">
+    <value>Уютная шапочка</value>
+  </data>
+  <data name="Custom_Hat_PartyHat" xml:space="preserve">
+    <value>Праздничный колпак</value>
+  </data>
+  <data name="Custom_Hat_LeafSprig" xml:space="preserve">
+    <value>Веточка с листиками</value>
+  </data>
+  <data name="Custom_Pot_Terracotta" xml:space="preserve">
+    <value>Терракота</value>
+  </data>
+  <data name="Custom_Pot_SkyGlaze" xml:space="preserve">
+    <value>Голубая глазурь</value>
+  </data>
+  <data name="Custom_Pot_Cream" xml:space="preserve">
+    <value>Кремовый</value>
+  </data>
+  <data name="Custom_Locked" xml:space="preserve">
+    <value>Здесь можно примерить любой образ. С Pro твой выбор появится везде, где есть Bloop и Sprout.</value>
+  </data>
+  <data name="Custom_SavedForPro" xml:space="preserve">
+    <value>Твой образ сохранён и вернётся, когда у тебя будет Pro.</value>
+  </data>
+  <data name="Custom_Keep" xml:space="preserve">
+    <value>Оставить этот образ</value>
+  </data>
 </root>

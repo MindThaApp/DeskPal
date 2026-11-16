@@ -103,10 +103,11 @@ public sealed class BloopPage : Page
             ("3d", Loc.Get("Bloop_Style_3d"), Loc.Get("Bloop_Style_3dNote")),
         };
         var buttons = new List<(string Key, ToggleButton Button)>();
+        var previews = new List<(Image Image, string Key)>();
         foreach (var (key, label, note) in styles)
         {
             var preview = new Image { Width = 120, Height = 120 };
-            _ = LoadAsync(preview, key);
+            previews.Add((preview, key));
             var button = new ToggleButton
             {
                 Padding = new Thickness(14),
@@ -141,6 +142,19 @@ public sealed class BloopPage : Page
             if (sounds.IsOn != ctx.Hub.InteractionSounds) sounds.IsOn = ctx.Hub.InteractionSounds;
         };
 
+        // The style pictures show Bloop in the chosen look.
+        var shownLook = "";
+        void Pictures()
+        {
+            var key = Looks.Current.Key;
+            if (key == shownLook) return;
+            shownLook = key;
+            foreach (var (image, k) in previews) _ = LoadAsync(image, k);
+        }
+        void OnLook() => TickGuard.Run("bloop-page-look", Pictures);
+        Loaded += (_, _) => { Looks.Changed -= OnLook; Looks.Changed += OnLook; Pictures(); };
+        Unloaded += (_, _) => Looks.Changed -= OnLook;
+
         Content = PageKit.Scroll(new StackPanel
         {
             Children =
@@ -149,6 +163,7 @@ public sealed class BloopPage : Page
                 PageKit.Heading(Loc.Get("Bloop_Look")), row,
                 PageKit.Heading(Loc.Get("Bloop_Play")), PageKit.Body(Loc.Get("Bloop_PlayText")),
                 sounds,
+                new CustomisePanel(ctx),
                 PageKit.Heading(Loc.Get("Bloop_Bond")), PageKit.Body(Loc.Get("Bloop_BondText"), 0.7),
                 PageKit.Heading(Loc.Get("Bloop_Evolution")), PageKit.Body(Loc.Get("Bloop_EvolutionText"), 0.7),
             },
@@ -177,10 +192,11 @@ public sealed class GardenPage : Page
             ("sprout-growth-4-bloom", Loc.Get("Garden_Bloom")),
         };
         var style = ctx.Hub.Settings.AvatarStyle;
+        var images = new List<(Image Image, string Asset)>();
         foreach (var (asset, label) in stages)
         {
             var image = new Image { Width = 120, Height = 120 };
-            _ = Load(image, style, asset);
+            images.Add((image, asset));
             row.Children.Add(new StackPanel
             {
                 Spacing = 6,
@@ -196,6 +212,20 @@ public sealed class GardenPage : Page
                 new ScrollViewer { Content = row, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto, VerticalScrollMode = ScrollMode.Disabled },
             },
         });
+        void OnLook() => TickGuard.Run("garden-look", () => Pictures(style, images));
+        Loaded += (_, _) => { Looks.Changed -= OnLook; Looks.Changed += OnLook; Pictures(style, images); };
+        Unloaded += (_, _) => Looks.Changed -= OnLook;
+    }
+
+    private string _shownLook = "";
+
+    // Sprout is drawn with the chosen pot; reloaded when the look changes.
+    private void Pictures(string style, List<(Image Image, string Asset)> images)
+    {
+        var key = Looks.Current.Key;
+        if (key == _shownLook) return;
+        _shownLook = key;
+        foreach (var (image, asset) in images) _ = Load(image, style, asset);
     }
 
     private static async Task Load(Image image, string style, string asset) =>

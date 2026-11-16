@@ -942,4 +942,70 @@
   <data name="Home_RecapBest" xml:space="preserve">
     <value>Beste Serie: {0}</value>
   </data>
+  <data name="Custom_Title" xml:space="preserve">
+    <value>Anpassen</value>
+  </data>
+  <data name="Custom_Intro" xml:space="preserve">
+    <value>Wähle Bloops Farbe, eine Mütze und Sprouts Topf. Tippe auf eine Option, um sie zuerst hier zu sehen.</value>
+  </data>
+  <data name="Custom_PreviewName" xml:space="preserve">
+    <value>Vorschau von Bloop und Sprout</value>
+  </data>
+  <data name="Custom_Colour" xml:space="preserve">
+    <value>Bloops Farbe</value>
+  </data>
+  <data name="Custom_Hat" xml:space="preserve">
+    <value>Mütze</value>
+  </data>
+  <data name="Custom_Pot" xml:space="preserve">
+    <value>Sprouts Topf</value>
+  </data>
+  <data name="Custom_Colour_Blue" xml:space="preserve">
+    <value>Himmelblau</value>
+  </data>
+  <data name="Custom_Colour_Mint" xml:space="preserve">
+    <value>Minze</value>
+  </data>
+  <data name="Custom_Colour_Peach" xml:space="preserve">
+    <value>Pfirsich</value>
+  </data>
+  <data name="Custom_Colour_Lilac" xml:space="preserve">
+    <value>Flieder</value>
+  </data>
+  <data name="Custom_Colour_Sunny" xml:space="preserve">
+    <value>Sonnengelb</value>
+  </data>
+  <data name="Custom_Colour_Bubblegum" xml:space="preserve">
+    <value>Kaugummirosa</value>
+  </data>
+  <data name="Custom_Hat_None" xml:space="preserve">
+    <value>Keine Mütze</value>
+  </data>
+  <data name="Custom_Hat_Beanie" xml:space="preserve">
+    <value>Kuschelmütze</value>
+  </data>
+  <data name="Custom_Hat_PartyHat" xml:space="preserve">
+    <value>Partyhut</value>
+  </data>
+  <data name="Custom_Hat_LeafSprig" xml:space="preserve">
+    <value>Blattzweig</value>
+  </data>
+  <data name="Custom_Pot_Terracotta" xml:space="preserve">
+    <value>Terrakotta</value>
+  </data>
+  <data name="Custom_Pot_SkyGlaze" xml:space="preserve">
+    <value>Himmelglasur</value>
+  </data>
+  <data name="Custom_Pot_Cream" xml:space="preserve">
+    <value>Creme</value>
+  </data>
+  <data name="Custom_Locked" xml:space="preserve">
+    <value>Probiere hier jeden Look aus. Mit Pro erscheint deine Wahl überall, wo Bloop und Sprout zu sehen sind.</value>
+  </data>
+  <data name="Custom_SavedForPro" xml:space="preserve">
+    <value>Dein Look ist gespeichert und kommt zurück, sobald du Pro hast.</value>
+  </data>
+  <data name="Custom_Keep" xml:space="preserve">
+    <value>Diesen Look behalten</value>
+  </data>
 </root>

@@ -942,4 +942,70 @@
   <data name="Home_RecapBest" xml:space="preserve">
     <value>Meilleure série : {0}</value>
   </data>
+  <data name="Custom_Title" xml:space="preserve">
+    <value>Personnaliser</value>
+  </data>
+  <data name="Custom_Intro" xml:space="preserve">
+    <value>Choisis la couleur de Bloop, un chapeau et le pot de Sprout. Touche une option pour la voir ici d'abord.</value>
+  </data>
+  <data name="Custom_PreviewName" xml:space="preserve">
+    <value>Aperçu de Bloop et Sprout</value>
+  </data>
+  <data name="Custom_Colour" xml:space="preserve">
+    <value>Couleur de Bloop</value>
+  </data>
+  <data name="Custom_Hat" xml:space="preserve">
+    <value>Chapeau</value>
+  </data>
+  <data name="Custom_Pot" xml:space="preserve">
+    <value>Pot de Sprout</value>
+  </data>
+  <data name="Custom_Colour_Blue" xml:space="preserve">
+    <value>Bleu ciel</value>
+  </data>
+  <data name="Custom_Colour_Mint" xml:space="preserve">
+    <value>Menthe</value>
+  </data>
+  <data name="Custom_Colour_Peach" xml:space="preserve">
+    <value>Pêche</value>
+  </data>
+  <data name="Custom_Colour_Lilac" xml:space="preserve">
+    <value>Lilas</value>
+  </data>
+  <data name="Custom_Colour_Sunny" xml:space="preserve">
+    <value>Jaune soleil</value>
+  </data>
+  <data name="Custom_Colour_Bubblegum" xml:space="preserve">
+    <value>Rose bonbon</value>
+  </data>
+  <data name="Custom_Hat_None" xml:space="preserve">
+    <value>Sans chapeau</value>
+  </data>
+  <data name="Custom_Hat_Beanie" xml:space="preserve">
+    <value>Bonnet douillet</value>
+  </data>
+  <data name="Custom_Hat_PartyHat" xml:space="preserve">
+    <value>Chapeau de fête</value>
+  </data>
+  <data name="Custom_Hat_LeafSprig" xml:space="preserve">
+    <value>Brin de feuilles</value>
+  </data>
+  <data name="Custom_Pot_Terracotta" xml:space="preserve">
+    <value>Terre cuite</value>
+  </data>
+  <data name="Custom_Pot_SkyGlaze" xml:space="preserve">
+    <value>Émail bleu ciel</value>
+  </data>
+  <data name="Custom_Pot_Cream" xml:space="preserve">
+    <value>Crème</value>
+  </data>
+  <data name="Custom_Locked" xml:space="preserve">
+    <value>Essaie n'importe quel look ici. Avec Pro, ton choix s'affiche partout où apparaissent Bloop et Sprout.</value>
+  </data>
+  <data name="Custom_SavedForPro" xml:space="preserve">
+    <value>Ton look est enregistré et reviendra quand tu auras Pro.</value>
+  </data>
+  <data name="Custom_Keep" xml:space="preserve">
+    <value>Garder ce look</value>
+  </data>
 </root>
