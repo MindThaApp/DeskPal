@@ -127,6 +127,8 @@ public sealed class DeskPalState
     public int StretchesToday { get; set; }
     public int EyeBreaksToday { get; set; }
     public int WalksToday { get; set; }
+    // Total care points earned (see NudgeReward); files from before this existed load as 0.
+    public int CarePoints { get; set; }
     public MainWindowUi Ui { get; set; } = new();
 }
 

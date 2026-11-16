@@ -20,7 +20,7 @@ namespace DeskPal;
 // the exercise there. A thin line along the bottom counts down; when nobody uses the card it fades out by itself.
 public sealed partial class NudgeCardWindow : Window
 {
-    private const int WidthDip = 300;
+    private const int WidthDip = 340;
     private const int MarginDip = 12;
     private const double BloopSize = 1.6; // Bloop shows each move clearly next to the card
 
@@ -78,7 +78,7 @@ public sealed partial class NudgeCardWindow : Window
         _timedSeconds = nudge.TimedSeconds ?? 0;
         _timedEndTick = long.MaxValue; // set when the user engages
         CountdownPanel.Visibility = _timedSeconds > 0 ? Visibility.Visible : Visibility.Collapsed;
-        DoneButton.IsEnabled = _timedSeconds == 0;
+        DoneButton.IsEnabled = true;
         SnoozeButton.IsEnabled = MoreButton.IsEnabled = true;
         _repeating = false;
         _hovered = _bloopBusy = false;
@@ -336,11 +336,18 @@ public sealed partial class NudgeCardWindow : Window
         if (_timedSeconds <= 0) return;
         var leftMs = _autoHide.Engaged ? Math.Max(0, _timedEndTick - now) : _timedSeconds * 1000L;
         CountdownText.Text = $"{(int)Math.Ceiling(leftMs / 1000.0)} s";
-        if (leftMs == 0) DoneButton.IsEnabled = true;
+        BonusHint.Text = leftMs == 0 ? "Full stretch! Nicely done" : "Stay for the full stretch for a bonus";
         Ring.Value = 100.0 * (1 - leftMs / (_timedSeconds * 1000.0));
     }
 
-    private void OnDone(object sender, RoutedEventArgs e) => Send(id => new DoneCommand(id));
+    private void OnDone(object sender, RoutedEventArgs e)
+    {
+        // Time on the countdown only counts once the user engaged; Done before that earns no share of the exercise.
+        var share = _timedSeconds <= 0 ? 1.0
+            : !_autoHide.Engaged ? 0.0
+            : Math.Clamp(1 - Math.Max(0, _timedEndTick - Environment.TickCount64) / (_timedSeconds * 1000.0), 0, 1);
+        Send(id => new DoneCommand(id, share));
+    }
     private void OnSnooze(object sender, RoutedEventArgs e) => Send(id => new SnoozeCommand(id));
     private void OnSkip(object sender, RoutedEventArgs e) => Send(id => new SkipCommand(id));
 

@@ -17,14 +17,16 @@ public sealed record Nudge(
     int? TimedSeconds,
     string AssetName,
     bool IsTest,
-    DateTimeOffset ShownAt);
+    DateTimeOffset ShownAt,
+    bool WasSnoozed = false);
 
 public enum SchedulerEventType { NudgeShown, NudgeDone, NudgeSkipped, NudgeSnoozed, HoldStarted, HoldEnded, EyeCue }
 
-public sealed record SchedulerEvent(SchedulerEventType Type, Nudge? Nudge = null, Hold? Hold = null);
+public sealed record SchedulerEvent(SchedulerEventType Type, Nudge? Nudge = null, Hold? Hold = null, int Points = 0);
 
 public abstract record Command;
-public sealed record DoneCommand(Guid? NudgeId = null) : Command;
+// Completion is the share of a timed exercise done when Done was clicked (1 = the full countdown or an untimed reminder).
+public sealed record DoneCommand(Guid? NudgeId = null, double Completion = 1.0) : Command;
 public sealed record SnoozeCommand(Guid? NudgeId = null) : Command;
 public sealed record SkipCommand(Guid? NudgeId = null) : Command;
 public sealed record TestNudgeCommand : Command;

@@ -34,6 +34,7 @@ public sealed class NudgeScheduler : ICommandRouter
     private int _stretchesToday;
     private int _eyeBreaksToday;
     private int _walksToday;
+    private bool _snoozedPending;
 
     public NudgeScheduler(TimeProvider time, DeskPalSettings settings, DeskPalState? state = null)
     {
@@ -45,6 +46,7 @@ public sealed class NudgeScheduler : ICommandRouter
         _stretchesToday = state?.StretchesToday ?? 0;
         _eyeBreaksToday = state?.EyeBreaksToday ?? 0;
         _walksToday = state?.WalksToday ?? 0;
+        CarePoints = state?.CarePoints ?? 0;
         var now = Now;
         RollDay(now);
         ApplyDue(now);
@@ -57,6 +59,7 @@ public sealed class NudgeScheduler : ICommandRouter
 
     public Nudge? Current { get; private set; }
     public int StretchesCompleted { get; private set; }
+    public int CarePoints { get; private set; }
 
     public int StretchesToday
     {
@@ -150,6 +153,7 @@ public sealed class NudgeScheduler : ICommandRouter
                 StretchesToday = _stretchesToday,
                 EyeBreaksToday = _eyeBreaksToday,
                 WalksToday = _walksToday,
+                CarePoints = CarePoints,
             };
         }
     }
@@ -272,7 +276,7 @@ public sealed class NudgeScheduler : ICommandRouter
     {
         switch (command)
         {
-            case DoneCommand c: return Answer(c.NudgeId, SchedulerEventType.NudgeDone);
+            case DoneCommand c: return Answer(c.NudgeId, SchedulerEventType.NudgeDone, c.Completion);
             case SkipCommand c: return Answer(c.NudgeId, SchedulerEventType.NudgeSkipped);
             case SnoozeCommand c: return Snooze(c.NudgeId);
             case TestNudgeCommand: return RequestNudge();
@@ -366,13 +370,14 @@ public sealed class NudgeScheduler : ICommandRouter
         return true;
     }
 
-    private bool Answer(Guid? id, SchedulerEventType type)
+    private bool Answer(Guid? id, SchedulerEventType type, double completion = 1)
     {
         lock (_gate)
         {
             if (Current is null || (id is not null && id != Current.Id)) return false;
             var nudge = Current;
             var now = Now;
+            var points = 0;
             if (!nudge.IsTest)
             {
                 Reschedule(nudge, now);
@@ -383,10 +388,12 @@ public sealed class NudgeScheduler : ICommandRouter
                     else if (nudge.Kinds.Contains(NudgeKind.Stretch)) StretchesCompleted++;
                     if (nudge.Kinds.Contains(NudgeKind.Walk) || nudge.Kinds.Contains(NudgeKind.Stretch)) _stretchesToday++;
                     else if (nudge.Primary == NudgeKind.Eyes) _eyeBreaksToday++;
+                    points = NudgeReward.Points(completion, nudge.TimedSeconds > 0, nudge.WasSnoozed);
+                    CarePoints += points;
                 }
             }
             Current = null;
-            Raise(new SchedulerEvent(type, nudge));
+            Raise(new SchedulerEvent(type, nudge, Points: points));
             return true;
         }
     }
@@ -405,6 +412,7 @@ public sealed class NudgeScheduler : ICommandRouter
                     if (kind == NudgeKind.Water) _due[NudgeKind.Water] = now;
                     else if (kind is NudgeKind.Stretch or NudgeKind.Walk) _pending[NudgeKind.Stretch] = now;
                 }
+            if (!nudge.IsTest) _snoozedPending = true;
             _lastShown = null;
             Raise(new SchedulerEvent(SchedulerEventType.NudgeSnoozed, nudge));
             StartHold(SnoozeSource, "Snoozed", now + SnoozeDuration);
@@ -500,7 +508,8 @@ public sealed class NudgeScheduler : ICommandRouter
             _ => "bloop-idle",
         };
 
-        var nudge = new Nudge(Guid.NewGuid(), kinds, primary, title, message, extra, stretch, timed, asset, isTest, now);
+        var nudge = new Nudge(Guid.NewGuid(), kinds, primary, title, message, extra, stretch, timed, asset, isTest, now, !isTest && _snoozedPending);
+        if (!isTest) _snoozedPending = false;
         Current = nudge;
         if (!isTest)
         {
