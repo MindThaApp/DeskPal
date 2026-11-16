@@ -68,6 +68,9 @@ public sealed class DeskPalSettings
     // Apps the user allowed once to change Desk Pal over the control pipe: "pkg:<package family>" or a full exe path.
     public List<string> ApprovedControlApps { get; set; } = [];
 
+    // Desk Pal Evolution (Pro): trial start and the cached Store answer. See ProLicence.
+    public ProLicenceRecord Pro { get; set; } = new();
+
     public int MovementMinutes => Math.Clamp(StretchMinutes, MovementMin, MovementMax);
 
     public bool IsScheduled(NudgeKind kind) => kind switch
@@ -105,6 +108,7 @@ public sealed class DeskPalSettings
         if (Array.IndexOf(HideNudgeChoices, HideNudgeSeconds) < 0) { HideNudgeSeconds = RecommendedHideNudgeSeconds; changed = true; }
         if (!Enum.IsDefined(Water)) { Water = WaterMode.WithBreaks; changed = true; }
         if (Language is null) { Language = ""; changed = true; }
+        if (Pro is null) { Pro = new(); changed = true; }
         var apps = (ApprovedControlApps ?? [])
             .Where(a => !string.IsNullOrWhiteSpace(a) && a.Length <= 1024)
             .Distinct(StringComparer.OrdinalIgnoreCase)
