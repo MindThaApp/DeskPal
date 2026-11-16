@@ -198,6 +198,8 @@ internal sealed class BloopBuddyWindow : Window
             _silhouette = IntPtr.Zero;
         };
         _avatar.ImageOpened += (_, _) => TickGuard.Run("bloop-buddy-image", () => { if (_fallback) _ = BuildSilhouetteAsync(); });
+        Looks.Changed += OnLookChanged;
+        Closed += (_, _) => Looks.Changed -= OnLookChanged;
 
         _timer = queue.CreateTimer();
         _timer.Interval = TimeSpan.FromMilliseconds(15);
@@ -912,12 +914,32 @@ internal sealed class BloopBuddyWindow : Window
         return new Vector2(p.X, p.Y);
     }
 
+    // A new look: only the flat picture is reloaded here (the live model follows the look by itself), so the
+    // window, its region and Bloop's current move stay as they are.
+    private void OnLookChanged() => TickGuard.Run("bloop-buddy-look", () =>
+    {
+        if (_mode == Mode.Hidden || _claim is not { } claim) return;
+        _ = ReloadPictureAsync(claim);
+    });
+
+    private async Task ReloadPictureAsync(BloopClaim claim)
+    {
+        var style = AppData.Debug3D ? "3d" : claim.Style;
+        var key = style + "/" + claim.Asset + "/" + Looks.Current.Key;
+        if (key == _loadedStyle) return;
+        var version = ++_loadVersion;
+        var source = await NudgeCardWindow.LoadAvatarAsync(style, claim.Asset, 256);
+        if (version != _loadVersion || _claim != claim) return;
+        _loadedStyle = key;
+        _avatar.Source = source;
+    }
+
     private async Task LoadAvatarAsync()
     {
         if (_claim is not { } claim) return;
         var style = AppData.Debug3D ? "3d" : claim.Style;
         var live = style == "3d" && !_fallback && !Stage3D.Failed && claim.Asset.StartsWith("bloop", StringComparison.OrdinalIgnoreCase);
-        var key = style + "/" + claim.Asset;
+        var key = style + "/" + claim.Asset + "/" + Looks.Current.Key;
         if (key != _loadedStyle || _avatar.Source is null)
         {
             _loadedStyle = key;

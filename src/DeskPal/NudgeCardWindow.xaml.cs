@@ -368,13 +368,17 @@ public sealed partial class NudgeCardWindow : Window
         return File.Exists(flat) ? flat : null;
     }
 
-    internal static async Task<SvgImageSource?> LoadAvatarAsync(string style, string name, int pixels = 160)
+    // Draws the picture in the chosen look (Looks.Current) unless a look is given, as the Customise preview does.
+    internal static async Task<SvgImageSource?> LoadAvatarAsync(string style, string name, int pixels = 160, CharacterLook? look = null)
     {
         var path = ResolveAvatarPath(style, name);
         if (path is null) return null;
         try
         {
             var bytes = await File.ReadAllBytesAsync(path);
+            var wear = look ?? Looks.Current;
+            if (!wear.IsDefault)
+                bytes = System.Text.Encoding.UTF8.GetBytes(CharacterSvg.Apply(System.Text.Encoding.UTF8.GetString(bytes), name, wear));
             using var stream = new InMemoryRandomAccessStream();
             await stream.WriteAsync(bytes.AsBuffer());
             stream.Seek(0);

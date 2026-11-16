@@ -964,4 +964,70 @@
   <data name="Home_RecapBest" xml:space="preserve">
     <value>En iyi seri: {0}</value>
   </data>
+  <data name="Custom_Title" xml:space="preserve">
+    <value>Özelleştir</value>
+  </data>
+  <data name="Custom_Intro" xml:space="preserve">
+    <value>Bloop'un rengini, bir şapkayı ve Sprout'un saksısını seç. Önce burada görmek için herhangi bir seçeneğe dokun.</value>
+  </data>
+  <data name="Custom_PreviewName" xml:space="preserve">
+    <value>Bloop ve Sprout önizlemesi</value>
+  </data>
+  <data name="Custom_Colour" xml:space="preserve">
+    <value>Bloop'un rengi</value>
+  </data>
+  <data name="Custom_Hat" xml:space="preserve">
+    <value>Şapka</value>
+  </data>
+  <data name="Custom_Pot" xml:space="preserve">
+    <value>Sprout'un saksısı</value>
+  </data>
+  <data name="Custom_Colour_Blue" xml:space="preserve">
+    <value>Gök mavisi</value>
+  </data>
+  <data name="Custom_Colour_Mint" xml:space="preserve">
+    <value>Nane</value>
+  </data>
+  <data name="Custom_Colour_Peach" xml:space="preserve">
+    <value>Şeftali</value>
+  </data>
+  <data name="Custom_Colour_Lilac" xml:space="preserve">
+    <value>Leylak</value>
+  </data>
+  <data name="Custom_Colour_Sunny" xml:space="preserve">
+    <value>Güneş sarısı</value>
+  </data>
+  <data name="Custom_Colour_Bubblegum" xml:space="preserve">
+    <value>Sakız pembesi</value>
+  </data>
+  <data name="Custom_Hat_None" xml:space="preserve">
+    <value>Şapka yok</value>
+  </data>
+  <data name="Custom_Hat_Beanie" xml:space="preserve">
+    <value>Sıcacık bere</value>
+  </data>
+  <data name="Custom_Hat_PartyHat" xml:space="preserve">
+    <value>Parti şapkası</value>
+  </data>
+  <data name="Custom_Hat_LeafSprig" xml:space="preserve">
+    <value>Yaprak dalı</value>
+  </data>
+  <data name="Custom_Pot_Terracotta" xml:space="preserve">
+    <value>Pişmiş toprak</value>
+  </data>
+  <data name="Custom_Pot_SkyGlaze" xml:space="preserve">
+    <value>Gök mavisi sır</value>
+  </data>
+  <data name="Custom_Pot_Cream" xml:space="preserve">
+    <value>Krem</value>
+  </data>
+  <data name="Custom_Locked" xml:space="preserve">
+    <value>Burada istediğin görünümü dene. Pro ile seçimin, Bloop ve Sprout'un göründüğü her yerde görünür.</value>
+  </data>
+  <data name="Custom_SavedForPro" xml:space="preserve">
+    <value>Görünümün kaydedildi; Pro'yu aldığında geri gelir.</value>
+  </data>
+  <data name="Custom_Keep" xml:space="preserve">
+    <value>Bu görünümü koru</value>
+  </data>
 </root>

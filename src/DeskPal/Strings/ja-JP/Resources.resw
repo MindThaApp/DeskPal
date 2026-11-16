@@ -964,4 +964,70 @@
   <data name="Home_RecapBest" xml:space="preserve">
     <value>最高の連続記録: {0}</value>
   </data>
+  <data name="Custom_Title" xml:space="preserve">
+    <value>カスタマイズ</value>
+  </data>
+  <data name="Custom_Intro" xml:space="preserve">
+    <value>Bloop の色、帽子、Sprout の鉢を選びましょう。オプションをタップすると、まずここで確認できます。</value>
+  </data>
+  <data name="Custom_PreviewName" xml:space="preserve">
+    <value>Bloop と Sprout のプレビュー</value>
+  </data>
+  <data name="Custom_Colour" xml:space="preserve">
+    <value>Bloop の色</value>
+  </data>
+  <data name="Custom_Hat" xml:space="preserve">
+    <value>帽子</value>
+  </data>
+  <data name="Custom_Pot" xml:space="preserve">
+    <value>Sprout の鉢</value>
+  </data>
+  <data name="Custom_Colour_Blue" xml:space="preserve">
+    <value>スカイブルー</value>
+  </data>
+  <data name="Custom_Colour_Mint" xml:space="preserve">
+    <value>ミント</value>
+  </data>
+  <data name="Custom_Colour_Peach" xml:space="preserve">
+    <value>ピーチ</value>
+  </data>
+  <data name="Custom_Colour_Lilac" xml:space="preserve">
+    <value>ライラック</value>
+  </data>
+  <data name="Custom_Colour_Sunny" xml:space="preserve">
+    <value>サニーイエロー</value>
+  </data>
+  <data name="Custom_Colour_Bubblegum" xml:space="preserve">
+    <value>バブルガムピンク</value>
+  </data>
+  <data name="Custom_Hat_None" xml:space="preserve">
+    <value>帽子なし</value>
+  </data>
+  <data name="Custom_Hat_Beanie" xml:space="preserve">
+    <value>ふわふわニット帽</value>
+  </data>
+  <data name="Custom_Hat_PartyHat" xml:space="preserve">
+    <value>パーティーハット</value>
+  </data>
+  <data name="Custom_Hat_LeafSprig" xml:space="preserve">
+    <value>葉っぱの小枝</value>
+  </data>
+  <data name="Custom_Pot_Terracotta" xml:space="preserve">
+    <value>テラコッタ</value>
+  </data>
+  <data name="Custom_Pot_SkyGlaze" xml:space="preserve">
+    <value>スカイグレーズ</value>
+  </data>
+  <data name="Custom_Pot_Cream" xml:space="preserve">
+    <value>クリーム</value>
+  </data>
+  <data name="Custom_Locked" xml:space="preserve">
+    <value>ここでどの見た目でも試せます。Pro なら、選んだ見た目が Bloop と Sprout が登場するすべての場所に反映されます。</value>
+  </data>
+  <data name="Custom_SavedForPro" xml:space="preserve">
+    <value>見た目は保存されています。Pro を入手すると元に戻ります。</value>
+  </data>
+  <data name="Custom_Keep" xml:space="preserve">
+    <value>この見た目にする</value>
+  </data>
 </root>
