@@ -32,6 +32,16 @@
             </StackPanel>
             <StackPanel Grid.Column="1" Spacing="16" MaxWidth="520" Padding="40,0,0,0">
                 <TextBlock x:Name="GreetingText" FontSize="28" FontWeight="SemiBold" TextWrapping="Wrap" />
+                <Border x:Name="RecapCard" Visibility="Collapsed" Padding="16" CornerRadius="8" BorderThickness="1"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                    <StackPanel Spacing="6">
+                        <TextBlock x:Uid="Home_RecapTitle" FontWeight="SemiBold" />
+                        <TextBlock x:Uid="Home_RecapIntro" TextWrapping="Wrap" Opacity="0.8" />
+                        <TextBlock x:Name="RecapLines" TextWrapping="Wrap" />
+                        <Button x:Uid="Home_RecapDismiss" Click="OnRecapDismiss" HorizontalAlignment="Left" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
                 <StackPanel Spacing="4">
                     <TextBlock x:Uid="Home_NextUpHeader" FontWeight="SemiBold" />
                     <TextBlock x:Name="NextText" TextWrapping="Wrap" />
@@ -40,6 +50,13 @@
                 <StackPanel Spacing="4">
                     <TextBlock x:Uid="Home_TodayHeader" FontWeight="SemiBold" />
                     <TextBlock x:Name="CountsText" TextWrapping="Wrap" />
+                </StackPanel>
+                <StackPanel Spacing="4">
+                    <TextBlock x:Uid="Home_StreakHeader" FontWeight="SemiBold" />
+                    <TextBlock x:Name="StreakOverall" TextWrapping="Wrap" />
+                    <TextBlock x:Name="StreakGoals" TextWrapping="Wrap" Opacity="0.8" />
+                    <TextBlock x:Name="StreakNote" TextWrapping="Wrap" Opacity="0.8" Visibility="Collapsed" />
+                    <HyperlinkButton x:Name="LastWeekLink" x:Uid="Home_LastWeekLink" Click="OnLastWeek" Padding="0" Visibility="Collapsed" />
                 </StackPanel>
                 <StackPanel Spacing="8">
                     <TextBlock x:Uid="Home_QuickActionsHeader" FontWeight="SemiBold" />

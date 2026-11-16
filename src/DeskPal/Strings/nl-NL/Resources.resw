@@ -897,4 +897,49 @@
   <data name="Pro_SeeMore" xml:space="preserve">
     <value>Bekijk Pro</value>
   </data>
+  <data name="Home_StreakHeader.Text" xml:space="preserve">
+    <value>Reeksen</value>
+  </data>
+  <data name="Home_LastWeekLink.Content" xml:space="preserve">
+    <value>Vorige week</value>
+  </data>
+  <data name="Home_RecapTitle.Text" xml:space="preserve">
+    <value>Vorige week</value>
+  </data>
+  <data name="Home_RecapIntro.Text" xml:space="preserve">
+    <value>Zo ging je vorige week.</value>
+  </data>
+  <data name="Home_RecapDismiss.Content" xml:space="preserve">
+    <value>Begrepen</value>
+  </data>
+  <data name="Home_StreakOverall" xml:space="preserve">
+    <value>Dagen op rij: {0}</value>
+  </data>
+  <data name="Home_StreakLine" xml:space="preserve">
+    <value>{0}: {1} (beste: {2})</value>
+  </data>
+  <data name="Home_StreakNewBest" xml:space="preserve">
+    <value>Nieuwe beste reeks: {0}. Bloop juicht voor je!</value>
+  </data>
+  <data name="Home_StreakFresh" xml:space="preserve">
+    <value>Een nieuwe start vandaag. Bloop is blij dat je er bent.</value>
+  </data>
+  <data name="Streak_Kind_Stretch" xml:space="preserve">
+    <value>Rekken</value>
+  </data>
+  <data name="Streak_Kind_Eyes" xml:space="preserve">
+    <value>Ogen</value>
+  </data>
+  <data name="Streak_Kind_Walk" xml:space="preserve">
+    <value>Wandeling</value>
+  </data>
+  <data name="Home_RecapLine" xml:space="preserve">
+    <value>{0}: {1} gedaan, dagen met doel gehaald: {2}</value>
+  </data>
+  <data name="Home_RecapAllDays" xml:space="preserve">
+    <value>Dagen met alle doelen gehaald: {0}</value>
+  </data>
+  <data name="Home_RecapBest" xml:space="preserve">
+    <value>Beste reeks: {0}</value>
+  </data>
 </root>

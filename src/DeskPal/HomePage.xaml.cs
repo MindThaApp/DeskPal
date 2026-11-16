@@ -69,6 +69,60 @@ public sealed partial class HomePage : Page
         HoldsText.Text = HomeInfo.HoldsLine(s);
         CountsText.Text = HomeInfo.CountsLine(s);
         PauseButton.Content = s.ManualHold is null ? Loc.Get("Common_Pause30") : Loc.Get("Common_Resume");
+        RefreshStreaks(s);
+    }
+
+    private static DayOfWeek FirstDay => System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+
+    private string? _streakNote;
+
+    private void RefreshStreaks(NudgeScheduler s)
+    {
+        var sum = s.Streaks;
+        StreakOverall.Text = Loc.Format("Home_StreakOverall", sum.All.Current);
+        StreakGoals.Text = string.Join(Environment.NewLine, new[]
+        {
+            (StreakGoal.Stretch, "Streak_Kind_Stretch"), (StreakGoal.Eyes, "Streak_Kind_Eyes"), (StreakGoal.Walk, "Streak_Kind_Walk"),
+        }.Select(g => Loc.Format("Home_StreakLine", Loc.Get(g.Item2), sum.For(g.Item1).Current, sum.For(g.Item1).Best)));
+        if (sum.AnyNewBest)
+        {
+            var best = new[] { sum.All, sum.Stretch, sum.Eyes, sum.Walk }.Where(i => i.IsNewBest).Max(i => i.Best);
+            _streakNote = Loc.Format("Home_StreakNewBest", best);
+            s.AcknowledgeStreakBests();
+            Celebrate();
+        }
+        else if (_streakNote is null && sum.All.Current == 0) StreakNote.Text = Loc.Get("Home_StreakFresh");
+        if (_streakNote is not null) StreakNote.Text = _streakNote;
+        StreakNote.Visibility = _streakNote is not null || sum.All.Current == 0 ? Visibility.Visible : Visibility.Collapsed;
+        LastWeekLink.Visibility = s.LastWeekRecap(FirstDay) is null ? Visibility.Collapsed : Visibility.Visible;
+        if (!_recapAutoShown && s.RecapDue(FirstDay))
+        {
+            _recapAutoShown = true;
+            ShowRecap();
+            s.MarkRecapShown(FirstDay);
+        }
+    }
+
+    private bool _recapAutoShown;
+
+    private void ShowRecap()
+    {
+        if (_ctx.Scheduler.LastWeekRecap(FirstDay) is not { } r) return;
+        var lines = new List<string>();
+        foreach (var (goal, key) in new[] { (StreakGoal.Stretch, "Streak_Kind_Stretch"), (StreakGoal.Eyes, "Streak_Kind_Eyes"), (StreakGoal.Walk, "Streak_Kind_Walk") })
+            lines.Add(Loc.Format("Home_RecapLine", Loc.Get(key), r.Done(goal), r.GoalDays(goal)));
+        lines.Add(Loc.Format("Home_RecapAllDays", r.AllDays));
+        lines.Add(Loc.Format("Home_RecapBest", r.BestStreak));
+        RecapLines.Text = string.Join(Environment.NewLine, lines);
+        RecapCard.Visibility = Visibility.Visible;
+    }
+
+    private void OnLastWeek(object sender, RoutedEventArgs e) => ShowRecap();
+
+    private void OnRecapDismiss(object sender, RoutedEventArgs e)
+    {
+        RecapCard.Visibility = Visibility.Collapsed;
+        _ctx.Scheduler.MarkRecapShown(FirstDay);
     }
 
     private async Task LoadStyleAsync()

@@ -897,4 +897,49 @@
   <data name="Pro_SeeMore" xml:space="preserve">
     <value>See Pro</value>
   </data>
+  <data name="Home_StreakHeader.Text" xml:space="preserve">
+    <value>Streaks</value>
+  </data>
+  <data name="Home_LastWeekLink.Content" xml:space="preserve">
+    <value>Last week</value>
+  </data>
+  <data name="Home_RecapTitle.Text" xml:space="preserve">
+    <value>Last week</value>
+  </data>
+  <data name="Home_RecapIntro.Text" xml:space="preserve">
+    <value>Here is how last week went.</value>
+  </data>
+  <data name="Home_RecapDismiss.Content" xml:space="preserve">
+    <value>Got it</value>
+  </data>
+  <data name="Home_StreakOverall" xml:space="preserve">
+    <value>Days in a row: {0}</value>
+  </data>
+  <data name="Home_StreakLine" xml:space="preserve">
+    <value>{0}: {1} (best: {2})</value>
+  </data>
+  <data name="Home_StreakNewBest" xml:space="preserve">
+    <value>New best streak: {0}. Bloop is cheering for you!</value>
+  </data>
+  <data name="Home_StreakFresh" xml:space="preserve">
+    <value>A fresh start today. Bloop is glad you are here.</value>
+  </data>
+  <data name="Streak_Kind_Stretch" xml:space="preserve">
+    <value>Stretch</value>
+  </data>
+  <data name="Streak_Kind_Eyes" xml:space="preserve">
+    <value>Eyes</value>
+  </data>
+  <data name="Streak_Kind_Walk" xml:space="preserve">
+    <value>Walk</value>
+  </data>
+  <data name="Home_RecapLine" xml:space="preserve">
+    <value>{0}: {1} done, days on goal: {2}</value>
+  </data>
+  <data name="Home_RecapAllDays" xml:space="preserve">
+    <value>Days with every goal met: {0}</value>
+  </data>
+  <data name="Home_RecapBest" xml:space="preserve">
+    <value>Best streak: {0}</value>
+  </data>
 </root>
