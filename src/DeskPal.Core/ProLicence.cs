@@ -112,6 +112,8 @@ public sealed class ProLicence(ProLicenceRecord record, IProStore store, TimePro
     public bool IsUnlocked => Current.IsUnlocked;
     // The Store's formatted price ("£3.99"), or null until the Store has given one.
     public string? Price { get; private set; }
+    // The Store's answer to the last check (Unknown before the first one or when the Store could not be reached).
+    public StoreOwnership LastStoreAnswer { get; private set; }
 
     // Re-evaluates against the clock (a trial can run out while the app runs) and raises Changed if anything moved.
     public void Reevaluate()
@@ -135,6 +137,7 @@ public sealed class ProLicence(ProLicenceRecord record, IProStore store, TimePro
             StoreOwnership answer;
             try { answer = await store.QueryOwnershipAsync(cancellationToken); }
             catch (Exception ex) when (ex is not OperationCanceledException) { answer = StoreOwnership.Unknown; }
+            LastStoreAnswer = answer;
             if (answer == StoreOwnership.NotOwned && _purchasedAt is { } bought && time.GetUtcNow() - bought < PurchaseGrace)
                 answer = StoreOwnership.Unknown;
             if (ProRules.ApplyStoreAnswer(record, answer, time.GetUtcNow())) save();

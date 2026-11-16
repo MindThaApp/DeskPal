@@ -124,6 +124,27 @@ public sealed partial class SettingsPage : Page
         AddSwitch(Loc.Get("Settings_CrashReports"), Loc.Get("Settings_CrashReportsSub"),
             () => _s.CrashReports == CrashReportingMode.Always,
             b => { _s.CrashReports = b ? CrashReportingMode.Always : CrashReportingMode.Never; _hub.Commit(false); });
+
+        Root.Children.Add(Header(Loc.Get("Pro_Title")));
+        AddProCard();
+    }
+
+    // Status only, with a way to the Pro page; it follows the hub, which is told about every Pro change.
+    private void AddProCard()
+    {
+        var status = Secondary("");
+        var title = new StackPanel { Spacing = 2, VerticalAlignment = VerticalAlignment.Center };
+        title.Children.Add(new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = 8,
+            Children = { new TextBlock { Text = Loc.Get("Pro_SettingsName"), FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap }, new ProBadge { HideWhenUnlocked = false } },
+        });
+        title.Children.Add(status);
+        var open = new Button { Content = Loc.Get("Pro_SeeMore"), HorizontalAlignment = HorizontalAlignment.Right };
+        open.Click += (_, _) => TickGuard.Run("settings-open-pro", Pro.ShowOffer);
+        _syncs.Add(() => status.Text = ProPage.StatusText(Pro.State));
+        Root.Children.Add(Card(title, open));
     }
 
     private string CurrentLanguage() => string.IsNullOrEmpty(_s.Language) ? Loc.ResolveWindowsLanguage() : _s.Language;

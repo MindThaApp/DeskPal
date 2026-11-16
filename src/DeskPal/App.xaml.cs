@@ -28,6 +28,8 @@ public partial class App : Application
     private MainWindow? _main;
     private MainWindowUi _ui = new();
     private SettingsHub _hub = null!;
+    private ProLicence? _pro;
+    private bool _mainHooked;
     private SettingsWindow? _settingsWindow;
     private CrashReportingMode _appliedCrashMode;
     private CallMonitor _calls = null!;
@@ -121,6 +123,7 @@ public partial class App : Application
         _scheduler = new NudgeScheduler(TimeProvider.System, _settings, state);
         _router = _scheduler;
         _hub = new SettingsHub(_settings, _scheduler);
+        StartPro();
         _hub.ChangeLanguage = ChangeLanguage;
         BloopSounds.Attach(_hub, _scheduler);
         _appliedCrashMode = _settings.CrashReports;
@@ -166,7 +169,7 @@ public partial class App : Application
 
         _tickTimer = _dq.CreateTimer();
         _tickTimer.Interval = TimeSpan.FromSeconds(5);
-        _tickTimer.Tick += (_, _) => TickGuard.Run("scheduler", () => { _scheduler.Tick(); _link?.Tick(); UpdateTray(); });
+        _tickTimer.Tick += (_, _) => TickGuard.Run("scheduler", () => { _scheduler.Tick(); _link?.Tick(); _pro?.Reevaluate(); UpdateTray(); });
         _tickTimer.Start();
 
         _busyTimer = _dq.CreateTimer();
@@ -177,6 +180,7 @@ public partial class App : Application
 
         UpdateTray();
         Logger.Log("started");
+        _ = RefreshProAsync(force: true);
         StartDebugTriggers();
         DeskPalProtocol.RegisterInBackground();
         HandleStartLink();
@@ -664,6 +668,26 @@ public partial class App : Application
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern uint GetDoubleClickTime();
 
+    // Desk Pal Evolution (Pro): the licence lives in settings.json (trial start + cached Store answer) and is saved through
+    // the hub like any other setting. Checked at startup, when the main window is activated and after a purchase.
+    private void StartPro()
+    {
+        _pro = new ProLicence(_settings.Pro, new WindowsProStore(MainWindowHandle), TimeProvider.System,
+            () => _hub.Commit(false), forceOwned: AppData.DebugPro);
+        Pro.Attach(_pro);
+        Pro.OpenPage = () => OpenMain("pro");
+        // Gated views follow the hub, so a Pro change refreshes them like a settings change (nothing is saved here).
+        Pro.Changed += () => _hub.RaiseChanged();
+    }
+
+    private async Task RefreshProAsync(bool force)
+    {
+        try { if (_pro is not null) await _pro.RefreshAsync(force); }
+        catch (Exception ex) { Logger.Log("pro refresh failed: " + ex.Message); }
+    }
+
+    private nint MainWindowHandle() => _main is null ? 0 : WinRT.Interop.WindowNative.GetWindowHandle(_main);
+
     private void OpenMain(string? page = null)
     {
         _dq.TryEnqueue(() =>
@@ -674,6 +698,14 @@ public partial class App : Application
                 _main ??= new MainWindow(
                     new MainContext(_scheduler, _hub, tag => _main?.Navigate(tag), ShowEyeCue),
                     _ui, SaveState, ShowStillHereToast);
+                if (!_mainHooked)
+                {
+                    _mainHooked = true;
+                    _main.Activated += (_, e) =>
+                    {
+                        if (e.WindowActivationState != WindowActivationState.Deactivated) _ = RefreshProAsync(force: false);
+                    };
+                }
                 _main.ShowMain(page);
             }
             catch (Exception ex)
