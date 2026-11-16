@@ -739,4 +739,92 @@
   
   
   
+  <data name="Settings_Section_Language" xml:space="preserve">
+    <value>Język</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Language_PickerAccessible" xml:space="preserve">
+    <value>Język</value>
+    <comment>Accessible name of the language list</comment>
+  </data>
+  <data name="Language_SwitchTitle" xml:space="preserve">
+    <value>Przełączyć na: {0}?</value>
+    <comment>Confirm dialog title; {0} is the language&apos;s own name</comment>
+  </data>
+  <data name="Language_SwitchBody" xml:space="preserve">
+    <value>Desk Pal uruchomi się ponownie. Zapytamy, czy chcesz zostawić nowy język. Jeśli nie odpowiesz, po 30 sekundach wróci poprzedni.</value>
+    <comment>Confirm dialog text</comment>
+  </data>
+  <data name="Language_SwitchButton" xml:space="preserve">
+    <value>Przełącz</value>
+    <comment>Confirm dialog primary button</comment>
+  </data>
+  <data name="Language_CancelButton" xml:space="preserve">
+    <value>Anuluj</value>
+    <comment>Confirm dialog cancel button</comment>
+  </data>
+  <data name="Language_Keep_Title" xml:space="preserve">
+    <value>Zostawić ten język?</value>
+    <comment>Title of the window shown after a language switch</comment>
+  </data>
+  <data name="Language_Keep_Body" xml:space="preserve">
+    <value>Desk Pal wyświetla teraz język: {0}.</value>
+    <comment>{0} is the new language&apos;s own name</comment>
+  </data>
+  <data name="Language_Keep_Countdown" xml:space="preserve">
+    <value>Powrót za {0} s.</value>
+    <comment>Countdown line; {0} is the seconds left</comment>
+  </data>
+  <data name="Language_Keep_Button" xml:space="preserve">
+    <value>Zostaw</value>
+    <comment>Keep the new language</comment>
+  </data>
+  <data name="Language_GoBack_Button" xml:space="preserve">
+    <value>Wróć</value>
+    <comment>Return to the previous language</comment>
+  </data>
+  <data name="Wizard_WindowTitle" xml:space="preserve">
+    <value>Witaj w Desk Pal</value>
+    <comment>Setup window title</comment>
+  </data>
+  <data name="Wizard_Step" xml:space="preserve">
+    <value>Krok {0} z {1}</value>
+    <comment>Setup progress; {0} is the current step, {1} the number of steps</comment>
+  </data>
+  <data name="Wizard_Language_Title" xml:space="preserve">
+    <value>Wybierz język</value>
+    <comment>Setup page 1 heading</comment>
+  </data>
+  <data name="Wizard_Language_Sub" xml:space="preserve">
+    <value>Wybierz język, w którym mówi Desk Pal. Wybór innego uruchomi Desk Pal ponownie.</value>
+    <comment>Setup page 1 text</comment>
+  </data>
+  <data name="Wizard_Hours_Title" xml:space="preserve">
+    <value>Kiedy pracujesz?</value>
+    <comment>Setup page 2 heading</comment>
+  </data>
+  <data name="Wizard_Hours_Sub" xml:space="preserve">
+    <value>Bloop przypomina o sobie tylko w godzinach pracy. Dni wybierzesz później w Ustawieniach.</value>
+    <comment>Setup page 2 text</comment>
+  </data>
+  <data name="Wizard_Done_Title" xml:space="preserve">
+    <value>Gotowe!</value>
+    <comment>Setup page 3 heading</comment>
+  </data>
+  <data name="Wizard_Done_Body" xml:space="preserve">
+    <value>Bloop przypomni Ci o rozciąganiu, odpoczynku dla oczu i piciu wody podczas pracy.</value>
+    <comment>Setup page 3 text</comment>
+  </data>
+  <data name="Wizard_Back" xml:space="preserve">
+    <value>Wstecz</value>
+    <comment>Setup button</comment>
+  </data>
+  <data name="Wizard_Next" xml:space="preserve">
+    <value>Dalej</value>
+    <comment>Setup button</comment>
+  </data>
+  <data name="Wizard_Finish" xml:space="preserve">
+    <value>Zakończ</value>
+    <comment>Setup button</comment>
+  </data>
 </root>

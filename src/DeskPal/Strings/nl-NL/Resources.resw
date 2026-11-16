@@ -717,4 +717,92 @@
   <data name="Settings_WorkingHoursSub" xml:space="preserve">
     <value>Herinneringen komen alleen op deze dagen en tijden</value>
   </data>
+  <data name="Settings_Section_Language" xml:space="preserve">
+    <value>Taal</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Language_PickerAccessible" xml:space="preserve">
+    <value>Taal</value>
+    <comment>Accessible name of the language list</comment>
+  </data>
+  <data name="Language_SwitchTitle" xml:space="preserve">
+    <value>Overschakelen naar {0}?</value>
+    <comment>Confirm dialog title; {0} is the language&apos;s own name</comment>
+  </data>
+  <data name="Language_SwitchBody" xml:space="preserve">
+    <value>Desk Pal start opnieuw op. Je krijgt de vraag of je de nieuwe taal wilt houden. Reageer je niet, dan gaat het na 30 seconden vanzelf terug.</value>
+    <comment>Confirm dialog text</comment>
+  </data>
+  <data name="Language_SwitchButton" xml:space="preserve">
+    <value>Overschakelen</value>
+    <comment>Confirm dialog primary button</comment>
+  </data>
+  <data name="Language_CancelButton" xml:space="preserve">
+    <value>Annuleren</value>
+    <comment>Confirm dialog cancel button</comment>
+  </data>
+  <data name="Language_Keep_Title" xml:space="preserve">
+    <value>Deze taal houden?</value>
+    <comment>Title of the window shown after a language switch</comment>
+  </data>
+  <data name="Language_Keep_Body" xml:space="preserve">
+    <value>Desk Pal staat nu in het {0}.</value>
+    <comment>{0} is the new language&apos;s own name</comment>
+  </data>
+  <data name="Language_Keep_Countdown" xml:space="preserve">
+    <value>Terug in {0} seconden.</value>
+    <comment>Countdown line; {0} is the seconds left</comment>
+  </data>
+  <data name="Language_Keep_Button" xml:space="preserve">
+    <value>Houden</value>
+    <comment>Keep the new language</comment>
+  </data>
+  <data name="Language_GoBack_Button" xml:space="preserve">
+    <value>Terug</value>
+    <comment>Return to the previous language</comment>
+  </data>
+  <data name="Wizard_WindowTitle" xml:space="preserve">
+    <value>Welkom bij Desk Pal</value>
+    <comment>Setup window title</comment>
+  </data>
+  <data name="Wizard_Step" xml:space="preserve">
+    <value>Stap {0} van {1}</value>
+    <comment>Setup progress; {0} is the current step, {1} the number of steps</comment>
+  </data>
+  <data name="Wizard_Language_Title" xml:space="preserve">
+    <value>Kies je taal</value>
+    <comment>Setup page 1 heading</comment>
+  </data>
+  <data name="Wizard_Language_Sub" xml:space="preserve">
+    <value>Kies de taal waarin Desk Pal praat. Kies je een andere, dan start Desk Pal opnieuw op.</value>
+    <comment>Setup page 1 text</comment>
+  </data>
+  <data name="Wizard_Hours_Title" xml:space="preserve">
+    <value>Wanneer werk je?</value>
+    <comment>Setup page 2 heading</comment>
+  </data>
+  <data name="Wizard_Hours_Sub" xml:space="preserve">
+    <value>Bloop port je alleen tijdens je werktijden. De dagen kies je later in Instellingen.</value>
+    <comment>Setup page 2 text</comment>
+  </data>
+  <data name="Wizard_Done_Title" xml:space="preserve">
+    <value>Klaar!</value>
+    <comment>Setup page 3 heading</comment>
+  </data>
+  <data name="Wizard_Done_Body" xml:space="preserve">
+    <value>Bloop herinnert je eraan om te rekken, je ogen te laten rusten en water te drinken terwijl je werkt.</value>
+    <comment>Setup page 3 text</comment>
+  </data>
+  <data name="Wizard_Back" xml:space="preserve">
+    <value>Terug</value>
+    <comment>Setup button</comment>
+  </data>
+  <data name="Wizard_Next" xml:space="preserve">
+    <value>Volgende</value>
+    <comment>Setup button</comment>
+  </data>
+  <data name="Wizard_Finish" xml:space="preserve">
+    <value>Voltooien</value>
+    <comment>Setup button</comment>
+  </data>
 </root>

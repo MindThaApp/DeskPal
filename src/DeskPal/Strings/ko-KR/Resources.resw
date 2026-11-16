@@ -739,4 +739,92 @@
   
   
   
+  <data name="Settings_Section_Language" xml:space="preserve">
+    <value>언어</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Language_PickerAccessible" xml:space="preserve">
+    <value>언어</value>
+    <comment>Accessible name of the language list</comment>
+  </data>
+  <data name="Language_SwitchTitle" xml:space="preserve">
+    <value>{0}(으)로 바꿀까요?</value>
+    <comment>Confirm dialog title; {0} is the language&apos;s own name</comment>
+  </data>
+  <data name="Language_SwitchBody" xml:space="preserve">
+    <value>Desk Pal이 다시 시작돼요. 새 언어를 유지할지 물어보고, 30초 안에 답하지 않으면 자동으로 이전 언어로 돌아가요.</value>
+    <comment>Confirm dialog text</comment>
+  </data>
+  <data name="Language_SwitchButton" xml:space="preserve">
+    <value>바꾸기</value>
+    <comment>Confirm dialog primary button</comment>
+  </data>
+  <data name="Language_CancelButton" xml:space="preserve">
+    <value>취소</value>
+    <comment>Confirm dialog cancel button</comment>
+  </data>
+  <data name="Language_Keep_Title" xml:space="preserve">
+    <value>이 언어를 유지할까요?</value>
+    <comment>Title of the window shown after a language switch</comment>
+  </data>
+  <data name="Language_Keep_Body" xml:space="preserve">
+    <value>Desk Pal이 이제 {0}(으)로 표시돼요.</value>
+    <comment>{0} is the new language&apos;s own name</comment>
+  </data>
+  <data name="Language_Keep_Countdown" xml:space="preserve">
+    <value>{0}초 후에 되돌아가요.</value>
+    <comment>Countdown line; {0} is the seconds left</comment>
+  </data>
+  <data name="Language_Keep_Button" xml:space="preserve">
+    <value>유지</value>
+    <comment>Keep the new language</comment>
+  </data>
+  <data name="Language_GoBack_Button" xml:space="preserve">
+    <value>되돌리기</value>
+    <comment>Return to the previous language</comment>
+  </data>
+  <data name="Wizard_WindowTitle" xml:space="preserve">
+    <value>Desk Pal에 오신 것을 환영해요</value>
+    <comment>Setup window title</comment>
+  </data>
+  <data name="Wizard_Step" xml:space="preserve">
+    <value>{1}단계 중 {0}단계</value>
+    <comment>Setup progress; {0} is the current step, {1} the number of steps</comment>
+  </data>
+  <data name="Wizard_Language_Title" xml:space="preserve">
+    <value>언어를 선택하세요</value>
+    <comment>Setup page 1 heading</comment>
+  </data>
+  <data name="Wizard_Language_Sub" xml:space="preserve">
+    <value>Desk Pal이 사용할 언어를 골라 주세요. 다른 언어를 고르면 Desk Pal이 다시 시작돼요.</value>
+    <comment>Setup page 1 text</comment>
+  </data>
+  <data name="Wizard_Hours_Title" xml:space="preserve">
+    <value>언제 일하세요?</value>
+    <comment>Setup page 2 heading</comment>
+  </data>
+  <data name="Wizard_Hours_Sub" xml:space="preserve">
+    <value>Bloop은 근무 시간에만 알려 드려요. 요일은 나중에 설정에서 고를 수 있어요.</value>
+    <comment>Setup page 2 text</comment>
+  </data>
+  <data name="Wizard_Done_Title" xml:space="preserve">
+    <value>준비 완료!</value>
+    <comment>Setup page 3 heading</comment>
+  </data>
+  <data name="Wizard_Done_Body" xml:space="preserve">
+    <value>Bloop이 일하는 동안 스트레칭, 눈 휴식, 물 마시기를 챙겨 드려요.</value>
+    <comment>Setup page 3 text</comment>
+  </data>
+  <data name="Wizard_Back" xml:space="preserve">
+    <value>이전</value>
+    <comment>Setup button</comment>
+  </data>
+  <data name="Wizard_Next" xml:space="preserve">
+    <value>다음</value>
+    <comment>Setup button</comment>
+  </data>
+  <data name="Wizard_Finish" xml:space="preserve">
+    <value>완료</value>
+    <comment>Setup button</comment>
+  </data>
 </root>
