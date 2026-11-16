@@ -221,11 +221,14 @@ public sealed partial class SettingsPage : Page
         Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
     };
 
+    private const double ControlColumnWidth = 280;
+
     private Border Card(UIElement left, UIElement right)
     {
         var grid = new Grid { ColumnSpacing = 16 };
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        // Same control column width on every card, so the controls line up; the label column takes the rest and wraps.
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(ControlColumnWidth) });
         grid.Children.Add(left);
         Grid.SetColumn((FrameworkElement)right, 1);
         grid.Children.Add(right);
@@ -251,7 +254,7 @@ public sealed partial class SettingsPage : Page
 
         var toggle = new ToggleSwitch { OnContent = Loc.Get("Common_On"), OffContent = Loc.Get("Common_Off"), MinWidth = 0 };
         AutomationProperties.SetName(toggle, Loc.Format("Settings_ReminderOnOff", name));
-        var combo = new ComboBox { MinWidth = 270 };
+        var combo = new ComboBox { HorizontalAlignment = HorizontalAlignment.Stretch };
         AutomationProperties.SetName(combo, Loc.Format("Settings_Frequency", name));
         foreach (var v in values) combo.Items.Add(Label(v));
         if (custom) combo.Items.Add(Loc.Get("Settings_Custom"));
@@ -271,7 +274,8 @@ public sealed partial class SettingsPage : Page
         var left = TitleBlock(Loc.Format("Settings_NameDash", name, what), reason);
         if (recommendedLabel is not null) left.Children.Add(Secondary(Loc.Format("Settings_RecommendedLine", recommendedLabel.ToLower(System.Globalization.CultureInfo.CurrentUICulture))));
         left.Children.Add(reset);
-        var right = new StackPanel { Spacing = 6, HorizontalAlignment = HorizontalAlignment.Right };
+        var right = new StackPanel { Spacing = 6, HorizontalAlignment = HorizontalAlignment.Stretch };
+        toggle.HorizontalAlignment = HorizontalAlignment.Right;
         right.Children.Add(toggle);
         right.Children.Add(combo);
         right.Children.Add(box);
@@ -327,7 +331,7 @@ public sealed partial class SettingsPage : Page
 
     private void AddChoice(string name, string sub, string[] options, Func<int> get, Action<int> set)
     {
-        var radios = new RadioButtons { MaxColumns = options.Length };
+        var radios = new RadioButtons { MaxColumns = Math.Min(options.Length, 3) };
         AutomationProperties.SetName(radios, name);
         foreach (var o in options) radios.Items.Add(o);
         radios.SelectionChanged += (_, _) =>
@@ -336,7 +340,11 @@ public sealed partial class SettingsPage : Page
             set(radios.SelectedIndex);
         };
         _syncs.Add(() => radios.SelectedIndex = get());
-        Root.Children.Add(Card(TitleBlock(name, sub), radios));
+        // Options can be long in some languages, so they sit under the label at full width instead of squeezing it.
+        var content = new StackPanel { Spacing = 10 };
+        content.Children.Add(TitleBlock(name, sub));
+        content.Children.Add(radios);
+        Root.Children.Add(new Border { Style = (Style)Resources["CardBorder"], Child = content });
     }
 
     private void AddSwitch(string name, string sub, Func<bool> get, Action<bool> set)
@@ -348,6 +356,7 @@ public sealed partial class SettingsPage : Page
             if (!_loading) set(toggle.IsOn);
         };
         _syncs.Add(() => toggle.IsOn = get());
+        toggle.HorizontalAlignment = HorizontalAlignment.Right;
         Root.Children.Add(Card(TitleBlock(name, sub), toggle));
     }
 
