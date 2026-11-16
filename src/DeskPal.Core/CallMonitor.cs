@@ -16,7 +16,7 @@ public sealed class CallMonitor(ICallDetector detector, NudgeScheduler scheduler
         try { inCall = detector.IsInCall(); }
         catch { inCall = false; }
         if (inCall)
-            scheduler.StartHold(NudgeScheduler.CallSource, "In a call", time.GetLocalNow() + HoldLength, seated: true);
+            scheduler.StartHold(NudgeScheduler.CallSource, Str.Get("Nudge_Hold_InCall"), time.GetLocalNow() + HoldLength, seated: true);
         else
             scheduler.EndHold(NudgeScheduler.CallSource);
     }

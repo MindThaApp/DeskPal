@@ -43,6 +43,8 @@ public sealed class DeskPalSettings
 
     public WorkingHours WorkingHours { get; set; } = new();
     public string AvatarStyle { get; set; } = "flat";
+    // BCP-47 tag of the display language; empty follows Windows.
+    public string Language { get; set; } = "";
 
     // Growth stage of the 3D Sprout on Home (1 to 4). Fixed at 2 until growth is tracked.
     public int SproutStage { get; set; } = 2;
@@ -96,6 +98,7 @@ public sealed class DeskPalSettings
         if (Array.IndexOf(SitStandChoices, SitStandMinutes) < 0) { SitStandMinutes = RecommendedSitStandMinutes; changed = true; }
         if (Array.IndexOf(HideNudgeChoices, HideNudgeSeconds) < 0) { HideNudgeSeconds = RecommendedHideNudgeSeconds; changed = true; }
         if (!Enum.IsDefined(Water)) { Water = WaterMode.WithBreaks; changed = true; }
+        if (Language is null) { Language = ""; changed = true; }
         var apps = (ApprovedControlApps ?? [])
             .Where(a => !string.IsNullOrWhiteSpace(a) && a.Length <= 1024)
             .Distinct(StringComparer.OrdinalIgnoreCase)

@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>Overhead reach</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>Upper back</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>Interlace your fingers and reach up high, breathing slowly. Lower your arms and let your shoulders settle.</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>Side bend</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>Torso</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>Reach one arm overhead and lean gently to the opposite side. Switch sides halfway through.</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>Shoulder shrug</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>Shoulders</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>Lift both shoulders toward your ears, hold a moment, then let them drop. Repeat a few times.</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>Neck roll</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>Neck</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>Slowly tilt your head toward one shoulder and roll it gently across to the other. Keep it easy and relaxed.</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>Seated twist</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>Spine</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>Sit tall and turn your upper body to one side, holding the chair back. Switch sides after a few breaths.</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>Wrist stretch</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>Wrists</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>Extend one arm with the palm up and gently draw the fingers back with the other hand. Switch hands.</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>Hip flexor stretch</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>Hips</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>Stand and step one foot back, shifting your weight forward until you feel a light stretch at the front of the hip. Switch legs.</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>Calf raises</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>Legs</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>Stand tall and rise onto your toes, then lower slowly. Hold a chair if you like. Repeat several times.</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>That was a long one. Stretch?</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>Eyes break</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>Look 20 ft away</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>Focus</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>Paused until tomorrow</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>Paused</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>Snoozed</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>In a call</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>Time to sit for a bit</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>Switch to standing</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}, {1}.</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value> and </value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>Stretch time</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0}. {1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>Walk break</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>Stand up and take a short walk, even just to the next room.</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>Eyes break</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>Look at something about 20 feet away for 20 seconds.</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>Water time</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>Grab a glass of water.</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>Breathe</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>Take a few slow, deep breaths.</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>give your body a stretch</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>take a short walk</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>rest your eyes for 20 seconds</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>grab some water while you're up</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>take a few slow breaths</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>An unknown app</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>

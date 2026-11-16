@@ -160,7 +160,7 @@ public sealed record CallerInfo(int ProcessId, string? ExePath, string? PackageF
 
     public static string DisplayNameFor(string? appId)
     {
-        if (string.IsNullOrEmpty(appId)) return "An unknown app";
+        if (string.IsNullOrEmpty(appId)) return Str.Get("App_UnknownApp");
         // Only the Store package is named as Automation Portal; any exe could call itself that, so exes show their file name.
         if (string.Equals(appId, "pkg:" + AutomationPortalPackageFamily, StringComparison.OrdinalIgnoreCase)) return "Automation Portal";
         if (appId.StartsWith("pkg:", StringComparison.Ordinal))

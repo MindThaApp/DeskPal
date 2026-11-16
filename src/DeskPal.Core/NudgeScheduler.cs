@@ -12,7 +12,7 @@ public sealed class NudgeScheduler : ICommandRouter
     public const string ManualSource = "manual";
     public const string CallSource = "call";
     public const string FocusSource = "focus";
-    public const string LongCallMessage = "That was a long one. Stretch?";
+    public static string LongCallMessage => Str.Get("Nudge_LongCall_Message");
 
     private static readonly NudgeKind[] Scheduled = [NudgeKind.Stretch, NudgeKind.Eyes, NudgeKind.Water];
     private static readonly TimeSpan PostureSlack = TimeSpan.FromMinutes(5);
@@ -265,8 +265,8 @@ public sealed class NudgeScheduler : ICommandRouter
             if (cueDue && Current is null && _holds.Count == 0 && _pending.Count == 0)
             {
                 _eyeBreaksToday++;
-                var cue = new Nudge(Guid.NewGuid(), [NudgeKind.Eyes], NudgeKind.Eyes, "Eyes break",
-                    "Look 20 ft away", null, null, 20, "bloop-idle", false, now);
+                var cue = new Nudge(Guid.NewGuid(), [NudgeKind.Eyes], NudgeKind.Eyes, Str.Get("Nudge_EyeCue_Title"),
+                    Str.Get("Nudge_EyeCue_Message"), null, null, 20, "bloop-idle", false, now);
                 Raise(new SchedulerEvent(SchedulerEventType.EyeCue, cue));
             }
         }
@@ -283,7 +283,7 @@ public sealed class NudgeScheduler : ICommandRouter
             case PauseCommand c: return Pause(c);
             case ResumeCommand: return EndHold(ManualSource);
             case BreakNowCommand c: return BreakNow(c.Kind);
-            case FocusCommand c when c.Minutes > 0: StartHold(FocusSource, "Focus", Now.AddMinutes(c.Minutes)); return true;
+            case FocusCommand c when c.Minutes > 0: StartHold(FocusSource, Str.Get("Nudge_Hold_Focus"), Now.AddMinutes(c.Minutes)); return true;
             case FocusOffCommand: return EndHold(FocusSource);
             default: return false;
         }
@@ -358,12 +358,12 @@ public sealed class NudgeScheduler : ICommandRouter
         {
             var tomorrow = now.Date.AddDays(1) + _settings.WorkingHours.Start.ToTimeSpan();
             until = new DateTimeOffset(tomorrow, _time.LocalTimeZone.GetUtcOffset(tomorrow));
-            reason = "Paused until tomorrow";
+            reason = Str.Get("Nudge_Hold_PausedUntilTomorrow");
         }
         else if (c.Minutes is > 0)
         {
             until = now.AddMinutes(c.Minutes.Value);
-            reason = "Paused";
+            reason = Str.Get("Nudge_Hold_Paused");
         }
         else return false;
         StartHold(ManualSource, reason, until);
@@ -415,7 +415,7 @@ public sealed class NudgeScheduler : ICommandRouter
             if (!nudge.IsTest) _snoozedPending = true;
             _lastShown = null;
             Raise(new SchedulerEvent(SchedulerEventType.NudgeSnoozed, nudge));
-            StartHold(SnoozeSource, "Snoozed", now + SnoozeDuration);
+            StartHold(SnoozeSource, Str.Get("Nudge_Hold_Snoozed"), now + SnoozeDuration);
             return true;
         }
     }
@@ -473,7 +473,7 @@ public sealed class NudgeScheduler : ICommandRouter
         if (!isTest && !longCall && primary == NudgeKind.Stretch && _settings.SitStandEnabled
             && (_lastPosture is not { } lp || now - lp >= TimeSpan.FromMinutes(_settings.SitStandMinutes) - PostureSlack))
         {
-            posture = _standing ? "Time to sit for a bit" : "Switch to standing";
+            posture = Str.Get(_standing ? "Nudge_Posture_Sit" : "Nudge_Posture_Stand");
             _standing = !_standing;
             _lastPosture = now;
         }
@@ -491,7 +491,7 @@ public sealed class NudgeScheduler : ICommandRouter
         }
         else
         {
-            message = $"{posture ?? title}, {string.Join(" and ", kinds.Skip(1).Select(Tail))}.";
+            message = Str.Format("Nudge_Combined", posture ?? title, string.Join(Str.Get("Nudge_And"), kinds.Skip(1).Select(Tail)));
             extra = instruction;
         }
 
@@ -521,20 +521,20 @@ public sealed class NudgeScheduler : ICommandRouter
 
     private static (string Title, string Instruction) Describe(NudgeKind kind, StretchInfo? stretch) => kind switch
     {
-        NudgeKind.Stretch => ("Stretch time", stretch!.Name + ". " + stretch.Instruction),
-        NudgeKind.Walk => ("Walk break", "Stand up and take a short walk, even just to the next room."),
-        NudgeKind.Eyes => ("Eyes break", "Look at something about 20 feet away for 20 seconds."),
-        NudgeKind.Water => ("Water time", "Grab a glass of water."),
-        _ => ("Breathe", "Take a few slow, deep breaths."),
+        NudgeKind.Stretch => (Str.Get("Nudge_Stretch_Title"), Str.Format("Nudge_Stretch_Text", stretch!.Name, stretch.Instruction)),
+        NudgeKind.Walk => (Str.Get("Nudge_Walk_Title"), Str.Get("Nudge_Walk_Text")),
+        NudgeKind.Eyes => (Str.Get("Nudge_Eyes_Title"), Str.Get("Nudge_Eyes_Text")),
+        NudgeKind.Water => (Str.Get("Nudge_Water_Title"), Str.Get("Nudge_Water_Text")),
+        _ => (Str.Get("Nudge_Breathe_Title"), Str.Get("Nudge_Breathe_Text")),
     };
 
     private static string Tail(NudgeKind kind) => kind switch
     {
-        NudgeKind.Stretch => "give your body a stretch",
-        NudgeKind.Walk => "take a short walk",
-        NudgeKind.Eyes => "rest your eyes for 20 seconds",
-        NudgeKind.Water => "grab some water while you're up",
-        _ => "take a few slow breaths",
+        NudgeKind.Stretch => Str.Get("Nudge_Stretch_Tail"),
+        NudgeKind.Walk => Str.Get("Nudge_Walk_Tail"),
+        NudgeKind.Eyes => Str.Get("Nudge_Eyes_Tail"),
+        NudgeKind.Water => Str.Get("Nudge_Water_Tail"),
+        _ => Str.Get("Nudge_Breathe_Tail"),
     };
 
     private void Raise(SchedulerEvent e) => Event?.Invoke(e);
