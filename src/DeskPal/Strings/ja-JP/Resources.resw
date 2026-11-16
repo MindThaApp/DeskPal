@@ -827,4 +827,49 @@
     <value>完了</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Home_StreakHeader.Text" xml:space="preserve">
+    <value>連続記録</value>
+  </data>
+  <data name="Home_LastWeekLink.Content" xml:space="preserve">
+    <value>先週</value>
+  </data>
+  <data name="Home_RecapTitle.Text" xml:space="preserve">
+    <value>先週</value>
+  </data>
+  <data name="Home_RecapIntro.Text" xml:space="preserve">
+    <value>先週のふり返りです。</value>
+  </data>
+  <data name="Home_RecapDismiss.Content" xml:space="preserve">
+    <value>わかりました</value>
+  </data>
+  <data name="Home_StreakOverall" xml:space="preserve">
+    <value>連続日数: {0}</value>
+  </data>
+  <data name="Home_StreakLine" xml:space="preserve">
+    <value>{0}: {1}（最高: {2}）</value>
+  </data>
+  <data name="Home_StreakNewBest" xml:space="preserve">
+    <value>連続記録を更新: {0}。Bloop が応援しています！</value>
+  </data>
+  <data name="Home_StreakFresh" xml:space="preserve">
+    <value>今日は新しいスタート。Bloop はあなたに会えてうれしいです。</value>
+  </data>
+  <data name="Streak_Kind_Stretch" xml:space="preserve">
+    <value>ストレッチ</value>
+  </data>
+  <data name="Streak_Kind_Eyes" xml:space="preserve">
+    <value>目</value>
+  </data>
+  <data name="Streak_Kind_Walk" xml:space="preserve">
+    <value>散歩</value>
+  </data>
+  <data name="Home_RecapLine" xml:space="preserve">
+    <value>{0}: {1} 回、目標達成日数: {2}</value>
+  </data>
+  <data name="Home_RecapAllDays" xml:space="preserve">
+    <value>すべての目標を達成した日数: {0}</value>
+  </data>
+  <data name="Home_RecapBest" xml:space="preserve">
+    <value>最高の連続記録: {0}</value>
+  </data>
 </root>

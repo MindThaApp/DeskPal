@@ -805,4 +805,49 @@
     <value>Terminer</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Home_StreakHeader.Text" xml:space="preserve">
+    <value>Séries</value>
+  </data>
+  <data name="Home_LastWeekLink.Content" xml:space="preserve">
+    <value>La semaine dernière</value>
+  </data>
+  <data name="Home_RecapTitle.Text" xml:space="preserve">
+    <value>La semaine dernière</value>
+  </data>
+  <data name="Home_RecapIntro.Text" xml:space="preserve">
+    <value>Voici comment s'est passée la semaine dernière.</value>
+  </data>
+  <data name="Home_RecapDismiss.Content" xml:space="preserve">
+    <value>Compris</value>
+  </data>
+  <data name="Home_StreakOverall" xml:space="preserve">
+    <value>Jours d'affilée : {0}</value>
+  </data>
+  <data name="Home_StreakLine" xml:space="preserve">
+    <value>{0} : {1} (record : {2})</value>
+  </data>
+  <data name="Home_StreakNewBest" xml:space="preserve">
+    <value>Nouveau record de série : {0}. Bloop t'encourage !</value>
+  </data>
+  <data name="Home_StreakFresh" xml:space="preserve">
+    <value>Un nouveau départ aujourd'hui. Bloop est content de te voir.</value>
+  </data>
+  <data name="Streak_Kind_Stretch" xml:space="preserve">
+    <value>Étirement</value>
+  </data>
+  <data name="Streak_Kind_Eyes" xml:space="preserve">
+    <value>Yeux</value>
+  </data>
+  <data name="Streak_Kind_Walk" xml:space="preserve">
+    <value>Marche</value>
+  </data>
+  <data name="Home_RecapLine" xml:space="preserve">
+    <value>{0} : {1} faits, jours d'objectif atteint : {2}</value>
+  </data>
+  <data name="Home_RecapAllDays" xml:space="preserve">
+    <value>Jours avec tous les objectifs atteints : {0}</value>
+  </data>
+  <data name="Home_RecapBest" xml:space="preserve">
+    <value>Meilleure série : {0}</value>
+  </data>
 </root>

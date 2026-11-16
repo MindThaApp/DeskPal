@@ -827,4 +827,49 @@
     <value>완료</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Home_StreakHeader.Text" xml:space="preserve">
+    <value>연속 기록</value>
+  </data>
+  <data name="Home_LastWeekLink.Content" xml:space="preserve">
+    <value>지난주</value>
+  </data>
+  <data name="Home_RecapTitle.Text" xml:space="preserve">
+    <value>지난주</value>
+  </data>
+  <data name="Home_RecapIntro.Text" xml:space="preserve">
+    <value>지난주는 이렇게 보냈어요.</value>
+  </data>
+  <data name="Home_RecapDismiss.Content" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="Home_StreakOverall" xml:space="preserve">
+    <value>연속 일수: {0}</value>
+  </data>
+  <data name="Home_StreakLine" xml:space="preserve">
+    <value>{0}: {1} (최고: {2})</value>
+  </data>
+  <data name="Home_StreakNewBest" xml:space="preserve">
+    <value>최고 연속 기록 경신: {0}. Bloop이 응원해요!</value>
+  </data>
+  <data name="Home_StreakFresh" xml:space="preserve">
+    <value>오늘은 새로운 시작이에요. Bloop은 만나서 반가워요.</value>
+  </data>
+  <data name="Streak_Kind_Stretch" xml:space="preserve">
+    <value>스트레칭</value>
+  </data>
+  <data name="Streak_Kind_Eyes" xml:space="preserve">
+    <value>눈</value>
+  </data>
+  <data name="Streak_Kind_Walk" xml:space="preserve">
+    <value>산책</value>
+  </data>
+  <data name="Home_RecapLine" xml:space="preserve">
+    <value>{0}: {1}회 완료, 목표 달성 일수: {2}</value>
+  </data>
+  <data name="Home_RecapAllDays" xml:space="preserve">
+    <value>모든 목표를 달성한 일수: {0}</value>
+  </data>
+  <data name="Home_RecapBest" xml:space="preserve">
+    <value>최고 연속 기록: {0}</value>
+  </data>
 </root>

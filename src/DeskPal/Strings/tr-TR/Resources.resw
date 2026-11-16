@@ -827,4 +827,49 @@
     <value>Bitir</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Home_StreakHeader.Text" xml:space="preserve">
+    <value>Seriler</value>
+  </data>
+  <data name="Home_LastWeekLink.Content" xml:space="preserve">
+    <value>Geçen hafta</value>
+  </data>
+  <data name="Home_RecapTitle.Text" xml:space="preserve">
+    <value>Geçen hafta</value>
+  </data>
+  <data name="Home_RecapIntro.Text" xml:space="preserve">
+    <value>Geçen haftanın özeti burada.</value>
+  </data>
+  <data name="Home_RecapDismiss.Content" xml:space="preserve">
+    <value>Anladım</value>
+  </data>
+  <data name="Home_StreakOverall" xml:space="preserve">
+    <value>Üst üste gün: {0}</value>
+  </data>
+  <data name="Home_StreakLine" xml:space="preserve">
+    <value>{0}: {1} (en iyi: {2})</value>
+  </data>
+  <data name="Home_StreakNewBest" xml:space="preserve">
+    <value>Yeni en iyi seri: {0}. Bloop seni destekliyor!</value>
+  </data>
+  <data name="Home_StreakFresh" xml:space="preserve">
+    <value>Bugün yeni bir başlangıç. Bloop seni gördüğüne sevindi.</value>
+  </data>
+  <data name="Streak_Kind_Stretch" xml:space="preserve">
+    <value>Esneme</value>
+  </data>
+  <data name="Streak_Kind_Eyes" xml:space="preserve">
+    <value>Gözler</value>
+  </data>
+  <data name="Streak_Kind_Walk" xml:space="preserve">
+    <value>Yürüyüş</value>
+  </data>
+  <data name="Home_RecapLine" xml:space="preserve">
+    <value>{0}: {1} yapıldı, hedefe ulaşılan gün: {2}</value>
+  </data>
+  <data name="Home_RecapAllDays" xml:space="preserve">
+    <value>Tüm hedeflerin tamamlandığı gün: {0}</value>
+  </data>
+  <data name="Home_RecapBest" xml:space="preserve">
+    <value>En iyi seri: {0}</value>
+  </data>
 </root>

@@ -827,4 +827,49 @@
     <value>完成</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Home_StreakHeader.Text" xml:space="preserve">
+    <value>连续记录</value>
+  </data>
+  <data name="Home_LastWeekLink.Content" xml:space="preserve">
+    <value>上周</value>
+  </data>
+  <data name="Home_RecapTitle.Text" xml:space="preserve">
+    <value>上周</value>
+  </data>
+  <data name="Home_RecapIntro.Text" xml:space="preserve">
+    <value>来看看上周的情况。</value>
+  </data>
+  <data name="Home_RecapDismiss.Content" xml:space="preserve">
+    <value>知道了</value>
+  </data>
+  <data name="Home_StreakOverall" xml:space="preserve">
+    <value>连续天数：{0}</value>
+  </data>
+  <data name="Home_StreakLine" xml:space="preserve">
+    <value>{0}：{1}（最佳：{2}）</value>
+  </data>
+  <data name="Home_StreakNewBest" xml:space="preserve">
+    <value>新的最长连续记录：{0}。Bloop 在为你加油！</value>
+  </data>
+  <data name="Home_StreakFresh" xml:space="preserve">
+    <value>今天重新开始。Bloop 很高兴见到你。</value>
+  </data>
+  <data name="Streak_Kind_Stretch" xml:space="preserve">
+    <value>拉伸</value>
+  </data>
+  <data name="Streak_Kind_Eyes" xml:space="preserve">
+    <value>眼睛</value>
+  </data>
+  <data name="Streak_Kind_Walk" xml:space="preserve">
+    <value>散步</value>
+  </data>
+  <data name="Home_RecapLine" xml:space="preserve">
+    <value>{0}：已完成 {1} 次，达标天数：{2}</value>
+  </data>
+  <data name="Home_RecapAllDays" xml:space="preserve">
+    <value>所有目标都达成的天数：{0}</value>
+  </data>
+  <data name="Home_RecapBest" xml:space="preserve">
+    <value>最佳连续记录：{0}</value>
+  </data>
 </root>

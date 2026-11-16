@@ -827,4 +827,49 @@
     <value>Готово</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Home_StreakHeader.Text" xml:space="preserve">
+    <value>Серии</value>
+  </data>
+  <data name="Home_LastWeekLink.Content" xml:space="preserve">
+    <value>Прошлая неделя</value>
+  </data>
+  <data name="Home_RecapTitle.Text" xml:space="preserve">
+    <value>Прошлая неделя</value>
+  </data>
+  <data name="Home_RecapIntro.Text" xml:space="preserve">
+    <value>Вот как прошла прошлая неделя.</value>
+  </data>
+  <data name="Home_RecapDismiss.Content" xml:space="preserve">
+    <value>Понятно</value>
+  </data>
+  <data name="Home_StreakOverall" xml:space="preserve">
+    <value>Дней подряд: {0}</value>
+  </data>
+  <data name="Home_StreakLine" xml:space="preserve">
+    <value>{0}: {1} (рекорд: {2})</value>
+  </data>
+  <data name="Home_StreakNewBest" xml:space="preserve">
+    <value>Новый рекорд серии: {0}. Bloop болеет за вас!</value>
+  </data>
+  <data name="Home_StreakFresh" xml:space="preserve">
+    <value>Сегодня новый старт. Bloop рад вас видеть.</value>
+  </data>
+  <data name="Streak_Kind_Stretch" xml:space="preserve">
+    <value>Разминка</value>
+  </data>
+  <data name="Streak_Kind_Eyes" xml:space="preserve">
+    <value>Глаза</value>
+  </data>
+  <data name="Streak_Kind_Walk" xml:space="preserve">
+    <value>Прогулка</value>
+  </data>
+  <data name="Home_RecapLine" xml:space="preserve">
+    <value>{0}: выполнено {1}, дней с достигнутой целью: {2}</value>
+  </data>
+  <data name="Home_RecapAllDays" xml:space="preserve">
+    <value>Дней, когда выполнены все цели: {0}</value>
+  </data>
+  <data name="Home_RecapBest" xml:space="preserve">
+    <value>Лучшая серия: {0}</value>
+  </data>
 </root>
