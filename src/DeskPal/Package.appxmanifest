@@ -8,7 +8,7 @@
   IgnorableNamespaces="uap desktop com rescap">
 
   <!-- Partner Center identity (Store ID 9P25MTVTB600). Store versions keep the fourth field at 0. -->
-  <Identity Name="34458MindtheApp.DeskPal" Publisher="CN=FE63C3BB-418B-484C-852F-E7985F260BC3" Version="1.0.0.0" />
+  <Identity Name="34458MindtheApp.DeskPal" Publisher="CN=FE63C3BB-418B-484C-852F-E7985F260BC3" Version="1.0.1.0" />
 
   <Properties>
     <DisplayName>Desk Pal</DisplayName>
