@@ -11,7 +11,7 @@ public sealed class SettingsWindow : Window
 
     public SettingsWindow(SettingsHub hub)
     {
-        Title = "Desk Pal Settings";
+        Title = Loc.Get("Settings_WindowTitle");
         SystemBackdrop = new Microsoft.UI.Xaml.Media.MicaBackdrop();
         Content = new SettingsPage(hub);
         AppWindow.Resize(new SizeInt32(820, 900));

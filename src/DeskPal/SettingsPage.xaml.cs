@@ -42,48 +42,48 @@ public sealed partial class SettingsPage : Page
 
     private void Build()
     {
-        Root.Children.Add(new TextBlock { Text = "Settings", Style = (Style)Application.Current.Resources["TitleTextBlockStyle"] });
-        Root.Children.Add(Header("Reminders"));
+        Root.Children.Add(new TextBlock { Text = Loc.Get("Settings_Title"), Style = (Style)Application.Current.Resources["TitleTextBlockStyle"] });
+        Root.Children.Add(Header(Loc.Get("Settings_Section_Reminders")));
 
-        AddReminder("Movement", "Stretch or stand up",
-            "Breaking up sitting about every 30 minutes is widely recommended to ease stiffness.",
+        AddReminder(Loc.Get("Settings_Movement_Name"), Loc.Get("Settings_Movement_What"),
+            Loc.Get("Settings_Movement_Reason"),
             () => _s.MovementEnabled, b => _s.MovementEnabled = b,
-            DeskPalSettings.MovementChoices, v => $"{v} min", DeskPalSettings.RecommendedMovementMinutes,
+            DeskPalSettings.MovementChoices, v => Loc.Format("Settings_Minutes", v), DeskPalSettings.RecommendedMovementMinutes,
             () => _s.MovementMinutes, v => _s.StretchMinutes = v,
             () => _s.MovementEnabled && _s.MovementMinutes == DeskPalSettings.RecommendedMovementMinutes,
             custom: true);
 
-        AddReminder("Eyes", "20-20-20 eye break (a quiet cue)",
-            "The 20-20-20 habit: every 20 minutes, look about 20 feet away for 20 seconds.",
+        AddReminder(Loc.Get("Settings_Eyes_Name"), Loc.Get("Settings_Eyes_What"),
+            Loc.Get("Settings_Eyes_Reason"),
             () => _s.EyesEnabled, b => _s.EyesEnabled = b,
-            DeskPalSettings.EyesChoices, v => $"{v} min", DeskPalSettings.RecommendedEyesMinutes,
+            DeskPalSettings.EyesChoices, v => Loc.Format("Settings_Minutes", v), DeskPalSettings.RecommendedEyesMinutes,
             () => _s.EyesMinutes, v => _s.EyesMinutes = v,
             () => _s.EyesEnabled && _s.EyesMinutes == DeskPalSettings.RecommendedEyesMinutes);
 
-        AddReminder("Water", "Drink some water",
-            "Small, regular sips are easier than catching up later.",
+        AddReminder(Loc.Get("Settings_Water_Name"), Loc.Get("Settings_Water_What"),
+            Loc.Get("Settings_Water_Reason"),
             () => _s.Water != WaterMode.Off, b => _s.Water = b ? WaterMode.WithBreaks : WaterMode.Off,
-            [0, 1], v => v == 0 ? "With movement breaks" : "Every 60 min", 0,
+            [0, 1], v => Loc.Get(v == 0 ? "Settings_WaterWithBreaks" : "Settings_WaterHourly"), 0,
             () => _s.Water == WaterMode.Hourly ? 1 : 0, v => _s.Water = v == 1 ? WaterMode.Hourly : WaterMode.WithBreaks,
             () => _s.Water == WaterMode.WithBreaks);
 
-        AddReminder("Walk", "A short walk instead of a stretch",
-            "A short walk every couple of hours helps you reset.",
+        AddReminder(Loc.Get("Settings_Walk_Name"), Loc.Get("Settings_Walk_What"),
+            Loc.Get("Settings_Walk_Reason"),
             () => _s.WalkAfterStretches > 0, b => _s.WalkAfterStretches = b ? DeskPalSettings.RecommendedWalkAfter : 0,
-            DeskPalSettings.WalkChoices, v => $"After {v} stretches", DeskPalSettings.RecommendedWalkAfter,
+            DeskPalSettings.WalkChoices, v => Loc.Format("Settings_AfterStretches", v), DeskPalSettings.RecommendedWalkAfter,
             () => _s.WalkAfterStretches == 0 ? DeskPalSettings.RecommendedWalkAfter : _s.WalkAfterStretches, v => _s.WalkAfterStretches = v,
             () => _s.WalkAfterStretches == DeskPalSettings.RecommendedWalkAfter);
 
-        AddReminder("Sit / stand", "For a standing desk",
-            "If you have a standing desk, switching every 30–60 minutes keeps you comfortable.",
+        AddReminder(Loc.Get("Settings_SitStand_Name"), Loc.Get("Settings_SitStand_What"),
+            Loc.Get("Settings_SitStand_Reason"),
             () => _s.SitStandEnabled, b => _s.SitStandEnabled = b,
-            DeskPalSettings.SitStandChoices, v => $"Every {v} min", DeskPalSettings.RecommendedSitStandMinutes,
+            DeskPalSettings.SitStandChoices, v => Loc.Format("Settings_EveryMinutes", v), DeskPalSettings.RecommendedSitStandMinutes,
             () => _s.SitStandMinutes, v => _s.SitStandMinutes = v,
             () => !_s.SitStandEnabled && _s.SitStandMinutes == DeskPalSettings.RecommendedSitStandMinutes,
-            recommendedLabel: "Off by default");
+            recommendedLabel: Loc.Get("Settings_OffByDefault"));
 
-        var resetAll = new Button { Content = "Reset all to recommended", Margin = new Thickness(0, 4, 0, 0) };
-        AutomationProperties.SetName(resetAll, "Reset all reminders to recommended");
+        var resetAll = new Button { Content = Loc.Get("Settings_ResetAll"), Margin = new Thickness(0, 4, 0, 0) };
+        AutomationProperties.SetName(resetAll, Loc.Get("Settings_ResetAllAccessible"));
         resetAll.Click += (_, _) =>
         {
             _s.ResetRemindersToRecommended();
@@ -91,34 +91,34 @@ public sealed partial class SettingsPage : Page
         };
         Root.Children.Add(resetAll);
 
-        Root.Children.Add(Header("Working hours"));
+        Root.Children.Add(Header(Loc.Get("Settings_Section_WorkingHours")));
         AddWorkingHours();
 
-        Root.Children.Add(Header("Appearance"));
-        AddChoice("Nudge style", "How a nudge appears", ["Card", "Toast"],
+        Root.Children.Add(Header(Loc.Get("Settings_Section_Appearance")));
+        AddChoice(Loc.Get("Settings_NudgeStyle"), Loc.Get("Settings_NudgeStyleSub"), [Loc.Get("Settings_Style_Card"), Loc.Get("Settings_Style_Toast")],
             () => _s.UseNudgeCard ? 0 : 1, i => { _s.UseNudgeCard = i == 0; _hub.Commit(false); });
         var hideChoices = DeskPalSettings.HideNudgeChoices;
-        AddChoice("Hide reminders after", "A reminder card you leave alone hides by itself",
-            hideChoices.Select(v => $"{v} s" + (v == DeskPalSettings.RecommendedHideNudgeSeconds ? " ★ Recommended" : "")).ToArray(),
+        AddChoice(Loc.Get("Settings_HideAfter"), Loc.Get("Settings_HideAfterSub"),
+            hideChoices.Select(v => Loc.Format("Settings_Seconds", v) + (v == DeskPalSettings.RecommendedHideNudgeSeconds ? Loc.Get("Settings_RecommendedTag") : "")).ToArray(),
             () => Math.Max(0, Array.IndexOf(hideChoices, _s.HideNudgeSeconds)),
             i => { _s.HideNudgeSeconds = hideChoices[i]; _hub.Commit(false); });
-        AddChoice("Avatar style", "How Bloop is drawn", ["Flat", "Soft 3D", "3D (beta)"],
+        AddChoice(Loc.Get("Settings_AvatarStyle"), Loc.Get("Settings_AvatarStyleSub"), [Loc.Get("Bloop_Style_Flat"), Loc.Get("Bloop_Style_Soft3d"), Loc.Get("Bloop_Style_3d")],
             () => _s.AvatarStyle == "3d" ? 2 : _s.AvatarStyle == "soft3d" ? 1 : 0,
             i => { _s.AvatarStyle = i == 2 ? "3d" : i == 1 ? "soft3d" : "flat"; _hub.Commit(false); });
-        AddSwitch("Animate tray icon", "Let the tray icon move while a nudge is showing",
+        AddSwitch(Loc.Get("Settings_AnimateTray"), Loc.Get("Settings_AnimateTraySub"),
             () => _s.AnimateTray, b => { _s.AnimateTray = b; _hub.Commit(false); });
-        AddSwitch("Bloop sounds", "Soft sounds when you poke, pat or swipe Bloop. Quiet during calls and Focus Assist",
+        AddSwitch(Loc.Get("Settings_BloopSounds"), Loc.Get("Settings_BloopSoundsSub"),
             () => _hub.InteractionSounds, b => _hub.InteractionSounds = b);
 
-        Root.Children.Add(Header("Automation Portal"));
-        AddSwitch("Share events with Automation Portal", "Lets shortcuts react to breaks, focus and pauses on this PC. Only counts and times are shared",
+        Root.Children.Add(Header(Loc.Get("Settings_Section_Portal")));
+        AddSwitch(Loc.Get("Settings_ShareEvents"), Loc.Get("Settings_ShareEventsSub"),
             () => _s.ShareEventsWithAutomationPortal, b => { _s.ShareEventsWithAutomationPortal = b; _hub.Commit(false); });
-        AddSwitch("Allow Automation Portal and other apps to control Desk Pal", "They can start a break, turn focus on or off, and pause. Each app asks you once",
+        AddSwitch(Loc.Get("Settings_AllowControl"), Loc.Get("Settings_AllowControlSub"),
             () => _s.AllowExternalControl, b => { _s.AllowExternalControl = b; _hub.Commit(false); });
         AddAutomationPortalCard();
 
-        Root.Children.Add(Header("Privacy"));
-        AddSwitch("Send crash reports", "Help fix problems by sending a report when the app crashes",
+        Root.Children.Add(Header(Loc.Get("Settings_Section_Privacy")));
+        AddSwitch(Loc.Get("Settings_CrashReports"), Loc.Get("Settings_CrashReportsSub"),
             () => _s.CrashReports == CrashReportingMode.Always,
             b => { _s.CrashReports = b ? CrashReportingMode.Always : CrashReportingMode.Never; _hub.Commit(false); });
     }
@@ -126,13 +126,13 @@ public sealed partial class SettingsPage : Page
     private void AddAutomationPortalCard()
     {
         var content = new StackPanel { Spacing = 8 };
-        content.Children.Add(TitleBlock("Apps you allowed", "Apps that may change Desk Pal. Remove one to be asked again"));
+        content.Children.Add(TitleBlock(Loc.Get("Settings_AppsAllowed"), Loc.Get("Settings_AppsAllowedSub")));
         var list = new StackPanel { Spacing = 4 };
         content.Children.Add(list);
         var skipped = Secondary("");
         content.Children.Add(skipped);
         var installed = AutomationPortalLink.IsInstalled();
-        var link = new HyperlinkButton { Content = installed ? "Open Automation Portal" : "Get Automation Portal", Padding = new Thickness(0) };
+        var link = new HyperlinkButton { Content = Loc.Get(installed ? "Settings_OpenPortal" : "Settings_GetPortal"), Padding = new Thickness(0) };
         link.Click += (_, _) => TickGuard.Run("open-automation-portal", AutomationPortalLink.OpenOrGet);
         content.Children.Add(link);
         Root.Children.Add(new Border { Style = (Style)Resources["CardBorder"], Child = content });
@@ -140,7 +140,7 @@ public sealed partial class SettingsPage : Page
         _syncs.Add(() =>
         {
             list.Children.Clear();
-            if (_s.ApprovedControlApps.Count == 0) list.Children.Add(Secondary("None yet"));
+            if (_s.ApprovedControlApps.Count == 0) list.Children.Add(Secondary(Loc.Get("Settings_None")));
             foreach (var app in _s.ApprovedControlApps.ToList())
             {
                 var row = new Grid { ColumnSpacing = 12 };
@@ -152,8 +152,8 @@ public sealed partial class SettingsPage : Page
                 path.TextWrapping = TextWrapping.NoWrap;
                 path.TextTrimming = TextTrimming.CharacterEllipsis;
                 name.Children.Add(path);
-                var remove = new Button { Content = "Remove" };
-                AutomationProperties.SetName(remove, "Remove " + DeskPal.Core.Integration.CallerInfo.DisplayNameFor(app));
+                var remove = new Button { Content = Loc.Get("Settings_Remove") };
+                AutomationProperties.SetName(remove, Loc.Format("Settings_RemoveAccessible", DeskPal.Core.Integration.CallerInfo.DisplayNameFor(app)));
                 remove.Click += (_, _) =>
                 {
                     _s.ApprovedControlApps.RemoveAll(a => string.Equals(a, app, StringComparison.OrdinalIgnoreCase));
@@ -165,8 +165,8 @@ public sealed partial class SettingsPage : Page
                 list.Children.Add(row);
             }
             var n = _hub.Link?.EventsSkippedToday ?? 0;
-            skipped.Text = n == 1 ? "1 event skipped today (Automation Portal wasn't available)"
-                : $"{n} events skipped today (Automation Portal wasn't available)";
+            skipped.Text = n == 1 ? Loc.Get("Settings_SkippedOne")
+                : Loc.Format("Settings_SkippedMany", n);
             skipped.Visibility = _s.ShareEventsWithAutomationPortal || n > 0 ? Visibility.Visible : Visibility.Collapsed;
         });
     }
@@ -213,29 +213,29 @@ public sealed partial class SettingsPage : Page
         bool custom = false, string? recommendedLabel = null)
     {
         var customOpen = false;
-        string Label(int v) => label(v) + (v == recommended && recommendedLabel is null ? " ★ Recommended" : "");
+        string Label(int v) => label(v) + (v == recommended && recommendedLabel is null ? Loc.Get("Settings_RecommendedTag") : "");
 
-        var toggle = new ToggleSwitch { OnContent = "On", OffContent = "Off", MinWidth = 0 };
-        AutomationProperties.SetName(toggle, name + " reminder on or off");
+        var toggle = new ToggleSwitch { OnContent = Loc.Get("Common_On"), OffContent = Loc.Get("Common_Off"), MinWidth = 0 };
+        AutomationProperties.SetName(toggle, Loc.Format("Settings_ReminderOnOff", name));
         var combo = new ComboBox { MinWidth = 270 };
-        AutomationProperties.SetName(combo, name + " frequency");
+        AutomationProperties.SetName(combo, Loc.Format("Settings_Frequency", name));
         foreach (var v in values) combo.Items.Add(Label(v));
-        if (custom) combo.Items.Add("Custom…");
+        if (custom) combo.Items.Add(Loc.Get("Settings_Custom"));
         var box = new NumberBox
         {
             Minimum = DeskPalSettings.MovementMin,
             Maximum = DeskPalSettings.MovementMax,
             SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact,
-            Header = "Minutes (15–120)",
+            Header = Loc.Get("Settings_CustomMinutesHeader"),
             Visibility = Visibility.Collapsed,
         };
-        AutomationProperties.SetName(box, name + " custom minutes");
+        AutomationProperties.SetName(box, Loc.Format("Settings_CustomMinutesAccessible", name));
 
-        var reset = new HyperlinkButton { Content = "Reset", Padding = new Thickness(0), FontSize = 12, Visibility = Visibility.Collapsed };
-        AutomationProperties.SetName(reset, "Reset " + name + " to recommended");
+        var reset = new HyperlinkButton { Content = Loc.Get("Settings_Reset"), Padding = new Thickness(0), FontSize = 12, Visibility = Visibility.Collapsed };
+        AutomationProperties.SetName(reset, Loc.Format("Settings_ResetAccessible", name));
 
-        var left = TitleBlock(name + " — " + what, reason);
-        if (recommendedLabel is not null) left.Children.Add(Secondary("Recommended: " + recommendedLabel.ToLowerInvariant()));
+        var left = TitleBlock(Loc.Format("Settings_NameDash", name, what), reason);
+        if (recommendedLabel is not null) left.Children.Add(Secondary(Loc.Format("Settings_RecommendedLine", recommendedLabel.ToLower(System.Globalization.CultureInfo.CurrentUICulture))));
         left.Children.Add(reset);
         var right = new StackPanel { Spacing = 6, HorizontalAlignment = HorizontalAlignment.Right };
         right.Children.Add(toggle);
@@ -307,7 +307,7 @@ public sealed partial class SettingsPage : Page
 
     private void AddSwitch(string name, string sub, Func<bool> get, Action<bool> set)
     {
-        var toggle = new ToggleSwitch { OnContent = "On", OffContent = "Off", MinWidth = 0 };
+        var toggle = new ToggleSwitch { OnContent = Loc.Get("Common_On"), OffContent = Loc.Get("Common_Off"), MinWidth = 0 };
         AutomationProperties.SetName(toggle, name);
         toggle.Toggled += (_, _) =>
         {
@@ -319,10 +319,10 @@ public sealed partial class SettingsPage : Page
 
     private void AddWorkingHours()
     {
-        var start = new TimePicker { Header = "Start", ClockIdentifier = "24HourClock", MinuteIncrement = 5 };
-        var end = new TimePicker { Header = "End", ClockIdentifier = "24HourClock", MinuteIncrement = 5 };
-        AutomationProperties.SetName(start, "Working day start");
-        AutomationProperties.SetName(end, "Working day end");
+        var start = new TimePicker { Header = Loc.Get("Settings_Start"), ClockIdentifier = "24HourClock", MinuteIncrement = 5 };
+        var end = new TimePicker { Header = Loc.Get("Settings_End"), ClockIdentifier = "24HourClock", MinuteIncrement = 5 };
+        AutomationProperties.SetName(start, Loc.Get("Settings_DayStart"));
+        AutomationProperties.SetName(end, Loc.Get("Settings_DayEnd"));
         var times = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 12 };
         times.Children.Add(start);
         times.Children.Add(end);
@@ -331,8 +331,8 @@ public sealed partial class SettingsPage : Page
         var buttons = new List<ToggleButton>();
         foreach (var d in Week)
         {
-            var b = new ToggleButton { Content = d.ToString()[..3], MinWidth = 48 };
-            AutomationProperties.SetName(b, d.ToString());
+            var b = new ToggleButton { Content = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.GetAbbreviatedDayName(d), MinWidth = 48 };
+            AutomationProperties.SetName(b, System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.GetDayName(d));
             b.Click += (_, _) =>
             {
                 if (_loading) return;
@@ -367,7 +367,7 @@ public sealed partial class SettingsPage : Page
         });
 
         var content = new StackPanel { Spacing = 10 };
-        content.Children.Add(TitleBlock("Working hours", "Reminders only come on these days and times"));
+        content.Children.Add(TitleBlock(Loc.Get("Settings_Section_WorkingHours"), Loc.Get("Settings_WorkingHoursSub")));
         content.Children.Add(times);
         content.Children.Add(days);
         Root.Children.Add(new Border { Style = (Style)Resources["CardBorder"], Child = content });

@@ -139,7 +139,7 @@ internal sealed class BloopBuddyWindow : Window
 
     public BloopBuddyWindow()
     {
-        Title = "Bloop";
+        Title = Loc.Get("Buddy_Title");
         SystemBackdrop = new ClearBackdrop();
 
         _body.RenderTransformOrigin = new Windows.Foundation.Point(0.5, 0.5);
@@ -148,7 +148,7 @@ internal sealed class BloopBuddyWindow : Window
         _body.VerticalAlignment = VerticalAlignment.Center;
         _body.Children.Add(_avatar);
         _body.Children.Add(_live);
-        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(_body, "Bloop");
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(_body, Loc.Get("Buddy_Title"));
         _body.PointerPressed += OnPressed;
         _body.PointerReleased += OnReleased;
         _body.PointerCaptureLost += OnCaptureLost;

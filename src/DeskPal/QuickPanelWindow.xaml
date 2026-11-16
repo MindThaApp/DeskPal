@@ -44,15 +44,14 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="StretchButton" Grid.Column="0" Content="Stretch now" HorizontalAlignment="Stretch" FontSize="12"
-                    Padding="4,6" Click="OnStretch" AutomationProperties.Name="Stretch now" />
-            <Button x:Name="EyeButton" Grid.Column="1" Content="Eye break" HorizontalAlignment="Stretch" FontSize="12"
-                    Padding="4,6" Click="OnEye" AutomationProperties.Name="Eye break" />
-            <Button x:Name="PauseButton" Grid.Column="2" Content="Pause 30 min" HorizontalAlignment="Stretch" FontSize="12"
-                    Padding="4,6" Click="OnPause" AutomationProperties.Name="Pause 30 minutes" />
+            <Button x:Name="StretchButton" Grid.Column="0" x:Uid="Quick_StretchButton" HorizontalAlignment="Stretch" FontSize="12"
+                    Padding="4,6" Click="OnStretch" />
+            <Button x:Name="EyeButton" Grid.Column="1" x:Uid="Quick_EyeButton" HorizontalAlignment="Stretch" FontSize="12"
+                    Padding="4,6" Click="OnEye" />
+            <Button x:Name="PauseButton" Grid.Column="2" HorizontalAlignment="Stretch" FontSize="12"
+                    Padding="4,6" Click="OnPause" />
         </Grid>
 
-        <HyperlinkButton x:Name="OpenLink" Grid.Row="3" Content="Open Desk Pal ›" Padding="0,4" Click="OnOpen"
-                         AutomationProperties.Name="Open Desk Pal" />
+        <HyperlinkButton x:Name="OpenLink" Grid.Row="3" x:Uid="Quick_OpenLink" Padding="0,4" Click="OnOpen" />
     </Grid>
 </Window>

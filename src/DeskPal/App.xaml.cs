@@ -104,6 +104,7 @@ public partial class App : Application
             catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
         }
         // The pipeline check always sends: it only runs in the debug data root, with a test exception.
+        Loc.Apply(_settings.Language);
         CrashReporting.Apply(AppData.DebugCrash ? CrashReportingMode.Always : _settings.CrashReports);
         var state = JsonFileStore.Load<DeskPalState>(AppData.StatePath, TimeProvider.System);
         _ui = state.Ui ??= new MainWindowUi();
@@ -136,7 +137,7 @@ public partial class App : Application
         _baseIcon = new Icon(iconPath);
         _tray = new TaskbarIcon
         {
-            ToolTipText = "Desk Pal",
+            ToolTipText = Loc.Get("App_TrayTooltip"),
             Icon = _baseIcon,
             NoLeftClickDelay = true,
             LeftClickCommand = new ActionCommand(() => _dq.TryEnqueue(() => TickGuard.Run("tray-left-click", OnTrayLeftClick))),
@@ -321,7 +322,7 @@ public partial class App : Application
         catch { busy = false; }
         _calls.Poll();
         if (busy)
-            _scheduler.StartHold("dnd", "Focus Assist or full screen", TimeProvider.System.GetLocalNow().AddSeconds(75));
+            _scheduler.StartHold("dnd", Loc.Get("Hold_Dnd"), TimeProvider.System.GetLocalNow().AddSeconds(75));
         else
             _scheduler.EndHold("dnd");
     }
@@ -334,15 +335,15 @@ public partial class App : Application
         var manual = _scheduler.ManualHold;
         if (manual is not null)
         {
-            var when = manual.Until.Date == now.Date ? manual.Until.ToString("HH:mm") : "tomorrow " + manual.Until.ToString("HH:mm");
-            text = $"Paused until {when}";
+            var when = manual.Until.Date == now.Date ? manual.Until.ToString("HH:mm") : Loc.Format("Home_Tomorrow", manual.Until.ToString("HH:mm"));
+            text = Loc.Format("Home_PausedUntil", when);
         }
         else if (_scheduler.Holds.FirstOrDefault() is { } hold)
-            text = $"Desk Pal: held ({hold.Reason})";
+            text = Loc.Format("Tray_Tooltip_Held", hold.Reason);
         else if (_scheduler.NextDue is { } next)
-            text = $"Desk Pal: next {next.Kind.ToString().ToLowerInvariant()} {next.At:HH:mm}";
+            text = Loc.Format("Tray_Tooltip_Next", HomeInfo.KindName(next.Kind), next.At.ToString("HH:mm"));
         else
-            text = "Desk Pal";
+            text = Loc.Get("App_TrayTooltip");
         _tray.ToolTipText = text;
         if (_quick?.IsOpen == true) _quick.Refresh();
         if (_menu?.IsOpen == true) _menu.Refresh();
@@ -447,9 +448,9 @@ public partial class App : Application
                 .AddText(nudge.Message);
             if (nudge.Instruction is not null) builder.AddText(nudge.Instruction);
             var toast = builder
-                .AddButton(new AppNotificationButton("Start").SetButtonStyle(AppNotificationButtonStyle.Success).AddArgument("action", "start").AddArgument("id", id))
-                .AddButton(new AppNotificationButton("In 10 min").AddArgument("action", "snooze").AddArgument("id", id))
-                .AddButton(new AppNotificationButton("Skip").AddArgument("action", "skip").AddArgument("id", id))
+                .AddButton(new AppNotificationButton(Loc.Get("Toast_Start")).SetButtonStyle(AppNotificationButtonStyle.Success).AddArgument("action", "start").AddArgument("id", id))
+                .AddButton(new AppNotificationButton(Loc.Get("Toast_Snooze10")).AddArgument("action", "snooze").AddArgument("id", id))
+                .AddButton(new AppNotificationButton(Loc.Get("Toast_Skip")).AddArgument("action", "skip").AddArgument("id", id))
                 .BuildNotification();
             toast.Tag = ToastTag;
             toast.Group = ToastTag;
@@ -679,7 +680,7 @@ public partial class App : Application
     {
         try
         {
-            AppNotificationManager.Default.Show(new AppNotificationBuilder().AddText("Desk Pal is still here in the tray.").BuildNotification());
+            AppNotificationManager.Default.Show(new AppNotificationBuilder().AddText(Loc.Get("Toast_StillHere")).BuildNotification());
         }
         catch (Exception ex)
         {

@@ -68,7 +68,7 @@ public sealed partial class HomePage : Page
         NextText.Text = HomeInfo.NextUp(s);
         HoldsText.Text = HomeInfo.HoldsLine(s);
         CountsText.Text = HomeInfo.CountsLine(s);
-        PauseButton.Content = s.ManualHold is null ? "Pause 30 min" : "Resume";
+        PauseButton.Content = s.ManualHold is null ? Loc.Get("Common_Pause30") : Loc.Get("Common_Resume");
     }
 
     private async Task LoadStyleAsync()
@@ -180,8 +180,8 @@ public sealed partial class HomePage : Page
     {
         var on = _ctx.Hub.InteractionSounds;
         SoundIcon.Glyph = on ? "\uE767" : "\uE74F";
-        SoundText.Text = on ? "Sounds on" : "Sounds off";
-        AutomationProperties.SetName(SoundButton, on ? "Bloop sounds on, click to mute" : "Bloop sounds off, click to turn on");
+        SoundText.Text = Loc.Get(on ? "Home_SoundsOn" : "Home_SoundsOff");
+        AutomationProperties.SetName(SoundButton, Loc.Get(on ? "Home_SoundsOnAccessible" : "Home_SoundsOffAccessible"));
     }
 
     private void OnToggleSound(object sender, RoutedEventArgs e) => _ctx.Hub.InteractionSounds = !_ctx.Hub.InteractionSounds;

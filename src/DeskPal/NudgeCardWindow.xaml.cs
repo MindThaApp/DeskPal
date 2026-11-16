@@ -335,8 +335,8 @@ public sealed partial class NudgeCardWindow : Window
         HideLineScale.ScaleX = _autoHide.Fraction(now);
         if (_timedSeconds <= 0) return;
         var leftMs = _autoHide.Engaged ? Math.Max(0, _timedEndTick - now) : _timedSeconds * 1000L;
-        CountdownText.Text = $"{(int)Math.Ceiling(leftMs / 1000.0)} s";
-        BonusHint.Text = leftMs == 0 ? "Full stretch! Nicely done" : "Stay for the full stretch for a bonus";
+        CountdownText.Text = Loc.Format("Nudge_CountdownSeconds", (int)Math.Ceiling(leftMs / 1000.0));
+        BonusHint.Text = leftMs == 0 ? Loc.Get("Nudge_BonusDone") : Loc.Get("Nudge_BonusHint");
         Ring.Value = 100.0 * (1 - leftMs / (_timedSeconds * 1000.0));
     }
 

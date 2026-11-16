@@ -17,7 +17,7 @@ public sealed class MainWindow : Window
     private readonly Action _saveUi;
     private readonly Action _firstClose;
     private readonly NavigationView _nav = new();
-    private readonly NavigationViewItem _homeItem = new() { Content = "Home", Icon = new SymbolIcon(Symbol.Home), Tag = "home" };
+    private readonly NavigationViewItem _homeItem = new() { Content = Loc.Get("Main_Nav_Home"), Icon = new SymbolIcon(Symbol.Home), Tag = "home" };
     private readonly HomePage _home;
     private SettingsPage? _settingsPage;
     private string _page = "home";
@@ -31,7 +31,7 @@ public sealed class MainWindow : Window
         _firstClose = firstClose;
         _home = new HomePage(ctx);
 
-        Title = "Desk Pal";
+        Title = Loc.Get("Main_Title");
         SystemBackdrop = new Microsoft.UI.Xaml.Media.MicaBackdrop();
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "deskpal.ico"));
         RestoreBounds();
@@ -40,10 +40,10 @@ public sealed class MainWindow : Window
         _nav.IsBackButtonVisible = NavigationViewBackButtonVisible.Collapsed;
         _nav.IsSettingsVisible = true;
         _nav.MenuItems.Add(_homeItem);
-        _nav.MenuItems.Add(new NavigationViewItem { Content = "Today", Icon = new SymbolIcon(Symbol.Calendar), Tag = "today" });
-        _nav.MenuItems.Add(new NavigationViewItem { Content = "Bloop", Icon = new SymbolIcon(Symbol.Emoji2), Tag = "bloop" });
-        _nav.MenuItems.Add(new NavigationViewItem { Content = "Garden", Icon = new SymbolIcon(Symbol.Favorite), Tag = "garden" });
-        _nav.FooterMenuItems.Add(new NavigationViewItem { Content = "About", Icon = new SymbolIcon(Symbol.Help), Tag = "about" });
+        _nav.MenuItems.Add(new NavigationViewItem { Content = Loc.Get("Main_Nav_Today"), Icon = new SymbolIcon(Symbol.Calendar), Tag = "today" });
+        _nav.MenuItems.Add(new NavigationViewItem { Content = Loc.Get("Main_Nav_Bloop"), Icon = new SymbolIcon(Symbol.Emoji2), Tag = "bloop" });
+        _nav.MenuItems.Add(new NavigationViewItem { Content = Loc.Get("Main_Nav_Garden"), Icon = new SymbolIcon(Symbol.Favorite), Tag = "garden" });
+        _nav.FooterMenuItems.Add(new NavigationViewItem { Content = Loc.Get("Main_Nav_About"), Icon = new SymbolIcon(Symbol.Help), Tag = "about" });
         _nav.SelectionChanged += (_, e) =>
             TickGuard.Run("main-nav", () => Show(e.IsSettingsSelected ? "settings" : (e.SelectedItem as NavigationViewItem)?.Tag as string ?? "home"));
         Content = _nav;

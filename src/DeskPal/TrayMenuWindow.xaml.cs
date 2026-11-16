@@ -32,27 +32,27 @@ public sealed partial class TrayMenuWindow : Window
         _ctx = ctx;
         InitializeComponent();
 
-        AddRow("", "Open Desk Pal", () => _ctx.OpenMain(null), bold: true);
-        AddRow("", "Stretch now", () => _ctx.Scheduler.Execute(new TestNudgeCommand()));
+        AddRow("", Loc.Get("Tray_Open"), () => _ctx.OpenMain(null), bold: true);
+        AddRow("", Loc.Get("Tray_StretchNow"), () => _ctx.Scheduler.Execute(new TestNudgeCommand()));
 
-        (_pauseToggle, _pauseChevron) = AddExpander("", "Pause", _pauseSub);
-        AddRow("", "30 min", () => _ctx.Scheduler.Execute(new PauseCommand(Minutes: 30)), into: _pauseSub, indent: 36);
-        AddRow("", "1 hour", () => _ctx.Scheduler.Execute(new PauseCommand(Minutes: 60)), into: _pauseSub, indent: 36);
-        AddRow("", "Until tomorrow", () => _ctx.Scheduler.Execute(new PauseCommand(UntilTomorrow: true)), into: _pauseSub, indent: 36);
-        _resume = AddRow("", "Resume", () => _ctx.Scheduler.Execute(new ResumeCommand())).Button;
+        (_pauseToggle, _pauseChevron) = AddExpander("", Loc.Get("Tray_Pause"), _pauseSub);
+        AddRow("", Loc.Get("Tray_Pause30"), () => _ctx.Scheduler.Execute(new PauseCommand(Minutes: 30)), into: _pauseSub, indent: 36);
+        AddRow("", Loc.Get("Tray_Pause1h"), () => _ctx.Scheduler.Execute(new PauseCommand(Minutes: 60)), into: _pauseSub, indent: 36);
+        AddRow("", Loc.Get("Tray_PauseTomorrow"), () => _ctx.Scheduler.Execute(new PauseCommand(UntilTomorrow: true)), into: _pauseSub, indent: 36);
+        _resume = AddRow("", Loc.Get("Tray_Resume"), () => _ctx.Scheduler.Execute(new ResumeCommand())).Button;
 
-        (_styleToggle, _styleChevron) = AddExpander("", "Style", _styleSub);
+        (_styleToggle, _styleChevron) = AddExpander("", Loc.Get("Tray_Style"), _styleSub);
         _styles =
         [
-            StyleRow("flat", "Flat"),
-            StyleRow("soft3d", "Soft 3D"),
-            StyleRow("3d", "3D (beta)"),
+            StyleRow("flat", Loc.Get("Bloop_Style_Flat")),
+            StyleRow("soft3d", Loc.Get("Bloop_Style_Soft3d")),
+            StyleRow("3d", Loc.Get("Bloop_Style_3d")),
         ];
 
-        _animate = AddRow("", "Animate tray icon", () => _ctx.ToggleAnimateTray(), keepOpen: true);
-        _crash = AddRow("", "Send crash reports", () => _ctx.ToggleCrashReports(), keepOpen: true);
-        AddRow("", "Settings", () => _ctx.OpenMain("settings"));
-        AddRow("", "Exit", () => _ctx.Exit(), into: ExitRows);
+        _animate = AddRow("", Loc.Get("Tray_AnimateIcon"), () => _ctx.ToggleAnimateTray(), keepOpen: true);
+        _crash = AddRow("", Loc.Get("Tray_CrashReports"), () => _ctx.ToggleCrashReports(), keepOpen: true);
+        AddRow("", Loc.Get("Tray_Settings"), () => _ctx.OpenMain("settings"));
+        AddRow("", Loc.Get("Tray_Exit"), () => _ctx.Exit(), into: ExitRows);
 
         _host = new TrayPanelHost(this, Root, 340);
         _ctx.Hub.Changed += () => TickGuard.Run("tray-menu-settings", () => { if (_host.IsOpen) Refresh(); });
@@ -78,15 +78,15 @@ public sealed partial class TrayMenuWindow : Window
         var s = _ctx.Scheduler;
         var settings = _ctx.Hub.Settings;
         GreetingText.Text = HomeInfo.Greeting(DateTime.Now.Hour);
-        NextText.Text = "Next up: " + HomeInfo.NextUp(s);
+        NextText.Text = Loc.Format("Tray_NextUp", HomeInfo.NextUp(s));
         var manual = s.ManualHold is not null;
         var status = HomeInfo.Status(s, TimeProvider.System.GetLocalNow());
         var holds = s.Holds;
         HoldsText.Text = manual || holds.Count > 0
-            ? (manual ? status : "") + (manual && holds.Count > 0 ? " · " : "") + (holds.Count > 0 ? "Holding: " + string.Join(", ", holds.Select(h => h.Reason)) : "")
+            ? (manual ? status : "") + (manual && holds.Count > 0 ? " · " : "") + (holds.Count > 0 ? Loc.Format("Home_Holding", string.Join(", ", holds.Select(h => h.Reason))) : "")
             : "";
         HoldsText.Visibility = HoldsText.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
-        StatsText.Text = $"Today: {s.StretchesToday} stretches · {s.EyeBreaksToday} eye breaks · {s.WalksToday} walks";
+        StatsText.Text = Loc.Format("Tray_Today", s.StretchesToday, s.EyeBreaksToday, s.WalksToday);
         _resume.Visibility = manual ? Visibility.Visible : Visibility.Collapsed;
 
         var current = settings.AvatarStyle is "soft3d" or "3d" ? settings.AvatarStyle : "flat";
@@ -100,7 +100,7 @@ public sealed partial class TrayMenuWindow : Window
     {
         trail.Visibility = on ? Visibility.Visible : Visibility.Collapsed;
         var name = AutomationProperties.GetHelpText(button);
-        AutomationProperties.SetName(button, name + (on ? ", on" : ", off"));
+        AutomationProperties.SetName(button, Loc.Format(on ? "Tray_On" : "Tray_Off", name));
     }
 
     private (string, Button, FontIcon) StyleRow(string key, string text)

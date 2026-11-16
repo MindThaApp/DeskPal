@@ -61,10 +61,10 @@ public sealed class TodayPage : Page
         {
             Children =
             {
-                PageKit.Title("Today"),
-                PageKit.Heading("Next up"), _next, _holds,
-                PageKit.Heading("Done today"), _stretch, _eyes, _walks,
-                PageKit.Heading("Last 7 days"), history, PageKit.Body("History coming soon.", 0.7),
+                PageKit.Title(Loc.Get("Today_Title")),
+                PageKit.Heading(Loc.Get("Today_NextUp")), _next, _holds,
+                PageKit.Heading(Loc.Get("Today_DoneToday")), _stretch, _eyes, _walks,
+                PageKit.Heading(Loc.Get("Today_Last7")), history, PageKit.Body(Loc.Get("Today_HistoryComingSoon"), 0.7),
             },
         };
         Content = PageKit.Scroll(body);
@@ -78,15 +78,15 @@ public sealed class TodayPage : Page
         var s = _ctx.Scheduler;
         if (s.NextDue is { } n)
         {
-            var what = n.Kind switch { NudgeKind.Eyes => "Eye break", NudgeKind.Walk => "Walk", _ => "Stretch" };
-            _next.Text = $"{what} at {n.At:HH:mm}";
+            var what = n.Kind switch { NudgeKind.Eyes => Loc.Get("Home_Kind_Eyes"), NudgeKind.Walk => Loc.Get("Home_Kind_Walk"), _ => Loc.Get("Home_Kind_Stretch") };
+            _next.Text = Loc.Format("Home_NextAt", what, n.At.ToString("HH:mm"));
         }
-        else _next.Text = "Nothing scheduled";
+        else _next.Text = Loc.Get("Home_NextNothing");
         var holds = s.Holds;
-        _holds.Text = holds.Count == 0 ? "No holds" : "Holding: " + string.Join(", ", holds.Select(h => h.Reason));
-        _stretch.Text = $"Stretches done today: {s.StretchesToday}";
-        _eyes.Text = $"Eye breaks today: {s.EyeBreaksToday}";
-        _walks.Text = $"Walks today: {s.WalksToday}";
+        _holds.Text = holds.Count == 0 ? Loc.Get("Home_NoHolds") : Loc.Format("Home_Holding", string.Join(", ", holds.Select(h => h.Reason)));
+        _stretch.Text = Loc.Format("Today_Stretches", s.StretchesToday);
+        _eyes.Text = Loc.Format("Today_EyeBreaks", s.EyeBreaksToday);
+        _walks.Text = Loc.Format("Today_Walks", s.WalksToday);
     }
 }
 
@@ -98,9 +98,9 @@ public sealed class BloopPage : Page
         var row = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 16 };
         var styles = new (string Key, string Label, string Note)[]
         {
-            ("flat", "Flat", "Clean and simple"),
-            ("soft3d", "Soft 3D", "Rounded and glossy"),
-            ("3d", "3D (beta)", "Live and pokeable, uses the graphics card"),
+            ("flat", Loc.Get("Bloop_Style_Flat"), Loc.Get("Bloop_Style_FlatNote")),
+            ("soft3d", Loc.Get("Bloop_Style_Soft3d"), Loc.Get("Bloop_Style_Soft3dNote")),
+            ("3d", Loc.Get("Bloop_Style_3d"), Loc.Get("Bloop_Style_3dNote")),
         };
         var buttons = new List<(string Key, ToggleButton Button)>();
         foreach (var (key, label, note) in styles)
@@ -133,7 +133,7 @@ public sealed class BloopPage : Page
             buttons.Add((key, button));
             row.Children.Add(button);
         }
-        var sounds = new ToggleSwitch { Header = "Bloop sounds", OnContent = "On", OffContent = "Off", IsOn = ctx.Hub.InteractionSounds };
+        var sounds = new ToggleSwitch { Header = Loc.Get("Bloop_Sounds"), OnContent = Loc.Get("Common_On"), OffContent = Loc.Get("Common_Off"), IsOn = ctx.Hub.InteractionSounds };
         sounds.Toggled += (_, _) => ctx.Hub.InteractionSounds = sounds.IsOn;
         ctx.Hub.Changed += () =>
         {
@@ -145,12 +145,12 @@ public sealed class BloopPage : Page
         {
             Children =
             {
-                PageKit.Title("Bloop"),
-                PageKit.Heading("Look"), row,
-                PageKit.Heading("Play"), PageKit.Body("On the Home page, tap Bloop's belly, head, cheeks, hands or feet, tap a few times in a row, hold, pet it back and forth, or swipe across it. Each one gets its own reaction, and its eyes follow your pointer."),
+                PageKit.Title(Loc.Get("Bloop_Title")),
+                PageKit.Heading(Loc.Get("Bloop_Look")), row,
+                PageKit.Heading(Loc.Get("Bloop_Play")), PageKit.Body(Loc.Get("Bloop_PlayText")),
                 sounds,
-                PageKit.Heading("Bond"), PageKit.Body("Bond level: coming soon.", 0.7),
-                PageKit.Heading("Evolution"), PageKit.Body("Evolution: coming soon.", 0.7),
+                PageKit.Heading(Loc.Get("Bloop_Bond")), PageKit.Body(Loc.Get("Bloop_BondText"), 0.7),
+                PageKit.Heading(Loc.Get("Bloop_Evolution")), PageKit.Body(Loc.Get("Bloop_EvolutionText"), 0.7),
             },
         });
     }
@@ -171,10 +171,10 @@ public sealed class GardenPage : Page
         var row = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 20 };
         var stages = new (string Asset, string Label)[]
         {
-            ("sprout-growth-1-seedling", "Seedling"),
-            ("sprout-growth-2-young", "Young"),
-            ("sprout-growth-3-bushy", "Bushy"),
-            ("sprout-growth-4-bloom", "Bloom"),
+            ("sprout-growth-1-seedling", Loc.Get("Garden_Seedling")),
+            ("sprout-growth-2-young", Loc.Get("Garden_Young")),
+            ("sprout-growth-3-bushy", Loc.Get("Garden_Bushy")),
+            ("sprout-growth-4-bloom", Loc.Get("Garden_Bloom")),
         };
         var style = ctx.Hub.Settings.AvatarStyle;
         foreach (var (asset, label) in stages)
@@ -191,8 +191,8 @@ public sealed class GardenPage : Page
         {
             Children =
             {
-                PageKit.Title("Garden"),
-                PageKit.Body("Your garden grows as you look after yourself."),
+                PageKit.Title(Loc.Get("Garden_Title")),
+                PageKit.Body(Loc.Get("Garden_Intro")),
                 new ScrollViewer { Content = row, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto, VerticalScrollMode = ScrollMode.Disabled },
             },
         });
@@ -206,16 +206,16 @@ public sealed class AboutPage : Page
 {
     public AboutPage(MainContext ctx)
     {
-        var mode = ctx.Hub.Settings.CrashReports switch { CrashReportingMode.Always => "on", CrashReportingMode.Never => "off", _ => "ask first" };
-        var crash = new HyperlinkButton { Content = $"Send crash reports: {mode} (change in Settings)", Padding = new Thickness(0) };
+        var mode = ctx.Hub.Settings.CrashReports switch { CrashReportingMode.Always => Loc.Get("About_CrashOn"), CrashReportingMode.Never => Loc.Get("About_CrashOff"), _ => Loc.Get("About_CrashAsk") };
+        var crash = new HyperlinkButton { Content = Loc.Format("About_CrashLink", mode), Padding = new Thickness(0) };
         crash.Click += (_, _) => ctx.Navigate("settings");
         Content = PageKit.Scroll(new StackPanel
         {
             Children =
             {
-                PageKit.Title("About Desk Pal"),
-                PageKit.Body("Gentle movement and eye-break reminders from Bloop."),
-                PageKit.Body("Version " + CrashReporting.ReleaseText, 0.8),
+                PageKit.Title(Loc.Get("About_Title")),
+                PageKit.Body(Loc.Get("About_Tagline")),
+                PageKit.Body(Loc.Format("About_Version", CrashReporting.ReleaseText), 0.8),
                 crash,
             },
         });

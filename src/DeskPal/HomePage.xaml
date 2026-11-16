@@ -11,7 +11,7 @@
             <StackPanel Spacing="8" VerticalAlignment="Top">
                 <Grid>
                     <Grid x:Name="Stage" Width="320" Height="320" Background="Transparent"
-                          AutomationProperties.Name="Bloop, tap, hold, pet or swipe">
+                          x:Uid="Home_Stage">
                         <Image x:Name="Avatar" />
                     </Grid>
                     <Image x:Name="SproutImage" Width="96" Height="96" HorizontalAlignment="Right" VerticalAlignment="Bottom"
@@ -21,7 +21,7 @@
                                     Margin="0,0,-80,0" Opacity="0" Visibility="Collapsed" IsHitTestVisible="False" />
                     <Border x:Name="SproutHit" Width="80" Height="120" HorizontalAlignment="Left" VerticalAlignment="Top"
                             Margin="300,140,-80,0" Background="Transparent" Visibility="Collapsed"
-                            PointerPressed="OnSproutPressed" AutomationProperties.Name="Sprout" />
+                            PointerPressed="OnSproutPressed" x:Uid="Home_SproutHit" />
                 </Grid>
                 <Button x:Name="SoundButton" HorizontalAlignment="Left" Click="OnToggleSound" Padding="8,4">
                     <StackPanel Orientation="Horizontal" Spacing="6">
@@ -33,23 +33,23 @@
             <StackPanel Grid.Column="1" Spacing="16" MaxWidth="520" Padding="40,0,0,0">
                 <TextBlock x:Name="GreetingText" FontSize="28" FontWeight="SemiBold" TextWrapping="Wrap" />
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Next up" FontWeight="SemiBold" />
+                    <TextBlock x:Uid="Home_NextUpHeader" FontWeight="SemiBold" />
                     <TextBlock x:Name="NextText" TextWrapping="Wrap" />
                     <TextBlock x:Name="HoldsText" TextWrapping="Wrap" Opacity="0.8" />
                 </StackPanel>
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Today" FontWeight="SemiBold" />
+                    <TextBlock x:Uid="Home_TodayHeader" FontWeight="SemiBold" />
                     <TextBlock x:Name="CountsText" TextWrapping="Wrap" />
                 </StackPanel>
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Quick actions" FontWeight="SemiBold" />
+                    <TextBlock x:Uid="Home_QuickActionsHeader" FontWeight="SemiBold" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <Button Content="Stretch now" Style="{StaticResource AccentButtonStyle}" Click="OnStretchNow" />
-                        <Button Content="Eye break now" Click="OnEyeNow" />
+                        <Button x:Uid="Home_StretchNow" Style="{StaticResource AccentButtonStyle}" Click="OnStretchNow" />
+                        <Button x:Uid="Home_EyeNow" Click="OnEyeNow" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Button x:Name="PauseButton" Click="OnPause" />
-                        <Button Content="Open settings" Click="OnSettings" />
+                        <Button x:Uid="Home_OpenSettings" Click="OnSettings" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

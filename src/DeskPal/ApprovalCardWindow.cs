@@ -23,11 +23,11 @@ public sealed class ApprovalCardWindow : Window
 
     public ApprovalCardWindow()
     {
-        Title = "Desk Pal";
+        Title = Loc.Get("Approval_Title");
         SystemBackdrop = new Microsoft.UI.Xaml.Media.MicaBackdrop();
 
-        var allow = new Button { Content = "Allow", Style = (Style)Application.Current.Resources["AccentButtonStyle"], MinWidth = 96 };
-        var notNow = new Button { Content = "Not now", MinWidth = 96 };
+        var allow = new Button { Content = Loc.Get("Approval_Allow"), Style = (Style)Application.Current.Resources["AccentButtonStyle"], MinWidth = 96 };
+        var notNow = new Button { Content = Loc.Get("Approval_NotNow"), MinWidth = 96 };
         allow.Click += (_, _) => TickGuard.Run("approval-allow", () => Finish(true));
         notNow.Click += (_, _) => TickGuard.Run("approval-not-now", () => Finish(false));
 
@@ -64,8 +64,8 @@ public sealed class ApprovalCardWindow : Window
     public void Ask(string appName, string? detail)
     {
         _answered = false;
-        _title.Text = $"Allow {appName} to control Desk Pal?";
-        _body.Text = $"{appName} wants to start breaks, turn focus on or off, and pause your reminders. Desk Pal asks once per app; you can remove it any time in Settings.";
+        _title.Text = Loc.Format("Approval_Question", appName);
+        _body.Text = Loc.Format("Approval_Body", appName);
         _detail.Text = detail ?? "";
         _detail.Visibility = string.IsNullOrEmpty(detail) ? Visibility.Collapsed : Visibility.Visible;
         var hwnd = WindowNative.GetWindowHandle(this);

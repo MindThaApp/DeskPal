@@ -29,7 +29,7 @@ public sealed partial class QuickPanelWindow : Window
     {
         _ctx = ctx;
         InitializeComponent();
-        _stats = [BuildStat(StretchStat, "Stretches"), BuildStat(EyeStat, "Eye breaks"), BuildStat(WalkStat, "Walks")];
+        _stats = [BuildStat(StretchStat, Loc.Get("Quick_Stat_Stretches")), BuildStat(EyeStat, Loc.Get("Quick_Stat_EyeBreaks")), BuildStat(WalkStat, Loc.Get("Quick_Stat_Walks"))];
         _host = new TrayPanelHost(this, Root, 320);
         _host.Placed += p => TickGuard.Run("quick-bloop-place", () => BloopStage.Move(this, p));
         _host.Hidden += () => TickGuard.Run("quick-bloop-leave", () => BloopStage.Release(this));
@@ -87,9 +87,9 @@ public sealed partial class QuickPanelWindow : Window
         if (SoundsSetting is null) return;
         var on = (bool)SoundsSetting.GetValue(_ctx.Hub.Settings)!;
         SoundIcon.Glyph = on ? "" : "";
-        var name = on ? "Interaction sounds on. Turn off" : "Interaction sounds off. Turn on";
+        var name = Loc.Get(on ? "Quick_SoundsOnAccessible" : "Quick_SoundsOffAccessible");
         AutomationProperties.SetName(SoundButton, name);
-        ToolTipService.SetToolTip(SoundButton, on ? "Sounds on" : "Sounds off");
+        ToolTipService.SetToolTip(SoundButton, Loc.Get(on ? "Home_SoundsOn" : "Home_SoundsOff"));
     }
 
     public void Refresh()
@@ -102,8 +102,8 @@ public sealed partial class QuickPanelWindow : Window
         SetStat(_stats[1], s.EyeBreaksToday, goals.EyeBreaks);
         SetStat(_stats[2], s.WalksToday, goals.Walks);
         var paused = s.ManualHold is not null;
-        PauseButton.Content = paused ? "Resume" : "Pause 30 min";
-        AutomationProperties.SetName(PauseButton, paused ? "Resume reminders" : "Pause 30 minutes");
+        PauseButton.Content = paused ? Loc.Get("Common_Resume") : Loc.Get("Common_Pause30");
+        AutomationProperties.SetName(PauseButton, Loc.Get(paused ? "Quick_ResumeAccessible" : "Quick_Pause30Accessible"));
         UpdateSound();
         _host.Relayout();
     }
@@ -128,7 +128,7 @@ public sealed partial class QuickPanelWindow : Window
         stat.Ring.Maximum = Math.Max(1, goal);
         stat.Ring.Value = Math.Min(done, Math.Max(1, goal));
         stat.Count.Text = goal > 0 ? $"{done}/{goal}" : done.ToString();
-        var text = goal > 0 ? $"{stat.Name.Text}: {done} of {goal} today" : $"{stat.Name.Text}: {done} today, no goal";
+        var text = goal > 0 ? Loc.Format("Quick_StatAccessible", stat.Name.Text, done, goal) : Loc.Format("Quick_StatAccessibleNoGoal", stat.Name.Text, done);
         AutomationProperties.SetName(stat.Count.Parent as FrameworkElement ?? stat.Count, text);
     }
 

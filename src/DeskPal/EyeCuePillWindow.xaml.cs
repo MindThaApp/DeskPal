@@ -94,7 +94,7 @@ public sealed partial class EyeCuePillWindow : Window
     private void Update()
     {
         var leftMs = Math.Max(0, _endTick - Environment.TickCount64);
-        LabelText.Text = $"Look 20 ft away · {(int)Math.Ceiling(leftMs / 1000.0)}s";
+        LabelText.Text = Loc.Format("Eye_Pill", (int)Math.Ceiling(leftMs / 1000.0));
         Bar.Value = 100.0 * leftMs / (Seconds * 1000.0);
     }
 
