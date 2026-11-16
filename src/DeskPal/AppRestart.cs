@@ -43,7 +43,9 @@ internal static class AppRestart
     // Starts a new copy. Packaged builds go through the app model; the portable build starts its own exe.
     public static bool Launch(params string[] args)
     {
-        var all = args.Append(WaitPidPrefix + Environment.ProcessId).ToArray();
+        // Debug runs keep their --debug-* flags so the new copy stays on the same (debug) data root.
+        var debug = Environment.GetCommandLineArgs().Skip(1).Where(a => a.StartsWith("--debug-", StringComparison.OrdinalIgnoreCase));
+        var all = debug.Concat(args).Append(WaitPidPrefix + Environment.ProcessId).ToArray();
         if (PackagedApp.IsPackaged)
         {
             try
