@@ -758,7 +758,7 @@
     <comment>Keep the new language</comment>
   </data>
   <data name="Language_GoBack_Button" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Revenir</value>
     <comment>Return to the previous language</comment>
   </data>
   <data name="Wizard_WindowTitle" xml:space="preserve">

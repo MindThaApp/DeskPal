@@ -221,7 +221,7 @@ public sealed partial class SettingsPage : Page
         Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
     };
 
-    private const double ControlColumnWidth = 280;
+    private const double ControlColumnWidth = 340;
 
     private Border Card(UIElement left, UIElement right)
     {
@@ -238,7 +238,7 @@ public sealed partial class SettingsPage : Page
     private static StackPanel TitleBlock(string title, string sub)
     {
         var p = new StackPanel { Spacing = 2, VerticalAlignment = VerticalAlignment.Center };
-        p.Children.Add(new TextBlock { Text = title, FontWeight = FontWeights.SemiBold });
+        p.Children.Add(new TextBlock { Text = title, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap });
         p.Children.Add(Secondary(sub));
         return p;
     }
