@@ -704,7 +704,20 @@ public partial class App : Application
     // Saves the language (and, with revert, the way back) first, so nothing is lost, then starts a new copy and exits.
     private void ChangeLanguage(string tag, bool withRevert)
     {
-        if (withRevert) LanguageRevert.Begin(_settings, tag, DateTimeOffset.Now);
+        if (withRevert)
+        {
+            // This process still runs in the language being left, so the wording for the way back is captured now.
+            var newName = SupportedLanguages.All.FirstOrDefault(l => l.Tag == tag)?.NativeName ?? tag;
+            var oldText = new LanguagePromptText
+            {
+                Title = Loc.Get("Language_Keep_Title"),
+                Body = Loc.Format("Language_Keep_Body", newName),
+                Countdown = Loc.Get("Language_Keep_Countdown"),
+                Keep = Loc.Get("Language_Keep_Button"),
+                GoBack = Loc.Get("Language_GoBack_Button"),
+            };
+            LanguageRevert.Begin(_settings, tag, DateTimeOffset.Now, oldText);
+        }
         else _settings.Language = tag;
         _hub.Commit(false);
         SaveState();

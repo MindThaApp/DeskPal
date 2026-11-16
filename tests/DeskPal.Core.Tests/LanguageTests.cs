@@ -106,6 +106,21 @@ public class LanguageTests
     }
 
     [Fact]
+    public void PreviousText_RoundTripsThroughBeginAndConfirm()
+    {
+        var s = new DeskPalSettings { Language = "fr-FR" };
+        var text = new LanguagePromptText { Title = "Garder ?", Body = "b", Countdown = "Retour dans {0} s.", Keep = "Garder", GoBack = "Retour" };
+        LanguageRevert.Begin(s, "ja-JP", T0, text);
+        var json = System.Text.Json.JsonSerializer.Serialize(s);
+        var back = System.Text.Json.JsonSerializer.Deserialize<DeskPalSettings>(json)!;
+        Assert.Equal("Garder ?", back.PendingLanguageRevertText!.Title);
+        Assert.Equal("Retour dans 7 s.", back.PendingLanguageRevertText.CountdownFor(7));
+        LanguageRevert.Confirm(back);
+        Assert.Null(back.PendingLanguageRevertText);
+        Assert.Null(System.Text.Json.JsonSerializer.Deserialize<DeskPalSettings>("{\"Language\":\"fr-FR\"}")!.PendingLanguageRevertText);
+    }
+
+    [Fact]
     public void Begin_FromFollowWindows_RevertsToEmpty()
     {
         var s = new DeskPalSettings();

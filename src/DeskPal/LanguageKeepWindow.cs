@@ -13,7 +13,7 @@ namespace DeskPal;
 internal sealed class LanguageKeepWindow : Window
 {
     private readonly DeskPalSettings _settings;
-    private readonly string _previousTag;
+    private readonly LanguagePromptText? _previous;
     private readonly Action _keep;
     private readonly Action _goBack;
     private readonly TextBlock _newCountdown;
@@ -24,7 +24,7 @@ internal sealed class LanguageKeepWindow : Window
     public LanguageKeepWindow(DeskPalSettings settings, Action keep, Action goBack)
     {
         _settings = settings;
-        _previousTag = settings.PendingLanguageRevert ?? "";
+        _previous = settings.PendingLanguageRevertText;
         _keep = keep;
         _goBack = goBack;
         var newTag = string.IsNullOrEmpty(settings.Language) ? null : settings.Language;
@@ -40,17 +40,19 @@ internal sealed class LanguageKeepWindow : Window
         _newCountdown = new TextBlock { TextWrapping = TextWrapping.Wrap };
         panel.Children.Add(_newCountdown);
 
-        panel.Children.Add(new Border { Height = 1, Margin = new Thickness(0, 10, 0, 10), Background = (Brush)Application.Current.Resources["DividerStrokeColorDefaultBrush"] });
-
-        panel.Children.Add(new TextBlock { Text = Loc.GetFor("Language_Keep_Title", _previousTag), FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, Foreground = secondary });
-        panel.Children.Add(new TextBlock { Text = Loc.FormatFor("Language_Keep_Body", _previousTag, newName), TextWrapping = TextWrapping.Wrap, Foreground = secondary });
+        if (_previous is not null)
+        {
+            panel.Children.Add(new Border { Height = 1, Margin = new Thickness(0, 10, 0, 10), Background = (Brush)Application.Current.Resources["DividerStrokeColorDefaultBrush"] });
+            panel.Children.Add(new TextBlock { Text = _previous.Title, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, Foreground = secondary });
+            panel.Children.Add(new TextBlock { Text = _previous.Body, TextWrapping = TextWrapping.Wrap, Foreground = secondary });
+        }
         _oldCountdown = new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = secondary };
-        panel.Children.Add(_oldCountdown);
+        if (_previous is not null) panel.Children.Add(_oldCountdown);
 
-        var keepButton = Choice("Language_Keep_Button");
+        var keepButton = Choice("Language_Keep_Button", _previous?.Keep);
         keepButton.Style = (Style)Application.Current.Resources["AccentButtonStyle"];
         keepButton.Click += (_, _) => Finish(_keep);
-        var backButton = Choice("Language_GoBack_Button");
+        var backButton = Choice("Language_GoBack_Button", _previous?.GoBack);
         backButton.Click += (_, _) => Finish(_goBack);
         var buttons = new Grid { ColumnSpacing = 12, Margin = new Thickness(0, 18, 0, 0) };
         buttons.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -77,12 +79,11 @@ internal sealed class LanguageKeepWindow : Window
     }
 
     // A button with the new-language text and, when it differs, the previous-language text under it.
-    private Button Choice(string key)
+    private Button Choice(string key, string? old)
     {
         var text = new StackPanel { Spacing = 2, HorizontalAlignment = HorizontalAlignment.Center };
         text.Children.Add(new TextBlock { Text = Loc.Get(key), FontSize = 18, HorizontalAlignment = HorizontalAlignment.Center });
-        var old = Loc.GetFor(key, _previousTag);
-        if (old != Loc.Get(key)) text.Children.Add(new TextBlock { Text = old, FontSize = 12, HorizontalAlignment = HorizontalAlignment.Center, Opacity = 0.8 });
+        if (!string.IsNullOrEmpty(old) && old != Loc.Get(key)) text.Children.Add(new TextBlock { Text = old, FontSize = 12, HorizontalAlignment = HorizontalAlignment.Center, Opacity = 0.8 });
         return new Button { Content = text, HorizontalAlignment = HorizontalAlignment.Stretch, MinHeight = 64 };
     }
 
@@ -105,7 +106,7 @@ internal sealed class LanguageKeepWindow : Window
     {
         var seconds = (int)Math.Ceiling(remaining.TotalSeconds);
         _newCountdown.Text = Loc.Format("Language_Keep_Countdown", seconds);
-        _oldCountdown.Text = Loc.FormatFor("Language_Keep_Countdown", _previousTag, seconds);
+        if (_previous is not null) _oldCountdown.Text = _previous.CountdownFor(seconds);
     }
 
     private void Finish(Action action)

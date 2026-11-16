@@ -14,8 +14,13 @@ internal static class Loc
     {
         if (string.IsNullOrWhiteSpace(tag))
         {
-            // Back to following Windows: drop any override left from an earlier language choice.
-            try { Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = ""; }
+            // Back to following Windows: drop any override left from an earlier language choice. Nothing to do (and the
+            // setter throws unpackaged) when no override is set.
+            try
+            {
+                if (!string.IsNullOrEmpty(Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride))
+                    Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "";
+            }
             catch (Exception ex) { Logger.Log("language override reset failed: " + ex.Message); }
             return;
         }
@@ -44,27 +49,6 @@ internal static class Loc
 
     public static string Format(string key, params object[] args) =>
         string.Format(CultureInfo.CurrentCulture, Get(key), args);
-
-    private static ResourceManager? _manager;
-
-    // The text in a specific language, whatever language the app runs in (empty tag = the Windows display language).
-    // Used by the keep-this-language prompt to show the previous language next to the new one.
-    public static string GetFor(string key, string? tag)
-    {
-        try
-        {
-            var language = string.IsNullOrWhiteSpace(tag) ? ResolveWindowsLanguage() : tag;
-            var manager = _manager ??= new ResourceManager();
-            var context = manager.CreateResourceContext();
-            context.QualifierValues["Language"] = language;
-            var value = manager.MainResourceMap.TryGetValue("Resources/" + key, context)?.ValueAsString;
-            return string.IsNullOrEmpty(value) ? key : value;
-        }
-        catch (Exception) { return key; }
-    }
-
-    public static string FormatFor(string key, string? tag, params object[] args) =>
-        string.Format(CultureInfo.GetCultureInfo(string.IsNullOrWhiteSpace(tag) ? ResolveWindowsLanguage() : tag), GetFor(key, tag), args);
 
     public static IReadOnlyList<string> WindowsLanguages()
     {

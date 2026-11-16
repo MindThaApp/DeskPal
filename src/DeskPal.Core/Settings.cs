@@ -49,6 +49,8 @@ public sealed class DeskPalSettings
     // Both null when nothing is pending, which is also how files from before this existed load.
     public string? PendingLanguageRevert { get; set; }
     public DateTimeOffset? PendingLanguageRevertAt { get; set; }
+    // The prompt wording in the previous language, captured while that language was still running.
+    public LanguagePromptText? PendingLanguageRevertText { get; set; }
 
     // Growth stage of the 3D Sprout on Home (1 to 4). Fixed at 2 until growth is tracked.
     public int SproutStage { get; set; } = 2;
