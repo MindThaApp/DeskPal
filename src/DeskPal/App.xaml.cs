@@ -63,7 +63,7 @@ public partial class App : Application
 
         var sid = WindowsIdentity.GetCurrent().User?.Value ?? Environment.UserName;
         var mutexName = "DeskPal-" + sid + (AppData.DebugSettings ? "-debug-settings" : AppData.DebugMain ? "-debug-main" : AppData.DebugQuickPanel ? "-debug-quickpanel" : AppData.DebugTrayMenu ? "-debug-traymenu" : AppData.IsDebugRun ? "-debug" : "");
-        _instanceMutex = new Mutex(true, mutexName, out var created);
+        _instanceMutex = AppRestart.AcquireMutex(mutexName, out var created);
         if (!created)
         {
             var arg = PackagedApp.StartLinkArg();
@@ -103,6 +103,14 @@ public partial class App : Application
             try { JsonFileStore.Save(AppData.SettingsPath, _settings); }
             catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
         }
+        // An unconfirmed language switch that ran out of time (or was cut short by a crash or a close) goes back before any text is shown.
+        var revert = LanguageRevert.Evaluate(_settings, DateTimeOffset.Now);
+        if (revert.Action == RevertAction.RevertNow)
+        {
+            LanguageRevert.Revert(_settings);
+            try { JsonFileStore.Save(AppData.SettingsPath, _settings); }
+            catch (Exception ex) { Logger.Log("settings save failed: " + ex.Message); }
+        }
         // The pipeline check always sends: it only runs in the debug data root, with a test exception.
         Loc.Apply(_settings.Language);
         CrashReporting.Apply(AppData.DebugCrash ? CrashReportingMode.Always : _settings.CrashReports);
@@ -111,6 +119,7 @@ public partial class App : Application
         _scheduler = new NudgeScheduler(TimeProvider.System, _settings, state);
         _router = _scheduler;
         _hub = new SettingsHub(_settings, _scheduler);
+        _hub.ChangeLanguage = ChangeLanguage;
         BloopSounds.Attach(_hub, _scheduler);
         _appliedCrashMode = _settings.CrashReports;
         _hub.Changed += OnSettingsChanged;
@@ -185,12 +194,8 @@ public partial class App : Application
     {
         if (AppData.DebugSettings) OpenSettings();
         if (AppData.DebugMain) OpenMain(AppData.DebugPage);
-        else if (!_ui.FirstRunShown)
-        {
-            _ui.FirstRunShown = true;
-            SaveState();
-            OpenMain();
-        }
+        else if (!_ui.FirstRunShown) ShowWizard();
+        ShowKeepLanguagePrompt();
         if (AppData.DebugEyeCue)
         {
             _debugEyeTimer = _dq.CreateTimer();
@@ -694,7 +699,61 @@ public partial class App : Application
         public bool CanExecute(object? parameter) => true;
         public void Execute(object? parameter) => action();
     }
-    private void ExitApp()
+    // Saves the language (and, with revert, the way back) first, so nothing is lost, then starts a new copy and exits.
+    private void ChangeLanguage(string tag, bool withRevert)
+    {
+        if (withRevert) LanguageRevert.Begin(_settings, tag, DateTimeOffset.Now);
+        else _settings.Language = tag;
+        _hub.Commit(false);
+        SaveState();
+        Shutdown(true, withRevert ? [AppRestart.LanguageSwitchedArg] : [AppRestart.LanguageSwitchedArg, AppRestart.WizardResumeArg]);
+    }
+
+    private LanguageKeepWindow? _keepWindow;
+    private WelcomeWizardWindow? _wizard;
+
+    private void ShowKeepLanguagePrompt()
+    {
+        var decision = LanguageRevert.Evaluate(_settings, DateTimeOffset.Now);
+        if (decision.Action != RevertAction.AskToKeep) return;
+        _keepWindow = new LanguageKeepWindow(_settings,
+            keep: () =>
+            {
+                LanguageRevert.Confirm(_settings);
+                _hub.Commit(false);
+                _keepWindow?.Close();
+                _keepWindow = null;
+            },
+            goBack: () =>
+            {
+                LanguageRevert.Revert(_settings);
+                _hub.Commit(false);
+                SaveState();
+                Shutdown(true, [AppRestart.LanguageSwitchedArg]);
+            });
+        _keepWindow.ShowPrompt(decision.Remaining);
+    }
+
+    private void ShowWizard()
+    {
+        var applied = string.IsNullOrEmpty(_settings.Language) ? Loc.ResolveWindowsLanguage() : _settings.Language;
+        _wizard = new WelcomeWizardWindow(_hub, applied, AppRestart.HasArg(AppRestart.WizardResumeArg) ? 1 : 0,
+            finished: () =>
+            {
+                _ui.FirstRunShown = true;
+                SaveState();
+                OpenMain();
+            },
+            closed: () =>
+            {
+                _ui.FirstRunShown = true;
+                SaveState();
+            });
+        _wizard.Activate();
+    }
+    private void ExitApp() => Shutdown(false, []);
+
+    private void Shutdown(bool restart, string[] restartArgs)
     {
         _tickTimer?.Stop();
         _busyTimer?.Stop();
@@ -716,7 +775,8 @@ public partial class App : Application
         _settingsWindow?.Quit();
         _toastTimer?.Stop();
         try { _link?.Dispose(); } catch (Exception ex) { Logger.Log("automation portal link stop failed: " + ex.Message); }
-        Logger.Log("exit");
+        Logger.Log(restart ? "exit for restart" : "exit");
+        if (restart && !AppRestart.Launch(restartArgs)) Logger.Log("restart did not start");
         Exit();
     }
 }

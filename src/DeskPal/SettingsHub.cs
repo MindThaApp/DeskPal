@@ -12,6 +12,9 @@ public sealed class SettingsHub(DeskPalSettings settings, NudgeScheduler schedul
     // Set once the Automation Portal link is running; the settings page reads its skipped-events count.
     public AutomationPortalLink? Link { get; set; }
 
+    // Saves the new language and restarts Desk Pal. With revert the user must confirm within 30 seconds after the restart.
+    public Action<string, bool>? ChangeLanguage { get; set; }
+
     // Bloop's interaction sounds. Setting it saves and tells every view (speaker toggles bind to this).
     public bool InteractionSounds
     {

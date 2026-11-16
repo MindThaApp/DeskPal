@@ -110,6 +110,9 @@ public sealed partial class SettingsPage : Page
         AddSwitch(Loc.Get("Settings_BloopSounds"), Loc.Get("Settings_BloopSoundsSub"),
             () => _hub.InteractionSounds, b => _hub.InteractionSounds = b);
 
+        Root.Children.Add(Header(Loc.Get("Settings_Section_Language")));
+        AddLanguage();
+
         Root.Children.Add(Header(Loc.Get("Settings_Section_Portal")));
         AddSwitch(Loc.Get("Settings_ShareEvents"), Loc.Get("Settings_ShareEventsSub"),
             () => _s.ShareEventsWithAutomationPortal, b => { _s.ShareEventsWithAutomationPortal = b; _hub.Commit(false); });
@@ -121,6 +124,37 @@ public sealed partial class SettingsPage : Page
         AddSwitch(Loc.Get("Settings_CrashReports"), Loc.Get("Settings_CrashReportsSub"),
             () => _s.CrashReports == CrashReportingMode.Always,
             b => { _s.CrashReports = b ? CrashReportingMode.Always : CrashReportingMode.Never; _hub.Commit(false); });
+    }
+
+    private string CurrentLanguage() => string.IsNullOrEmpty(_s.Language) ? Loc.ResolveWindowsLanguage() : _s.Language;
+
+    private void AddLanguage()
+    {
+        var picker = new LanguagePicker(CurrentLanguage());
+        picker.Chosen += language => _ = ConfirmSwitchAsync(picker, language);
+        _syncs.Add(() => picker.Select(CurrentLanguage()));
+        Root.Children.Add(new Border { Style = (Style)Resources["CardBorder"], Padding = new Thickness(8), Child = picker });
+    }
+
+    private async Task ConfirmSwitchAsync(LanguagePicker picker, LanguageInfo language)
+    {
+        var switchNow = false;
+        try
+        {
+            var dialog = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = Loc.Format("Language_SwitchTitle", language.NativeName),
+                Content = new TextBlock { Text = Loc.Get("Language_SwitchBody"), TextWrapping = TextWrapping.Wrap },
+                PrimaryButtonText = Loc.Get("Language_SwitchButton"),
+                CloseButtonText = Loc.Get("Language_CancelButton"),
+                DefaultButton = ContentDialogButton.Primary,
+            };
+            switchNow = await dialog.ShowAsync() == ContentDialogResult.Primary;
+        }
+        catch (Exception ex) { Logger.Log("language dialog failed: " + ex.Message); }
+        if (switchNow && _hub.ChangeLanguage is { } change) change(language.Tag, true);
+        else picker.Select(CurrentLanguage());
     }
 
     private void AddAutomationPortalCard()
