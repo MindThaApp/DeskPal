@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>Yukarı uzanma</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>Üst sırt</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>Parmaklarını birbirine geçir ve kollarını yukarı doğru uzat, yavaşça nefes al. Kollarını indir ve omuzlarının gevşemesine izin ver.</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>Yana eğilme</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>Gövde</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>Bir kolunu başının üzerine uzat ve nazikçe karşı tarafa doğru eğil. Yarı yolda tarafı değiştir.</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>Omuz silkme</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>Omuzlar</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>İki omzunu kulaklarına doğru kaldır, bir an tut, sonra bırak. Birkaç kez tekrarla.</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>Boyun çevirme</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>Boyun</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>Başını yavaşça bir omzuna doğru eğ ve nazikçe diğer omzuna doğru yuvarla. Rahat ve yumuşak hareket et.</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>Oturarak burulma</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>Omurga</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>Dik otur ve sandalyenin arkalığını tutarak üst gövdeni bir yana çevir. Birkaç nefes sonra tarafı değiştir.</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>Bilek esnetme</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>Bilekler</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>Bir kolunu avuç içi yukarı bakacak şekilde uzat ve diğer elinle parmaklarını nazikçe geriye çek. Elleri değiştir.</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>Kalça önü esnetme</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>Kalçalar</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>Ayağa kalk ve bir ayağını geriye at, kalçanın ön tarafında hafif bir gerilme hissedene kadar ağırlığını öne ver. Bacağı değiştir.</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>Parmak ucuna kalkma</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>Bacaklar</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>Dik dur ve parmak uçlarına yüksel, sonra yavaşça in. İstersen bir sandalyeden tutunabilirsin. Birkaç kez tekrarla.</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>Uzun bir görüşmeydi. Biraz esneyelim mi?</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>Göz molası</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>6 m uzağa bak</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>Odak</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>Yarına kadar duraklatıldı</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>Duraklatıldı</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>Ertelendi</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>Görüşmede</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>Biraz oturma zamanı</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>Ayakta çalışmaya geç</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}, {1}.</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value> ve</value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>Esneme zamanı</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0}. {1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>Yürüyüş molası</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>Ayağa kalk ve kısa bir yürüyüş yap, yan odaya bile olsa.</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>Göz molası</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>20 saniye boyunca yaklaşık 6 metre uzaktaki bir şeye bak.</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>Su zamanı</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>Bir bardak su iç.</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>Nefes al</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>Birkaç yavaş, derin nefes al.</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>vücudunu esnet</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>kısa bir yürüyüş yap</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>gözlerini 20 saniye dinlendir</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>kalkmışken biraz su al</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>birkaç yavaş nefes al</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>Bilinmeyen bir uygulama</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>

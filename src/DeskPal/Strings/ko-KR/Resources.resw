@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Home_Greeting_Night" xml:space="preserve">
+    <value>아직 안 자요? 오늘 밤엔 눈을 아껴 주세요.</value>
+    <comment>Greeting before 5:00</comment>
+  </data>
+  <data name="Home_Greeting_Morning" xml:space="preserve">
+    <value>좋은 아침이에요! 오늘도 힘차게 시작해요.</value>
+    <comment>Greeting 5:00-11:59</comment>
+  </data>
+  <data name="Home_Greeting_Afternoon" xml:space="preserve">
+    <value>좋은 오후예요! 가볍게 스트레칭하면 개운해요.</value>
+    <comment>Greeting 12:00-16:59</comment>
+  </data>
+  <data name="Home_Greeting_Evening" xml:space="preserve">
+    <value>좋은 저녁이에요! 오늘 정말 잘했어요.</value>
+    <comment>Greeting 17:00-21:59</comment>
+  </data>
+  <data name="Home_Greeting_Late" xml:space="preserve">
+    <value>늦은 시간이네요. 슬슬 마무리할까요?</value>
+    <comment>Greeting from 22:00</comment>
+  </data>
+  <data name="Home_NextNothing" xml:space="preserve">
+    <value>예정된 알림이 없어요</value>
+  </data>
+  <data name="Home_Kind_Eyes" xml:space="preserve">
+    <value>눈 휴식</value>
+    <comment>Kind of break in the next-up line</comment>
+  </data>
+  <data name="Home_Kind_Walk" xml:space="preserve">
+    <value>걷기</value>
+  </data>
+  <data name="Home_Kind_Stretch" xml:space="preserve">
+    <value>스트레칭</value>
+  </data>
+  <data name="Home_NextAt" xml:space="preserve">
+    <value>{1}에 {0}</value>
+    <comment>{0} is the kind of break, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Home_NoHolds" xml:space="preserve">
+    <value>보류 없음</value>
+  </data>
+  <data name="Home_Holding" xml:space="preserve">
+    <value>보류 중: {0}</value>
+    <comment>{0} is a comma-separated list of reasons reminders are on hold</comment>
+  </data>
+  <data name="Home_Counts" xml:space="preserve">
+    <value>스트레칭 {0}   눈 휴식 {1}   걷기 {2}</value>
+    <comment>Keep the wide gaps between items</comment>
+  </data>
+  <data name="Home_PausedUntil" xml:space="preserve">
+    <value>{0}까지 일시 중지</value>
+    <comment>{0} is a time or "tomorrow 09:00"</comment>
+  </data>
+  <data name="Home_Tomorrow" xml:space="preserve">
+    <value>내일 {0}</value>
+    <comment>{0} is a time such as 09:00</comment>
+  </data>
+  <data name="Home_Held" xml:space="preserve">
+    <value>보류됨: {0}</value>
+  </data>
+  <data name="Home_NextLine" xml:space="preserve">
+    <value>다음: {0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Main_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Main_Nav_Home" xml:space="preserve">
+    <value>홈</value>
+  </data>
+  <data name="Main_Nav_Today" xml:space="preserve">
+    <value>오늘</value>
+  </data>
+  <data name="Main_Nav_Bloop" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Main_Nav_Garden" xml:space="preserve">
+    <value>정원</value>
+  </data>
+  <data name="Main_Nav_About" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Today_Title" xml:space="preserve">
+    <value>오늘</value>
+  </data>
+  <data name="Today_NextUp" xml:space="preserve">
+    <value>다음 알림</value>
+  </data>
+  <data name="Today_DoneToday" xml:space="preserve">
+    <value>오늘 한 일</value>
+  </data>
+  <data name="Today_Last7" xml:space="preserve">
+    <value>최근 7일</value>
+  </data>
+  <data name="Today_HistoryComingSoon" xml:space="preserve">
+    <value>기록은 곧 만나볼 수 있어요.</value>
+  </data>
+  <data name="Today_Stretches" xml:space="preserve">
+    <value>오늘 스트레칭: {0}</value>
+  </data>
+  <data name="Today_EyeBreaks" xml:space="preserve">
+    <value>오늘 눈 휴식: {0}</value>
+  </data>
+  <data name="Today_Walks" xml:space="preserve">
+    <value>오늘 걷기: {0}</value>
+  </data>
+  <data name="Bloop_Title" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Bloop_Style_Flat" xml:space="preserve">
+    <value>플랫</value>
+  </data>
+  <data name="Bloop_Style_FlatNote" xml:space="preserve">
+    <value>깔끔하고 단순해요</value>
+  </data>
+  <data name="Bloop_Style_Soft3d" xml:space="preserve">
+    <value>소프트 3D</value>
+  </data>
+  <data name="Bloop_Style_Soft3dNote" xml:space="preserve">
+    <value>둥글고 반짝여요</value>
+  </data>
+  <data name="Bloop_Style_3d" xml:space="preserve">
+    <value>3D (베타)</value>
+  </data>
+  <data name="Bloop_Style_3dNote" xml:space="preserve">
+    <value>살아 움직이고 콕콕 찌를 수 있어요, 그래픽 카드를 사용해요</value>
+  </data>
+  <data name="Bloop_Sounds" xml:space="preserve">
+    <value>Bloop 소리</value>
+  </data>
+  <data name="Common_On" xml:space="preserve">
+    <value>켜짐</value>
+  </data>
+  <data name="Common_Off" xml:space="preserve">
+    <value>꺼짐</value>
+  </data>
+  <data name="Bloop_Look" xml:space="preserve">
+    <value>모양</value>
+  </data>
+  <data name="Bloop_Play" xml:space="preserve">
+    <value>놀기</value>
+  </data>
+  <data name="Bloop_PlayText" xml:space="preserve">
+    <value>홈 화면에서 Bloop의 배, 머리, 볼, 손, 발을 탭하거나, 여러 번 연달아 탭하거나, 길게 누르거나, 앞뒤로 쓰다듬거나, 쓱 밀어 보세요. 반응이 모두 달라요. 눈은 포인터를 따라다녀요.</value>
+    <comment>Bloop is the name of the mascot; do not translate</comment>
+  </data>
+  <data name="Bloop_Bond" xml:space="preserve">
+    <value>유대감</value>
+  </data>
+  <data name="Bloop_BondText" xml:space="preserve">
+    <value>유대감 레벨: 곧 만나요.</value>
+  </data>
+  <data name="Bloop_Evolution" xml:space="preserve">
+    <value>진화</value>
+  </data>
+  <data name="Bloop_EvolutionText" xml:space="preserve">
+    <value>진화: 곧 만나요.</value>
+  </data>
+  <data name="Garden_Title" xml:space="preserve">
+    <value>정원</value>
+  </data>
+  <data name="Garden_Intro" xml:space="preserve">
+    <value>나를 챙길수록 정원이 자라요.</value>
+  </data>
+  <data name="Garden_Seedling" xml:space="preserve">
+    <value>새싹</value>
+  </data>
+  <data name="Garden_Young" xml:space="preserve">
+    <value>어린 식물</value>
+  </data>
+  <data name="Garden_Bushy" xml:space="preserve">
+    <value>풍성함</value>
+  </data>
+  <data name="Garden_Bloom" xml:space="preserve">
+    <value>꽃 피움</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>Desk Pal 정보</value>
+  </data>
+  <data name="About_Tagline" xml:space="preserve">
+    <value>Bloop이 전하는 가벼운 움직임과 눈 휴식 알림.</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>버전 {0}</value>
+    <comment>{0} is the version number</comment>
+  </data>
+  <data name="About_CrashOn" xml:space="preserve">
+    <value>켜짐</value>
+    <comment>Fills the {0} in "Send crash reports: {0} (change in Settings)"</comment>
+  </data>
+  <data name="About_CrashOff" xml:space="preserve">
+    <value>꺼짐</value>
+  </data>
+  <data name="About_CrashAsk" xml:space="preserve">
+    <value>먼저 묻기</value>
+  </data>
+  <data name="About_CrashLink" xml:space="preserve">
+    <value>충돌 보고서 보내기: {0} (설정에서 변경)</value>
+  </data>
+  <data name="Common_Pause30" xml:space="preserve">
+    <value>30분 중지</value>
+    <comment>Button; the number is a fixed 30 minutes</comment>
+  </data>
+  <data name="Common_Resume" xml:space="preserve">
+    <value>다시 시작</value>
+  </data>
+  <data name="Common_Done" xml:space="preserve">
+    <value>완료</value>
+  </data>
+  <data name="Home_Stage.AutomationProperties.Name" xml:space="preserve">
+    <value>Bloop, 탭, 길게 누르기, 쓰다듬기, 밀기</value>
+    <comment>Accessible name of the interactive mascot area</comment>
+  </data>
+  <data name="Home_SproutHit.AutomationProperties.Name" xml:space="preserve">
+    <value>Sprout</value>
+    <comment>Sprout is the plant companion's name</comment>
+  </data>
+  <data name="Home_NextUpHeader.Text" xml:space="preserve">
+    <value>다음 알림</value>
+  </data>
+  <data name="Home_TodayHeader.Text" xml:space="preserve">
+    <value>오늘</value>
+  </data>
+  <data name="Home_QuickActionsHeader.Text" xml:space="preserve">
+    <value>빠른 실행</value>
+  </data>
+  <data name="Home_StretchNow.Content" xml:space="preserve">
+    <value>지금 스트레칭</value>
+  </data>
+  <data name="Home_EyeNow.Content" xml:space="preserve">
+    <value>지금 눈 휴식</value>
+  </data>
+  <data name="Home_OpenSettings.Content" xml:space="preserve">
+    <value>설정 열기</value>
+  </data>
+  <data name="Home_SoundsOn" xml:space="preserve">
+    <value>소리 켜짐</value>
+  </data>
+  <data name="Home_SoundsOff" xml:space="preserve">
+    <value>소리 꺼짐</value>
+  </data>
+  <data name="Home_SoundsOnAccessible" xml:space="preserve">
+    <value>Bloop 소리가 켜져 있어요. 클릭하면 음소거해요</value>
+  </data>
+  <data name="Home_SoundsOffAccessible" xml:space="preserve">
+    <value>Bloop 소리가 꺼져 있어요. 클릭하면 켜요</value>
+  </data>
+  <data name="Quick_Stat_Stretches" xml:space="preserve">
+    <value>스트레칭</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_EyeBreaks" xml:space="preserve">
+    <value>눈 휴식</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_Walks" xml:space="preserve">
+    <value>걷기</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_StatAccessible" xml:space="preserve">
+    <value>{0}: 오늘 {2}회 중 {1}회</value>
+    <comment>{0} is the stat label, {1} done, {2} goal</comment>
+  </data>
+  <data name="Quick_StatAccessibleNoGoal" xml:space="preserve">
+    <value>{0}: 오늘 {1}회, 목표 없음</value>
+  </data>
+  <data name="Quick_SoundsOnAccessible" xml:space="preserve">
+    <value>상호작용 소리가 켜져 있어요. 끄기</value>
+  </data>
+  <data name="Quick_SoundsOffAccessible" xml:space="preserve">
+    <value>상호작용 소리가 꺼져 있어요. 켜기</value>
+  </data>
+  <data name="Quick_ResumeAccessible" xml:space="preserve">
+    <value>알림 다시 시작</value>
+  </data>
+  <data name="Quick_Pause30Accessible" xml:space="preserve">
+    <value>30분 동안 중지</value>
+  </data>
+  <data name="Quick_StretchButton.Content" xml:space="preserve">
+    <value>지금 스트레칭</value>
+  </data>
+  <data name="Quick_StretchButton.AutomationProperties.Name" xml:space="preserve">
+    <value>지금 스트레칭</value>
+  </data>
+  <data name="Quick_EyeButton.Content" xml:space="preserve">
+    <value>눈 휴식</value>
+    <comment>Keep short; button</comment>
+  </data>
+  <data name="Quick_EyeButton.AutomationProperties.Name" xml:space="preserve">
+    <value>눈 휴식</value>
+  </data>
+  <data name="Quick_OpenLink.Content" xml:space="preserve">
+    <value>Desk Pal 열기 &gt;</value>
+  </data>
+  <data name="Quick_OpenLink.AutomationProperties.Name" xml:space="preserve">
+    <value>Desk Pal 열기</value>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>Desk Pal 열기</value>
+  </data>
+  <data name="Tray_StretchNow" xml:space="preserve">
+    <value>지금 스트레칭</value>
+  </data>
+  <data name="Tray_Pause" xml:space="preserve">
+    <value>일시 중지</value>
+  </data>
+  <data name="Tray_Pause30" xml:space="preserve">
+    <value>30분</value>
+  </data>
+  <data name="Tray_Pause1h" xml:space="preserve">
+    <value>1시간</value>
+  </data>
+  <data name="Tray_PauseTomorrow" xml:space="preserve">
+    <value>내일까지</value>
+  </data>
+  <data name="Tray_Resume" xml:space="preserve">
+    <value>다시 시작</value>
+  </data>
+  <data name="Tray_Style" xml:space="preserve">
+    <value>스타일</value>
+  </data>
+  <data name="Tray_AnimateIcon" xml:space="preserve">
+    <value>트레이 아이콘 움직이기</value>
+  </data>
+  <data name="Tray_CrashReports" xml:space="preserve">
+    <value>충돌 보고서 보내기</value>
+  </data>
+  <data name="Tray_Settings" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="Tray_NextUp" xml:space="preserve">
+    <value>다음: {0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Tray_Today" xml:space="preserve">
+    <value>오늘: 스트레칭 {0}회 · 눈 휴식 {1}회 · 걷기 {2}회</value>
+  </data>
+  <data name="Tray_On" xml:space="preserve">
+    <value>{0}, 켜짐</value>
+    <comment>Accessible name of a toggle row</comment>
+  </data>
+  <data name="Tray_Off" xml:space="preserve">
+    <value>{0}, 꺼짐</value>
+  </data>
+  <data name="Eye_Pill" xml:space="preserve">
+    <value>6m 먼 곳 보기 · {0}초</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Settings_WindowTitle" xml:space="preserve">
+    <value>Desk Pal 설정</value>
+  </data>
+  <data name="Approval_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Approval_Allow" xml:space="preserve">
+    <value>허용</value>
+  </data>
+  <data name="Approval_NotNow" xml:space="preserve">
+    <value>나중에</value>
+  </data>
+  <data name="Approval_Question" xml:space="preserve">
+    <value>{0}이(가) Desk Pal을 제어하도록 허용할까요?</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Approval_Body" xml:space="preserve">
+    <value>{0}이(가) 휴식 시작, 집중 모드 켜기/끄기, 알림 일시 중지를 하려고 해요. Desk Pal은 앱마다 한 번만 물어보고, 설정에서 언제든 삭제할 수 있어요.</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Buddy_Title" xml:space="preserve">
+    <value>Bloop</value>
+    <comment>Window title and accessible name of the floating mascot</comment>
+  </data>
+  <data name="App_TrayTooltip" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Tray icon tooltip</comment>
+  </data>
+  <data name="Tray_Tooltip_Held" xml:space="preserve">
+    <value>Desk Pal: 보류됨 ({0})</value>
+    <comment>{0} is the reason reminders are on hold</comment>
+  </data>
+  <data name="Tray_Tooltip_Next" xml:space="preserve">
+    <value>Desk Pal: 다음 {0} {1}</value>
+    <comment>{0} is the kind of break in lower case, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Tray_Kind_Eyes" xml:space="preserve">
+    <value>눈 휴식</value>
+    <comment>Lower case, used inside a sentence</comment>
+  </data>
+  <data name="Tray_Kind_Walk" xml:space="preserve">
+    <value>걷기</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Stretch" xml:space="preserve">
+    <value>스트레칭</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Water" xml:space="preserve">
+    <value>물 마시기</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Breathe" xml:space="preserve">
+    <value>호흡 휴식</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Hold_Dnd" xml:space="preserve">
+    <value>집중 지원 또는 전체 화면</value>
+    <comment>Reason reminders are on hold when Windows Focus Assist or a full-screen app is active</comment>
+  </data>
+  <data name="Toast_Start" xml:space="preserve">
+    <value>시작</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_Snooze10" xml:space="preserve">
+    <value>10분 뒤</value>
+    <comment>Toast button; snoozes the reminder</comment>
+  </data>
+  <data name="Toast_Skip" xml:space="preserve">
+    <value>건너뛰기</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_StillHere" xml:space="preserve">
+    <value>Desk Pal은 트레이에서 계속 실행 중이에요.</value>
+    <comment>Shown when the main window is closed</comment>
+  </data>
+  <data name="Nudge_CountdownSeconds" xml:space="preserve">
+    <value>{0}초</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Nudge_BonusHint" xml:space="preserve">
+    <value>끝까지 하면 보너스가 있어요</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Nudge_BonusDone" xml:space="preserve">
+    <value>스트레칭 완료! 잘했어요</value>
+    <comment>Shown when the countdown reaches zero; keep short</comment>
+  </data>
+  <data name="Nudge_More.AutomationProperties.Name" xml:space="preserve">
+    <value>옵션 더 보기</value>
+  </data>
+  <data name="Nudge_More.ToolTipService.ToolTip" xml:space="preserve">
+    <value>더 보기</value>
+  </data>
+  <data name="Nudge_Skip.Text" xml:space="preserve">
+    <value>이번엔 건너뛰기</value>
+    <comment>Menu item</comment>
+  </data>
+  <data name="Nudge_Done.Content" xml:space="preserve">
+    <value>완료</value>
+  </data>
+  <data name="Nudge_Snooze.Content" xml:space="preserve">
+    <value>미루기</value>
+  </data>
+  <data name="Nudge_Snooze.AutomationProperties.Name" xml:space="preserve">
+    <value>10분 미루기</value>
+  </data>
+  <data name="Nudge_Snooze.ToolTipService.ToolTip" xml:space="preserve">
+    <value>10분 미루기</value>
+  </data>
+  <data name="Nudge_BonusHintText.Text" xml:space="preserve">
+    <value>끝까지 하면 보너스가 있어요</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>설정</value>
+    <comment>Page title</comment>
+  </data>
+  <data name="Settings_Section_Reminders" xml:space="preserve">
+    <value>알림</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_WorkingHours" xml:space="preserve">
+    <value>근무 시간</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Appearance" xml:space="preserve">
+    <value>모양</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Portal" xml:space="preserve">
+    <value>Automation Portal</value>
+    <comment>Section heading; Automation Portal is an app name</comment>
+  </data>
+  <data name="Settings_Section_Privacy" xml:space="preserve">
+    <value>개인정보</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Movement_Name" xml:space="preserve">
+    <value>움직임</value>
+    <comment>Reminder name; combined into "{name} — {what}"</comment>
+  </data>
+  <data name="Settings_Movement_What" xml:space="preserve">
+    <value>스트레칭 또는 일어서기</value>
+  </data>
+  <data name="Settings_Movement_Reason" xml:space="preserve">
+    <value>약 30분마다 앉아 있는 시간을 끊어 주면 뻣뻣함을 풀어 준다고 널리 권장돼요.</value>
+  </data>
+  <data name="Settings_Eyes_Name" xml:space="preserve">
+    <value>눈</value>
+  </data>
+  <data name="Settings_Eyes_What" xml:space="preserve">
+    <value>20-20-20 눈 휴식 (조용한 알림)</value>
+  </data>
+  <data name="Settings_Eyes_Reason" xml:space="preserve">
+    <value>20-20-20 습관: 20분마다 20초 동안 약 6m 떨어진 곳을 바라보세요.</value>
+  </data>
+  <data name="Settings_Water_Name" xml:space="preserve">
+    <value>물</value>
+  </data>
+  <data name="Settings_Water_What" xml:space="preserve">
+    <value>물 마시기</value>
+  </data>
+  <data name="Settings_Water_Reason" xml:space="preserve">
+    <value>조금씩 자주 마시는 게 나중에 몰아서 마시는 것보다 쉬워요.</value>
+  </data>
+  <data name="Settings_Walk_Name" xml:space="preserve">
+    <value>걷기</value>
+  </data>
+  <data name="Settings_Walk_What" xml:space="preserve">
+    <value>스트레칭 대신 짧은 걷기</value>
+  </data>
+  <data name="Settings_Walk_Reason" xml:space="preserve">
+    <value>두어 시간마다 잠깐 걸으면 기분 전환에 좋아요.</value>
+  </data>
+  <data name="Settings_SitStand_Name" xml:space="preserve">
+    <value>앉기 / 서기</value>
+  </data>
+  <data name="Settings_SitStand_What" xml:space="preserve">
+    <value>스탠딩 데스크용</value>
+  </data>
+  <data name="Settings_SitStand_Reason" xml:space="preserve">
+    <value>스탠딩 데스크가 있다면 30~60분마다 자세를 바꿔 주면 편안해요.</value>
+  </data>
+  <data name="Settings_Minutes" xml:space="preserve">
+    <value>{0}분</value>
+    <comment>{0} is a number of minutes</comment>
+  </data>
+  <data name="Settings_WaterWithBreaks" xml:space="preserve">
+    <value>움직임 휴식과 함께</value>
+  </data>
+  <data name="Settings_WaterHourly" xml:space="preserve">
+    <value>60분마다</value>
+  </data>
+  <data name="Settings_AfterStretches" xml:space="preserve">
+    <value>스트레칭 {0}회 후</value>
+  </data>
+  <data name="Settings_EveryMinutes" xml:space="preserve">
+    <value>{0}분마다</value>
+  </data>
+  <data name="Settings_OffByDefault" xml:space="preserve">
+    <value>기본값은 꺼짐</value>
+    <comment>Shown after "Recommended:" for sit / stand</comment>
+  </data>
+  <data name="Settings_RecommendedTag" xml:space="preserve">
+    <value> ★ 추천</value>
+    <comment>Appended to the recommended choice; keep the leading space</comment>
+  </data>
+  <data name="Settings_RecommendedLine" xml:space="preserve">
+    <value>추천: {0}</value>
+    <comment>{0} is a short option label in lower case</comment>
+  </data>
+  <data name="Settings_ResetAll" xml:space="preserve">
+    <value>모두 추천 설정으로 되돌리기</value>
+  </data>
+  <data name="Settings_ResetAllAccessible" xml:space="preserve">
+    <value>모든 알림을 추천 설정으로 되돌리기</value>
+  </data>
+  <data name="Settings_NameDash" xml:space="preserve">
+    <value>{0} - {1}</value>
+    <comment>{0} is the reminder name, {1} what it is for</comment>
+  </data>
+  <data name="Settings_ReminderOnOff" xml:space="preserve">
+    <value>{0} 알림 켜기 또는 끄기</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Frequency" xml:space="preserve">
+    <value>{0} 빈도</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Custom" xml:space="preserve">
+    <value>직접 설정</value>
+    <comment>Combo box item for a custom number of minutes</comment>
+  </data>
+  <data name="Settings_CustomMinutesHeader" xml:space="preserve">
+    <value>분 (15-120)</value>
+    <comment>Keep the range in step with the app limits 15 and 120</comment>
+  </data>
+  <data name="Settings_CustomMinutesAccessible" xml:space="preserve">
+    <value>{0} 직접 설정한 분</value>
+  </data>
+  <data name="Settings_Reset" xml:space="preserve">
+    <value>초기화</value>
+    <comment>Link that resets one reminder to the recommended setting</comment>
+  </data>
+  <data name="Settings_ResetAccessible" xml:space="preserve">
+    <value>{0}을(를) 추천 설정으로 되돌리기</value>
+  </data>
+  <data name="Settings_NudgeStyle" xml:space="preserve">
+    <value>알림 스타일</value>
+  </data>
+  <data name="Settings_NudgeStyleSub" xml:space="preserve">
+    <value>알림이 나타나는 방식</value>
+  </data>
+  <data name="Settings_Style_Card" xml:space="preserve">
+    <value>카드</value>
+  </data>
+  <data name="Settings_Style_Toast" xml:space="preserve">
+    <value>토스트</value>
+    <comment>Windows notification</comment>
+  </data>
+  <data name="Settings_HideAfter" xml:space="preserve">
+    <value>알림 숨기기까지</value>
+  </data>
+  <data name="Settings_HideAfterSub" xml:space="preserve">
+    <value>그냥 두면 알림 카드가 저절로 사라져요</value>
+  </data>
+  <data name="Settings_Seconds" xml:space="preserve">
+    <value>{0}초</value>
+    <comment>{0} is a number of seconds</comment>
+  </data>
+  <data name="Settings_AvatarStyle" xml:space="preserve">
+    <value>아바타 스타일</value>
+  </data>
+  <data name="Settings_AvatarStyleSub" xml:space="preserve">
+    <value>Bloop을 그리는 방식</value>
+  </data>
+  <data name="Settings_AnimateTray" xml:space="preserve">
+    <value>트레이 아이콘 움직이기</value>
+  </data>
+  <data name="Settings_AnimateTraySub" xml:space="preserve">
+    <value>알림이 표시되는 동안 트레이 아이콘이 움직여요</value>
+  </data>
+  <data name="Settings_BloopSounds" xml:space="preserve">
+    <value>Bloop 소리</value>
+  </data>
+  <data name="Settings_BloopSoundsSub" xml:space="preserve">
+    <value>Bloop을 콕 찌르거나 쓰다듬거나 밀 때 부드러운 소리가 나요. 통화 중이거나 집중 지원 중에는 조용해요</value>
+  </data>
+  <data name="Settings_ShareEvents" xml:space="preserve">
+    <value>Automation Portal과 이벤트 공유</value>
+  </data>
+  <data name="Settings_ShareEventsSub" xml:space="preserve">
+    <value>이 PC의 휴식, 집중 모드, 일시 중지에 바로 가기가 반응할 수 있어요. 횟수와 시간만 공유돼요</value>
+  </data>
+  <data name="Settings_AllowControl" xml:space="preserve">
+    <value>Automation Portal과 다른 앱이 Desk Pal을 제어하도록 허용</value>
+    <comment>Also quoted by an error message in the app; keep wording in step</comment>
+  </data>
+  <data name="Settings_AllowControlSub" xml:space="preserve">
+    <value>휴식 시작, 집중 모드 켜기/끄기, 일시 중지를 할 수 있어요. 앱마다 한 번만 물어봐요</value>
+  </data>
+  <data name="Settings_CrashReports" xml:space="preserve">
+    <value>충돌 보고서 보내기</value>
+  </data>
+  <data name="Settings_CrashReportsSub" xml:space="preserve">
+    <value>앱이 충돌하면 보고서를 보내 문제 해결을 도와주세요</value>
+  </data>
+  <data name="Settings_AppsAllowed" xml:space="preserve">
+    <value>허용한 앱</value>
+  </data>
+  <data name="Settings_AppsAllowedSub" xml:space="preserve">
+    <value>Desk Pal을 바꿀 수 있는 앱이에요. 삭제하면 다시 물어봐요</value>
+  </data>
+  <data name="Settings_OpenPortal" xml:space="preserve">
+    <value>Automation Portal 열기</value>
+  </data>
+  <data name="Settings_GetPortal" xml:space="preserve">
+    <value>Automation Portal 받기</value>
+  </data>
+  <data name="Settings_None" xml:space="preserve">
+    <value>아직 없어요</value>
+  </data>
+  <data name="Settings_Remove" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="Settings_RemoveAccessible" xml:space="preserve">
+    <value>{0} 삭제</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Settings_SkippedOne" xml:space="preserve">
+    <value>오늘 건너뛴 이벤트 1개 (Automation Portal을 사용할 수 없었어요)</value>
+  </data>
+  <data name="Settings_SkippedMany" xml:space="preserve">
+    <value>오늘 건너뛴 이벤트 {0}개 (Automation Portal을 사용할 수 없었어요)</value>
+  </data>
+  <data name="Settings_Start" xml:space="preserve">
+    <value>시작</value>
+    <comment>Time picker header for the start of the working day</comment>
+  </data>
+  <data name="Settings_End" xml:space="preserve">
+    <value>종료</value>
+    <comment>Time picker header for the end of the working day</comment>
+  </data>
+  <data name="Settings_DayStart" xml:space="preserve">
+    <value>근무 시작</value>
+  </data>
+  <data name="Settings_DayEnd" xml:space="preserve">
+    <value>근무 종료</value>
+  </data>
+  <data name="Settings_WorkingHoursSub" xml:space="preserve">
+    <value>알림은 이 요일과 시간에만 와요</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</root>

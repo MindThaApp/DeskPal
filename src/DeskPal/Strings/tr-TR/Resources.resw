@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Home_Greeting_Night" xml:space="preserve">
+    <value>Hâlâ uyanık mısın? Bu gece gözlerine iyi bak.</value>
+    <comment>Greeting before 5:00</comment>
+  </data>
+  <data name="Home_Greeting_Morning" xml:space="preserve">
+    <value>Günaydın! Güzel bir güne hazır mısın?</value>
+    <comment>Greeting 5:00-11:59</comment>
+  </data>
+  <data name="Home_Greeting_Afternoon" xml:space="preserve">
+    <value>Tünaydın! Küçük bir esneme iyi gelir.</value>
+    <comment>Greeting 12:00-16:59</comment>
+  </data>
+  <data name="Home_Greeting_Evening" xml:space="preserve">
+    <value>İyi akşamlar! Bugün harikaydın.</value>
+    <comment>Greeting 17:00-21:59</comment>
+  </data>
+  <data name="Home_Greeting_Late" xml:space="preserve">
+    <value>Geç oldu. Yavaş yavaş dinlenme vakti mi?</value>
+    <comment>Greeting from 22:00</comment>
+  </data>
+  <data name="Home_NextNothing" xml:space="preserve">
+    <value>Planlanmış bir şey yok</value>
+  </data>
+  <data name="Home_Kind_Eyes" xml:space="preserve">
+    <value>Göz molası</value>
+    <comment>Kind of break in the next-up line</comment>
+  </data>
+  <data name="Home_Kind_Walk" xml:space="preserve">
+    <value>Yürüyüş</value>
+  </data>
+  <data name="Home_Kind_Stretch" xml:space="preserve">
+    <value>Esneme</value>
+  </data>
+  <data name="Home_NextAt" xml:space="preserve">
+    <value>{0}, saat {1}</value>
+    <comment>{0} is the kind of break, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Home_NoHolds" xml:space="preserve">
+    <value>Bekletme yok</value>
+  </data>
+  <data name="Home_Holding" xml:space="preserve">
+    <value>Bekletiliyor: {0}</value>
+    <comment>{0} is a comma-separated list of reasons reminders are on hold</comment>
+  </data>
+  <data name="Home_Counts" xml:space="preserve">
+    <value>Esneme {0}   Göz molası {1}   Yürüyüş {2}</value>
+    <comment>Keep the wide gaps between items</comment>
+  </data>
+  <data name="Home_PausedUntil" xml:space="preserve">
+    <value>{0} saatine kadar duraklatıldı</value>
+    <comment>{0} is a time or "tomorrow 09:00"</comment>
+  </data>
+  <data name="Home_Tomorrow" xml:space="preserve">
+    <value>yarın {0}</value>
+    <comment>{0} is a time such as 09:00</comment>
+  </data>
+  <data name="Home_Held" xml:space="preserve">
+    <value>Bekletildi: {0}</value>
+  </data>
+  <data name="Home_NextLine" xml:space="preserve">
+    <value>Sıradaki: {0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Main_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Main_Nav_Home" xml:space="preserve">
+    <value>Ana sayfa</value>
+  </data>
+  <data name="Main_Nav_Today" xml:space="preserve">
+    <value>Bugün</value>
+  </data>
+  <data name="Main_Nav_Bloop" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Main_Nav_Garden" xml:space="preserve">
+    <value>Bahçe</value>
+  </data>
+  <data name="Main_Nav_About" xml:space="preserve">
+    <value>Hakkında</value>
+  </data>
+  <data name="Today_Title" xml:space="preserve">
+    <value>Bugün</value>
+  </data>
+  <data name="Today_NextUp" xml:space="preserve">
+    <value>Sıradaki</value>
+  </data>
+  <data name="Today_DoneToday" xml:space="preserve">
+    <value>Bugün yapılanlar</value>
+  </data>
+  <data name="Today_Last7" xml:space="preserve">
+    <value>Son 7 gün</value>
+  </data>
+  <data name="Today_HistoryComingSoon" xml:space="preserve">
+    <value>Geçmiş yakında geliyor.</value>
+  </data>
+  <data name="Today_Stretches" xml:space="preserve">
+    <value>Bugünkü esnemeler: {0}</value>
+  </data>
+  <data name="Today_EyeBreaks" xml:space="preserve">
+    <value>Bugünkü göz molaları: {0}</value>
+  </data>
+  <data name="Today_Walks" xml:space="preserve">
+    <value>Bugünkü yürüyüşler: {0}</value>
+  </data>
+  <data name="Bloop_Title" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Bloop_Style_Flat" xml:space="preserve">
+    <value>Düz</value>
+  </data>
+  <data name="Bloop_Style_FlatNote" xml:space="preserve">
+    <value>Sade ve basit</value>
+  </data>
+  <data name="Bloop_Style_Soft3d" xml:space="preserve">
+    <value>Yumuşak 3D</value>
+  </data>
+  <data name="Bloop_Style_Soft3dNote" xml:space="preserve">
+    <value>Yuvarlak ve parlak</value>
+  </data>
+  <data name="Bloop_Style_3d" xml:space="preserve">
+    <value>3D (beta)</value>
+  </data>
+  <data name="Bloop_Style_3dNote" xml:space="preserve">
+    <value>Canlı ve dürtülebilir, ekran kartını kullanır</value>
+  </data>
+  <data name="Bloop_Sounds" xml:space="preserve">
+    <value>Bloop sesleri</value>
+  </data>
+  <data name="Common_On" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="Common_Off" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="Bloop_Look" xml:space="preserve">
+    <value>Görünüm</value>
+  </data>
+  <data name="Bloop_Play" xml:space="preserve">
+    <value>Oyun</value>
+  </data>
+  <data name="Bloop_PlayText" xml:space="preserve">
+    <value>Ana sayfada Bloop'un karnına, kafasına, yanaklarına, ellerine veya ayaklarına dokun, arka arkaya birkaç kez dokun, basılı tut, ileri geri sev ya da üzerinden kaydır. Her biri ayrı bir tepki verir ve gözleri imlecini takip eder.</value>
+    <comment>Bloop is the name of the mascot; do not translate</comment>
+  </data>
+  <data name="Bloop_Bond" xml:space="preserve">
+    <value>Bağ</value>
+  </data>
+  <data name="Bloop_BondText" xml:space="preserve">
+    <value>Bağ seviyesi: yakında.</value>
+  </data>
+  <data name="Bloop_Evolution" xml:space="preserve">
+    <value>Evrim</value>
+  </data>
+  <data name="Bloop_EvolutionText" xml:space="preserve">
+    <value>Evrim: yakında.</value>
+  </data>
+  <data name="Garden_Title" xml:space="preserve">
+    <value>Bahçe</value>
+  </data>
+  <data name="Garden_Intro" xml:space="preserve">
+    <value>Kendine iyi baktıkça bahçen büyür.</value>
+  </data>
+  <data name="Garden_Seedling" xml:space="preserve">
+    <value>Fide</value>
+  </data>
+  <data name="Garden_Young" xml:space="preserve">
+    <value>Genç</value>
+  </data>
+  <data name="Garden_Bushy" xml:space="preserve">
+    <value>Gür</value>
+  </data>
+  <data name="Garden_Bloom" xml:space="preserve">
+    <value>Çiçek açmış</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>Desk Pal hakkında</value>
+  </data>
+  <data name="About_Tagline" xml:space="preserve">
+    <value>Bloop'tan nazik hareket ve göz molası hatırlatmaları.</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Sürüm {0}</value>
+    <comment>{0} is the version number</comment>
+  </data>
+  <data name="About_CrashOn" xml:space="preserve">
+    <value>açık</value>
+    <comment>Fills the {0} in "Send crash reports: {0} (change in Settings)"</comment>
+  </data>
+  <data name="About_CrashOff" xml:space="preserve">
+    <value>kapalı</value>
+  </data>
+  <data name="About_CrashAsk" xml:space="preserve">
+    <value>önce sor</value>
+  </data>
+  <data name="About_CrashLink" xml:space="preserve">
+    <value>Çökme raporlarını gönder: {0} (Ayarlar'dan değiştir)</value>
+  </data>
+  <data name="Common_Pause30" xml:space="preserve">
+    <value>30 dk duraklat</value>
+    <comment>Button; the number is a fixed 30 minutes</comment>
+  </data>
+  <data name="Common_Resume" xml:space="preserve">
+    <value>Devam et</value>
+  </data>
+  <data name="Common_Done" xml:space="preserve">
+    <value>Tamam</value>
+  </data>
+  <data name="Home_Stage.AutomationProperties.Name" xml:space="preserve">
+    <value>Bloop, dokun, basılı tut, sev veya kaydır</value>
+    <comment>Accessible name of the interactive mascot area</comment>
+  </data>
+  <data name="Home_SproutHit.AutomationProperties.Name" xml:space="preserve">
+    <value>Sprout</value>
+    <comment>Sprout is the plant companion's name</comment>
+  </data>
+  <data name="Home_NextUpHeader.Text" xml:space="preserve">
+    <value>Sıradaki</value>
+  </data>
+  <data name="Home_TodayHeader.Text" xml:space="preserve">
+    <value>Bugün</value>
+  </data>
+  <data name="Home_QuickActionsHeader.Text" xml:space="preserve">
+    <value>Hızlı işlemler</value>
+  </data>
+  <data name="Home_StretchNow.Content" xml:space="preserve">
+    <value>Şimdi esne</value>
+  </data>
+  <data name="Home_EyeNow.Content" xml:space="preserve">
+    <value>Şimdi göz molası</value>
+  </data>
+  <data name="Home_OpenSettings.Content" xml:space="preserve">
+    <value>Ayarları aç</value>
+  </data>
+  <data name="Home_SoundsOn" xml:space="preserve">
+    <value>Sesler açık</value>
+  </data>
+  <data name="Home_SoundsOff" xml:space="preserve">
+    <value>Sesler kapalı</value>
+  </data>
+  <data name="Home_SoundsOnAccessible" xml:space="preserve">
+    <value>Bloop sesleri açık, kapatmak için tıkla</value>
+  </data>
+  <data name="Home_SoundsOffAccessible" xml:space="preserve">
+    <value>Bloop sesleri kapalı, açmak için tıkla</value>
+  </data>
+  <data name="Quick_Stat_Stretches" xml:space="preserve">
+    <value>Esneme</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_EyeBreaks" xml:space="preserve">
+    <value>Göz molası</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_Walks" xml:space="preserve">
+    <value>Yürüyüş</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_StatAccessible" xml:space="preserve">
+    <value>{0}: bugün {2} hedefin {1} tanesi</value>
+    <comment>{0} is the stat label, {1} done, {2} goal</comment>
+  </data>
+  <data name="Quick_StatAccessibleNoGoal" xml:space="preserve">
+    <value>{0}: bugün {1}, hedef yok</value>
+  </data>
+  <data name="Quick_SoundsOnAccessible" xml:space="preserve">
+    <value>Etkileşim sesleri açık. Kapat</value>
+  </data>
+  <data name="Quick_SoundsOffAccessible" xml:space="preserve">
+    <value>Etkileşim sesleri kapalı. Aç</value>
+  </data>
+  <data name="Quick_ResumeAccessible" xml:space="preserve">
+    <value>Hatırlatmalara devam et</value>
+  </data>
+  <data name="Quick_Pause30Accessible" xml:space="preserve">
+    <value>30 dakika duraklat</value>
+  </data>
+  <data name="Quick_StretchButton.Content" xml:space="preserve">
+    <value>Şimdi esne</value>
+  </data>
+  <data name="Quick_StretchButton.AutomationProperties.Name" xml:space="preserve">
+    <value>Şimdi esne</value>
+  </data>
+  <data name="Quick_EyeButton.Content" xml:space="preserve">
+    <value>Göz molası</value>
+    <comment>Keep short; button</comment>
+  </data>
+  <data name="Quick_EyeButton.AutomationProperties.Name" xml:space="preserve">
+    <value>Göz molası</value>
+  </data>
+  <data name="Quick_OpenLink.Content" xml:space="preserve">
+    <value>Desk Pal'ı aç &gt;</value>
+  </data>
+  <data name="Quick_OpenLink.AutomationProperties.Name" xml:space="preserve">
+    <value>Desk Pal'ı aç</value>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>Desk Pal'ı aç</value>
+  </data>
+  <data name="Tray_StretchNow" xml:space="preserve">
+    <value>Şimdi esne</value>
+  </data>
+  <data name="Tray_Pause" xml:space="preserve">
+    <value>Duraklat</value>
+  </data>
+  <data name="Tray_Pause30" xml:space="preserve">
+    <value>30 dk</value>
+  </data>
+  <data name="Tray_Pause1h" xml:space="preserve">
+    <value>1 saat</value>
+  </data>
+  <data name="Tray_PauseTomorrow" xml:space="preserve">
+    <value>Yarına kadar</value>
+  </data>
+  <data name="Tray_Resume" xml:space="preserve">
+    <value>Devam et</value>
+  </data>
+  <data name="Tray_Style" xml:space="preserve">
+    <value>Stil</value>
+  </data>
+  <data name="Tray_AnimateIcon" xml:space="preserve">
+    <value>Tepsi simgesini canlandır</value>
+  </data>
+  <data name="Tray_CrashReports" xml:space="preserve">
+    <value>Çökme raporlarını gönder</value>
+  </data>
+  <data name="Tray_Settings" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>Çıkış</value>
+  </data>
+  <data name="Tray_NextUp" xml:space="preserve">
+    <value>Sıradaki: {0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Tray_Today" xml:space="preserve">
+    <value>Bugün: {0} esneme · {1} göz molası · {2} yürüyüş</value>
+  </data>
+  <data name="Tray_On" xml:space="preserve">
+    <value>{0}, açık</value>
+    <comment>Accessible name of a toggle row</comment>
+  </data>
+  <data name="Tray_Off" xml:space="preserve">
+    <value>{0}, kapalı</value>
+  </data>
+  <data name="Eye_Pill" xml:space="preserve">
+    <value>6 m uzağa bak · {0} sn</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Settings_WindowTitle" xml:space="preserve">
+    <value>Desk Pal Ayarları</value>
+  </data>
+  <data name="Approval_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Approval_Allow" xml:space="preserve">
+    <value>İzin ver</value>
+  </data>
+  <data name="Approval_NotNow" xml:space="preserve">
+    <value>Şimdi değil</value>
+  </data>
+  <data name="Approval_Question" xml:space="preserve">
+    <value>{0} uygulamasının Desk Pal'ı denetlemesine izin verilsin mi?</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Approval_Body" xml:space="preserve">
+    <value>{0}, molaları başlatmak, odağı açıp kapatmak ve hatırlatmalarını duraklatmak istiyor. Desk Pal her uygulamaya yalnızca bir kez sorar; istediğin zaman Ayarlar'dan kaldırabilirsin.</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Buddy_Title" xml:space="preserve">
+    <value>Bloop</value>
+    <comment>Window title and accessible name of the floating mascot</comment>
+  </data>
+  <data name="App_TrayTooltip" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Tray icon tooltip</comment>
+  </data>
+  <data name="Tray_Tooltip_Held" xml:space="preserve">
+    <value>Desk Pal: bekletiliyor ({0})</value>
+    <comment>{0} is the reason reminders are on hold</comment>
+  </data>
+  <data name="Tray_Tooltip_Next" xml:space="preserve">
+    <value>Desk Pal: sıradaki {0}, {1}</value>
+    <comment>{0} is the kind of break in lower case, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Tray_Kind_Eyes" xml:space="preserve">
+    <value>göz molası</value>
+    <comment>Lower case, used inside a sentence</comment>
+  </data>
+  <data name="Tray_Kind_Walk" xml:space="preserve">
+    <value>yürüyüş</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Stretch" xml:space="preserve">
+    <value>esneme</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Water" xml:space="preserve">
+    <value>su molası</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Breathe" xml:space="preserve">
+    <value>nefes molası</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Hold_Dnd" xml:space="preserve">
+    <value>Odak Yardımı veya tam ekran</value>
+    <comment>Reason reminders are on hold when Windows Focus Assist or a full-screen app is active</comment>
+  </data>
+  <data name="Toast_Start" xml:space="preserve">
+    <value>Başlat</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_Snooze10" xml:space="preserve">
+    <value>10 dk sonra</value>
+    <comment>Toast button; snoozes the reminder</comment>
+  </data>
+  <data name="Toast_Skip" xml:space="preserve">
+    <value>Atla</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_StillHere" xml:space="preserve">
+    <value>Desk Pal hâlâ tepside.</value>
+    <comment>Shown when the main window is closed</comment>
+  </data>
+  <data name="Nudge_CountdownSeconds" xml:space="preserve">
+    <value>{0} sn</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Nudge_BonusHint" xml:space="preserve">
+    <value>Bonus için esnemeyi sonuna kadar yap</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Nudge_BonusDone" xml:space="preserve">
+    <value>Tam esneme! Harika</value>
+    <comment>Shown when the countdown reaches zero; keep short</comment>
+  </data>
+  <data name="Nudge_More.AutomationProperties.Name" xml:space="preserve">
+    <value>Diğer seçenekler</value>
+  </data>
+  <data name="Nudge_More.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Diğer</value>
+  </data>
+  <data name="Nudge_Skip.Text" xml:space="preserve">
+    <value>Bunu atla</value>
+    <comment>Menu item</comment>
+  </data>
+  <data name="Nudge_Done.Content" xml:space="preserve">
+    <value>Tamam</value>
+  </data>
+  <data name="Nudge_Snooze.Content" xml:space="preserve">
+    <value>Ertele</value>
+  </data>
+  <data name="Nudge_Snooze.AutomationProperties.Name" xml:space="preserve">
+    <value>10 dakika ertele</value>
+  </data>
+  <data name="Nudge_Snooze.ToolTipService.ToolTip" xml:space="preserve">
+    <value>10 dakika ertele</value>
+  </data>
+  <data name="Nudge_BonusHintText.Text" xml:space="preserve">
+    <value>Bonus için esnemeyi sonuna kadar yap</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Ayarlar</value>
+    <comment>Page title</comment>
+  </data>
+  <data name="Settings_Section_Reminders" xml:space="preserve">
+    <value>Hatırlatmalar</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_WorkingHours" xml:space="preserve">
+    <value>Çalışma saatleri</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Appearance" xml:space="preserve">
+    <value>Görünüm</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Portal" xml:space="preserve">
+    <value>Automation Portal</value>
+    <comment>Section heading; Automation Portal is an app name</comment>
+  </data>
+  <data name="Settings_Section_Privacy" xml:space="preserve">
+    <value>Gizlilik</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Movement_Name" xml:space="preserve">
+    <value>Hareket</value>
+    <comment>Reminder name; combined into "{name} — {what}"</comment>
+  </data>
+  <data name="Settings_Movement_What" xml:space="preserve">
+    <value>Esne veya ayağa kalk</value>
+  </data>
+  <data name="Settings_Movement_Reason" xml:space="preserve">
+    <value>Oturmayı yaklaşık her 30 dakikada bir bölmek, tutukluğu azaltmak için yaygın olarak önerilir.</value>
+  </data>
+  <data name="Settings_Eyes_Name" xml:space="preserve">
+    <value>Gözler</value>
+  </data>
+  <data name="Settings_Eyes_What" xml:space="preserve">
+    <value>20-20-20 göz molası (sessiz bir işaret)</value>
+  </data>
+  <data name="Settings_Eyes_Reason" xml:space="preserve">
+    <value>20-20-20 alışkanlığı: her 20 dakikada bir, 20 saniye boyunca yaklaşık 6 metre uzağa bak.</value>
+  </data>
+  <data name="Settings_Water_Name" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="Settings_Water_What" xml:space="preserve">
+    <value>Biraz su iç</value>
+  </data>
+  <data name="Settings_Water_Reason" xml:space="preserve">
+    <value>Küçük ve düzenli yudumlar, sonradan telafi etmekten daha kolaydır.</value>
+  </data>
+  <data name="Settings_Walk_Name" xml:space="preserve">
+    <value>Yürüyüş</value>
+  </data>
+  <data name="Settings_Walk_What" xml:space="preserve">
+    <value>Esneme yerine kısa bir yürüyüş</value>
+  </data>
+  <data name="Settings_Walk_Reason" xml:space="preserve">
+    <value>Birkaç saatte bir kısa bir yürüyüş, kafanı tazelemene yardımcı olur.</value>
+  </data>
+  <data name="Settings_SitStand_Name" xml:space="preserve">
+    <value>Otur / kalk</value>
+  </data>
+  <data name="Settings_SitStand_What" xml:space="preserve">
+    <value>Ayakta çalışma masası için</value>
+  </data>
+  <data name="Settings_SitStand_Reason" xml:space="preserve">
+    <value>Ayakta çalışma masan varsa, her 30-60 dakikada bir pozisyon değiştirmek seni rahat tutar.</value>
+  </data>
+  <data name="Settings_Minutes" xml:space="preserve">
+    <value>{0} dk</value>
+    <comment>{0} is a number of minutes</comment>
+  </data>
+  <data name="Settings_WaterWithBreaks" xml:space="preserve">
+    <value>Hareket molalarıyla birlikte</value>
+  </data>
+  <data name="Settings_WaterHourly" xml:space="preserve">
+    <value>Her 60 dk</value>
+  </data>
+  <data name="Settings_AfterStretches" xml:space="preserve">
+    <value>{0} esnemeden sonra</value>
+  </data>
+  <data name="Settings_EveryMinutes" xml:space="preserve">
+    <value>Her {0} dk</value>
+  </data>
+  <data name="Settings_OffByDefault" xml:space="preserve">
+    <value>Varsayılan olarak kapalı</value>
+    <comment>Shown after "Recommended:" for sit / stand</comment>
+  </data>
+  <data name="Settings_RecommendedTag" xml:space="preserve">
+    <value> ★ Önerilen</value>
+    <comment>Appended to the recommended choice; keep the leading space</comment>
+  </data>
+  <data name="Settings_RecommendedLine" xml:space="preserve">
+    <value>Önerilen: {0}</value>
+    <comment>{0} is a short option label in lower case</comment>
+  </data>
+  <data name="Settings_ResetAll" xml:space="preserve">
+    <value>Hepsini önerilene sıfırla</value>
+  </data>
+  <data name="Settings_ResetAllAccessible" xml:space="preserve">
+    <value>Tüm hatırlatmaları önerilene sıfırla</value>
+  </data>
+  <data name="Settings_NameDash" xml:space="preserve">
+    <value>{0} - {1}</value>
+    <comment>{0} is the reminder name, {1} what it is for</comment>
+  </data>
+  <data name="Settings_ReminderOnOff" xml:space="preserve">
+    <value>{0} hatırlatması açık veya kapalı</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Frequency" xml:space="preserve">
+    <value>{0} sıklığı</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Custom" xml:space="preserve">
+    <value>Özel.</value>
+    <comment>Combo box item for a custom number of minutes</comment>
+  </data>
+  <data name="Settings_CustomMinutesHeader" xml:space="preserve">
+    <value>Dakika (15-120)</value>
+    <comment>Keep the range in step with the app limits 15 and 120</comment>
+  </data>
+  <data name="Settings_CustomMinutesAccessible" xml:space="preserve">
+    <value>{0} özel dakika</value>
+  </data>
+  <data name="Settings_Reset" xml:space="preserve">
+    <value>Sıfırla</value>
+    <comment>Link that resets one reminder to the recommended setting</comment>
+  </data>
+  <data name="Settings_ResetAccessible" xml:space="preserve">
+    <value>{0} ayarını önerilene sıfırla</value>
+  </data>
+  <data name="Settings_NudgeStyle" xml:space="preserve">
+    <value>Hatırlatma stili</value>
+  </data>
+  <data name="Settings_NudgeStyleSub" xml:space="preserve">
+    <value>Hatırlatmanın nasıl görüneceği</value>
+  </data>
+  <data name="Settings_Style_Card" xml:space="preserve">
+    <value>Kart</value>
+  </data>
+  <data name="Settings_Style_Toast" xml:space="preserve">
+    <value>Bildirim</value>
+    <comment>Windows notification</comment>
+  </data>
+  <data name="Settings_HideAfter" xml:space="preserve">
+    <value>Hatırlatmaları şu süre sonra gizle</value>
+  </data>
+  <data name="Settings_HideAfterSub" xml:space="preserve">
+    <value>Dokunmadığın hatırlatma kartı kendiliğinden gizlenir</value>
+  </data>
+  <data name="Settings_Seconds" xml:space="preserve">
+    <value>{0} sn</value>
+    <comment>{0} is a number of seconds</comment>
+  </data>
+  <data name="Settings_AvatarStyle" xml:space="preserve">
+    <value>Avatar stili</value>
+  </data>
+  <data name="Settings_AvatarStyleSub" xml:space="preserve">
+    <value>Bloop'un nasıl çizildiği</value>
+  </data>
+  <data name="Settings_AnimateTray" xml:space="preserve">
+    <value>Tepsi simgesini canlandır</value>
+  </data>
+  <data name="Settings_AnimateTraySub" xml:space="preserve">
+    <value>Bir hatırlatma gösterilirken tepsi simgesi hareket etsin</value>
+  </data>
+  <data name="Settings_BloopSounds" xml:space="preserve">
+    <value>Bloop sesleri</value>
+  </data>
+  <data name="Settings_BloopSoundsSub" xml:space="preserve">
+    <value>Bloop'u dürttüğünde, sevdiğinde veya kaydırdığında yumuşak sesler çıkar. Görüşmeler ve Odak Yardımı sırasında sessiz kalır</value>
+  </data>
+  <data name="Settings_ShareEvents" xml:space="preserve">
+    <value>Olayları Automation Portal ile paylaş</value>
+  </data>
+  <data name="Settings_ShareEventsSub" xml:space="preserve">
+    <value>Kısayolların bu bilgisayardaki molalara, odağa ve duraklatmalara tepki vermesini sağlar. Yalnızca sayılar ve saatler paylaşılır</value>
+  </data>
+  <data name="Settings_AllowControl" xml:space="preserve">
+    <value>Automation Portal'ın ve diğer uygulamaların Desk Pal'ı denetlemesine izin ver</value>
+    <comment>Also quoted by an error message in the app; keep wording in step</comment>
+  </data>
+  <data name="Settings_AllowControlSub" xml:space="preserve">
+    <value>Mola başlatabilir, odağı açıp kapatabilir ve duraklatabilirler. Her uygulama sana bir kez sorar</value>
+  </data>
+  <data name="Settings_CrashReports" xml:space="preserve">
+    <value>Çökme raporlarını gönder</value>
+  </data>
+  <data name="Settings_CrashReportsSub" xml:space="preserve">
+    <value>Uygulama çöktüğünde rapor göndererek sorunların giderilmesine yardım et</value>
+  </data>
+  <data name="Settings_AppsAllowed" xml:space="preserve">
+    <value>İzin verdiğin uygulamalar</value>
+  </data>
+  <data name="Settings_AppsAllowedSub" xml:space="preserve">
+    <value>Desk Pal'ı değiştirebilen uygulamalar. Yeniden sorulması için birini kaldır</value>
+  </data>
+  <data name="Settings_OpenPortal" xml:space="preserve">
+    <value>Automation Portal'ı aç</value>
+  </data>
+  <data name="Settings_GetPortal" xml:space="preserve">
+    <value>Automation Portal'ı edin</value>
+  </data>
+  <data name="Settings_None" xml:space="preserve">
+    <value>Henüz yok</value>
+  </data>
+  <data name="Settings_Remove" xml:space="preserve">
+    <value>Kaldır</value>
+  </data>
+  <data name="Settings_RemoveAccessible" xml:space="preserve">
+    <value>{0} uygulamasını kaldır</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Settings_SkippedOne" xml:space="preserve">
+    <value>Bugün 1 olay atlandı (Automation Portal kullanılamıyordu)</value>
+  </data>
+  <data name="Settings_SkippedMany" xml:space="preserve">
+    <value>Bugün {0} olay atlandı (Automation Portal kullanılamıyordu)</value>
+  </data>
+  <data name="Settings_Start" xml:space="preserve">
+    <value>Başlangıç</value>
+    <comment>Time picker header for the start of the working day</comment>
+  </data>
+  <data name="Settings_End" xml:space="preserve">
+    <value>Bitiş</value>
+    <comment>Time picker header for the end of the working day</comment>
+  </data>
+  <data name="Settings_DayStart" xml:space="preserve">
+    <value>Çalışma günü başlangıcı</value>
+  </data>
+  <data name="Settings_DayEnd" xml:space="preserve">
+    <value>Çalışma günü bitişi</value>
+  </data>
+  <data name="Settings_WorkingHoursSub" xml:space="preserve">
+    <value>Hatırlatmalar yalnızca bu gün ve saatlerde gelir</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</root>

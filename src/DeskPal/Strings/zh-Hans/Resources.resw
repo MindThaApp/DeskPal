@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Home_Greeting_Night" xml:space="preserve">
+    <value>还没睡吗？今晚要好好爱护眼睛哦。</value>
+    <comment>Greeting before 5:00</comment>
+  </data>
+  <data name="Home_Greeting_Morning" xml:space="preserve">
+    <value>早上好！准备好迎接美好的一天了吗？</value>
+    <comment>Greeting 5:00-11:59</comment>
+  </data>
+  <data name="Home_Greeting_Afternoon" xml:space="preserve">
+    <value>下午好！稍微伸展一下会很舒服。</value>
+    <comment>Greeting 12:00-16:59</comment>
+  </data>
+  <data name="Home_Greeting_Evening" xml:space="preserve">
+    <value>晚上好！你今天做得很棒。</value>
+    <comment>Greeting 17:00-21:59</comment>
+  </data>
+  <data name="Home_Greeting_Late" xml:space="preserve">
+    <value>夜深了。是不是该准备休息了？</value>
+    <comment>Greeting from 22:00</comment>
+  </data>
+  <data name="Home_NextNothing" xml:space="preserve">
+    <value>暂无安排</value>
+  </data>
+  <data name="Home_Kind_Eyes" xml:space="preserve">
+    <value>护眼休息</value>
+    <comment>Kind of break in the next-up line</comment>
+  </data>
+  <data name="Home_Kind_Walk" xml:space="preserve">
+    <value>散步</value>
+  </data>
+  <data name="Home_Kind_Stretch" xml:space="preserve">
+    <value>伸展</value>
+  </data>
+  <data name="Home_NextAt" xml:space="preserve">
+    <value>{1} {0}</value>
+    <comment>{0} is the kind of break, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Home_NoHolds" xml:space="preserve">
+    <value>无暂停</value>
+  </data>
+  <data name="Home_Holding" xml:space="preserve">
+    <value>暂缓中：{0}</value>
+    <comment>{0} is a comma-separated list of reasons reminders are on hold</comment>
+  </data>
+  <data name="Home_Counts" xml:space="preserve">
+    <value>伸展 {0}   护眼 {1}   散步 {2}</value>
+    <comment>Keep the wide gaps between items</comment>
+  </data>
+  <data name="Home_PausedUntil" xml:space="preserve">
+    <value>已暂停至 {0}</value>
+    <comment>{0} is a time or "tomorrow 09:00"</comment>
+  </data>
+  <data name="Home_Tomorrow" xml:space="preserve">
+    <value>明天 {0}</value>
+    <comment>{0} is a time such as 09:00</comment>
+  </data>
+  <data name="Home_Held" xml:space="preserve">
+    <value>暂缓：{0}</value>
+  </data>
+  <data name="Home_NextLine" xml:space="preserve">
+    <value>下一个：{0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Main_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Main_Nav_Home" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="Main_Nav_Today" xml:space="preserve">
+    <value>今天</value>
+  </data>
+  <data name="Main_Nav_Bloop" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Main_Nav_Garden" xml:space="preserve">
+    <value>花园</value>
+  </data>
+  <data name="Main_Nav_About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Today_Title" xml:space="preserve">
+    <value>今天</value>
+  </data>
+  <data name="Today_NextUp" xml:space="preserve">
+    <value>接下来</value>
+  </data>
+  <data name="Today_DoneToday" xml:space="preserve">
+    <value>今日完成</value>
+  </data>
+  <data name="Today_Last7" xml:space="preserve">
+    <value>最近 7 天</value>
+  </data>
+  <data name="Today_HistoryComingSoon" xml:space="preserve">
+    <value>历史记录即将推出。</value>
+  </data>
+  <data name="Today_Stretches" xml:space="preserve">
+    <value>今日伸展：{0}</value>
+  </data>
+  <data name="Today_EyeBreaks" xml:space="preserve">
+    <value>今日护眼：{0}</value>
+  </data>
+  <data name="Today_Walks" xml:space="preserve">
+    <value>今日散步：{0}</value>
+  </data>
+  <data name="Bloop_Title" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Bloop_Style_Flat" xml:space="preserve">
+    <value>扁平</value>
+  </data>
+  <data name="Bloop_Style_FlatNote" xml:space="preserve">
+    <value>简洁清爽</value>
+  </data>
+  <data name="Bloop_Style_Soft3d" xml:space="preserve">
+    <value>柔和 3D</value>
+  </data>
+  <data name="Bloop_Style_Soft3dNote" xml:space="preserve">
+    <value>圆润有光泽</value>
+  </data>
+  <data name="Bloop_Style_3d" xml:space="preserve">
+    <value>3D（测试版）</value>
+  </data>
+  <data name="Bloop_Style_3dNote" xml:space="preserve">
+    <value>生动可戳，会用到显卡</value>
+  </data>
+  <data name="Bloop_Sounds" xml:space="preserve">
+    <value>Bloop 音效</value>
+  </data>
+  <data name="Common_On" xml:space="preserve">
+    <value>开</value>
+  </data>
+  <data name="Common_Off" xml:space="preserve">
+    <value>关</value>
+  </data>
+  <data name="Bloop_Look" xml:space="preserve">
+    <value>外观</value>
+  </data>
+  <data name="Bloop_Play" xml:space="preserve">
+    <value>玩耍</value>
+  </data>
+  <data name="Bloop_PlayText" xml:space="preserve">
+    <value>在主页上，你可以点点 Bloop 的肚子、脑袋、脸颊、手或脚，连续点几下，长按，来回抚摸，或者划过它。每种操作都有不同的反应，它的眼睛还会跟着你的指针转。</value>
+    <comment>Bloop is the name of the mascot; do not translate</comment>
+  </data>
+  <data name="Bloop_Bond" xml:space="preserve">
+    <value>亲密度</value>
+  </data>
+  <data name="Bloop_BondText" xml:space="preserve">
+    <value>亲密度等级：即将推出。</value>
+  </data>
+  <data name="Bloop_Evolution" xml:space="preserve">
+    <value>进化</value>
+  </data>
+  <data name="Bloop_EvolutionText" xml:space="preserve">
+    <value>进化：即将推出。</value>
+  </data>
+  <data name="Garden_Title" xml:space="preserve">
+    <value>花园</value>
+  </data>
+  <data name="Garden_Intro" xml:space="preserve">
+    <value>你照顾好自己，花园就会茁壮成长。</value>
+  </data>
+  <data name="Garden_Seedling" xml:space="preserve">
+    <value>幼苗</value>
+  </data>
+  <data name="Garden_Young" xml:space="preserve">
+    <value>小树苗</value>
+  </data>
+  <data name="Garden_Bushy" xml:space="preserve">
+    <value>茂盛</value>
+  </data>
+  <data name="Garden_Bloom" xml:space="preserve">
+    <value>盛开</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>关于 Desk Pal</value>
+  </data>
+  <data name="About_Tagline" xml:space="preserve">
+    <value>来自 Bloop 的轻松活动和护眼休息提醒。</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>版本 {0}</value>
+    <comment>{0} is the version number</comment>
+  </data>
+  <data name="About_CrashOn" xml:space="preserve">
+    <value>开启</value>
+    <comment>Fills the {0} in "Send crash reports: {0} (change in Settings)"</comment>
+  </data>
+  <data name="About_CrashOff" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="About_CrashAsk" xml:space="preserve">
+    <value>先询问</value>
+  </data>
+  <data name="About_CrashLink" xml:space="preserve">
+    <value>发送崩溃报告：{0}（可在设置中更改）</value>
+  </data>
+  <data name="Common_Pause30" xml:space="preserve">
+    <value>暂停 30 分钟</value>
+    <comment>Button; the number is a fixed 30 minutes</comment>
+  </data>
+  <data name="Common_Resume" xml:space="preserve">
+    <value>恢复</value>
+  </data>
+  <data name="Common_Done" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="Home_Stage.AutomationProperties.Name" xml:space="preserve">
+    <value>Bloop，点击、长按、抚摸或划动</value>
+    <comment>Accessible name of the interactive mascot area</comment>
+  </data>
+  <data name="Home_SproutHit.AutomationProperties.Name" xml:space="preserve">
+    <value>Sprout</value>
+    <comment>Sprout is the plant companion's name</comment>
+  </data>
+  <data name="Home_NextUpHeader.Text" xml:space="preserve">
+    <value>接下来</value>
+  </data>
+  <data name="Home_TodayHeader.Text" xml:space="preserve">
+    <value>今天</value>
+  </data>
+  <data name="Home_QuickActionsHeader.Text" xml:space="preserve">
+    <value>快捷操作</value>
+  </data>
+  <data name="Home_StretchNow.Content" xml:space="preserve">
+    <value>现在伸展</value>
+  </data>
+  <data name="Home_EyeNow.Content" xml:space="preserve">
+    <value>现在护眼</value>
+  </data>
+  <data name="Home_OpenSettings.Content" xml:space="preserve">
+    <value>打开设置</value>
+  </data>
+  <data name="Home_SoundsOn" xml:space="preserve">
+    <value>音效已开</value>
+  </data>
+  <data name="Home_SoundsOff" xml:space="preserve">
+    <value>音效已关</value>
+  </data>
+  <data name="Home_SoundsOnAccessible" xml:space="preserve">
+    <value>Bloop 音效已开，点击静音</value>
+  </data>
+  <data name="Home_SoundsOffAccessible" xml:space="preserve">
+    <value>Bloop 音效已关，点击开启</value>
+  </data>
+  <data name="Quick_Stat_Stretches" xml:space="preserve">
+    <value>伸展</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_EyeBreaks" xml:space="preserve">
+    <value>护眼</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_Walks" xml:space="preserve">
+    <value>散步</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_StatAccessible" xml:space="preserve">
+    <value>{0}：今天 {1}/{2}</value>
+    <comment>{0} is the stat label, {1} done, {2} goal</comment>
+  </data>
+  <data name="Quick_StatAccessibleNoGoal" xml:space="preserve">
+    <value>{0}：今天 {1} 次，无目标</value>
+  </data>
+  <data name="Quick_SoundsOnAccessible" xml:space="preserve">
+    <value>互动音效已开。点击关闭</value>
+  </data>
+  <data name="Quick_SoundsOffAccessible" xml:space="preserve">
+    <value>互动音效已关。点击开启</value>
+  </data>
+  <data name="Quick_ResumeAccessible" xml:space="preserve">
+    <value>恢复提醒</value>
+  </data>
+  <data name="Quick_Pause30Accessible" xml:space="preserve">
+    <value>暂停 30 分钟</value>
+  </data>
+  <data name="Quick_StretchButton.Content" xml:space="preserve">
+    <value>现在伸展</value>
+  </data>
+  <data name="Quick_StretchButton.AutomationProperties.Name" xml:space="preserve">
+    <value>现在伸展</value>
+  </data>
+  <data name="Quick_EyeButton.Content" xml:space="preserve">
+    <value>护眼休息</value>
+    <comment>Keep short; button</comment>
+  </data>
+  <data name="Quick_EyeButton.AutomationProperties.Name" xml:space="preserve">
+    <value>护眼休息</value>
+  </data>
+  <data name="Quick_OpenLink.Content" xml:space="preserve">
+    <value>打开 Desk Pal &gt;</value>
+  </data>
+  <data name="Quick_OpenLink.AutomationProperties.Name" xml:space="preserve">
+    <value>打开 Desk Pal</value>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>打开 Desk Pal</value>
+  </data>
+  <data name="Tray_StretchNow" xml:space="preserve">
+    <value>现在伸展</value>
+  </data>
+  <data name="Tray_Pause" xml:space="preserve">
+    <value>暂停</value>
+  </data>
+  <data name="Tray_Pause30" xml:space="preserve">
+    <value>30 分钟</value>
+  </data>
+  <data name="Tray_Pause1h" xml:space="preserve">
+    <value>1 小时</value>
+  </data>
+  <data name="Tray_PauseTomorrow" xml:space="preserve">
+    <value>到明天</value>
+  </data>
+  <data name="Tray_Resume" xml:space="preserve">
+    <value>恢复</value>
+  </data>
+  <data name="Tray_Style" xml:space="preserve">
+    <value>样式</value>
+  </data>
+  <data name="Tray_AnimateIcon" xml:space="preserve">
+    <value>托盘图标动画</value>
+  </data>
+  <data name="Tray_CrashReports" xml:space="preserve">
+    <value>发送崩溃报告</value>
+  </data>
+  <data name="Tray_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Tray_NextUp" xml:space="preserve">
+    <value>下一个：{0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Tray_Today" xml:space="preserve">
+    <value>今天：伸展 {0} 次 · 护眼 {1} 次 · 散步 {2} 次</value>
+  </data>
+  <data name="Tray_On" xml:space="preserve">
+    <value>{0}，开</value>
+    <comment>Accessible name of a toggle row</comment>
+  </data>
+  <data name="Tray_Off" xml:space="preserve">
+    <value>{0}，关</value>
+  </data>
+  <data name="Eye_Pill" xml:space="preserve">
+    <value>看向6米外 · {0} 秒</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Settings_WindowTitle" xml:space="preserve">
+    <value>Desk Pal 设置</value>
+  </data>
+  <data name="Approval_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Approval_Allow" xml:space="preserve">
+    <value>允许</value>
+  </data>
+  <data name="Approval_NotNow" xml:space="preserve">
+    <value>暂不</value>
+  </data>
+  <data name="Approval_Question" xml:space="preserve">
+    <value>允许 {0} 控制 Desk Pal 吗？</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Approval_Body" xml:space="preserve">
+    <value>{0} 想要开始休息、开启或关闭专注模式，以及暂停你的提醒。Desk Pal 对每个应用只询问一次，你可以随时在设置中移除它。</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Buddy_Title" xml:space="preserve">
+    <value>Bloop</value>
+    <comment>Window title and accessible name of the floating mascot</comment>
+  </data>
+  <data name="App_TrayTooltip" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Tray icon tooltip</comment>
+  </data>
+  <data name="Tray_Tooltip_Held" xml:space="preserve">
+    <value>Desk Pal：暂缓（{0}）</value>
+    <comment>{0} is the reason reminders are on hold</comment>
+  </data>
+  <data name="Tray_Tooltip_Next" xml:space="preserve">
+    <value>Desk Pal：下一个{0} {1}</value>
+    <comment>{0} is the kind of break in lower case, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Tray_Kind_Eyes" xml:space="preserve">
+    <value>护眼休息</value>
+    <comment>Lower case, used inside a sentence</comment>
+  </data>
+  <data name="Tray_Kind_Walk" xml:space="preserve">
+    <value>散步</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Stretch" xml:space="preserve">
+    <value>伸展</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Water" xml:space="preserve">
+    <value>喝水休息</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Breathe" xml:space="preserve">
+    <value>呼吸休息</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Hold_Dnd" xml:space="preserve">
+    <value>专注助手或全屏</value>
+    <comment>Reason reminders are on hold when Windows Focus Assist or a full-screen app is active</comment>
+  </data>
+  <data name="Toast_Start" xml:space="preserve">
+    <value>开始</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_Snooze10" xml:space="preserve">
+    <value>10 分钟后</value>
+    <comment>Toast button; snoozes the reminder</comment>
+  </data>
+  <data name="Toast_Skip" xml:space="preserve">
+    <value>跳过</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_StillHere" xml:space="preserve">
+    <value>Desk Pal 还在托盘里。</value>
+    <comment>Shown when the main window is closed</comment>
+  </data>
+  <data name="Nudge_CountdownSeconds" xml:space="preserve">
+    <value>{0} 秒</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Nudge_BonusHint" xml:space="preserve">
+    <value>做完整套伸展可获得奖励</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Nudge_BonusDone" xml:space="preserve">
+    <value>完整伸展！真棒</value>
+    <comment>Shown when the countdown reaches zero; keep short</comment>
+  </data>
+  <data name="Nudge_More.AutomationProperties.Name" xml:space="preserve">
+    <value>更多选项</value>
+  </data>
+  <data name="Nudge_More.ToolTipService.ToolTip" xml:space="preserve">
+    <value>更多</value>
+  </data>
+  <data name="Nudge_Skip.Text" xml:space="preserve">
+    <value>跳过这次</value>
+    <comment>Menu item</comment>
+  </data>
+  <data name="Nudge_Done.Content" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="Nudge_Snooze.Content" xml:space="preserve">
+    <value>稍后</value>
+  </data>
+  <data name="Nudge_Snooze.AutomationProperties.Name" xml:space="preserve">
+    <value>稍后 10 分钟再提醒</value>
+  </data>
+  <data name="Nudge_Snooze.ToolTipService.ToolTip" xml:space="preserve">
+    <value>稍后 10 分钟再提醒</value>
+  </data>
+  <data name="Nudge_BonusHintText.Text" xml:space="preserve">
+    <value>做完整套伸展可获得奖励</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>设置</value>
+    <comment>Page title</comment>
+  </data>
+  <data name="Settings_Section_Reminders" xml:space="preserve">
+    <value>提醒</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_WorkingHours" xml:space="preserve">
+    <value>工作时间</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Appearance" xml:space="preserve">
+    <value>外观</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Portal" xml:space="preserve">
+    <value>Automation Portal</value>
+    <comment>Section heading; Automation Portal is an app name</comment>
+  </data>
+  <data name="Settings_Section_Privacy" xml:space="preserve">
+    <value>隐私</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Movement_Name" xml:space="preserve">
+    <value>活动</value>
+    <comment>Reminder name; combined into "{name} — {what}"</comment>
+  </data>
+  <data name="Settings_Movement_What" xml:space="preserve">
+    <value>伸展或站起来</value>
+  </data>
+  <data name="Settings_Movement_Reason" xml:space="preserve">
+    <value>大约每 30 分钟打断一次久坐，被广泛推荐用来缓解身体僵硬。</value>
+  </data>
+  <data name="Settings_Eyes_Name" xml:space="preserve">
+    <value>眼睛</value>
+  </data>
+  <data name="Settings_Eyes_What" xml:space="preserve">
+    <value>20-20-20 护眼休息（安静提示）</value>
+  </data>
+  <data name="Settings_Eyes_Reason" xml:space="preserve">
+    <value>20-20-20 习惯：每 20 分钟，看向约 6 米外的物体 20 秒。</value>
+  </data>
+  <data name="Settings_Water_Name" xml:space="preserve">
+    <value>喝水</value>
+  </data>
+  <data name="Settings_Water_What" xml:space="preserve">
+    <value>喝点水</value>
+  </data>
+  <data name="Settings_Water_Reason" xml:space="preserve">
+    <value>少量多次地喝，比事后补喝更轻松。</value>
+  </data>
+  <data name="Settings_Walk_Name" xml:space="preserve">
+    <value>散步</value>
+  </data>
+  <data name="Settings_Walk_What" xml:space="preserve">
+    <value>用短暂散步代替伸展</value>
+  </data>
+  <data name="Settings_Walk_Reason" xml:space="preserve">
+    <value>每隔几个小时散散步，有助于恢复精神。</value>
+  </data>
+  <data name="Settings_SitStand_Name" xml:space="preserve">
+    <value>坐 / 站</value>
+  </data>
+  <data name="Settings_SitStand_What" xml:space="preserve">
+    <value>适用于升降桌</value>
+  </data>
+  <data name="Settings_SitStand_Reason" xml:space="preserve">
+    <value>如果你有升降桌，每 30-60 分钟切换一次姿势会更舒服。</value>
+  </data>
+  <data name="Settings_Minutes" xml:space="preserve">
+    <value>{0} 分钟</value>
+    <comment>{0} is a number of minutes</comment>
+  </data>
+  <data name="Settings_WaterWithBreaks" xml:space="preserve">
+    <value>随活动休息一起</value>
+  </data>
+  <data name="Settings_WaterHourly" xml:space="preserve">
+    <value>每 60 分钟</value>
+  </data>
+  <data name="Settings_AfterStretches" xml:space="preserve">
+    <value>每 {0} 次伸展后</value>
+  </data>
+  <data name="Settings_EveryMinutes" xml:space="preserve">
+    <value>每 {0} 分钟</value>
+  </data>
+  <data name="Settings_OffByDefault" xml:space="preserve">
+    <value>默认关闭</value>
+    <comment>Shown after "Recommended:" for sit / stand</comment>
+  </data>
+  <data name="Settings_RecommendedTag" xml:space="preserve">
+    <value> ★ 推荐</value>
+    <comment>Appended to the recommended choice; keep the leading space</comment>
+  </data>
+  <data name="Settings_RecommendedLine" xml:space="preserve">
+    <value>推荐：{0}</value>
+    <comment>{0} is a short option label in lower case</comment>
+  </data>
+  <data name="Settings_ResetAll" xml:space="preserve">
+    <value>全部恢复为推荐设置</value>
+  </data>
+  <data name="Settings_ResetAllAccessible" xml:space="preserve">
+    <value>将所有提醒恢复为推荐设置</value>
+  </data>
+  <data name="Settings_NameDash" xml:space="preserve">
+    <value>{0} - {1}</value>
+    <comment>{0} is the reminder name, {1} what it is for</comment>
+  </data>
+  <data name="Settings_ReminderOnOff" xml:space="preserve">
+    <value>{0}提醒开或关</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Frequency" xml:space="preserve">
+    <value>{0}频率</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Custom" xml:space="preserve">
+    <value>自定义</value>
+    <comment>Combo box item for a custom number of minutes</comment>
+  </data>
+  <data name="Settings_CustomMinutesHeader" xml:space="preserve">
+    <value>分钟（15-120）</value>
+    <comment>Keep the range in step with the app limits 15 and 120</comment>
+  </data>
+  <data name="Settings_CustomMinutesAccessible" xml:space="preserve">
+    <value>{0}自定义分钟数</value>
+  </data>
+  <data name="Settings_Reset" xml:space="preserve">
+    <value>重置</value>
+    <comment>Link that resets one reminder to the recommended setting</comment>
+  </data>
+  <data name="Settings_ResetAccessible" xml:space="preserve">
+    <value>将{0}恢复为推荐设置</value>
+  </data>
+  <data name="Settings_NudgeStyle" xml:space="preserve">
+    <value>提醒样式</value>
+  </data>
+  <data name="Settings_NudgeStyleSub" xml:space="preserve">
+    <value>提醒的显示方式</value>
+  </data>
+  <data name="Settings_Style_Card" xml:space="preserve">
+    <value>卡片</value>
+  </data>
+  <data name="Settings_Style_Toast" xml:space="preserve">
+    <value>通知</value>
+    <comment>Windows notification</comment>
+  </data>
+  <data name="Settings_HideAfter" xml:space="preserve">
+    <value>提醒自动隐藏时间</value>
+  </data>
+  <data name="Settings_HideAfterSub" xml:space="preserve">
+    <value>无人理会的提醒卡片会自行隐藏</value>
+  </data>
+  <data name="Settings_Seconds" xml:space="preserve">
+    <value>{0} 秒</value>
+    <comment>{0} is a number of seconds</comment>
+  </data>
+  <data name="Settings_AvatarStyle" xml:space="preserve">
+    <value>形象风格</value>
+  </data>
+  <data name="Settings_AvatarStyleSub" xml:space="preserve">
+    <value>Bloop 的绘制方式</value>
+  </data>
+  <data name="Settings_AnimateTray" xml:space="preserve">
+    <value>托盘图标动画</value>
+  </data>
+  <data name="Settings_AnimateTraySub" xml:space="preserve">
+    <value>提醒显示时让托盘图标动起来</value>
+  </data>
+  <data name="Settings_BloopSounds" xml:space="preserve">
+    <value>Bloop 音效</value>
+  </data>
+  <data name="Settings_BloopSoundsSub" xml:space="preserve">
+    <value>戳、拍或划过 Bloop 时发出轻柔的声音。通话和专注助手期间保持安静</value>
+  </data>
+  <data name="Settings_ShareEvents" xml:space="preserve">
+    <value>与 Automation Portal 共享事件</value>
+  </data>
+  <data name="Settings_ShareEventsSub" xml:space="preserve">
+    <value>让快捷方式能对这台电脑上的休息、专注和暂停做出反应。只共享次数和时间</value>
+  </data>
+  <data name="Settings_AllowControl" xml:space="preserve">
+    <value>允许 Automation Portal 和其他应用控制 Desk Pal</value>
+    <comment>Also quoted by an error message in the app; keep wording in step</comment>
+  </data>
+  <data name="Settings_AllowControlSub" xml:space="preserve">
+    <value>它们可以开始休息、开启或关闭专注模式以及暂停提醒。每个应用只会询问你一次</value>
+  </data>
+  <data name="Settings_CrashReports" xml:space="preserve">
+    <value>发送崩溃报告</value>
+  </data>
+  <data name="Settings_CrashReportsSub" xml:space="preserve">
+    <value>应用崩溃时发送报告，帮助我们修复问题</value>
+  </data>
+  <data name="Settings_AppsAllowed" xml:space="preserve">
+    <value>已允许的应用</value>
+  </data>
+  <data name="Settings_AppsAllowedSub" xml:space="preserve">
+    <value>可以更改 Desk Pal 的应用。移除后会再次询问你</value>
+  </data>
+  <data name="Settings_OpenPortal" xml:space="preserve">
+    <value>打开 Automation Portal</value>
+  </data>
+  <data name="Settings_GetPortal" xml:space="preserve">
+    <value>获取 Automation Portal</value>
+  </data>
+  <data name="Settings_None" xml:space="preserve">
+    <value>暂无</value>
+  </data>
+  <data name="Settings_Remove" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="Settings_RemoveAccessible" xml:space="preserve">
+    <value>移除 {0}</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Settings_SkippedOne" xml:space="preserve">
+    <value>今天跳过了 1 个事件（Automation Portal 不可用）</value>
+  </data>
+  <data name="Settings_SkippedMany" xml:space="preserve">
+    <value>今天跳过了 {0} 个事件（Automation Portal 不可用）</value>
+  </data>
+  <data name="Settings_Start" xml:space="preserve">
+    <value>开始</value>
+    <comment>Time picker header for the start of the working day</comment>
+  </data>
+  <data name="Settings_End" xml:space="preserve">
+    <value>结束</value>
+    <comment>Time picker header for the end of the working day</comment>
+  </data>
+  <data name="Settings_DayStart" xml:space="preserve">
+    <value>工作日开始</value>
+  </data>
+  <data name="Settings_DayEnd" xml:space="preserve">
+    <value>工作日结束</value>
+  </data>
+  <data name="Settings_WorkingHoursSub" xml:space="preserve">
+    <value>提醒只会在这些日期和时间出现</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</root>

@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>腕の上伸ばし</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>背中の上部</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>両手の指を組んで、ゆっくり呼吸しながら高く伸び上がります。腕をおろして、肩の力を抜きましょう。</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>体側のばし</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>体幹</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>片方の腕を頭の上に伸ばし、反対側へゆっくり体を倒します。途中で左右を替えましょう。</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>肩すくめ</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>肩</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>両肩を耳に近づけるように持ち上げ、少しキープしてからストンと落とします。数回くり返しましょう。</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>首まわし</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>首</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>頭をゆっくり片方の肩に傾け、そっと反対の肩へ転がします。力を抜いて、楽な気持ちで行いましょう。</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>座ったままのひねり</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>背骨</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>背すじを伸ばして座り、椅子の背もたれをつかんで上半身を片側にひねります。数回呼吸したら反対側も行いましょう。</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>手首のストレッチ</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>手首</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>片腕を手のひらを上にして伸ばし、反対の手で指先をそっと手前に引きます。手を替えて同じように行いましょう。</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>股関節まわりのストレッチ</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>股関節</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>立って片足を後ろに引き、股関節の前側が軽く伸びるまで体重を前にかけます。足を替えて行いましょう。</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>かかと上げ</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>脚</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>背すじを伸ばして立ち、つま先立ちになってから、ゆっくりおろします。椅子につかまってもOKです。何度かくり返しましょう。</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>長い通話でしたね。ストレッチしませんか？</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>目の休憩</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>6m先を見よう</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>集中</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>明日まで一時停止中</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>一時停止中</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>スヌーズ中</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>通話中</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>少し座る時間です</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>立って作業しましょう</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}。{1}ましょう。</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value>、</value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>ストレッチの時間です</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0}。{1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>お散歩休憩</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>立ち上がって、少し歩きましょう。隣の部屋まででもOKです。</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>目の休憩</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>6mほど先のものを20秒間ながめましょう。</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>水分補給の時間</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>コップ1杯の水を飲みましょう。</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>深呼吸</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>ゆっくり深呼吸を数回しましょう。</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>体を伸ばし</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>少し歩き</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>20秒間目を休め</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>ついでに水を飲み</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>ゆっくり深呼吸をし</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>不明なアプリ</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>
