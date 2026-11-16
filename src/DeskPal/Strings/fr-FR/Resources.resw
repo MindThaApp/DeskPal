@@ -1,0 +1,720 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Home_Greeting_Night" xml:space="preserve">
+    <value>Encore debout ? Ménagez vos yeux ce soir.</value>
+    <comment>Greeting before 5:00</comment>
+  </data>
+  <data name="Home_Greeting_Morning" xml:space="preserve">
+    <value>Bonjour ! Prêt pour une belle journée ?</value>
+    <comment>Greeting 5:00-11:59</comment>
+  </data>
+  <data name="Home_Greeting_Afternoon" xml:space="preserve">
+    <value>Bon après-midi ! Un petit étirement fera du bien.</value>
+    <comment>Greeting 12:00-16:59</comment>
+  </data>
+  <data name="Home_Greeting_Evening" xml:space="preserve">
+    <value>Bonsoir ! Vous avez bien travaillé aujourd'hui.</value>
+    <comment>Greeting 17:00-21:59</comment>
+  </data>
+  <data name="Home_Greeting_Late" xml:space="preserve">
+    <value>Il se fait tard. On pense à ralentir ?</value>
+    <comment>Greeting from 22:00</comment>
+  </data>
+  <data name="Home_NextNothing" xml:space="preserve">
+    <value>Rien de prévu</value>
+  </data>
+  <data name="Home_Kind_Eyes" xml:space="preserve">
+    <value>Pause yeux</value>
+    <comment>Kind of break in the next-up line</comment>
+  </data>
+  <data name="Home_Kind_Walk" xml:space="preserve">
+    <value>Marche</value>
+  </data>
+  <data name="Home_Kind_Stretch" xml:space="preserve">
+    <value>Étirement</value>
+  </data>
+  <data name="Home_NextAt" xml:space="preserve">
+    <value>{0} à {1}</value>
+    <comment>{0} is the kind of break, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Home_NoHolds" xml:space="preserve">
+    <value>Aucune suspension</value>
+  </data>
+  <data name="Home_Holding" xml:space="preserve">
+    <value>En attente : {0}</value>
+    <comment>{0} is a comma-separated list of reasons reminders are on hold</comment>
+  </data>
+  <data name="Home_Counts" xml:space="preserve">
+    <value>Étirements {0}   Pauses yeux {1}   Marches {2}</value>
+    <comment>Keep the wide gaps between items</comment>
+  </data>
+  <data name="Home_PausedUntil" xml:space="preserve">
+    <value>En pause jusqu'à {0}</value>
+    <comment>{0} is a time or "tomorrow 09:00"</comment>
+  </data>
+  <data name="Home_Tomorrow" xml:space="preserve">
+    <value>demain {0}</value>
+    <comment>{0} is a time such as 09:00</comment>
+  </data>
+  <data name="Home_Held" xml:space="preserve">
+    <value>En attente : {0}</value>
+  </data>
+  <data name="Home_NextLine" xml:space="preserve">
+    <value>Prochain : {0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Main_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Main_Nav_Home" xml:space="preserve">
+    <value>Accueil</value>
+  </data>
+  <data name="Main_Nav_Today" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="Main_Nav_Bloop" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Main_Nav_Garden" xml:space="preserve">
+    <value>Jardin</value>
+  </data>
+  <data name="Main_Nav_About" xml:space="preserve">
+    <value>À propos</value>
+  </data>
+  <data name="Today_Title" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="Today_NextUp" xml:space="preserve">
+    <value>À suivre</value>
+  </data>
+  <data name="Today_DoneToday" xml:space="preserve">
+    <value>Fait aujourd'hui</value>
+  </data>
+  <data name="Today_Last7" xml:space="preserve">
+    <value>7 derniers jours</value>
+  </data>
+  <data name="Today_HistoryComingSoon" xml:space="preserve">
+    <value>L'historique arrive bientôt.</value>
+  </data>
+  <data name="Today_Stretches" xml:space="preserve">
+    <value>Étirements aujourd'hui : {0}</value>
+  </data>
+  <data name="Today_EyeBreaks" xml:space="preserve">
+    <value>Pauses yeux aujourd'hui : {0}</value>
+  </data>
+  <data name="Today_Walks" xml:space="preserve">
+    <value>Marches aujourd'hui : {0}</value>
+  </data>
+  <data name="Bloop_Title" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Bloop_Style_Flat" xml:space="preserve">
+    <value>Plat</value>
+  </data>
+  <data name="Bloop_Style_FlatNote" xml:space="preserve">
+    <value>Net et simple</value>
+  </data>
+  <data name="Bloop_Style_Soft3d" xml:space="preserve">
+    <value>3D doux</value>
+  </data>
+  <data name="Bloop_Style_Soft3dNote" xml:space="preserve">
+    <value>Arrondi et brillant</value>
+  </data>
+  <data name="Bloop_Style_3d" xml:space="preserve">
+    <value>3D (bêta)</value>
+  </data>
+  <data name="Bloop_Style_3dNote" xml:space="preserve">
+    <value>Vivant et interactif, utilise la carte graphique</value>
+  </data>
+  <data name="Bloop_Sounds" xml:space="preserve">
+    <value>Sons de Bloop</value>
+  </data>
+  <data name="Common_On" xml:space="preserve">
+    <value>Activé</value>
+  </data>
+  <data name="Common_Off" xml:space="preserve">
+    <value>Désactivé</value>
+  </data>
+  <data name="Bloop_Look" xml:space="preserve">
+    <value>Aspect</value>
+  </data>
+  <data name="Bloop_Play" xml:space="preserve">
+    <value>Jouer</value>
+  </data>
+  <data name="Bloop_PlayText" xml:space="preserve">
+    <value>Sur la page d'accueil, touchez le ventre, la tête, les joues, les mains ou les pieds de Bloop, touchez plusieurs fois de suite, maintenez, caressez-le d'avant en arrière ou balayez-le du doigt. Chaque geste a sa propre réaction, et ses yeux suivent votre pointeur.</value>
+    <comment>Bloop is the name of the mascot; do not translate</comment>
+  </data>
+  <data name="Bloop_Bond" xml:space="preserve">
+    <value>Lien</value>
+  </data>
+  <data name="Bloop_BondText" xml:space="preserve">
+    <value>Niveau de lien : bientôt disponible.</value>
+  </data>
+  <data name="Bloop_Evolution" xml:space="preserve">
+    <value>Évolution</value>
+  </data>
+  <data name="Bloop_EvolutionText" xml:space="preserve">
+    <value>Évolution : bientôt disponible.</value>
+  </data>
+  <data name="Garden_Title" xml:space="preserve">
+    <value>Jardin</value>
+  </data>
+  <data name="Garden_Intro" xml:space="preserve">
+    <value>Votre jardin pousse quand vous prenez soin de vous.</value>
+  </data>
+  <data name="Garden_Seedling" xml:space="preserve">
+    <value>Pousse</value>
+  </data>
+  <data name="Garden_Young" xml:space="preserve">
+    <value>Jeune</value>
+  </data>
+  <data name="Garden_Bushy" xml:space="preserve">
+    <value>Touffu</value>
+  </data>
+  <data name="Garden_Bloom" xml:space="preserve">
+    <value>Fleuri</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>À propos de Desk Pal</value>
+  </data>
+  <data name="About_Tagline" xml:space="preserve">
+    <value>Des rappels doux pour bouger et reposer vos yeux, par Bloop.</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Version {0}</value>
+    <comment>{0} is the version number</comment>
+  </data>
+  <data name="About_CrashOn" xml:space="preserve">
+    <value>activé</value>
+    <comment>Fills the {0} in "Send crash reports: {0} (change in Settings)"</comment>
+  </data>
+  <data name="About_CrashOff" xml:space="preserve">
+    <value>désactivé</value>
+  </data>
+  <data name="About_CrashAsk" xml:space="preserve">
+    <value>demander d'abord</value>
+  </data>
+  <data name="About_CrashLink" xml:space="preserve">
+    <value>Envoyer les rapports d'incident : {0} (modifiable dans les Paramètres)</value>
+  </data>
+  <data name="Common_Pause30" xml:space="preserve">
+    <value>Pause 30 min</value>
+    <comment>Button; the number is a fixed 30 minutes</comment>
+  </data>
+  <data name="Common_Resume" xml:space="preserve">
+    <value>Reprendre</value>
+  </data>
+  <data name="Common_Done" xml:space="preserve">
+    <value>Fait</value>
+  </data>
+  <data name="Home_Stage.AutomationProperties.Name" xml:space="preserve">
+    <value>Bloop : touchez, maintenez, caressez ou balayez</value>
+    <comment>Accessible name of the interactive mascot area</comment>
+  </data>
+  <data name="Home_SproutHit.AutomationProperties.Name" xml:space="preserve">
+    <value>Sprout</value>
+    <comment>Sprout is the plant companion's name</comment>
+  </data>
+  <data name="Home_NextUpHeader.Text" xml:space="preserve">
+    <value>À suivre</value>
+  </data>
+  <data name="Home_TodayHeader.Text" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="Home_QuickActionsHeader.Text" xml:space="preserve">
+    <value>Actions rapides</value>
+  </data>
+  <data name="Home_StretchNow.Content" xml:space="preserve">
+    <value>S'étirer</value>
+  </data>
+  <data name="Home_EyeNow.Content" xml:space="preserve">
+    <value>Pause yeux</value>
+  </data>
+  <data name="Home_OpenSettings.Content" xml:space="preserve">
+    <value>Ouvrir les paramètres</value>
+  </data>
+  <data name="Home_SoundsOn" xml:space="preserve">
+    <value>Son activé</value>
+  </data>
+  <data name="Home_SoundsOff" xml:space="preserve">
+    <value>Son coupé</value>
+  </data>
+  <data name="Home_SoundsOnAccessible" xml:space="preserve">
+    <value>Sons de Bloop activés, cliquez pour couper</value>
+  </data>
+  <data name="Home_SoundsOffAccessible" xml:space="preserve">
+    <value>Sons de Bloop coupés, cliquez pour activer</value>
+  </data>
+  <data name="Quick_Stat_Stretches" xml:space="preserve">
+    <value>Étirements</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_EyeBreaks" xml:space="preserve">
+    <value>Pauses yeux</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_Walks" xml:space="preserve">
+    <value>Marches</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_StatAccessible" xml:space="preserve">
+    <value>{0} : {1} sur {2} aujourd'hui</value>
+    <comment>{0} is the stat label, {1} done, {2} goal</comment>
+  </data>
+  <data name="Quick_StatAccessibleNoGoal" xml:space="preserve">
+    <value>{0} : {1} aujourd'hui, sans objectif</value>
+  </data>
+  <data name="Quick_SoundsOnAccessible" xml:space="preserve">
+    <value>Sons d'interaction activés. Désactiver</value>
+  </data>
+  <data name="Quick_SoundsOffAccessible" xml:space="preserve">
+    <value>Sons d'interaction désactivés. Activer</value>
+  </data>
+  <data name="Quick_ResumeAccessible" xml:space="preserve">
+    <value>Reprendre les rappels</value>
+  </data>
+  <data name="Quick_Pause30Accessible" xml:space="preserve">
+    <value>Pause de 30 minutes</value>
+  </data>
+  <data name="Quick_StretchButton.Content" xml:space="preserve">
+    <value>S'étirer</value>
+  </data>
+  <data name="Quick_StretchButton.AutomationProperties.Name" xml:space="preserve">
+    <value>S'étirer maintenant</value>
+  </data>
+  <data name="Quick_EyeButton.Content" xml:space="preserve">
+    <value>Pause yeux</value>
+    <comment>Keep short; button</comment>
+  </data>
+  <data name="Quick_EyeButton.AutomationProperties.Name" xml:space="preserve">
+    <value>Pause yeux</value>
+  </data>
+  <data name="Quick_OpenLink.Content" xml:space="preserve">
+    <value>Ouvrir Desk Pal ›</value>
+  </data>
+  <data name="Quick_OpenLink.AutomationProperties.Name" xml:space="preserve">
+    <value>Ouvrir Desk Pal</value>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>Ouvrir Desk Pal</value>
+  </data>
+  <data name="Tray_StretchNow" xml:space="preserve">
+    <value>S'étirer maintenant</value>
+  </data>
+  <data name="Tray_Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Tray_Pause30" xml:space="preserve">
+    <value>30 min</value>
+  </data>
+  <data name="Tray_Pause1h" xml:space="preserve">
+    <value>1 heure</value>
+  </data>
+  <data name="Tray_PauseTomorrow" xml:space="preserve">
+    <value>Jusqu'à demain</value>
+  </data>
+  <data name="Tray_Resume" xml:space="preserve">
+    <value>Reprendre</value>
+  </data>
+  <data name="Tray_Style" xml:space="preserve">
+    <value>Style</value>
+  </data>
+  <data name="Tray_AnimateIcon" xml:space="preserve">
+    <value>Animer l'icône</value>
+  </data>
+  <data name="Tray_CrashReports" xml:space="preserve">
+    <value>Envoyer les rapports d'incident</value>
+  </data>
+  <data name="Tray_Settings" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="Tray_NextUp" xml:space="preserve">
+    <value>Prochain : {0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Tray_Today" xml:space="preserve">
+    <value>Aujourd'hui : {0} étirements · {1} pauses yeux · {2} marches</value>
+  </data>
+  <data name="Tray_On" xml:space="preserve">
+    <value>{0}, activé</value>
+    <comment>Accessible name of a toggle row</comment>
+  </data>
+  <data name="Tray_Off" xml:space="preserve">
+    <value>{0}, désactivé</value>
+  </data>
+  <data name="Eye_Pill" xml:space="preserve">
+    <value>Regardez à 6 m · {0} s</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Settings_WindowTitle" xml:space="preserve">
+    <value>Paramètres de Desk Pal</value>
+  </data>
+  <data name="Approval_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Approval_Allow" xml:space="preserve">
+    <value>Autoriser</value>
+  </data>
+  <data name="Approval_NotNow" xml:space="preserve">
+    <value>Pas maintenant</value>
+  </data>
+  <data name="Approval_Question" xml:space="preserve">
+    <value>Autoriser {0} à contrôler Desk Pal ?</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Approval_Body" xml:space="preserve">
+    <value>{0} souhaite lancer des pauses, activer ou désactiver la concentration et mettre vos rappels en pause. Desk Pal ne demande qu'une fois par application ; vous pouvez la retirer à tout moment dans les Paramètres.</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Buddy_Title" xml:space="preserve">
+    <value>Bloop</value>
+    <comment>Window title and accessible name of the floating mascot</comment>
+  </data>
+  <data name="App_TrayTooltip" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Tray icon tooltip</comment>
+  </data>
+  <data name="Tray_Tooltip_Held" xml:space="preserve">
+    <value>Desk Pal : en attente ({0})</value>
+    <comment>{0} is the reason reminders are on hold</comment>
+  </data>
+  <data name="Tray_Tooltip_Next" xml:space="preserve">
+    <value>Desk Pal : prochain {0} {1}</value>
+    <comment>{0} is the kind of break in lower case, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Tray_Kind_Eyes" xml:space="preserve">
+    <value>pause yeux</value>
+    <comment>Lower case, used inside a sentence</comment>
+  </data>
+  <data name="Tray_Kind_Walk" xml:space="preserve">
+    <value>marche</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Stretch" xml:space="preserve">
+    <value>étirement</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Water" xml:space="preserve">
+    <value>pause eau</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Breathe" xml:space="preserve">
+    <value>pause respiration</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Hold_Dnd" xml:space="preserve">
+    <value>Assistant de concentration ou plein écran</value>
+    <comment>Reason reminders are on hold when Windows Focus Assist or a full-screen app is active</comment>
+  </data>
+  <data name="Toast_Start" xml:space="preserve">
+    <value>Démarrer</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_Snooze10" xml:space="preserve">
+    <value>Dans 10 min</value>
+    <comment>Toast button; snoozes the reminder</comment>
+  </data>
+  <data name="Toast_Skip" xml:space="preserve">
+    <value>Passer</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_StillHere" xml:space="preserve">
+    <value>Desk Pal est toujours là, dans la zone de notification.</value>
+    <comment>Shown when the main window is closed</comment>
+  </data>
+  <data name="Nudge_CountdownSeconds" xml:space="preserve">
+    <value>{0} s</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Nudge_BonusHint" xml:space="preserve">
+    <value>Allez au bout de l'étirement pour un bonus</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Nudge_BonusDone" xml:space="preserve">
+    <value>Étirement complet ! Bravo</value>
+    <comment>Shown when the countdown reaches zero; keep short</comment>
+  </data>
+  <data name="Nudge_More.AutomationProperties.Name" xml:space="preserve">
+    <value>Plus d'options</value>
+  </data>
+  <data name="Nudge_More.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Plus</value>
+  </data>
+  <data name="Nudge_Skip.Text" xml:space="preserve">
+    <value>Passer celui-ci</value>
+    <comment>Menu item</comment>
+  </data>
+  <data name="Nudge_Done.Content" xml:space="preserve">
+    <value>Fait</value>
+  </data>
+  <data name="Nudge_Snooze.Content" xml:space="preserve">
+    <value>Reporter</value>
+  </data>
+  <data name="Nudge_Snooze.AutomationProperties.Name" xml:space="preserve">
+    <value>Reporter de 10 minutes</value>
+  </data>
+  <data name="Nudge_Snooze.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Reporter de 10 minutes</value>
+  </data>
+  <data name="Nudge_BonusHintText.Text" xml:space="preserve">
+    <value>Allez au bout de l'étirement pour un bonus</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Paramètres</value>
+    <comment>Page title</comment>
+  </data>
+  <data name="Settings_Section_Reminders" xml:space="preserve">
+    <value>Rappels</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_WorkingHours" xml:space="preserve">
+    <value>Horaires de travail</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Appearance" xml:space="preserve">
+    <value>Apparence</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Portal" xml:space="preserve">
+    <value>Automation Portal</value>
+    <comment>Section heading; Automation Portal is an app name</comment>
+  </data>
+  <data name="Settings_Section_Privacy" xml:space="preserve">
+    <value>Confidentialité</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Movement_Name" xml:space="preserve">
+    <value>Mouvement</value>
+    <comment>Reminder name; combined into "{name} — {what}"</comment>
+  </data>
+  <data name="Settings_Movement_What" xml:space="preserve">
+    <value>S'étirer ou se lever</value>
+  </data>
+  <data name="Settings_Movement_Reason" xml:space="preserve">
+    <value>Interrompre la position assise environ toutes les 30 minutes est largement recommandé pour atténuer les raideurs.</value>
+  </data>
+  <data name="Settings_Eyes_Name" xml:space="preserve">
+    <value>Yeux</value>
+  </data>
+  <data name="Settings_Eyes_What" xml:space="preserve">
+    <value>Pause yeux 20-20-20 (un signal discret)</value>
+  </data>
+  <data name="Settings_Eyes_Reason" xml:space="preserve">
+    <value>L'habitude 20-20-20 : toutes les 20 minutes, regardez à environ 6 mètres pendant 20 secondes.</value>
+  </data>
+  <data name="Settings_Water_Name" xml:space="preserve">
+    <value>Eau</value>
+  </data>
+  <data name="Settings_Water_What" xml:space="preserve">
+    <value>Boire un peu d'eau</value>
+  </data>
+  <data name="Settings_Water_Reason" xml:space="preserve">
+    <value>Boire de petites gorgées régulières est plus facile que de rattraper son retard ensuite.</value>
+  </data>
+  <data name="Settings_Walk_Name" xml:space="preserve">
+    <value>Marche</value>
+  </data>
+  <data name="Settings_Walk_What" xml:space="preserve">
+    <value>Une courte marche au lieu d'un étirement</value>
+  </data>
+  <data name="Settings_Walk_Reason" xml:space="preserve">
+    <value>Une courte marche toutes les deux heures environ aide à se ressourcer.</value>
+  </data>
+  <data name="Settings_SitStand_Name" xml:space="preserve">
+    <value>Assis / debout</value>
+  </data>
+  <data name="Settings_SitStand_What" xml:space="preserve">
+    <value>Pour un bureau réglable en hauteur</value>
+  </data>
+  <data name="Settings_SitStand_Reason" xml:space="preserve">
+    <value>Avec un bureau assis-debout, alterner toutes les 30 à 60 minutes vous garde à l'aise.</value>
+  </data>
+  <data name="Settings_Minutes" xml:space="preserve">
+    <value>{0} min</value>
+    <comment>{0} is a number of minutes</comment>
+  </data>
+  <data name="Settings_WaterWithBreaks" xml:space="preserve">
+    <value>Avec les pauses mouvement</value>
+  </data>
+  <data name="Settings_WaterHourly" xml:space="preserve">
+    <value>Toutes les 60 min</value>
+  </data>
+  <data name="Settings_AfterStretches" xml:space="preserve">
+    <value>Après {0} étirements</value>
+  </data>
+  <data name="Settings_EveryMinutes" xml:space="preserve">
+    <value>Toutes les {0} min</value>
+  </data>
+  <data name="Settings_OffByDefault" xml:space="preserve">
+    <value>Désactivé par défaut</value>
+    <comment>Shown after "Recommended:" for sit / stand</comment>
+  </data>
+  <data name="Settings_RecommendedTag" xml:space="preserve">
+    <value> ★ Recommandé</value>
+    <comment>Appended to the recommended choice; keep the leading space</comment>
+  </data>
+  <data name="Settings_RecommendedLine" xml:space="preserve">
+    <value>Recommandé : {0}</value>
+    <comment>{0} is a short option label in lower case</comment>
+  </data>
+  <data name="Settings_ResetAll" xml:space="preserve">
+    <value>Tout remettre aux valeurs recommandées</value>
+  </data>
+  <data name="Settings_ResetAllAccessible" xml:space="preserve">
+    <value>Remettre tous les rappels aux valeurs recommandées</value>
+  </data>
+  <data name="Settings_NameDash" xml:space="preserve">
+    <value>{0} — {1}</value>
+    <comment>{0} is the reminder name, {1} what it is for</comment>
+  </data>
+  <data name="Settings_ReminderOnOff" xml:space="preserve">
+    <value>Rappel {0} activé ou désactivé</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Frequency" xml:space="preserve">
+    <value>Fréquence : {0}</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Custom" xml:space="preserve">
+    <value>Personnalisé…</value>
+    <comment>Combo box item for a custom number of minutes</comment>
+  </data>
+  <data name="Settings_CustomMinutesHeader" xml:space="preserve">
+    <value>Minutes (15–120)</value>
+    <comment>Keep the range in step with the app limits 15 and 120</comment>
+  </data>
+  <data name="Settings_CustomMinutesAccessible" xml:space="preserve">
+    <value>{0} : minutes personnalisées</value>
+  </data>
+  <data name="Settings_Reset" xml:space="preserve">
+    <value>Réinitialiser</value>
+    <comment>Link that resets one reminder to the recommended setting</comment>
+  </data>
+  <data name="Settings_ResetAccessible" xml:space="preserve">
+    <value>Remettre {0} à la valeur recommandée</value>
+  </data>
+  <data name="Settings_NudgeStyle" xml:space="preserve">
+    <value>Style de rappel</value>
+  </data>
+  <data name="Settings_NudgeStyleSub" xml:space="preserve">
+    <value>Comment un rappel s'affiche</value>
+  </data>
+  <data name="Settings_Style_Card" xml:space="preserve">
+    <value>Carte</value>
+  </data>
+  <data name="Settings_Style_Toast" xml:space="preserve">
+    <value>Notification</value>
+    <comment>Windows notification</comment>
+  </data>
+  <data name="Settings_HideAfter" xml:space="preserve">
+    <value>Masquer les rappels après</value>
+  </data>
+  <data name="Settings_HideAfterSub" xml:space="preserve">
+    <value>Une carte de rappel laissée de côté se masque toute seule</value>
+  </data>
+  <data name="Settings_Seconds" xml:space="preserve">
+    <value>{0} s</value>
+    <comment>{0} is a number of seconds</comment>
+  </data>
+  <data name="Settings_AvatarStyle" xml:space="preserve">
+    <value>Style de l'avatar</value>
+  </data>
+  <data name="Settings_AvatarStyleSub" xml:space="preserve">
+    <value>La manière dont Bloop est dessiné</value>
+  </data>
+  <data name="Settings_AnimateTray" xml:space="preserve">
+    <value>Animer l'icône</value>
+  </data>
+  <data name="Settings_AnimateTraySub" xml:space="preserve">
+    <value>Laisse l'icône bouger pendant l'affichage d'un rappel</value>
+  </data>
+  <data name="Settings_BloopSounds" xml:space="preserve">
+    <value>Sons de Bloop</value>
+  </data>
+  <data name="Settings_BloopSoundsSub" xml:space="preserve">
+    <value>Sons doux quand vous touchez, tapotez ou balayez Bloop. Silencieux pendant les appels et l'assistant de concentration</value>
+  </data>
+  <data name="Settings_ShareEvents" xml:space="preserve">
+    <value>Partager les événements avec Automation Portal</value>
+  </data>
+  <data name="Settings_ShareEventsSub" xml:space="preserve">
+    <value>Permet aux raccourcis de réagir aux pauses, à la concentration et aux mises en pause sur ce PC. Seuls les totaux et les heures sont partagés</value>
+  </data>
+  <data name="Settings_AllowControl" xml:space="preserve">
+    <value>Autoriser Automation Portal et d'autres applications à contrôler Desk Pal</value>
+    <comment>Also quoted by an error message in the app; keep wording in step</comment>
+  </data>
+  <data name="Settings_AllowControlSub" xml:space="preserve">
+    <value>Elles peuvent lancer une pause, activer ou désactiver la concentration et mettre en pause. Chaque application demande une fois</value>
+  </data>
+  <data name="Settings_CrashReports" xml:space="preserve">
+    <value>Envoyer les rapports d'incident</value>
+  </data>
+  <data name="Settings_CrashReportsSub" xml:space="preserve">
+    <value>Aidez à corriger les problèmes en envoyant un rapport si l'application plante</value>
+  </data>
+  <data name="Settings_AppsAllowed" xml:space="preserve">
+    <value>Applications autorisées</value>
+  </data>
+  <data name="Settings_AppsAllowedSub" xml:space="preserve">
+    <value>Applications autorisées à modifier Desk Pal. Retirez-en une pour qu'elle redemande</value>
+  </data>
+  <data name="Settings_OpenPortal" xml:space="preserve">
+    <value>Ouvrir Automation Portal</value>
+  </data>
+  <data name="Settings_GetPortal" xml:space="preserve">
+    <value>Obtenir Automation Portal</value>
+  </data>
+  <data name="Settings_None" xml:space="preserve">
+    <value>Aucune pour l'instant</value>
+  </data>
+  <data name="Settings_Remove" xml:space="preserve">
+    <value>Retirer</value>
+  </data>
+  <data name="Settings_RemoveAccessible" xml:space="preserve">
+    <value>Retirer {0}</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Settings_SkippedOne" xml:space="preserve">
+    <value>1 événement ignoré aujourd'hui (Automation Portal n'était pas disponible)</value>
+  </data>
+  <data name="Settings_SkippedMany" xml:space="preserve">
+    <value>{0} événements ignorés aujourd'hui (Automation Portal n'était pas disponible)</value>
+  </data>
+  <data name="Settings_Start" xml:space="preserve">
+    <value>Début</value>
+    <comment>Time picker header for the start of the working day</comment>
+  </data>
+  <data name="Settings_End" xml:space="preserve">
+    <value>Fin</value>
+    <comment>Time picker header for the end of the working day</comment>
+  </data>
+  <data name="Settings_DayStart" xml:space="preserve">
+    <value>Début de la journée</value>
+  </data>
+  <data name="Settings_DayEnd" xml:space="preserve">
+    <value>Fin de la journée</value>
+  </data>
+  <data name="Settings_WorkingHoursSub" xml:space="preserve">
+    <value>Les rappels n'arrivent que ces jours et à ces heures</value>
+  </data>
+</root>
