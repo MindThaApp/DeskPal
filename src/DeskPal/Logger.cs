@@ -14,6 +14,8 @@ public static class AppData
     public static readonly bool DebugMain = HasArg("--debug-main");
     public static readonly bool DebugQuickPanel = HasArg("--debug-quickpanel");
     public static readonly bool DebugTrayMenu = HasArg("--debug-traymenu");
+    // Forces Desk Pal Evolution (Pro) on without the Store; the forced state is never saved.
+    public static readonly bool DebugPro = HasArg("--debug-pro");
     // With --debug-quickpanel: drag Bloop away through the drag code (no real input), and optionally close the
     // panel while it is away.
     public static readonly bool DebugBloopDrag = HasArg("--debug-bloop-drag");
@@ -23,7 +25,7 @@ public static class AppData
     public static readonly string? DebugGesture = ArgValue("--debug-gesture=");
     // --debug-page=<home|bloop|garden|settings>: with --debug-main, opens the main window on that page.
     public static readonly string? DebugPage = ArgValue("--debug-page=");
-    public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugGesture is not null;
+    public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugPro || DebugGesture is not null;
 
     // Debug runs keep their own state and log so they never touch the real ones.
     // DESKPAL_DEBUG_DATA_DIR moves the debug root elsewhere (e.g. a temp folder); it is ignored outside debug runs.

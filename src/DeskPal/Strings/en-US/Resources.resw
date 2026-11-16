@@ -805,4 +805,96 @@
     <value>Finish</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Main_Nav_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Navigation item; product name, keep as is</comment>
+  </data>
+  <data name="Pro_Badge" xml:space="preserve">
+    <value>Pro</value>
+    <comment>Small badge next to paid features; keep short</comment>
+  </data>
+  <data name="Pro_Title" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Product name, keep as is</comment>
+  </data>
+  <data name="Pro_Intro" xml:space="preserve">
+    <value>Make Desk Pal your own. One purchase unlocks every Pro feature, now and in the future.</value>
+  </data>
+  <data name="Pro_Status_Free" xml:space="preserve">
+    <value>You're using the free version. Everything you use today stays free.</value>
+  </data>
+  <data name="Pro_Status_Trial" xml:space="preserve">
+    <value>Pro trial: {0} days left.</value>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
+  </data>
+  <data name="Pro_Status_TrialLastDay" xml:space="preserve">
+    <value>Pro trial: last day.</value>
+  </data>
+  <data name="Pro_Status_TrialEnded" xml:space="preserve">
+    <value>Your Pro trial has ended. Your choices are saved and come back when you get Pro.</value>
+  </data>
+  <data name="Pro_Status_Owned" xml:space="preserve">
+    <value>Pro is unlocked. Thank you for supporting Desk Pal!</value>
+  </data>
+  <data name="Pro_Includes" xml:space="preserve">
+    <value>What Pro adds</value>
+  </data>
+  <data name="Pro_Feature_Custom" xml:space="preserve">
+    <value>Your own look: make Bloop and Desk Pal look the way you like.</value>
+  </data>
+  <data name="Pro_Feature_Stretch" xml:space="preserve">
+    <value>Stretch with Bloop (coming soon).</value>
+  </data>
+  <data name="Pro_Feature_Future" xml:space="preserve">
+    <value>Every future Pro feature, at no extra cost.</value>
+  </data>
+  <data name="Pro_AlwaysFree" xml:space="preserve">
+    <value>Always free</value>
+  </data>
+  <data name="Pro_AlwaysFreeText" xml:space="preserve">
+    <value>All reminders, quiet times, goal rings, streaks, Bloop and Sprout, the garden's four stages and 7 days of history.</value>
+  </data>
+  <data name="Pro_TryFree" xml:space="preserve">
+    <value>Try Pro free for 7 days</value>
+  </data>
+  <data name="Pro_Buy" xml:space="preserve">
+    <value>Get Pro</value>
+  </data>
+  <data name="Pro_BuyPrice" xml:space="preserve">
+    <value>Get Pro — {0}</value>
+    <comment>Button; {0} = price from the Store, e.g. £3.99</comment>
+  </data>
+  <data name="Pro_Restore" xml:space="preserve">
+    <value>Restore purchase</value>
+  </data>
+  <data name="Pro_OneTime" xml:space="preserve">
+    <value>One-time purchase. No subscription.</value>
+  </data>
+  <data name="Pro_Msg_TrialStarted" xml:space="preserve">
+    <value>Your 7-day Pro trial has started. Enjoy!</value>
+  </data>
+  <data name="Pro_Msg_Thanks" xml:space="preserve">
+    <value>Thank you! Pro is unlocked.</value>
+  </data>
+  <data name="Pro_Msg_NotPurchased" xml:space="preserve">
+    <value>No purchase was made.</value>
+  </data>
+  <data name="Pro_Msg_StoreError" xml:space="preserve">
+    <value>Couldn't reach the Microsoft Store. Please try again later.</value>
+  </data>
+  <data name="Pro_Msg_NoStore" xml:space="preserve">
+    <value>Purchases need the Microsoft Store version of Desk Pal.</value>
+  </data>
+  <data name="Pro_Msg_Restored" xml:space="preserve">
+    <value>Pro is unlocked for this account.</value>
+  </data>
+  <data name="Pro_Msg_NothingToRestore" xml:space="preserve">
+    <value>No Desk Pal Evolution purchase was found for this account.</value>
+  </data>
+  <data name="Pro_SettingsName" xml:space="preserve">
+    <value>Pro features</value>
+  </data>
+  <data name="Pro_SeeMore" xml:space="preserve">
+    <value>See Pro</value>
+  </data>
 </root>

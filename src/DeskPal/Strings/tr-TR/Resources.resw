@@ -827,4 +827,96 @@
     <value>Bitir</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Main_Nav_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Navigation item; product name, keep as is</comment>
+  </data>
+  <data name="Pro_Badge" xml:space="preserve">
+    <value>Pro</value>
+    <comment>Small badge next to paid features; keep short</comment>
+  </data>
+  <data name="Pro_Title" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Product name, keep as is</comment>
+  </data>
+  <data name="Pro_Intro" xml:space="preserve">
+    <value>Desk Pal'ı kendine göre yap. Tek bir satın alma tüm Pro özelliklerinin kilidini şimdi ve gelecekte açar.</value>
+  </data>
+  <data name="Pro_Status_Free" xml:space="preserve">
+    <value>Ücretsiz sürümü kullanıyorsun. Bugün kullandığın her şey ücretsiz kalır.</value>
+  </data>
+  <data name="Pro_Status_Trial" xml:space="preserve">
+    <value>Pro denemesi: {0} gün kaldı.</value>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
+  </data>
+  <data name="Pro_Status_TrialLastDay" xml:space="preserve">
+    <value>Pro denemesi: son gün.</value>
+  </data>
+  <data name="Pro_Status_TrialEnded" xml:space="preserve">
+    <value>Pro denemen sona erdi. Seçimlerin kayıtlı kalır ve Pro'yu aldığında geri gelir.</value>
+  </data>
+  <data name="Pro_Status_Owned" xml:space="preserve">
+    <value>Pro'nun kilidi açıldı. Desk Pal'ı desteklediğin için teşekkürler!</value>
+  </data>
+  <data name="Pro_Includes" xml:space="preserve">
+    <value>Pro neler katar</value>
+  </data>
+  <data name="Pro_Feature_Custom" xml:space="preserve">
+    <value>Kendi tarzın: Bloop'u ve Desk Pal'ı istediğin gibi görünür yap.</value>
+  </data>
+  <data name="Pro_Feature_Stretch" xml:space="preserve">
+    <value>Bloop ile esneme (yakında).</value>
+  </data>
+  <data name="Pro_Feature_Future" xml:space="preserve">
+    <value>Gelecekteki tüm Pro özellikleri, ek ücret olmadan.</value>
+  </data>
+  <data name="Pro_AlwaysFree" xml:space="preserve">
+    <value>Her zaman ücretsiz</value>
+  </data>
+  <data name="Pro_AlwaysFreeText" xml:space="preserve">
+    <value>Tüm hatırlatıcılar, sessiz saatler, hedef halkaları, seriler, Bloop ve Sprout, bahçenin dört aşaması ve 7 günlük geçmiş.</value>
+  </data>
+  <data name="Pro_TryFree" xml:space="preserve">
+    <value>Pro'yu 7 gün ücretsiz dene</value>
+  </data>
+  <data name="Pro_Buy" xml:space="preserve">
+    <value>Pro'yu al</value>
+  </data>
+  <data name="Pro_BuyPrice" xml:space="preserve">
+    <value>Pro'yu al — {0}</value>
+    <comment>Button; {0} = price from the Store, e.g. £3.99</comment>
+  </data>
+  <data name="Pro_Restore" xml:space="preserve">
+    <value>Satın alımı geri yükle</value>
+  </data>
+  <data name="Pro_OneTime" xml:space="preserve">
+    <value>Tek seferlik satın alma. Abonelik yok.</value>
+  </data>
+  <data name="Pro_Msg_TrialStarted" xml:space="preserve">
+    <value>7 günlük Pro denemen başladı. Keyfini çıkar!</value>
+  </data>
+  <data name="Pro_Msg_Thanks" xml:space="preserve">
+    <value>Teşekkürler! Pro'nun kilidi açıldı.</value>
+  </data>
+  <data name="Pro_Msg_NotPurchased" xml:space="preserve">
+    <value>Satın alma yapılmadı.</value>
+  </data>
+  <data name="Pro_Msg_StoreError" xml:space="preserve">
+    <value>Microsoft Store'a ulaşılamadı. Lütfen daha sonra tekrar dene.</value>
+  </data>
+  <data name="Pro_Msg_NoStore" xml:space="preserve">
+    <value>Satın almak için Desk Pal'ın Microsoft Store sürümü gerekir.</value>
+  </data>
+  <data name="Pro_Msg_Restored" xml:space="preserve">
+    <value>Bu hesapta Pro'nun kilidi açık.</value>
+  </data>
+  <data name="Pro_Msg_NothingToRestore" xml:space="preserve">
+    <value>Bu hesapta Desk Pal Evolution satın alımı bulunamadı.</value>
+  </data>
+  <data name="Pro_SettingsName" xml:space="preserve">
+    <value>Pro özellikleri</value>
+  </data>
+  <data name="Pro_SeeMore" xml:space="preserve">
+    <value>Pro'ya göz at</value>
+  </data>
 </root>

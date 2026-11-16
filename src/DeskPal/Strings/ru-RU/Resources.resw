@@ -827,4 +827,96 @@
     <value>Готово</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Main_Nav_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Navigation item; product name, keep as is</comment>
+  </data>
+  <data name="Pro_Badge" xml:space="preserve">
+    <value>Pro</value>
+    <comment>Small badge next to paid features; keep short</comment>
+  </data>
+  <data name="Pro_Title" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Product name, keep as is</comment>
+  </data>
+  <data name="Pro_Intro" xml:space="preserve">
+    <value>Сделай Desk Pal своим. Одна покупка открывает все функции Pro — сейчас и в будущем.</value>
+  </data>
+  <data name="Pro_Status_Free" xml:space="preserve">
+    <value>Ты пользуешься бесплатной версией. Всё, чем ты пользуешься сегодня, останется бесплатным.</value>
+  </data>
+  <data name="Pro_Status_Trial" xml:space="preserve">
+    <value>Пробный Pro: осталось дней: {0}.</value>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
+  </data>
+  <data name="Pro_Status_TrialLastDay" xml:space="preserve">
+    <value>Пробный Pro: последний день.</value>
+  </data>
+  <data name="Pro_Status_TrialEnded" xml:space="preserve">
+    <value>Пробный период Pro закончился. Твой выбор сохранён и вернётся, когда ты купишь Pro.</value>
+  </data>
+  <data name="Pro_Status_Owned" xml:space="preserve">
+    <value>Pro разблокирован. Спасибо, что поддерживаешь Desk Pal!</value>
+  </data>
+  <data name="Pro_Includes" xml:space="preserve">
+    <value>Что даёт Pro</value>
+  </data>
+  <data name="Pro_Feature_Custom" xml:space="preserve">
+    <value>Свой стиль: оформи Bloop и Desk Pal так, как тебе нравится.</value>
+  </data>
+  <data name="Pro_Feature_Stretch" xml:space="preserve">
+    <value>Растяжка с Bloop (скоро).</value>
+  </data>
+  <data name="Pro_Feature_Future" xml:space="preserve">
+    <value>Все будущие функции Pro без доплаты.</value>
+  </data>
+  <data name="Pro_AlwaysFree" xml:space="preserve">
+    <value>Всегда бесплатно</value>
+  </data>
+  <data name="Pro_AlwaysFreeText" xml:space="preserve">
+    <value>Все напоминания, тихие часы, кольца целей, серии, Bloop и Sprout, четыре стадии сада и 7 дней истории.</value>
+  </data>
+  <data name="Pro_TryFree" xml:space="preserve">
+    <value>Попробовать Pro бесплатно 7 дней</value>
+  </data>
+  <data name="Pro_Buy" xml:space="preserve">
+    <value>Купить Pro</value>
+  </data>
+  <data name="Pro_BuyPrice" xml:space="preserve">
+    <value>Купить Pro — {0}</value>
+    <comment>Button; {0} = price from the Store, e.g. £3.99</comment>
+  </data>
+  <data name="Pro_Restore" xml:space="preserve">
+    <value>Восстановить покупку</value>
+  </data>
+  <data name="Pro_OneTime" xml:space="preserve">
+    <value>Разовая покупка. Без подписки.</value>
+  </data>
+  <data name="Pro_Msg_TrialStarted" xml:space="preserve">
+    <value>Пробный период Pro на 7 дней начался. Приятного пользования!</value>
+  </data>
+  <data name="Pro_Msg_Thanks" xml:space="preserve">
+    <value>Спасибо! Pro разблокирован.</value>
+  </data>
+  <data name="Pro_Msg_NotPurchased" xml:space="preserve">
+    <value>Покупка не совершена.</value>
+  </data>
+  <data name="Pro_Msg_StoreError" xml:space="preserve">
+    <value>Не удалось связаться с Microsoft Store. Попробуй позже.</value>
+  </data>
+  <data name="Pro_Msg_NoStore" xml:space="preserve">
+    <value>Для покупок нужна версия Desk Pal из Microsoft Store.</value>
+  </data>
+  <data name="Pro_Msg_Restored" xml:space="preserve">
+    <value>Pro разблокирован для этой учётной записи.</value>
+  </data>
+  <data name="Pro_Msg_NothingToRestore" xml:space="preserve">
+    <value>Для этой учётной записи покупка Desk Pal Evolution не найдена.</value>
+  </data>
+  <data name="Pro_SettingsName" xml:space="preserve">
+    <value>Функции Pro</value>
+  </data>
+  <data name="Pro_SeeMore" xml:space="preserve">
+    <value>Открыть Pro</value>
+  </data>
 </root>

@@ -805,4 +805,96 @@
     <value>Terminar</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Main_Nav_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Navigation item; product name, keep as is</comment>
+  </data>
+  <data name="Pro_Badge" xml:space="preserve">
+    <value>Pro</value>
+    <comment>Small badge next to paid features; keep short</comment>
+  </data>
+  <data name="Pro_Title" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Product name, keep as is</comment>
+  </data>
+  <data name="Pro_Intro" xml:space="preserve">
+    <value>Haz que Desk Pal sea tuyo. Una sola compra desbloquea todas las funciones Pro, ahora y en el futuro.</value>
+  </data>
+  <data name="Pro_Status_Free" xml:space="preserve">
+    <value>Estás usando la versión gratuita. Todo lo que usas hoy sigue siendo gratis.</value>
+  </data>
+  <data name="Pro_Status_Trial" xml:space="preserve">
+    <value>Prueba Pro: quedan {0} días.</value>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
+  </data>
+  <data name="Pro_Status_TrialLastDay" xml:space="preserve">
+    <value>Prueba Pro: último día.</value>
+  </data>
+  <data name="Pro_Status_TrialEnded" xml:space="preserve">
+    <value>Tu prueba Pro ha terminado. Tus elecciones se guardan y vuelven cuando consigas Pro.</value>
+  </data>
+  <data name="Pro_Status_Owned" xml:space="preserve">
+    <value>Pro está desbloqueado. ¡Gracias por apoyar Desk Pal!</value>
+  </data>
+  <data name="Pro_Includes" xml:space="preserve">
+    <value>Lo que añade Pro</value>
+  </data>
+  <data name="Pro_Feature_Custom" xml:space="preserve">
+    <value>Tu propio estilo: deja Bloop y Desk Pal a tu gusto.</value>
+  </data>
+  <data name="Pro_Feature_Stretch" xml:space="preserve">
+    <value>Estiramientos con Bloop (próximamente).</value>
+  </data>
+  <data name="Pro_Feature_Future" xml:space="preserve">
+    <value>Todas las futuras funciones Pro, sin coste adicional.</value>
+  </data>
+  <data name="Pro_AlwaysFree" xml:space="preserve">
+    <value>Siempre gratis</value>
+  </data>
+  <data name="Pro_AlwaysFreeText" xml:space="preserve">
+    <value>Todos los recordatorios, horas de descanso, anillos de objetivos, rachas, Bloop y Sprout, las cuatro etapas del jardín y 7 días de historial.</value>
+  </data>
+  <data name="Pro_TryFree" xml:space="preserve">
+    <value>Prueba Pro gratis 7 días</value>
+  </data>
+  <data name="Pro_Buy" xml:space="preserve">
+    <value>Consigue Pro</value>
+  </data>
+  <data name="Pro_BuyPrice" xml:space="preserve">
+    <value>Consigue Pro — {0}</value>
+    <comment>Button; {0} = price from the Store, e.g. £3.99</comment>
+  </data>
+  <data name="Pro_Restore" xml:space="preserve">
+    <value>Restaurar compra</value>
+  </data>
+  <data name="Pro_OneTime" xml:space="preserve">
+    <value>Pago único. Sin suscripción.</value>
+  </data>
+  <data name="Pro_Msg_TrialStarted" xml:space="preserve">
+    <value>Tu prueba Pro de 7 días ha empezado. ¡Disfrútala!</value>
+  </data>
+  <data name="Pro_Msg_Thanks" xml:space="preserve">
+    <value>¡Gracias! Pro está desbloqueado.</value>
+  </data>
+  <data name="Pro_Msg_NotPurchased" xml:space="preserve">
+    <value>No se ha realizado ninguna compra.</value>
+  </data>
+  <data name="Pro_Msg_StoreError" xml:space="preserve">
+    <value>No se pudo conectar con Microsoft Store. Inténtalo de nuevo más tarde.</value>
+  </data>
+  <data name="Pro_Msg_NoStore" xml:space="preserve">
+    <value>Para comprar necesitas la versión de Desk Pal de Microsoft Store.</value>
+  </data>
+  <data name="Pro_Msg_Restored" xml:space="preserve">
+    <value>Pro está desbloqueado en esta cuenta.</value>
+  </data>
+  <data name="Pro_Msg_NothingToRestore" xml:space="preserve">
+    <value>No se encontró ninguna compra de Desk Pal Evolution en esta cuenta.</value>
+  </data>
+  <data name="Pro_SettingsName" xml:space="preserve">
+    <value>Funciones Pro</value>
+  </data>
+  <data name="Pro_SeeMore" xml:space="preserve">
+    <value>Ver Pro</value>
+  </data>
 </root>

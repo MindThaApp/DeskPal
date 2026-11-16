@@ -827,4 +827,96 @@
     <value>完成</value>
     <comment>Setup button</comment>
   </data>
+  <data name="Main_Nav_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Navigation item; product name, keep as is</comment>
+  </data>
+  <data name="Pro_Badge" xml:space="preserve">
+    <value>Pro</value>
+    <comment>Small badge next to paid features; keep short</comment>
+  </data>
+  <data name="Pro_Title" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Product name, keep as is</comment>
+  </data>
+  <data name="Pro_Intro" xml:space="preserve">
+    <value>让 Desk Pal 更有你的风格。一次购买即可解锁全部 Pro 功能，包括以后新增的功能。</value>
+  </data>
+  <data name="Pro_Status_Free" xml:space="preserve">
+    <value>你正在使用免费版。你现在用到的一切都将保持免费。</value>
+  </data>
+  <data name="Pro_Status_Trial" xml:space="preserve">
+    <value>Pro 试用：还剩 {0} 天。</value>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
+  </data>
+  <data name="Pro_Status_TrialLastDay" xml:space="preserve">
+    <value>Pro 试用：最后一天。</value>
+  </data>
+  <data name="Pro_Status_TrialEnded" xml:space="preserve">
+    <value>你的 Pro 试用已结束。你的选择都已保存，获取 Pro 后即可恢复。</value>
+  </data>
+  <data name="Pro_Status_Owned" xml:space="preserve">
+    <value>Pro 已解锁。感谢你支持 Desk Pal！</value>
+  </data>
+  <data name="Pro_Includes" xml:space="preserve">
+    <value>Pro 新增内容</value>
+  </data>
+  <data name="Pro_Feature_Custom" xml:space="preserve">
+    <value>专属外观：按你的喜好打扮 Bloop 和 Desk Pal。</value>
+  </data>
+  <data name="Pro_Feature_Stretch" xml:space="preserve">
+    <value>和 Bloop 一起拉伸（即将推出）。</value>
+  </data>
+  <data name="Pro_Feature_Future" xml:space="preserve">
+    <value>以后所有 Pro 功能，无需额外付费。</value>
+  </data>
+  <data name="Pro_AlwaysFree" xml:space="preserve">
+    <value>永久免费</value>
+  </data>
+  <data name="Pro_AlwaysFreeText" xml:space="preserve">
+    <value>所有提醒、安静时段、目标环、连续记录、Bloop 和 Sprout、花园的四个阶段以及 7 天历史记录。</value>
+  </data>
+  <data name="Pro_TryFree" xml:space="preserve">
+    <value>免费试用 Pro 7 天</value>
+  </data>
+  <data name="Pro_Buy" xml:space="preserve">
+    <value>获取 Pro</value>
+  </data>
+  <data name="Pro_BuyPrice" xml:space="preserve">
+    <value>获取 Pro — {0}</value>
+    <comment>Button; {0} = price from the Store, e.g. £3.99</comment>
+  </data>
+  <data name="Pro_Restore" xml:space="preserve">
+    <value>恢复购买</value>
+  </data>
+  <data name="Pro_OneTime" xml:space="preserve">
+    <value>一次性购买，无需订阅。</value>
+  </data>
+  <data name="Pro_Msg_TrialStarted" xml:space="preserve">
+    <value>你的 7 天 Pro 试用已开始，尽情体验吧！</value>
+  </data>
+  <data name="Pro_Msg_Thanks" xml:space="preserve">
+    <value>谢谢！Pro 已解锁。</value>
+  </data>
+  <data name="Pro_Msg_NotPurchased" xml:space="preserve">
+    <value>未完成购买。</value>
+  </data>
+  <data name="Pro_Msg_StoreError" xml:space="preserve">
+    <value>无法连接 Microsoft Store，请稍后再试。</value>
+  </data>
+  <data name="Pro_Msg_NoStore" xml:space="preserve">
+    <value>购买需要使用 Microsoft Store 版的 Desk Pal。</value>
+  </data>
+  <data name="Pro_Msg_Restored" xml:space="preserve">
+    <value>此帐户已解锁 Pro。</value>
+  </data>
+  <data name="Pro_Msg_NothingToRestore" xml:space="preserve">
+    <value>此帐户未找到 Desk Pal Evolution 的购买记录。</value>
+  </data>
+  <data name="Pro_SettingsName" xml:space="preserve">
+    <value>Pro 功能</value>
+  </data>
+  <data name="Pro_SeeMore" xml:space="preserve">
+    <value>查看 Pro</value>
+  </data>
 </root>

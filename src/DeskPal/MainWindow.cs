@@ -43,6 +43,7 @@ public sealed class MainWindow : Window
         _nav.MenuItems.Add(new NavigationViewItem { Content = Loc.Get("Main_Nav_Today"), Icon = new SymbolIcon(Symbol.Calendar), Tag = "today" });
         _nav.MenuItems.Add(new NavigationViewItem { Content = Loc.Get("Main_Nav_Bloop"), Icon = new SymbolIcon(Symbol.Emoji2), Tag = "bloop" });
         _nav.MenuItems.Add(new NavigationViewItem { Content = Loc.Get("Main_Nav_Garden"), Icon = new SymbolIcon(Symbol.Favorite), Tag = "garden" });
+        _nav.FooterMenuItems.Add(new NavigationViewItem { Content = Loc.Get("Main_Nav_Pro"), Icon = new SymbolIcon(Symbol.OutlineStar), Tag = "pro" });
         _nav.FooterMenuItems.Add(new NavigationViewItem { Content = Loc.Get("Main_Nav_About"), Icon = new SymbolIcon(Symbol.Help), Tag = "about" });
         _nav.SelectionChanged += (_, e) =>
             TickGuard.Run("main-nav", () => Show(e.IsSettingsSelected ? "settings" : (e.SelectedItem as NavigationViewItem)?.Tag as string ?? "home"));
@@ -109,6 +110,7 @@ public sealed class MainWindow : Window
             "bloop" => new BloopPage(_ctx),
             "garden" => new GardenPage(_ctx),
             "about" => new AboutPage(_ctx),
+            "pro" => new ProPage(_ctx),
             "settings" => _settingsPage ??= new SettingsPage(_ctx.Hub),
             _ => _home,
         };
