@@ -46,6 +46,41 @@ internal static class Pro
     private static void Raise() => Changed?.Invoke();
 }
 
+// The shared Pro mark: a violet to pink to orange gradient with white bold text. In high contrast it falls back to
+// the system highlight colours. Everything that shows a Pro pill takes its brushes from here.
+internal static class ProMark
+{
+    private static readonly Windows.UI.ViewManagement.AccessibilitySettings Access = new();
+
+    public static bool HighContrast
+    {
+        get { try { return Access.HighContrast; } catch { return false; } }
+    }
+
+    public static Brush Background() => HighContrast ? System("SystemColorHighlightColorBrush") : Gradient();
+
+    public static Brush Foreground() => HighContrast
+        ? System("SystemColorHighlightTextColorBrush")
+        : new SolidColorBrush(Microsoft.UI.Colors.White);
+
+    private static Brush Gradient() => new LinearGradientBrush
+    {
+        StartPoint = new Windows.Foundation.Point(0, 0),
+        EndPoint = new Windows.Foundation.Point(1, 0),
+        GradientStops =
+        {
+            new GradientStop { Color = Windows.UI.Color.FromArgb(255, 0x7B, 0x5C, 0xFF), Offset = 0 },
+            new GradientStop { Color = Windows.UI.Color.FromArgb(255, 0xE0, 0x45, 0x7B), Offset = 0.55 },
+            new GradientStop { Color = Windows.UI.Color.FromArgb(255, 0xFF, 0x9A, 0x3D), Offset = 1 },
+        },
+    };
+
+    private static Brush System(string key) =>
+        Application.Current.Resources.TryGetValue(key, out var b) && b is Brush brush
+            ? brush
+            : (Brush)Application.Current.Resources["AccentFillColorDefaultBrush"];
+}
+
 // The small "Pro" pill shown next to Pro items.
 internal sealed partial class ProBadge : UserControl
 {
@@ -61,13 +96,13 @@ internal sealed partial class ProBadge : UserControl
         {
             CornerRadius = new CornerRadius(8),
             Padding = new Thickness(7, 1, 7, 2),
-            Background = (Brush)Application.Current.Resources["AccentFillColorDefaultBrush"],
+            Background = ProMark.Background(),
             Child = new TextBlock
             {
                 Text = text,
                 FontSize = 11,
-                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-                Foreground = (Brush)Application.Current.Resources["TextOnAccentFillColorPrimaryBrush"],
+                FontWeight = Microsoft.UI.Text.FontWeights.Bold,
+                Foreground = ProMark.Foreground(),
             },
         };
         AutomationProperties.SetName(this, text);
