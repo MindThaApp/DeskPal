@@ -847,7 +847,7 @@
   </data>
   <data name="Pro_Status_Trial" xml:space="preserve">
     <value>Pro 체험: {0}일 남음</value>
-    <comment>{0} = days left in the trial (2 to 7)</comment>
+    <comment>{0} = days left in the trial (2 to 30)</comment>
   </data>
   <data name="Pro_Status_TrialLastDay" xml:space="preserve">
     <value>Pro 체험: 마지막 날</value>
@@ -877,7 +877,7 @@
     <value>모든 알림, 조용한 시간, 목표 링, 연속 기록, Bloop과 Sprout, 정원의 네 단계, 7일간의 기록.</value>
   </data>
   <data name="Pro_TryFree" xml:space="preserve">
-    <value>Pro 7일 무료 체험</value>
+    <value>Pro 30일 무료 체험</value>
   </data>
   <data name="Pro_Buy" xml:space="preserve">
     <value>Pro 구매</value>
@@ -893,7 +893,7 @@
     <value>한 번만 결제해요. 구독이 아니에요.</value>
   </data>
   <data name="Pro_Msg_TrialStarted" xml:space="preserve">
-    <value>7일 Pro 체험이 시작되었어요. 즐겨 보세요!</value>
+    <value>30일 Pro 체험이 시작되었어요. 즐겨 보세요!</value>
   </data>
   <data name="Pro_Msg_Thanks" xml:space="preserve">
     <value>고마워요! Pro가 잠금 해제되었어요.</value>

@@ -825,7 +825,7 @@
   </data>
   <data name="Pro_Status_Trial" xml:space="preserve">
     <value>Pro-Test: noch {0} Tage.</value>
-    <comment>{0} = days left in the trial (2 to 7)</comment>
+    <comment>{0} = days left in the trial (2 to 30)</comment>
   </data>
   <data name="Pro_Status_TrialLastDay" xml:space="preserve">
     <value>Pro-Test: letzter Tag.</value>
@@ -855,7 +855,7 @@
     <value>Alle Erinnerungen, Ruhezeiten, Zielringe, Serien, Bloop und Sprout, die vier Stufen des Gartens und 7 Tage Verlauf.</value>
   </data>
   <data name="Pro_TryFree" xml:space="preserve">
-    <value>Pro 7 Tage kostenlos testen</value>
+    <value>Pro 30 Tage kostenlos testen</value>
   </data>
   <data name="Pro_Buy" xml:space="preserve">
     <value>Pro holen</value>
@@ -871,7 +871,7 @@
     <value>Einmaliger Kauf. Kein Abo.</value>
   </data>
   <data name="Pro_Msg_TrialStarted" xml:space="preserve">
-    <value>Dein 7-tägiger Pro-Test hat begonnen. Viel Spaß!</value>
+    <value>Dein 30-tägiger Pro-Test hat begonnen. Viel Spaß!</value>
   </data>
   <data name="Pro_Msg_Thanks" xml:space="preserve">
     <value>Danke! Pro ist freigeschaltet.</value>

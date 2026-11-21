@@ -12,7 +12,7 @@ public class ProLicenceTests
     {
         public StoreOwnership Answer { get; set; } = StoreOwnership.NotOwned;
         public ProPurchaseOutcome PurchaseResult { get; set; } = ProPurchaseOutcome.NotPurchased;
-        public string? Price { get; set; } = "£3.99";
+        public string? Price { get; set; } = "£2.99";
         public int Queries { get; private set; }
 
         public Task<StoreOwnership> QueryOwnershipAsync(CancellationToken cancellationToken)
@@ -47,14 +47,14 @@ public class ProLicenceTests
     }
 
     [Theory]
-    [InlineData(0, 7)]
-    [InlineData(1, 7)]
-    [InlineData(24, 6)]
-    [InlineData(25, 6)]
-    [InlineData(6 * 24, 1)]
-    [InlineData(7 * 24 - 1, 1)]
-    [InlineData(7 * 24, 0)]
+    [InlineData(0, 30)]
+    [InlineData(1, 30)]
+    [InlineData(24, 29)]
+    [InlineData(25, 29)]
+    [InlineData(29 * 24, 1)]
+    [InlineData(30 * 24 - 1, 1)]
     [InlineData(30 * 24, 0)]
+    [InlineData(40 * 24, 0)]
     public void Trial_days_left_counts_whole_days_up(int hoursIn, int expected)
     {
         var record = new ProLicenceRecord { TrialStartedAt = Start };
@@ -62,12 +62,12 @@ public class ProLicenceTests
     }
 
     [Fact]
-    public void Trial_is_unlocked_until_seven_days_pass()
+    public void Trial_is_unlocked_until_thirty_days_pass()
     {
         var record = new ProLicenceRecord { TrialStartedAt = Start };
         var during = ProRules.Evaluate(record, Start.AddDays(3));
         Assert.Equal(ProTier.Trial, during.Tier);
-        Assert.Equal(4, during.TrialDaysLeft);
+        Assert.Equal(27, during.TrialDaysLeft);
         Assert.True(during.IsUnlocked);
 
         var after = ProRules.Evaluate(record, Start.AddDays(ProRules.TrialDays));
@@ -77,10 +77,10 @@ public class ProLicenceTests
     }
 
     [Fact]
-    public void Clock_set_back_never_gives_more_than_seven_days()
+    public void Clock_set_back_never_gives_more_than_thirty_days()
     {
         var record = new ProLicenceRecord { TrialStartedAt = Start };
-        Assert.Equal(ProRules.TrialDays, ProRules.TrialDaysLeft(record, Start.AddDays(-30)));
+        Assert.Equal(ProRules.TrialDays, ProRules.TrialDaysLeft(record, Start.AddDays(-60)));
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class ProLicenceTests
         Assert.False(licence.TryStartTrial());
         Assert.Equal(Start, record.TrialStartedAt);
 
-        time.Advance(TimeSpan.FromDays(10));
+        time.Advance(TimeSpan.FromDays(40));
         Assert.Equal(ProTier.Free, licence.Current.Tier);
         Assert.False(licence.TryStartTrial());
         Assert.False(licence.Current.CanStartTrial);
@@ -165,7 +165,7 @@ public class ProLicenceTests
         Assert.Equal(ProTier.Owned, licence.Current.Tier);
         Assert.Equal(1, saves());
         Assert.Equal(1, changes);
-        Assert.Equal("£3.99", licence.Price);
+        Assert.Equal("£2.99", licence.Price);
 
         store.Answer = StoreOwnership.NotOwned;
         await licence.RefreshAsync(force: true);
@@ -177,11 +177,11 @@ public class ProLicenceTests
     [Fact]
     public async Task Licence_lost_after_trial_returns_to_free_but_keeps_the_trial_record()
     {
-        var (licence, record, store, _, _) = Make(new ProLicenceRecord { TrialStartedAt = Start.AddDays(-20), StoreOwned = true });
+        var (licence, record, store, _, _) = Make(new ProLicenceRecord { TrialStartedAt = Start.AddDays(-40), StoreOwned = true });
         store.Answer = StoreOwnership.NotOwned;
         await licence.RefreshAsync(force: true);
         Assert.Equal(ProTier.Free, licence.Current.Tier);
-        Assert.Equal(Start.AddDays(-20), record.TrialStartedAt);
+        Assert.Equal(Start.AddDays(-40), record.TrialStartedAt);
         Assert.False(licence.TryStartTrial());
     }
 

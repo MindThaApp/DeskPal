@@ -825,7 +825,7 @@
   </data>
   <data name="Pro_Status_Trial" xml:space="preserve">
     <value>Prueba Pro: quedan {0} días.</value>
-    <comment>{0} = days left in the trial (2 to 7)</comment>
+    <comment>{0} = days left in the trial (2 to 30)</comment>
   </data>
   <data name="Pro_Status_TrialLastDay" xml:space="preserve">
     <value>Prueba Pro: último día.</value>
@@ -855,7 +855,7 @@
     <value>Todos los recordatorios, horas de descanso, anillos de objetivos, rachas, Bloop y Sprout, las cuatro etapas del jardín y 7 días de historial.</value>
   </data>
   <data name="Pro_TryFree" xml:space="preserve">
-    <value>Prueba Pro gratis 7 días</value>
+    <value>Prueba Pro gratis 30 días</value>
   </data>
   <data name="Pro_Buy" xml:space="preserve">
     <value>Consigue Pro</value>
@@ -871,7 +871,7 @@
     <value>Pago único. Sin suscripción.</value>
   </data>
   <data name="Pro_Msg_TrialStarted" xml:space="preserve">
-    <value>Tu prueba Pro de 7 días ha empezado. ¡Disfrútala!</value>
+    <value>Tu prueba Pro de 30 días ha empezado. ¡Disfrútala!</value>
   </data>
   <data name="Pro_Msg_Thanks" xml:space="preserve">
     <value>¡Gracias! Pro está desbloqueado.</value>

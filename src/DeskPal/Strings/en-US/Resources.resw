@@ -825,7 +825,7 @@
   </data>
   <data name="Pro_Status_Trial" xml:space="preserve">
     <value>Pro trial: {0} days left.</value>
-    <comment>{0} = days left in the trial (2 to 7)</comment>
+    <comment>{0} = days left in the trial (2 to 30)</comment>
   </data>
   <data name="Pro_Status_TrialLastDay" xml:space="preserve">
     <value>Pro trial: last day.</value>
@@ -855,7 +855,7 @@
     <value>All reminders, quiet times, goal rings, streaks, Bloop and Sprout, the garden's four stages and 7 days of history.</value>
   </data>
   <data name="Pro_TryFree" xml:space="preserve">
-    <value>Try Pro free for 7 days</value>
+    <value>Try Pro free for 30 days</value>
   </data>
   <data name="Pro_Buy" xml:space="preserve">
     <value>Get Pro</value>
@@ -871,7 +871,7 @@
     <value>One-time purchase. No subscription.</value>
   </data>
   <data name="Pro_Msg_TrialStarted" xml:space="preserve">
-    <value>Your 7-day Pro trial has started. Enjoy!</value>
+    <value>Your 30-day Pro trial has started. Enjoy!</value>
   </data>
   <data name="Pro_Msg_Thanks" xml:space="preserve">
     <value>Thank you! Pro is unlocked.</value>
