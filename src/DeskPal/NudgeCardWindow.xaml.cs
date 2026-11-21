@@ -200,7 +200,7 @@ public sealed partial class NudgeCardWindow : Window
         _autoHide.Stop();
         var version = ++_loadVersion;
         BloopStage.Release(this);
-        var fade = new DoubleAnimation { To = 0, Duration = new Duration(TimeSpan.FromMilliseconds(200)) };
+        var fade = new DoubleAnimation { To = 0, Duration = new Duration(Motion.Ms(200)) };
         Storyboard.SetTarget(fade, Root);
         Storyboard.SetTargetProperty(fade, "Opacity");
         var sb = new Storyboard();
@@ -274,7 +274,7 @@ public sealed partial class NudgeCardWindow : Window
     private void PlayEntrance()
     {
         var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
-        var duration = new Duration(TimeSpan.FromMilliseconds(200));
+        var duration = new Duration(Motion.Ms(200));
         var fade = new DoubleAnimation { From = 0, To = 1, Duration = duration, EasingFunction = ease };
         var slide = new DoubleAnimation { From = 8, To = 0, Duration = duration, EasingFunction = ease };
         Storyboard.SetTarget(fade, Root);

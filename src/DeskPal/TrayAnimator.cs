@@ -42,7 +42,7 @@ public sealed class TrayAnimator
 
     public void Play(string loop, int durationMs, bool force = false)
     {
-        if (!force && (!_animate() || _held())) return;
+        if (!force && (!_animate() || _held() || !Motion.Enabled)) return;
         var frames = _icons.Get(loop);
         var info = _icons.Info(loop);
         if (frames is null || info is null || frames.Length == 0) return;

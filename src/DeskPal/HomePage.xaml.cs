@@ -185,7 +185,7 @@ public sealed partial class HomePage : Page
 
     private void OnFirstFrame()
     {
-        var d = new Duration(TimeSpan.FromMilliseconds(150));
+        var d = new Duration(Motion.Ms(150));
         var sb = new Storyboard();
         Fade(LivePanel, 0, 1);
         Fade(Avatar, 1, 0);

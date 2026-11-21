@@ -28,7 +28,7 @@ public sealed partial class EyeCuePillWindow : Window
         _hwnd = WindowNative.GetWindowHandle(this);
         _timer.Tick += (_, _) => TickGuard.Run("eye-cue-pill", OnTimer);
 
-        var fade = new DoubleAnimation { From = 1, To = 0, Duration = new Duration(TimeSpan.FromMilliseconds(700)) };
+        var fade = new DoubleAnimation { From = 1, To = 0, Duration = new Duration(Motion.Ms(700)) };
         Storyboard.SetTarget(fade, Root);
         Storyboard.SetTargetProperty(fade, "Opacity");
         _fade.Children.Add(fade);
