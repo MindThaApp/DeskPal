@@ -41,8 +41,8 @@ public sealed class ApprovalCardWindow : Window
         panel.Children.Add(_detail);
         panel.Children.Add(buttons);
         Content = panel;
-        Keys.Wire(panel, () => Keys.Invoke(notNow), () => Keys.Invoke(allow));
-        Keys.Hint(allow, "Enter");
+        // Granting access never happens from a stray Enter: Esc declines, Allow needs a deliberate click or Space on it.
+        Keys.Wire(panel, () => Keys.Invoke(notNow), null);
         Keys.Hint(notNow, "Esc");
 
         var presenter = OverlappedPresenter.Create();
