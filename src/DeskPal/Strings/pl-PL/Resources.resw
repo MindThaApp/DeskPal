@@ -847,7 +847,7 @@
   </data>
   <data name="Pro_Status_Trial" xml:space="preserve">
     <value>Okres próbny Pro: pozostało dni: {0}.</value>
-    <comment>{0} = days left in the trial (2 to 30)</comment>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
   </data>
   <data name="Pro_Status_TrialLastDay" xml:space="preserve">
     <value>Okres próbny Pro: ostatni dzień.</value>
@@ -877,7 +877,7 @@
     <value>Wszystkie przypomnienia, czas wyciszenia, pierścienie celów, serie, Bloop i Sprout, cztery etapy ogrodu oraz 7 dni historii.</value>
   </data>
   <data name="Pro_TryFree" xml:space="preserve">
-    <value>Wypróbuj Pro za darmo przez 30 dni</value>
+    <value>Wypróbuj Pro za darmo przez 7 dni</value>
   </data>
   <data name="Pro_Buy" xml:space="preserve">
     <value>Kup Pro</value>
@@ -893,7 +893,7 @@
     <value>Jednorazowy zakup. Bez subskrypcji.</value>
   </data>
   <data name="Pro_Msg_TrialStarted" xml:space="preserve">
-    <value>Twój 30-dniowy okres próbny Pro już trwa. Miłego korzystania!</value>
+    <value>Twój 7-dniowy okres próbny Pro już trwa. Miłego korzystania!</value>
   </data>
   <data name="Pro_Msg_Thanks" xml:space="preserve">
     <value>Dziękujemy! Pro jest odblokowane.</value>

@@ -1,6 +1,6 @@
 namespace DeskPal.Core;
 
-// Desk Pal Evolution (Pro): one durable Store add-on that unlocks every Pro feature, plus a one-time 30-day trial.
+// Desk Pal Evolution (Pro): one durable Store add-on that unlocks every Pro feature, plus a one-time 7-day trial.
 //
 // Never locked: reminders, quiet times, goal rings, streaks, Bloop and Sprout as they are, the garden's four stages and
 // 7 days of history. Pro only adds things on top.
@@ -40,7 +40,7 @@ public readonly record struct ProState(ProTier Tier, int TrialDaysLeft, bool Tri
 
 public static class ProRules
 {
-    public const int TrialDays = 30;
+    public const int TrialDays = 7;
     public const string StoreId = "9NZ76SD8MHWX";
 
     public static ProState Evaluate(ProLicenceRecord record, DateTimeOffset now, bool forceOwned = false)
@@ -51,7 +51,7 @@ public static class ProRules
         return left > 0 ? new ProState(ProTier.Trial, left, true) : new ProState(ProTier.Free, 0, trialUsed);
     }
 
-    // Whole days left, counted up: 29 days and 1 hour left shows as 30, the last hour shows as 1, the end shows as 0.
+    // Whole days left, counted up: 6 days and 1 hour left shows as 7, the last hour shows as 1, the end shows as 0.
     // A clock set back before the start counts as the trial's first moment, never more than TrialDays.
     public static int TrialDaysLeft(ProLicenceRecord record, DateTimeOffset now)
     {

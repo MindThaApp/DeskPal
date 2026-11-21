@@ -847,7 +847,7 @@
   </data>
   <data name="Pro_Status_Trial" xml:space="preserve">
     <value>Pro 试用：还剩 {0} 天。</value>
-    <comment>{0} = days left in the trial (2 to 30)</comment>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
   </data>
   <data name="Pro_Status_TrialLastDay" xml:space="preserve">
     <value>Pro 试用：最后一天。</value>
@@ -877,7 +877,7 @@
     <value>所有提醒、安静时段、目标环、连续记录、Bloop 和 Sprout、花园的四个阶段以及 7 天历史记录。</value>
   </data>
   <data name="Pro_TryFree" xml:space="preserve">
-    <value>免费试用 Pro 30 天</value>
+    <value>免费试用 Pro 7 天</value>
   </data>
   <data name="Pro_Buy" xml:space="preserve">
     <value>获取 Pro</value>
@@ -893,7 +893,7 @@
     <value>一次性购买，无需订阅。</value>
   </data>
   <data name="Pro_Msg_TrialStarted" xml:space="preserve">
-    <value>你的 30 天 Pro 试用已开始，尽情体验吧！</value>
+    <value>你的 7 天 Pro 试用已开始，尽情体验吧！</value>
   </data>
   <data name="Pro_Msg_Thanks" xml:space="preserve">
     <value>谢谢！Pro 已解锁。</value>
