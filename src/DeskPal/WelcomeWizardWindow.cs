@@ -60,6 +60,8 @@ internal sealed class WelcomeWizardWindow : Window
         root.Children.Add(_body);
         root.Children.Add(footer);
         Content = root;
+        Keys.Wire(root, Close, () => Keys.Invoke(_next));
+        Keys.Hint(_next, "Enter");
 
         AppWindow.Resize(new SizeInt32(560, 640));
         if (AppWindow.Presenter is OverlappedPresenter p2) p2.IsMaximizable = false;

@@ -3,7 +3,9 @@ using DeskPal.Core;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Windows.Graphics;
+using Windows.System;
 using WinRT.Interop;
 
 namespace DeskPal;
@@ -49,6 +51,7 @@ public sealed class MainWindow : Window
             TickGuard.Run("main-nav", () => Show(e.IsSettingsSelected ? "settings" : (e.SelectedItem as NavigationViewItem)?.Tag as string ?? "home"));
         Content = _nav;
         _nav.SelectedItem = _homeItem;
+        AddShortcuts();
 
         AppWindow.Closing += (_, e) =>
         {
@@ -67,6 +70,28 @@ public sealed class MainWindow : Window
             if (e.DidVisibilityChange || e.DidPresenterChange) TickGuard.Run("main-visibility", UpdateSurface);
         };
         VisibilityChanged += (_, _) => TickGuard.Run("main-visibility", UpdateSurface);
+    }
+
+    // Ctrl+1..9 jump to the nav pages in order (top items, then Pro and About); Ctrl+, opens Settings.
+    private void AddShortcuts()
+    {
+        var items = _nav.MenuItems.Concat(_nav.FooterMenuItems).OfType<NavigationViewItem>().Take(9).ToList();
+        for (var i = 0; i < items.Count; i++)
+        {
+            var item = items[i];
+            var key = VirtualKey.Number1 + i;
+            var accel = new KeyboardAccelerator { Key = key, Modifiers = VirtualKeyModifiers.Control };
+            accel.Invoked += (_, e) => { e.Handled = true; TickGuard.Run("main-shortcut", () => _nav.SelectedItem = item); };
+            _nav.KeyboardAccelerators.Add(accel);
+            Keys.Hint(item, $"{item.Content} (Ctrl+{i + 1})");
+        }
+        var settings = new KeyboardAccelerator { Key = (VirtualKey)0xBC /* VK_OEM_COMMA */, Modifiers = VirtualKeyModifiers.Control };
+        settings.Invoked += (_, e) => { e.Handled = true; TickGuard.Run("main-shortcut", () => Navigate("settings")); };
+        _nav.KeyboardAccelerators.Add(settings);
+        _nav.Loaded += (_, _) =>
+        {
+            if (_nav.SettingsItem is NavigationViewItem s) Keys.Hint(s, $"{s.Content} (Ctrl+,)");
+        };
     }
 
     public void ShowMain(string? page = null)

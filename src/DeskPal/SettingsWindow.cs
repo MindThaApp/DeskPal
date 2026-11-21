@@ -13,7 +13,9 @@ public sealed class SettingsWindow : Window
     {
         Title = Loc.Get("Settings_WindowTitle");
         SystemBackdrop = new Microsoft.UI.Xaml.Media.MicaBackdrop();
-        Content = new SettingsPage(hub);
+        var page = new SettingsPage(hub);
+        Content = page;
+        Keys.Wire(page, () => AppWindow.Hide(), null);
         AppWindow.Resize(new SizeInt32(820, 900));
         AppWindow.Closing += (_, e) =>
         {

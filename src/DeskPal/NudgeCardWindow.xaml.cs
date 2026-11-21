@@ -46,6 +46,9 @@ public sealed partial class NudgeCardWindow : Window
     {
         _router = router;
         InitializeComponent();
+        Keys.Wire(Root, () => Keys.Invoke(SnoozeButton), () => Keys.Invoke(DoneButton));
+        Keys.Hint(DoneButton, "Enter");
+        Keys.Hint(SnoozeButton, "Esc");
         _hwnd = WindowNative.GetWindowHandle(this);
         _timer.Tick += (s, e) => TickGuard.Run("nudge-card", () => OnTimer(s, e));
         if (AppData.Debug3D) After(10, "debug-3d-stats", LogStats, repeat: true);

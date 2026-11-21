@@ -62,6 +62,9 @@ internal sealed class LanguageKeepWindow : Window
         buttons.Children.Add(backButton);
         panel.Children.Add(buttons);
         Content = panel;
+        Keys.Wire(panel, () => Keys.Invoke(backButton), () => Keys.Invoke(keepButton));
+        Keys.Hint(keepButton, "Enter");
+        Keys.Hint(backButton, "Esc");
 
         AppWindow.Resize(new SizeInt32(520, 470));
         if (AppWindow.Presenter is OverlappedPresenter p)

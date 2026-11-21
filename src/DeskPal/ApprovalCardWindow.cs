@@ -41,6 +41,9 @@ public sealed class ApprovalCardWindow : Window
         panel.Children.Add(_detail);
         panel.Children.Add(buttons);
         Content = panel;
+        Keys.Wire(panel, () => Keys.Invoke(notNow), () => Keys.Invoke(allow));
+        Keys.Hint(allow, "Enter");
+        Keys.Hint(notNow, "Esc");
 
         var presenter = OverlappedPresenter.Create();
         presenter.IsResizable = false;

@@ -29,6 +29,8 @@ public sealed partial class QuickPanelWindow : Window
     {
         _ctx = ctx;
         InitializeComponent();
+        Keys.Wire(Root, null, () => Keys.Invoke(StretchButton));
+        Keys.Hint(StretchButton, "Enter");
         _stats = [BuildStat(StretchStat, Loc.Get("Quick_Stat_Stretches")), BuildStat(EyeStat, Loc.Get("Quick_Stat_EyeBreaks")), BuildStat(WalkStat, Loc.Get("Quick_Stat_Walks"))];
         _host = new TrayPanelHost(this, Root, 320);
         _host.Placed += p => TickGuard.Run("quick-bloop-place", () => BloopStage.Move(this, p));
