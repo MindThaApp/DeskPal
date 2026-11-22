@@ -800,10 +800,6 @@
     <value>Шаг {0} из {1}</value>
     <comment>Setup progress; {0} is the current step, {1} the number of steps</comment>
   </data>
-  <data name="Wizard_Language_Title" xml:space="preserve">
-    <value>Выбери язык</value>
-    <comment>Setup page 1 heading</comment>
-  </data>
   <data name="Wizard_Language_Sub" xml:space="preserve">
     <value>Выбери язык, на котором говорит Desk Pal. Если выберешь другой, Desk Pal перезапустится.</value>
     <comment>Setup page 1 text</comment>
@@ -815,14 +811,6 @@
   <data name="Wizard_Hours_Sub" xml:space="preserve">
     <value>Bloop напоминает о себе только в твоё рабочее время. Дни можно выбрать позже в настройках.</value>
     <comment>Setup page 2 text</comment>
-  </data>
-  <data name="Wizard_Done_Title" xml:space="preserve">
-    <value>Всё готово!</value>
-    <comment>Setup page 3 heading</comment>
-  </data>
-  <data name="Wizard_Done_Body" xml:space="preserve">
-    <value>Bloop будет напоминать тебе размяться, дать отдых глазам и попить воды, пока ты работаешь.</value>
-    <comment>Setup page 3 text</comment>
   </data>
   <data name="Wizard_Back" xml:space="preserve">
     <value>Назад</value>
@@ -1128,5 +1116,50 @@
   </data>
   <data name="Pose_FaceCamera" xml:space="preserve">
     <value>Посмотри в камеру</value>
+  </data>
+  <data name="Wizard_Hello_Title" xml:space="preserve">
+    <value>Привет, я Bloop!</value>
+  </data>
+  <data name="Wizard_Rhythm_Label" xml:space="preserve">
+    <value>Как часто мне напоминать тебе размяться?</value>
+  </data>
+  <data name="Wizard_Rhythm_Option" xml:space="preserve">
+    <value>Каждые {0} минут</value>
+  </data>
+  <data name="Wizard_Rhythm_Recommended" xml:space="preserve">
+    <value>Каждые {0} минут (рекомендуется)</value>
+  </data>
+  <data name="Wizard_Rhythm_Note" xml:space="preserve">
+    <value>Перерывы для глаз и напоминания о воде подстроятся сами. Всё остальное можно настроить позже в Параметрах.</value>
+  </data>
+  <data name="Wizard_Try_Title" xml:space="preserve">
+    <value>Попробуй</value>
+  </data>
+  <data name="Wizard_Try_Sub" xml:space="preserve">
+    <value>Посмотри, как Bloop работает. Здесь ничего не меняется в твоих настройках.</value>
+  </data>
+  <data name="Wizard_Try_Stretch" xml:space="preserve">
+    <value>Попробовать растяжку сейчас</value>
+  </data>
+  <data name="Wizard_Try_Poke" xml:space="preserve">
+    <value>Поздороваться с Bloop</value>
+  </data>
+  <data name="Wizard_Try_Sent" xml:space="preserve">
+    <value>Напоминание от Bloop уже на экране. Нажми «Готово» или подожди, пока оно исчезнет само.</value>
+  </data>
+  <data name="Wizard_Try_Tray" xml:space="preserve">
+    <value>Desk Pal живёт в области уведомлений рядом с часами. Нажми на его значок, чтобы открыть быстрые действия. Если значка не видно, открой стрелку рядом с этой областью.</value>
+  </data>
+  <data name="Wizard_Try_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution можно бесплатно попробовать 7 дней: свой внешний вид для Bloop и все функции, которые мы добавим позже. То, чем ты пользуешься сегодня, остаётся бесплатным.</value>
+  </data>
+  <data name="Wizard_Skip" xml:space="preserve">
+    <value>Пропустить пока</value>
+  </data>
+  <data name="Wizard_Recommended" xml:space="preserve">
+    <value>Начать с рекомендуемыми настройками</value>
+  </data>
+  <data name="Wizard_Hero_Name" xml:space="preserve">
+    <value>Bloop, твой Desk Pal. Нажми, чтобы поздороваться.</value>
   </data>
 </root>

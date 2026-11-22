@@ -778,10 +778,6 @@
     <value>Stap {0} van {1}</value>
     <comment>Setup progress; {0} is the current step, {1} the number of steps</comment>
   </data>
-  <data name="Wizard_Language_Title" xml:space="preserve">
-    <value>Kies je taal</value>
-    <comment>Setup page 1 heading</comment>
-  </data>
   <data name="Wizard_Language_Sub" xml:space="preserve">
     <value>Kies de taal waarin Desk Pal praat. Kies je een andere, dan start Desk Pal opnieuw op.</value>
     <comment>Setup page 1 text</comment>
@@ -793,14 +789,6 @@
   <data name="Wizard_Hours_Sub" xml:space="preserve">
     <value>Bloop port je alleen tijdens je werktijden. De dagen kies je later in Instellingen.</value>
     <comment>Setup page 2 text</comment>
-  </data>
-  <data name="Wizard_Done_Title" xml:space="preserve">
-    <value>Klaar!</value>
-    <comment>Setup page 3 heading</comment>
-  </data>
-  <data name="Wizard_Done_Body" xml:space="preserve">
-    <value>Bloop herinnert je eraan om te rekken, je ogen te laten rusten en water te drinken terwijl je werkt.</value>
-    <comment>Setup page 3 text</comment>
   </data>
   <data name="Wizard_Back" xml:space="preserve">
     <value>Terug</value>
@@ -1106,5 +1094,50 @@
   </data>
   <data name="Pose_FaceCamera" xml:space="preserve">
     <value>Kijk naar de camera</value>
+  </data>
+  <data name="Wizard_Hello_Title" xml:space="preserve">
+    <value>Hoi, ik ben Bloop!</value>
+  </data>
+  <data name="Wizard_Rhythm_Label" xml:space="preserve">
+    <value>Hoe vaak moet ik je porren om te bewegen?</value>
+  </data>
+  <data name="Wizard_Rhythm_Option" xml:space="preserve">
+    <value>Elke {0} minuten</value>
+  </data>
+  <data name="Wizard_Rhythm_Recommended" xml:space="preserve">
+    <value>Elke {0} minuten (aanbevolen)</value>
+  </data>
+  <data name="Wizard_Rhythm_Note" xml:space="preserve">
+    <value>Oogpauzes en waterherinneringen lopen vanzelf mee. Alles kun je later bijstellen in Instellingen.</value>
+  </data>
+  <data name="Wizard_Try_Title" xml:space="preserve">
+    <value>Probeer het</value>
+  </data>
+  <data name="Wizard_Try_Sub" xml:space="preserve">
+    <value>Zie Bloop aan het werk. Hier verandert niets aan je instellingen.</value>
+  </data>
+  <data name="Wizard_Try_Stretch" xml:space="preserve">
+    <value>Nu een rekoefening proberen</value>
+  </data>
+  <data name="Wizard_Try_Poke" xml:space="preserve">
+    <value>Zeg hoi tegen Bloop</value>
+  </data>
+  <data name="Wizard_Try_Sent" xml:space="preserve">
+    <value>De herinnering van Bloop staat op je scherm. Tik op Klaar, of laat hem vanzelf verdwijnen.</value>
+  </data>
+  <data name="Wizard_Try_Tray" xml:space="preserve">
+    <value>Desk Pal zit in het systeemvak naast de klok. Klik op het pictogram voor snelle acties. Zie je het niet, open dan het pijltje naast het systeemvak.</value>
+  </data>
+  <data name="Wizard_Try_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution kun je 7 dagen gratis proberen: een eigen look voor Bloop en elke functie die we later toevoegen. Wat je nu gebruikt, blijft gratis.</value>
+  </data>
+  <data name="Wizard_Skip" xml:space="preserve">
+    <value>Nu overslaan</value>
+  </data>
+  <data name="Wizard_Recommended" xml:space="preserve">
+    <value>Beginnen met aanbevolen instellingen</value>
+  </data>
+  <data name="Wizard_Hero_Name" xml:space="preserve">
+    <value>Bloop, je Desk Pal. Klik om hoi te zeggen.</value>
   </data>
 </root>

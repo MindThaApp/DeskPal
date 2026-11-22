@@ -41,6 +41,9 @@ internal sealed class Bloop2D : IBloopReactor
         image.RenderTransformOrigin = new Windows.Foundation.Point(0, 0);
     }
 
+    // A wave of the picture's hand, for greetings (the touch path does this on a hand tap).
+    public void Wave() => Pose("bloop-wave", 1.6);
+
     public bool Ready => _image.Opacity > 0.5 && _image.Source is not null && _image.ActualWidth > 0;
 
     private double Now => _clock.Elapsed.TotalSeconds;

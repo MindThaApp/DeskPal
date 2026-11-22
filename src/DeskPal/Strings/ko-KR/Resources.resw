@@ -800,10 +800,6 @@
     <value>{1}단계 중 {0}단계</value>
     <comment>Setup progress; {0} is the current step, {1} the number of steps</comment>
   </data>
-  <data name="Wizard_Language_Title" xml:space="preserve">
-    <value>언어를 선택하세요</value>
-    <comment>Setup page 1 heading</comment>
-  </data>
   <data name="Wizard_Language_Sub" xml:space="preserve">
     <value>Desk Pal이 사용할 언어를 골라 주세요. 다른 언어를 고르면 Desk Pal이 다시 시작돼요.</value>
     <comment>Setup page 1 text</comment>
@@ -815,14 +811,6 @@
   <data name="Wizard_Hours_Sub" xml:space="preserve">
     <value>Bloop은 근무 시간에만 알려 드려요. 요일은 나중에 설정에서 고를 수 있어요.</value>
     <comment>Setup page 2 text</comment>
-  </data>
-  <data name="Wizard_Done_Title" xml:space="preserve">
-    <value>준비 완료!</value>
-    <comment>Setup page 3 heading</comment>
-  </data>
-  <data name="Wizard_Done_Body" xml:space="preserve">
-    <value>Bloop이 일하는 동안 스트레칭, 눈 휴식, 물 마시기를 챙겨 드려요.</value>
-    <comment>Setup page 3 text</comment>
   </data>
   <data name="Wizard_Back" xml:space="preserve">
     <value>이전</value>
@@ -1128,5 +1116,50 @@
   </data>
   <data name="Pose_FaceCamera" xml:space="preserve">
     <value>카메라를 바라보세요</value>
+  </data>
+  <data name="Wizard_Hello_Title" xml:space="preserve">
+    <value>안녕하세요, 저는 Bloop이에요!</value>
+  </data>
+  <data name="Wizard_Rhythm_Label" xml:space="preserve">
+    <value>얼마나 자주 몸을 움직이도록 알려 드릴까요?</value>
+  </data>
+  <data name="Wizard_Rhythm_Option" xml:space="preserve">
+    <value>{0}분마다</value>
+  </data>
+  <data name="Wizard_Rhythm_Recommended" xml:space="preserve">
+    <value>{0}분마다(권장)</value>
+  </data>
+  <data name="Wizard_Rhythm_Note" xml:space="preserve">
+    <value>눈 휴식과 물 마시기 알림도 함께 맞춰져요. 자세한 설정은 나중에 설정에서 바꿀 수 있어요.</value>
+  </data>
+  <data name="Wizard_Try_Title" xml:space="preserve">
+    <value>직접 해 보기</value>
+  </data>
+  <data name="Wizard_Try_Sub" xml:space="preserve">
+    <value>Bloop이 일하는 모습을 확인해 보세요. 여기서는 설정이 바뀌지 않아요.</value>
+  </data>
+  <data name="Wizard_Try_Stretch" xml:space="preserve">
+    <value>지금 스트레칭 해 보기</value>
+  </data>
+  <data name="Wizard_Try_Poke" xml:space="preserve">
+    <value>Bloop에게 인사하기</value>
+  </data>
+  <data name="Wizard_Try_Sent" xml:space="preserve">
+    <value>Bloop의 알림이 화면에 나타났어요. 완료를 누르거나 저절로 사라질 때까지 기다리세요.</value>
+  </data>
+  <data name="Wizard_Try_Tray" xml:space="preserve">
+    <value>Desk Pal은 시계 옆 알림 영역에 있어요. 아이콘을 클릭하면 빠른 작업이 나와요. 보이지 않으면 알림 영역 옆의 화살표를 열어 보세요.</value>
+  </data>
+  <data name="Wizard_Try_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution은 7일 동안 무료로 써 볼 수 있어요. Bloop의 모습을 나만의 스타일로 꾸미고, 앞으로 추가될 모든 기능도 쓸 수 있어요. 지금 쓰는 기능은 계속 무료예요.</value>
+  </data>
+  <data name="Wizard_Skip" xml:space="preserve">
+    <value>나중에 하기</value>
+  </data>
+  <data name="Wizard_Recommended" xml:space="preserve">
+    <value>권장 설정으로 시작</value>
+  </data>
+  <data name="Wizard_Hero_Name" xml:space="preserve">
+    <value>Bloop, 나의 Desk Pal. 클릭해서 인사해 보세요.</value>
   </data>
 </root>

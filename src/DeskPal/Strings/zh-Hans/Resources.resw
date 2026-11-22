@@ -800,10 +800,6 @@
     <value>第 {0} 步,共 {1} 步</value>
     <comment>Setup progress; {0} is the current step, {1} the number of steps</comment>
   </data>
-  <data name="Wizard_Language_Title" xml:space="preserve">
-    <value>选择你的语言</value>
-    <comment>Setup page 1 heading</comment>
-  </data>
   <data name="Wizard_Language_Sub" xml:space="preserve">
     <value>选择 Desk Pal 使用的语言。选择其他语言会重新启动 Desk Pal。</value>
     <comment>Setup page 1 text</comment>
@@ -815,14 +811,6 @@
   <data name="Wizard_Hours_Sub" xml:space="preserve">
     <value>Bloop 只会在你的工作时间提醒你。具体哪几天,之后可以在设置中选择。</value>
     <comment>Setup page 2 text</comment>
-  </data>
-  <data name="Wizard_Done_Title" xml:space="preserve">
-    <value>全部就绪!</value>
-    <comment>Setup page 3 heading</comment>
-  </data>
-  <data name="Wizard_Done_Body" xml:space="preserve">
-    <value>Bloop 会在你工作时提醒你拉伸、让眼睛休息和喝水。</value>
-    <comment>Setup page 3 text</comment>
   </data>
   <data name="Wizard_Back" xml:space="preserve">
     <value>上一步</value>
@@ -1128,5 +1116,50 @@
   </data>
   <data name="Pose_FaceCamera" xml:space="preserve">
     <value>请面向摄像头</value>
+  </data>
+  <data name="Wizard_Hello_Title" xml:space="preserve">
+    <value>你好,我是 Bloop!</value>
+  </data>
+  <data name="Wizard_Rhythm_Label" xml:space="preserve">
+    <value>我多久提醒你活动一下比较好?</value>
+  </data>
+  <data name="Wizard_Rhythm_Option" xml:space="preserve">
+    <value>每 {0} 分钟</value>
+  </data>
+  <data name="Wizard_Rhythm_Recommended" xml:space="preserve">
+    <value>每 {0} 分钟(推荐)</value>
+  </data>
+  <data name="Wizard_Rhythm_Note" xml:space="preserve">
+    <value>护眼休息和喝水提醒会跟着调整。其他设置之后都可以在设置中调整。</value>
+  </data>
+  <data name="Wizard_Try_Title" xml:space="preserve">
+    <value>试一试</value>
+  </data>
+  <data name="Wizard_Try_Sub" xml:space="preserve">
+    <value>看看 Bloop 怎么工作。这里的操作不会改动你的设置。</value>
+  </data>
+  <data name="Wizard_Try_Stretch" xml:space="preserve">
+    <value>现在试一次拉伸</value>
+  </data>
+  <data name="Wizard_Try_Poke" xml:space="preserve">
+    <value>跟 Bloop 打个招呼</value>
+  </data>
+  <data name="Wizard_Try_Sent" xml:space="preserve">
+    <value>Bloop 的提醒已经出现在屏幕上。点按“完成”,或等它自己消失。</value>
+  </data>
+  <data name="Wizard_Try_Tray" xml:space="preserve">
+    <value>Desk Pal 住在时钟旁边的托盘里。点击它的图标可使用快捷操作。如果看不到,请展开托盘旁的箭头。</value>
+  </data>
+  <data name="Wizard_Try_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution 可免费试用 7 天:为 Bloop 定制专属外观,还能使用我们以后添加的所有功能。你现在用的功能会一直免费。</value>
+  </data>
+  <data name="Wizard_Skip" xml:space="preserve">
+    <value>暂时跳过</value>
+  </data>
+  <data name="Wizard_Recommended" xml:space="preserve">
+    <value>使用推荐设置开始</value>
+  </data>
+  <data name="Wizard_Hero_Name" xml:space="preserve">
+    <value>Bloop,你的 Desk Pal。点击跟它打个招呼。</value>
   </data>
 </root>

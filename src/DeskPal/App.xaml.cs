@@ -822,7 +822,8 @@ public partial class App : Application
             {
                 _ui.FirstRunShown = true;
                 SaveState();
-            });
+            },
+            tryStretch: () => _router.Execute(new TestNudgeCommand()));
         _wizard.Activate();
     }
     private void ExitApp() => Shutdown(false, []);
