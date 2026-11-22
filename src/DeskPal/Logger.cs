@@ -28,6 +28,8 @@ public static class AppData
     // --debug-page=<home|bloop|garden|settings>: with --debug-main, opens the main window on that page.
     public static readonly string? DebugPage = ArgValue("--debug-page=");
     // --debug-wizard-page=<0-2>: opens the welcome wizard on that page.
+    // --debug-wizard-hc: draws the welcome wizard with a high-contrast palette (a stand-in for Windows contrast themes).
+    public static readonly bool DebugWizardHc = HasArg("--debug-wizard-hc");
     public static readonly int DebugWizardPage = int.TryParse(ArgValue("--debug-wizard-page="), out var wizardPage) ? wizardPage : -1;
 #if DEBUG
     // --debug-pose: with --debug-main, runs the camera pose check for 10 seconds and logs only fps, model time and

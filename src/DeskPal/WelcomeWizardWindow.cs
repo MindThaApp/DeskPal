@@ -121,6 +121,9 @@ internal sealed class WelcomeWizardWindow : Window
         root.Children.Add(_footer);
         Content = root;
         Appearance.Register(this, root, Appearance.Role.Chrome);
+#if DEBUG
+        if (AppData.DebugWizardHc) DebugHighContrast(root);
+#endif
         // Esc is Skip, Enter is Next (a focused button or list keeps its own Enter).
         Keys.Wire(root, Close, () => Keys.Invoke(_next));
         Keys.Hint(_next, "Enter");
@@ -145,6 +148,31 @@ internal sealed class WelcomeWizardWindow : Window
         Go(Math.Clamp(startPage, 0, Pages - 1));
     }
 
+#if DEBUG
+    // Stand-in for a Windows contrast theme when it cannot be switched on: black window, white text, cyan highlights.
+    private void DebugHighContrast(FrameworkElement root)
+    {
+        static SolidColorBrush B(string rgb) => new(Windows.UI.Color.FromArgb(255, Convert.ToByte(rgb[..2], 16), Convert.ToByte(rgb[2..4], 16), Convert.ToByte(rgb[4..], 16)));
+        var white = B("FFFFFF"); var black = B("000000"); var cyan = B("1AEBFF"); var green = B("3FF23F");
+        var r = root.Resources;
+        foreach (var k in new[] { "TextFillColorPrimaryBrush", "TextFillColorSecondaryBrush", "TextFillColorTertiaryBrush", "TextFillColorDisabledBrush" }) r[k] = white;
+        foreach (var k in new[] { "SolidBackgroundFillColorBaseBrush", "LayerFillColorDefaultBrush", "CardBackgroundFillColorDefaultBrush", "ControlFillColorDefaultBrush", "ControlFillColorSecondaryBrush", "ControlFillColorTertiaryBrush", "ComboBoxBackground", "TimePickerFlyoutButtonBackground", "ButtonBackground", "ListViewItemBackground" }) r[k] = black;
+        foreach (var k in new[] { "ControlStrokeColorDefaultBrush", "ControlStrokeColorSecondaryBrush", "CardStrokeColorDefaultBrush", "ButtonBorderBrush", "ComboBoxBorderBrush", "TimePickerFlyoutButtonBorderBrush", "CheckBoxCheckBackgroundStrokeUnchecked" }) r[k] = white;
+        foreach (var k in new[] { "ButtonForeground", "ComboBoxForeground", "CheckBoxForegroundUnchecked", "TimePickerFlyoutButtonForeground", "ListViewItemForeground" }) r[k] = white;
+        foreach (var k in new[] { "AccentFillColorDefaultBrush", "AccentFillColorSecondaryBrush", "AccentFillColorTertiaryBrush", "AccentButtonBackground", "AccentButtonBackgroundPointerOver", "AccentButtonBackgroundPressed" }) r[k] = cyan;
+        foreach (var k in new[] { "TextOnAccentFillColorPrimaryBrush", "AccentButtonForeground", "AccentButtonForegroundPointerOver", "AccentButtonForegroundPressed" }) r[k] = black;
+        r["AccentButtonBorderBrush"] = white;
+        r["AccentTextFillColorPrimaryBrush"] = green;
+        r["HyperlinkButtonForeground"] = green;
+        r["ListViewItemBackgroundSelected"] = cyan;
+        r["ListViewItemForegroundSelected"] = black;
+        r["CheckBoxCheckBackgroundFillChecked"] = cyan;
+        r["CheckBoxCheckGlyphForegroundChecked"] = black;
+        foreach (var d in _dot) d.Background = cyan;
+        root.RequestedTheme = ElementTheme.Dark;
+    }
+#endif
+
     // About 720 x 620 device-independent pixels, centred, never larger than the work area.
     private void PlaceWindow()
     {
@@ -152,7 +180,12 @@ internal sealed class WelcomeWizardWindow : Window
         var work = DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary).WorkArea;
         var w = Math.Min((int)(WidthDip * scale), work.Width);
         var h = Math.Min((int)(HeightDip * scale), work.Height);
-        AppWindow.MoveAndResize(new RectInt32(work.X + (work.Width - w) / 2, work.Y + (work.Height - h) / 2, w, h));
+        var x = work.X + (work.Width - w) / 2;
+        var y = work.Y + (work.Height - h) / 2;
+        // UI checks only: DESKPAL_DEBUG_WINPOS=x,y keeps the test window off the owner's screen.
+        if (AppData.IsDebugRun && Environment.GetEnvironmentVariable("DESKPAL_DEBUG_WINPOS")?.Split(',') is [var px, var py]
+            && int.TryParse(px, out var dx) && int.TryParse(py, out var dy)) { x = dx; y = dy; }
+        AppWindow.MoveAndResize(new RectInt32(x, y, w, h));
     }
 
     [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -243,7 +276,7 @@ internal sealed class WelcomeWizardWindow : Window
 
     private static StackPanel PageShell(string titleKey, string? subKey)
     {
-        var panel = new StackPanel { Spacing = 12, VerticalAlignment = VerticalAlignment.Center };
+        var panel = new StackPanel { Spacing = 12, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0, 12, 0, 0) };
         var title = new TextBlock { Text = Loc.Get(titleKey), Style = (Style)Application.Current.Resources["TitleTextBlockStyle"], TextWrapping = TextWrapping.Wrap };
         AutomationProperties.SetHeadingLevel(title, AutomationHeadingLevel.Level1);
         panel.Children.Add(title);
@@ -300,7 +333,13 @@ internal sealed class WelcomeWizardWindow : Window
         }
         start.TimeChanged += (_, _) => Changed();
         end.TimeChanged += (_, _) => Changed();
-        var times = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 12, Margin = new Thickness(0, 8, 0, 0) };
+        // Two pickers side by side that share the width, so neither is cut off.
+        start.MinWidth = end.MinWidth = 0;
+        start.HorizontalAlignment = end.HorizontalAlignment = HorizontalAlignment.Stretch;
+        var times = new Grid { ColumnSpacing = 12, Margin = new Thickness(0, 8, 0, 0) };
+        times.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        times.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        Grid.SetColumn(end, 1);
         times.Children.Add(start);
         times.Children.Add(end);
         panel.Children.Add(times);
@@ -368,7 +407,7 @@ internal sealed class WelcomeWizardWindow : Window
         buttons.Children.Add(poke);
         panel.Children.Add(buttons);
         panel.Children.Add(result);
-        panel.Children.Add(InfoRow("", "Wizard_Try_Tray"));
+        panel.Children.Add(InfoRow("", "Wizard_Try_Tray"));
         panel.Children.Add(InfoRow("", "Wizard_Try_Pro"));
         panel.Children.Add(CrashConsentUi.Build(_hub));
         return panel;
