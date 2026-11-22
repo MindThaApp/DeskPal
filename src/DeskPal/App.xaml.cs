@@ -50,6 +50,8 @@ public partial class App : Application
     private DispatcherQueueTimer? _busyTimer;
     private DispatcherQueueTimer? _debugEyeTimer;
     private DispatcherQueueTimer? _debugNudgeTimer;
+    private DispatcherQueueTimer? _debugApprovalTimer;
+    private ApprovalCardWindow? _debugApprovalCard;
     private DispatcherQueueTimer? _debugCrashTimer;
 
     public App()
@@ -275,6 +277,21 @@ public partial class App : Application
                 Logger.Log("debug nudge " + (ok ? "requested" : "refused"));
             });
             _debugNudgeTimer.Start();
+        }
+        if (AppData.DebugApproval)
+        {
+            _debugApprovalTimer = _dq.CreateTimer();
+            _debugApprovalTimer.IsRepeating = false;
+            _debugApprovalTimer.Interval = TimeSpan.FromSeconds(2);
+            _debugApprovalTimer.Tick += (_, _) => TickGuard.Run("debug-approval", () =>
+            {
+                // The answer is deliberately dropped: nothing is recorded, the card just closes.
+                _debugApprovalCard = new ApprovalCardWindow();
+                _debugApprovalCard.Answered += _ => TickGuard.Run("debug-approval-close", () => _debugApprovalCard?.Quit());
+                _debugApprovalCard.Ask("Test app", "Test.Package_abc");
+                Logger.Log("debug approval card shown");
+            });
+            _debugApprovalTimer.Start();
         }
     }
 

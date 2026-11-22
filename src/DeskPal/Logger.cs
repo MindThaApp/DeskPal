@@ -4,6 +4,8 @@ public static class AppData
 {
     public static readonly bool DebugEyeCue = HasArg("--debug-eyecue");
     public static readonly bool DebugNudge = HasArg("--debug-nudge");
+    // --debug-approval: shows the approval card once with a made-up app; the answer is discarded.
+    public static readonly bool DebugApproval = HasArg("--debug-approval");
     public static readonly bool DebugCrash = HasArg("--debug-crash");
     public static readonly bool DebugTray = HasArg("--debug-tray");
     public static readonly bool Debug3DFail = HasArg("--debug-3d-fail");
@@ -25,7 +27,7 @@ public static class AppData
     public static readonly string? DebugGesture = ArgValue("--debug-gesture=");
     // --debug-page=<home|bloop|garden|settings>: with --debug-main, opens the main window on that page.
     public static readonly string? DebugPage = ArgValue("--debug-page=");
-    public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugPro || DebugGesture is not null;
+    public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugApproval || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugPro || DebugGesture is not null;
 
     // Debug runs keep their own state and log so they never touch the real ones.
     // DESKPAL_DEBUG_DATA_DIR moves the debug root elsewhere (e.g. a temp folder); it is ignored outside debug runs.
