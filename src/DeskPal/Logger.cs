@@ -30,8 +30,9 @@ public static class AppData
     public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugApproval || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugPro || DebugGesture is not null;
 
     // Debug runs keep their own state and log so they never touch the real ones.
-    // DESKPAL_DEBUG_DATA_DIR moves the debug root elsewhere (e.g. a temp folder); it is ignored outside debug runs.
-    public static readonly string Dir = IsDebugRun && Environment.GetEnvironmentVariable("DESKPAL_DEBUG_DATA_DIR") is { Length: > 0 } custom
+    // DESKPAL_DEBUG_DATA_DIR moves the data root to a test folder. It wins even without a debug flag, so a mistyped
+    // flag in a test launch can never fall through to the real profile.
+    public static readonly string Dir = Environment.GetEnvironmentVariable("DESKPAL_DEBUG_DATA_DIR") is { Length: > 0 } custom
         ? custom
         : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeskPal", IsDebugRun ? "debug" : "");
     public static readonly string SettingsPath = Path.Combine(Dir, "settings.json");
