@@ -91,6 +91,7 @@ internal static class Appearance
         }
     }
 
+    public static int TextStep => Current.TextStep;
     public static double BaseSize => 14 + Current.TextStep;
     public static double SmallSize => 12 + Current.TextStep;
 

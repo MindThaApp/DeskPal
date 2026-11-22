@@ -186,6 +186,9 @@ public sealed partial class SettingsPage : Page
             if (child is not Border b) continue;
             b.CornerRadius = Appearance.CardRadius;
             b.Padding = Appearance.CardPadding;
+            // The control column grows with the text step so combo text never clips.
+            if (b.Child is Grid { ColumnDefinitions.Count: 2 } g)
+                g.ColumnDefinitions[1].Width = new GridLength(ControlColumnWidth + 36 * Math.Max(0, Appearance.TextStep));
         }
     }
 
