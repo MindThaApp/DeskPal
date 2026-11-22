@@ -27,7 +27,10 @@ public static class AppData
     public static readonly string? DebugGesture = ArgValue("--debug-gesture=");
     // --debug-page=<home|bloop|garden|settings>: with --debug-main, opens the main window on that page.
     public static readonly string? DebugPage = ArgValue("--debug-page=");
-    public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugApproval || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugPro || DebugGesture is not null;
+    // --debug-pose: with --debug-main, runs the camera pose check for 10 seconds and logs only fps, model time and
+    // the top three point scores per frame (no image data).
+    public static readonly bool DebugPose = HasArg("--debug-pose");
+    public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugApproval || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugPro || DebugPose || DebugGesture is not null;
 
     // Debug runs keep their own state and log so they never touch the real ones.
     // DESKPAL_DEBUG_DATA_DIR moves the debug root elsewhere (e.g. a temp folder); it is ignored outside debug runs.

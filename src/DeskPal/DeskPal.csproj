@@ -52,8 +52,18 @@
   <Target Name="DpDropSkiaSymbols" AfterTargets="Publish">
     <Delete Files="$(PublishDir)libSkiaSharp.pdb" />
   </Target>
-  <!-- The Windows App SDK pulls in its on-device ML runtime (onnxruntime.dll, DirectML.dll, ~40 MB); Desk Pal never uses it. -->
-  <ItemGroup Condition="'$(DeskPalStore)' == 'true'">
+  <!-- ONNX Runtime ships link libraries (~21 MB, mostly an unused Azure provider) beside its DLLs; they are build-only. -->
+  <Target Name="DpDropNativeLinkLibs" AfterTargets="ResolvePackageAssets">
+    <ItemGroup>
+      <NativeCopyLocalItems Remove="@(NativeCopyLocalItems)" Condition="'%(Extension)' == '.lib'" />
+    </ItemGroup>
+  </Target>
+  <!--
+    The Windows App SDK pulls in its on-device ML runtime (onnxruntime.dll, DirectML.dll, ~40 MB). No Desk Pal build
+    uses it: the pose check runs on the smaller CPU-only ONNX Runtime below, and the two would ship clashing
+    onnxruntime.dll files.
+  -->
+  <ItemGroup>
     <PackageReference Include="Microsoft.WindowsAppSDK.ML" Version="2.6.5" ExcludeAssets="all" />
     <PackageReference Include="Microsoft.Windows.AI.MachineLearning" Version="2.4.89" ExcludeAssets="all" />
   </ItemGroup>
@@ -63,10 +73,14 @@
   <ItemGroup>
     <PackageReference Include="H.NotifyIcon.WinUI" Version="2.4.1" />
     <PackageReference Include="Sentry" Version="6.12.1" />
+    <!-- CPU-only runtime for the on-device pose model (Stretch with Bloop). -->
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.32.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.5" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
     <Content Include="Assets\**\*.svg" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\Models\*.glb" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\Models\*.onnx" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\Models\movenet-LICENSE.txt" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\Sounds\*.wav" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\Shaders\*.cso" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\Tray\manifest.json" CopyToOutputDirectory="PreserveNewest" />
