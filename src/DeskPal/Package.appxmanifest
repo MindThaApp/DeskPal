@@ -18,6 +18,8 @@
 
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0" />
+    <!-- C++ runtime (msvcp140/vcruntime140) for the on-device pose model runtime; the Store installs it with the app. -->
+    <PackageDependency Name="Microsoft.VCLibs.140.00.UWPDesktop" MinVersion="14.0.33519.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
   </Dependencies>
 
   <Resources>
@@ -58,5 +60,6 @@
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
+    <DeviceCapability Name="webcam" />
   </Capabilities>
 </Package>
