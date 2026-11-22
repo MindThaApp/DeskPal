@@ -43,7 +43,6 @@ internal sealed class WelcomeWizardWindow : Window
     private bool _finishedClicked;
     private bool _stacked;
     private Action? _refreshDay;
-    private readonly Border _crashStrip;
 
     public WelcomeWizardWindow(SettingsHub hub, string appliedLanguage, int startPage, Action finished, Action closed, Action tryStretch)
     {
@@ -99,7 +98,7 @@ internal sealed class WelcomeWizardWindow : Window
         AutomationProperties.SetAccessibilityView(_dots, AccessibilityView.Raw);
 
         // Left column: Bloop with the step dots under him. Right column: the current step.
-        var heroColumn = new StackPanel { Spacing = 8, VerticalAlignment = VerticalAlignment.Center, Width = WelcomeHero.Size };
+        var heroColumn = new StackPanel { Spacing = 8, VerticalAlignment = VerticalAlignment.Top, Width = WelcomeHero.Size, Margin = new Thickness(0, -70, 0, 0) };
         heroColumn.Children.Add(_hero);
         _dots.Margin = new Thickness(0, -66, 0, 0);
         heroColumn.Children.Add(_dots);
@@ -113,22 +112,10 @@ internal sealed class WelcomeWizardWindow : Window
         _content.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(WelcomeHero.Size) });
         _content.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         _content.ColumnSpacing = 24;
-        // Bloop and the dots span both rows, so they sit at the same height on every step; the crash strip
-        // takes the second row of the text column on the last step only.
-        _content.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-        _content.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-        Grid.SetRowSpan(heroColumn, 2);
         _content.Children.Add(heroColumn);
         Grid.SetColumn(scroll, 1);
         _content.Children.Add(scroll);
 
-        // The crash-report option lives in its own card under the text column, on the last step only.
-        _crashStrip = (Border)XamlReader.Load("<Border xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' CornerRadius='8' Padding='16,12' Margin='0,12,0,0' BorderThickness='1' Background='{ThemeResource CardBackgroundFillColorDefaultBrush}' BorderBrush='{ThemeResource CardStrokeColorDefaultBrush}' />");
-        _crashStrip.Child = CrashConsentUi.Build(hub);
-        _crashStrip.Visibility = Visibility.Collapsed;
-        Grid.SetColumn(_crashStrip, 1);
-        Grid.SetRow(_crashStrip, 1);
-        _content.Children.Add(_crashStrip);
         var root = new Grid { Padding = new Thickness(32, 24, 32, 24), RowSpacing = 16 };
         root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
         root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
@@ -233,7 +220,6 @@ internal sealed class WelcomeWizardWindow : Window
         _page = target;
         for (var i = 0; i < _pages.Length; i++) _pages[i].Visibility = i == _page ? Visibility.Visible : Visibility.Collapsed;
         _back.Visibility = _page == 0 ? Visibility.Collapsed : Visibility.Visible;
-        _crashStrip.Visibility = _page == Pages - 1 ? Visibility.Visible : Visibility.Collapsed;
         _next.Content = Loc.Get(_page == Pages - 1 ? "Wizard_Finish" : "Wizard_Next");
         for (var i = 0; i < Pages; i++)
         {
@@ -372,16 +358,14 @@ internal sealed class WelcomeWizardWindow : Window
     {
         var panel = PageShell("Wizard_Hours_Title", "Wizard_Hours_Sub");
         var s = _hub.Settings;
-        var start = new TimePicker { ClockIdentifier = "24HourClock", MinuteIncrement = 5, Time = s.WorkingHours.Start.ToTimeSpan() };
-        var end = new TimePicker { ClockIdentifier = "24HourClock", MinuteIncrement = 5, Time = s.WorkingHours.End.ToTimeSpan() };
-        AutomationProperties.SetName(start, Loc.Get("Settings_DayStart"));
-        AutomationProperties.SetName(end, Loc.Get("Settings_DayEnd"));
         var loading = true;
+        var start = new TimeFields(Loc.Get("Settings_DayStart"), s.WorkingHours.Start);
+        var end = new TimeFields(Loc.Get("Settings_DayEnd"), s.WorkingHours.End);
         void Changed()
         {
             if (loading) return;
-            var a = TimeOnly.FromTimeSpan(start.Time);
-            var b = TimeOnly.FromTimeSpan(end.Time);
+            var a = start.Value;
+            var b = end.Value;
             if (b > a)
             {
                 s.WorkingHours.Start = a;
@@ -391,18 +375,14 @@ internal sealed class WelcomeWizardWindow : Window
             else
             {
                 loading = true;
-                start.Time = s.WorkingHours.Start.ToTimeSpan();
-                end.Time = s.WorkingHours.End.ToTimeSpan();
+                start.Value = s.WorkingHours.Start;
+                end.Value = s.WorkingHours.End;
                 loading = false;
             }
         }
-        start.TimeChanged += (_, _) => Changed();
-        end.TimeChanged += (_, _) => Changed();
-        // Stacked: a time picker has a fixed minimum width, two side by side would not fit beside Bloop.
-        var times = new StackPanel { Orientation = Orientation.Vertical, Spacing = 8, Margin = new Thickness(0, 4, 0, 0) };
-        times.Children.Add(Labelled("Settings_Start", start));
-        times.Children.Add(Labelled("Settings_End", end));
-        panel.Children.Add(times);
+        start.Changed += Changed;
+        end.Changed += Changed;
+        panel.Children.Add(HoursCard(start, end));
 
         var rhythm = new ComboBox { Header = Loc.Get("Wizard_Rhythm_Label"), MinWidth = 260 };
         AutomationProperties.SetName(rhythm, Loc.Get("Wizard_Rhythm_Label"));
@@ -435,28 +415,80 @@ internal sealed class WelcomeWizardWindow : Window
         _refreshDay = () =>
         {
             loading = true;
-            start.Time = s.WorkingHours.Start.ToTimeSpan();
-            end.Time = s.WorkingHours.End.ToTimeSpan();
+            start.Value = s.WorkingHours.Start;
+            end.Value = s.WorkingHours.End;
             loading = false;
             FillRhythm();
         };
         return panel;
     }
 
-    // A visible outline so the fields read as fields in every theme (the fill alone is dim in contrast themes).
-    private static StackPanel Labelled(string labelKey, FrameworkElement field)
+    // Start and End in one card, laid out like a settings row each: label on the left, "hh : mm" on the right.
+    private static Border HoursCard(TimeFields start, TimeFields end)
     {
-        var p = new StackPanel { Spacing = 4 };
-        p.Children.Add(new TextBlock { Text = Loc.Get(labelKey) });
-        p.Children.Add(Outlined(field));
-        return p;
+        var card = (Border)XamlReader.Load("<Border xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' CornerRadius='8' Padding='16,8' Margin='0,4,0,0' BorderThickness='1' Background='{ThemeResource CardBackgroundFillColorDefaultBrush}' BorderBrush='{ThemeResource CardStrokeColorDefaultBrush}' />");
+        var rows = new Grid { ColumnSpacing = 12, RowSpacing = 8 };
+        rows.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        rows.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        rows.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        rows.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        var l1 = new TextBlock { Text = Loc.Get("Settings_Start"), VerticalAlignment = VerticalAlignment.Center };
+        var l2 = new TextBlock { Text = Loc.Get("Settings_End"), VerticalAlignment = VerticalAlignment.Center };
+        Grid.SetRow(l2, 1);
+        Grid.SetColumn(start.Panel, 1);
+        Grid.SetRow(end.Panel, 1);
+        Grid.SetColumn(end.Panel, 1);
+        rows.Children.Add(l1);
+        rows.Children.Add(l2);
+        rows.Children.Add(start.Panel);
+        rows.Children.Add(end.Panel);
+        card.Child = rows;
+        return card;
     }
 
-    private static Border Outlined(FrameworkElement field)
+    // Hour and minute fields with a colon between them (a stock time picker shows none). Minutes go in steps of 5; an
+    // odd saved minute is kept as an extra entry so nothing is rounded away.
+    private sealed class TimeFields
     {
-        var b = (Border)XamlReader.Load("<Border xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' CornerRadius='4' BorderThickness='1' HorizontalAlignment='Left' BorderBrush='{ThemeResource ControlStrongStrokeColorDefaultBrush}' />");
-        b.Child = field;
-        return b;
+        private readonly ComboBox _hour = Field(), _minute = Field();
+        private bool _quiet;
+        public StackPanel Panel { get; } = new() { Orientation = Orientation.Horizontal, Spacing = 6 };
+        public event Action? Changed;
+
+        public TimeFields(string name, TimeOnly value)
+        {
+            for (var h = 0; h < 24; h++) _hour.Items.Add(new ComboBoxItem { Tag = h, Content = h.ToString("00") });
+            AutomationProperties.SetName(_hour, name);
+            AutomationProperties.SetName(_minute, name);
+            var colon = new TextBlock { Text = ":", VerticalAlignment = VerticalAlignment.Center, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold };
+            AutomationProperties.SetAccessibilityView(colon, AccessibilityView.Raw);
+            Panel.Children.Add(_hour);
+            Panel.Children.Add(colon);
+            Panel.Children.Add(_minute);
+            Value = value;
+            _hour.SelectionChanged += (_, _) => { if (!_quiet) Changed?.Invoke(); };
+            _minute.SelectionChanged += (_, _) => { if (!_quiet) Changed?.Invoke(); };
+        }
+
+        public TimeOnly Value
+        {
+            get => new(
+                _hour.SelectedItem is ComboBoxItem { Tag: int h } ? h : 0,
+                _minute.SelectedItem is ComboBoxItem { Tag: int m } ? m : 0);
+            set
+            {
+                _quiet = true;
+                _hour.SelectedIndex = value.Hour;
+                var minutes = Enumerable.Range(0, 12).Select(i => i * 5).Append(value.Minute).Distinct().Order().ToArray();
+                _minute.Items.Clear();
+                foreach (var m in minutes) _minute.Items.Add(new ComboBoxItem { Tag = m, Content = m.ToString("00") });
+                _minute.SelectedIndex = Array.IndexOf(minutes, value.Minute);
+                _quiet = false;
+            }
+        }
+
+        // Outlined so the field reads as a field in every theme (the fill alone is dim in contrast themes).
+        private static ComboBox Field() => (ComboBox)XamlReader.Load("<ComboBox xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' MinWidth='76' BorderBrush='{ThemeResource ControlStrongStrokeColorDefaultBrush}' />");
     }
 
     private FrameworkElement TryPage()
@@ -481,6 +513,10 @@ internal sealed class WelcomeWizardWindow : Window
         panel.Children.Add(result);
         panel.Children.Add(InfoRow("", "Wizard_Try_Tray"));
         panel.Children.Add(InfoRow("", "Wizard_Try_Pro"));
+        // The crash-report option sits right under the last line, with the page's normal spacing.
+        var strip = (Border)XamlReader.Load("<Border xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' CornerRadius='8' Padding='16,12' BorderThickness='1' Background='{ThemeResource CardBackgroundFillColorDefaultBrush}' BorderBrush='{ThemeResource CardStrokeColorDefaultBrush}' />");
+        strip.Child = CrashConsentUi.Build(_hub);
+        panel.Children.Add(strip);
         return panel;
     }
 

@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>送信される内容</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>いつでも［設定］＞［プライバシー］でオフにできます。</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal は問題をすばやく修正するため、クラッシュレポートを送信するようになりました</value>
   </data>
@@ -1133,10 +1136,10 @@
     <value>目の休憩や水分補給のお知らせもいっしょに動きます。</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>ためしてみよう</value>
+    <value>Bloopの活躍を見てみよう</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Bloopが動くところを見てみましょう。</value>
+    <value>ボタンを押すと、動きを確かめられます。</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>いまストレッチをためす</value>

@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>发送的内容</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>可随时在“设置 &gt; 隐私”中关闭。</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal 现在会发送崩溃报告，帮助我们快速修复问题</value>
   </data>
@@ -1133,10 +1136,10 @@
     <value>护眼休息和喝水提醒会跟着调整。</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>试一试</value>
+    <value>认识 Bloop 的本领</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>看看 Bloop 的实际表现。</value>
+    <value>点一下按钮，看看效果。</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>现在试一次拉伸</value>

@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>전송되는 내용</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>설정 &gt; 개인정보에서 언제든 끌 수 있어요.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal이 문제를 빠르게 해결할 수 있도록 이제 충돌 보고서를 보냅니다</value>
   </data>
@@ -1133,10 +1136,10 @@
     <value>눈 휴식과 물 마시기 알림도 함께 맞춰져요.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>직접 해 보기</value>
+    <value>Bloop의 활약 만나기</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Bloop이 움직이는 모습을 확인해 보세요.</value>
+    <value>버튼을 눌러 어떻게 되는지 확인해 보세요.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>지금 스트레칭 해 보기</value>

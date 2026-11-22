@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>Qué se envía</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>Puedes desactivarlo cuando quieras en Ajustes &gt; Privacidad.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal ahora envía informes de fallos para ayudarnos a arreglar problemas rápido</value>
   </data>
@@ -1111,10 +1114,10 @@
     <value>Los descansos para los ojos y los avisos de agua se ajustan solos.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>Pruébalo</value>
+    <value>Conoce a Bloop en acción</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Mira a Bloop en acción.</value>
+    <value>Pulsa un botón para ver qué hace.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Probar un estiramiento ahora</value>

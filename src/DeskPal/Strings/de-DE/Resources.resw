@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>Was gesendet wird</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>Du kannst es jederzeit unter Einstellungen &gt; Datenschutz ausschalten.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal sendet jetzt Absturzberichte, damit wir Probleme schnell beheben können</value>
   </data>
@@ -1111,10 +1114,10 @@
     <value>Augenpausen und Wassererinnerungen laufen mit.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>Probier&apos;s aus</value>
+    <value>Bloop in Aktion erleben</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Sieh Bloop in Aktion.</value>
+    <value>Tippe auf eine Schaltfläche und sieh, was passiert.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Jetzt eine Dehnübung probieren</value>

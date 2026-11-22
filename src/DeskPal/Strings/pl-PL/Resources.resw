@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>Co jest wysyłane</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>Możesz to wyłączyć w dowolnej chwili w Ustawienia &gt; Prywatność.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal wysyła teraz raporty o awariach, aby szybko naprawiać problemy</value>
   </data>
@@ -1133,10 +1136,10 @@
     <value>Przerwy dla oczu i przypomnienia o wodzie dostosują się same.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>Wypróbuj</value>
+    <value>Poznaj Blooba w akcji</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Zobacz Blooba w akcji.</value>
+    <value>Naciśnij przycisk, żeby zobaczyć, co robi.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Wypróbuj rozciąganie teraz</value>

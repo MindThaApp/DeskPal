@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>Ce qui est envoyé</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>Désactivez-le à tout moment dans Paramètres &gt; Confidentialité.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal envoie désormais les rapports de plantage pour nous aider à corriger vite les problèmes</value>
   </data>
@@ -1111,10 +1114,10 @@
     <value>Les pauses pour les yeux et les rappels d&apos;eau suivent le mouvement.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>Essayez</value>
+    <value>Découvrez Bloop en action</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Voyez Bloop en action.</value>
+    <value>Appuyez sur un bouton pour voir.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Essayer un étirement maintenant</value>

@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>Neler gönderilir</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>İstediğin zaman Ayarlar &gt; Gizlilik bölümünden kapatabilirsin.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal artık sorunları hızla düzeltmemize yardımcı olmak için çökme raporları gönderiyor</value>
   </data>
@@ -1133,10 +1136,10 @@
     <value>Göz molaları ve su hatırlatmaları buna göre ayarlanır.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>Dene</value>
+    <value>Bloop iş başında</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Bloop&apos;u iş başında gör.</value>
+    <value>Bir düğmeye bas, ne yaptığını gör.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Şimdi bir esneme dene</value>

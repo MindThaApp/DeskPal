@@ -40,9 +40,15 @@ internal static class CrashConsentUi
         var row = new Grid();
         row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        Grid.SetColumn(text, 1);
+        // The reason, then a quiet second line saying where to turn it off.
+        var hint = (TextBlock)Microsoft.UI.Xaml.Markup.XamlReader.Load("<TextBlock xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' TextWrapping='Wrap' Opacity='0.85' Margin='0,2,0,0' Foreground='{ThemeResource TextFillColorPrimaryBrush}' />");
+        hint.Text = Loc.Get("Crash_OffHint");
+        var words = new StackPanel();
+        words.Children.Add(text);
+        words.Children.Add(hint);
+        Grid.SetColumn(words, 1);
         row.Children.Add(check);
-        row.Children.Add(text);
+        row.Children.Add(words);
         var link = new HyperlinkButton
         {
             Content = Loc.Get("Crash_WhatsSent"),

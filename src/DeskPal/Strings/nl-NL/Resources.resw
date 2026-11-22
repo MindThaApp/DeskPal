@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>Wat er wordt verzonden</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>Je kunt dit altijd uitzetten in Instellingen &gt; Privacy.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal verstuurt nu crashrapporten om problemen snel op te lossen</value>
   </data>
@@ -1111,10 +1114,10 @@
     <value>Oogpauzes en waterherinneringen lopen vanzelf mee.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>Probeer het</value>
+    <value>Maak kennis met Bloop in actie</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Zie Bloop in actie.</value>
+    <value>Druk op een knop om te zien wat er gebeurt.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Nu een rekoefening proberen</value>

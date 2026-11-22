@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>Cosa viene inviato</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>Puoi disattivarlo quando vuoi in Impostazioni &gt; Privacy.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal ora invia i rapporti sugli arresti anomali per aiutarci a risolvere subito i problemi</value>
   </data>
@@ -1111,10 +1114,10 @@
     <value>Le pause per gli occhi e i promemoria per l&apos;acqua seguono di conseguenza.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>Provalo</value>
+    <value>Scopri Bloop in azione</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Guarda Bloop in azione.</value>
+    <value>Premi un pulsante per vedere cosa fa.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Prova uno stretching adesso</value>

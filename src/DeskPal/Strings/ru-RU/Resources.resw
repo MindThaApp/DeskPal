@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>Что отправляется</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>Отключить можно в любой момент: Настройки &gt; Конфиденциальность.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal теперь отправляет отчёты о сбоях, чтобы мы быстрее исправляли проблемы</value>
   </data>
@@ -1133,10 +1136,10 @@
     <value>Перерывы для глаз и напоминания о воде подстроятся сами.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>Попробуй</value>
+    <value>Знакомься: Bloop в деле</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Посмотри, как Bloop работает.</value>
+    <value>Нажми кнопку и посмотри, что будет.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Попробовать растяжку сейчас</value>

@@ -214,6 +214,9 @@
   <data name="Crash_WhatsSent" xml:space="preserve">
     <value>What's sent</value>
   </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>Turn it off any time in Settings &gt; Privacy.</value>
+  </data>
   <data name="Crash_NoticeTitle" xml:space="preserve">
     <value>Desk Pal now sends crash reports to help us fix problems fast</value>
   </data>
@@ -1237,10 +1240,10 @@
     <value>Eye breaks and water reminders follow along.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
-    <value>Try it</value>
+    <value>Meet Bloop in action</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>See Bloop in action.</value>
+    <value>Press a button to see what it does.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Try a stretch now</value>
