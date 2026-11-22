@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Windows.Graphics;
@@ -90,7 +91,7 @@ internal sealed class WelcomeWizardWindow : Window
 
         for (var i = 0; i < Pages; i++)
         {
-            _dot[i] = new Border { Height = 8, Width = 8, CornerRadius = new CornerRadius(4), Background = (Brush)Application.Current.Resources["AccentFillColorDefaultBrush"] };
+            _dot[i] = (Border)XamlReader.Load("<Border xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' Height='8' Width='8' CornerRadius='4' Background='{ThemeResource AccentFillColorDefaultBrush}' />");
             _dots.Children.Add(_dot[i]);
         }
         AutomationProperties.SetAccessibilityView(_dots, AccessibilityView.Raw);
@@ -333,13 +334,8 @@ internal sealed class WelcomeWizardWindow : Window
         }
         start.TimeChanged += (_, _) => Changed();
         end.TimeChanged += (_, _) => Changed();
-        // Two pickers side by side that share the width, so neither is cut off.
-        start.MinWidth = end.MinWidth = 0;
-        start.HorizontalAlignment = end.HorizontalAlignment = HorizontalAlignment.Stretch;
-        var times = new Grid { ColumnSpacing = 12, Margin = new Thickness(0, 8, 0, 0) };
-        times.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        times.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        Grid.SetColumn(end, 1);
+        // Stacked: a time picker has a fixed minimum width, two side by side would not fit beside Bloop.
+        var times = new StackPanel { Orientation = Orientation.Vertical, Spacing = 8, Margin = new Thickness(0, 4, 0, 0) };
         times.Children.Add(start);
         times.Children.Add(end);
         panel.Children.Add(times);
@@ -418,8 +414,9 @@ internal sealed class WelcomeWizardWindow : Window
         var row = new Grid { ColumnSpacing = 12 };
         row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        var icon = new FontIcon { Glyph = glyph, FontSize = 16, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0, 2, 0, 0) };
-        icon.Foreground = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"];
+        // Theme resource so the glyph follows light, dark and contrast themes of this window, not the app's.
+        var icon = (FontIcon)XamlReader.Load("<FontIcon xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' FontSize='16' VerticalAlignment='Top' Margin='0,2,0,0' Foreground='{ThemeResource TextFillColorSecondaryBrush}' />");
+        icon.Glyph = glyph;
         AutomationProperties.SetAccessibilityView(icon, AccessibilityView.Raw);
         var text = new TextBlock { Text = Loc.Get(textKey), TextWrapping = TextWrapping.Wrap };
         Grid.SetColumn(text, 1);
