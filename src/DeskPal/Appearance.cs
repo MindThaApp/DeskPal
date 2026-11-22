@@ -44,13 +44,51 @@ internal static class Appearance
     public static void Register(Window window, FrameworkElement root, Role role)
     {
         lock (Entries) Entries.Add(new Entry(window, root, role));
+        // Pages swap in and templates realise later, so new text and controls are scaled as layout settles.
+        root.LayoutUpdated += (_, _) => QueueScale(root);
         Apply(force: true);
     }
 
     public static void TrackSecondary(TextBlock t)
     {
         lock (Secondary) Secondary.Add(new WeakReference<TextBlock>(t));
-        t.FontSize = SmallSize;
+        t.FontSize = 12;
+    }
+
+    // Text size: every text block and control in a chrome window is scaled from the size it was built with, so headings,
+    // buttons and nav items all follow the step. Leaf controls are not descended into (their template text inherits).
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<DependencyObject, StrongBox> BaseSizes = new();
+    private sealed class StrongBox(double v) { public readonly double Value = v; }
+    private static readonly HashSet<FrameworkElement> ScaleQueued = [];
+
+    private static void QueueScale(FrameworkElement root)
+    {
+        if (!ScaleQueued.Add(root)) return;
+        root.DispatcherQueue.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.Low, () =>
+        {
+            ScaleQueued.Remove(root);
+            try { ScaleTree(root, Current.TextStep); } catch (Exception ex) { Logger.Log("text scale failed: " + ex.Message); }
+        });
+    }
+
+    private static bool IsLeaf(DependencyObject d) =>
+        d is Button or ToggleSwitch or ComboBox or NumberBox or CheckBox or RadioButton or TextBox or NavigationViewItem or ProgressRing
+            or Microsoft.UI.Xaml.Controls.Primitives.ToggleButton;
+
+    private static void ScaleTree(DependencyObject d, int step)
+    {
+        if (d is TextBlock || IsLeaf(d))
+        {
+            var box = BaseSizes.GetValue(d, _ => new StrongBox(d is TextBlock tb ? tb.FontSize : ((Control)d).FontSize));
+            var target = Math.Max(8, box.Value + step);
+            if (d is TextBlock t) { if (Math.Abs(t.FontSize - target) > 0.01) t.FontSize = target; }
+            else if (d is Control c && Math.Abs(c.FontSize - target) > 0.01) c.FontSize = target;
+        }
+        if (d is not TextBlock && !IsLeaf(d) || d is NavigationViewItem)
+        {
+            var n = VisualTreeHelper.GetChildrenCount(d);
+            for (var i = 0; i < n; i++) ScaleTree(VisualTreeHelper.GetChild(d, i), step);
+        }
     }
 
     public static double BaseSize => 14 + Current.TextStep;
@@ -132,7 +170,6 @@ internal static class Appearance
             lock (Secondary)
             {
                 Secondary.RemoveAll(r => !r.TryGetTarget(out _));
-                foreach (var r in Secondary) if (r.TryGetTarget(out var t)) t.FontSize = SmallSize;
             }
 
             _applied = new AppearanceSettings
@@ -141,6 +178,7 @@ internal static class Appearance
                 Density = a.Density, TextStep = a.TextStep, Motion = a.Motion,
             };
             _appliedDark = dark;
+            foreach (var e in live) if (e.Root.TryGetTarget(out var r) && r.IsLoaded) QueueScale(r);
             Applied?.Invoke();
         }
         catch (Exception ex) { Logger.Log("appearance apply failed: " + ex.Message); }
@@ -180,7 +218,37 @@ internal static class Appearance
             if (w.SystemBackdrop is null) w.SystemBackdrop = e.OriginalBackdrop;
         }
 
-        if (root is Control c) c.FontSize = BaseSize;
+        ApplyTitleBar(w, hc, EffectiveDark(a));
+    }
+
+    // The system title bar follows the effective theme (it otherwise stays light). High contrast keeps system colours.
+    private static void ApplyTitleBar(Window w, bool hc, bool dark)
+    {
+        try
+        {
+            var tb = w.AppWindow.TitleBar;
+            if (!Microsoft.UI.Windowing.AppWindowTitleBar.IsCustomizationSupported()) return;
+            if (hc)
+            {
+                tb.BackgroundColor = tb.ForegroundColor = tb.InactiveBackgroundColor = tb.InactiveForegroundColor = null;
+                tb.ButtonBackgroundColor = tb.ButtonForegroundColor = tb.ButtonHoverBackgroundColor = tb.ButtonHoverForegroundColor = null;
+                tb.ButtonPressedBackgroundColor = tb.ButtonPressedForegroundColor = null;
+                tb.ButtonInactiveBackgroundColor = tb.ButtonInactiveForegroundColor = null;
+                return;
+            }
+            var bg = dark ? Hex("202020") : Hex("F3F3F3");
+            var fg = dark ? Hex("FFFFFF") : Hex("000000");
+            var dim = dark ? Hex("9D9D9D") : Hex("7A7A7A");
+            var hover = dark ? Hex("333333") : Hex("E0E0E0");
+            var press = dark ? Hex("444444") : Hex("CCCCCC");
+            tb.BackgroundColor = bg; tb.ForegroundColor = fg;
+            tb.InactiveBackgroundColor = bg; tb.InactiveForegroundColor = dim;
+            tb.ButtonBackgroundColor = bg; tb.ButtonForegroundColor = fg;
+            tb.ButtonInactiveBackgroundColor = bg; tb.ButtonInactiveForegroundColor = dim;
+            tb.ButtonHoverBackgroundColor = hover; tb.ButtonHoverForegroundColor = fg;
+            tb.ButtonPressedBackgroundColor = press; tb.ButtonPressedForegroundColor = fg;
+        }
+        catch (Exception ex) { Logger.Log("title bar theme failed: " + ex.Message); }
     }
 
     private static void SetBackground(FrameworkElement root, Brush? brush)
