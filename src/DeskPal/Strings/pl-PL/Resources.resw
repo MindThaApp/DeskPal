@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -1029,5 +1029,95 @@
   </data>
   <data name="Custom_Keep" xml:space="preserve">
     <value>Zachowaj ten wygląd</value>
+  </data>
+  <data name="Settings_Section_Stretch" xml:space="preserve">
+    <value>Rozciąganie z Bloopem</value>
+  </data>
+  <data name="Settings_StretchWithBloop" xml:space="preserve">
+    <value>Rozciąganie z Bloopem</value>
+  </data>
+  <data name="Settings_StretchWithBloopSub" xml:space="preserve">
+    <value>Porozciągaj się przed kamerą. Bloop naśladuje twoje ruchy, a przypomnienie zostanie zaliczone, gdy utrzymasz pozycję.</value>
+  </data>
+  <data name="Settings_StretchPrivacy" xml:space="preserve">
+    <value>Kamera jest używana tylko podczas rozciągania, które sam uruchomisz. Obraz zostaje na tym komputerze: nigdy nie jest nagrywany, zapisywany ani wysyłany.</value>
+  </data>
+  <data name="Settings_CameraAccess" xml:space="preserve">
+    <value>Dostęp do kamery</value>
+  </data>
+  <data name="Nudge_StretchWithBloop" xml:space="preserve">
+    <value>Rozciąganie z Bloopem</value>
+  </data>
+  <data name="Nudge_StopCamera" xml:space="preserve">
+    <value>Wyłącz kamerę</value>
+  </data>
+  <data name="Pose_CameraOn" xml:space="preserve">
+    <value>Kamera włączona · tylko na tym komputerze</value>
+  </data>
+  <data name="Pose_Starting" xml:space="preserve">
+    <value>Uruchamianie kamery…</value>
+  </data>
+  <data name="Pose_GetReady" xml:space="preserve">
+    <value>Przygotuj się…</value>
+  </data>
+  <data name="Pose_HoldIt" xml:space="preserve">
+    <value>Wytrzymaj tak</value>
+  </data>
+  <data name="Pose_WellDone" xml:space="preserve">
+    <value>Świetnie!</value>
+  </data>
+  <data name="Pose_Sides" xml:space="preserve">
+    <value>Lewa {0}% · Prawa {1}%</value>
+  </data>
+  <data name="Pose_NoCamera" xml:space="preserve">
+    <value>Nie znaleziono kamery. Kliknij Gotowe, gdy się porozciągasz.</value>
+  </data>
+  <data name="Pose_CameraInUse" xml:space="preserve">
+    <value>Inna aplikacja używa kamery.</value>
+  </data>
+  <data name="Pose_CameraBlocked" xml:space="preserve">
+    <value>System Windows blokuje Desk Pal dostęp do kamery.</value>
+  </data>
+  <data name="Pose_ModelUnavailable" xml:space="preserve">
+    <value>Rozciąganie z kamerą jest teraz niedostępne.</value>
+  </data>
+  <data name="Pose_Failed" xml:space="preserve">
+    <value>Nie udało się uruchomić kamery.</value>
+  </data>
+  <data name="Pose_StoppedTimeout" xml:space="preserve">
+    <value>Kamera wyłączyła się po 3 minutach. Kliknij Gotowe, gdy się porozciągasz.</value>
+  </data>
+  <data name="Pose_StoppedLost" xml:space="preserve">
+    <value>Kamera przestała działać.</value>
+  </data>
+  <data name="Pose_StoppedLocked" xml:space="preserve">
+    <value>Kamera wyłączyła się, bo komputer został zablokowany.</value>
+  </data>
+  <data name="Pose_StoppedGeneric" xml:space="preserve">
+    <value>Kamera została wyłączona.</value>
+  </data>
+  <data name="Pose_StepIntoView" xml:space="preserve">
+    <value>Stań w kadrze</value>
+  </data>
+  <data name="Pose_RaiseArms" xml:space="preserve">
+    <value>Unieś obie ręce nad głowę</value>
+  </data>
+  <data name="Pose_LeanSideways" xml:space="preserve">
+    <value>Pochyl się w bok</value>
+  </data>
+  <data name="Pose_ShrugHigher" xml:space="preserve">
+    <value>Unieś ramiona wyżej</value>
+  </data>
+  <data name="Pose_TiltHead" xml:space="preserve">
+    <value>Przechyl głowę w stronę ramienia</value>
+  </data>
+  <data name="Pose_TwistMore" xml:space="preserve">
+    <value>Skręć się jeszcze trochę</value>
+  </data>
+  <data name="Pose_SwitchSides" xml:space="preserve">
+    <value>Teraz druga strona</value>
+  </data>
+  <data name="Pose_FaceCamera" xml:space="preserve">
+    <value>Spójrz w kamerę</value>
   </data>
 </root>

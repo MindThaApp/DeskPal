@@ -128,6 +128,9 @@ public sealed partial class SettingsPage : Page
             () => _s.AllowExternalControl, b => { _s.AllowExternalControl = b; _hub.Commit(false); });
         AddAutomationPortalCard();
 
+        Root.Children.Add(Header(Loc.Get("Settings_Section_Stretch")));
+        AddStretchWithBloop();
+
         Root.Children.Add(Header(Loc.Get("Settings_Section_Privacy")));
         AddSwitch(Loc.Get("Settings_CrashReports"), Loc.Get("Settings_CrashReportsSub"),
             () => _s.CrashReports == CrashReportingMode.Always,
@@ -190,6 +193,48 @@ public sealed partial class SettingsPage : Page
             if (b.Child is Grid { ColumnDefinitions.Count: 2 } g)
                 g.ColumnDefinitions[1].Width = new GridLength(ControlColumnWidth + 36 * Math.Max(0, Appearance.TextStep));
         }
+    }
+
+    // Stretch with Bloop (Pro): off by default. Without Pro the section stays visible with the Pro mark, a short
+    // preview line and a link to the Pro page; the switch is disabled. The camera note is always shown.
+    private void AddStretchWithBloop()
+    {
+        var name = Loc.Get("Settings_StretchWithBloop");
+        var toggle = new ToggleSwitch { OnContent = Loc.Get("Common_On"), OffContent = Loc.Get("Common_Off"), MinWidth = 0, HorizontalAlignment = HorizontalAlignment.Right };
+        AutomationProperties.SetName(toggle, name);
+        toggle.Toggled += (_, _) =>
+        {
+            if (_loading) return;
+            _s.StretchWithBloop.Enabled = toggle.IsOn;
+            _hub.Commit(false);
+        };
+
+        var title = new StackPanel { Spacing = 2, VerticalAlignment = VerticalAlignment.Center };
+        title.Children.Add(new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = 8,
+            Children = { new TextBlock { Text = name, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap }, new ProBadge() },
+        });
+        title.Children.Add(Secondary(Loc.Get("Settings_StretchWithBloopSub")));
+        var proLink = new HyperlinkButton { Content = Loc.Get("Pro_SeeMore"), Padding = new Thickness(0) };
+        proLink.Click += (_, _) => TickGuard.Run("settings-stretch-pro", Pro.ShowOffer);
+        title.Children.Add(proLink);
+        Root.Children.Add(Card(title, toggle));
+
+        var privacy = new StackPanel { Spacing = 2 };
+        privacy.Children.Add(Secondary(Loc.Get("Settings_StretchPrivacy")));
+        var access = new HyperlinkButton { Content = Loc.Get("Settings_CameraAccess"), Padding = new Thickness(0) };
+        access.Click += (_, _) => TickGuard.Run("settings-camera-access", () => _ = Windows.System.Launcher.LaunchUriAsync(DeskPal.Pose.PoseSession.CameraPrivacySettings));
+        privacy.Children.Add(access);
+        Root.Children.Add(new Border { Style = (Style)Resources["CardBorder"], Child = privacy });
+
+        _syncs.Add(() =>
+        {
+            toggle.IsOn = _s.StretchWithBloop.Enabled;
+            toggle.IsEnabled = Pro.IsUnlocked;
+            proLink.Visibility = Pro.IsUnlocked ? Visibility.Collapsed : Visibility.Visible;
+        });
     }
 
     // Status only, with a way to the Pro page; it follows the hub, which is told about every Pro change.

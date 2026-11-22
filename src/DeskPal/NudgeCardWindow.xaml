@@ -14,6 +14,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid ColumnSpacing="4">
             <Grid.ColumnDefinitions>
@@ -33,7 +34,35 @@
             </Button>
         </Grid>
         <TextBlock x:Name="HintText" Grid.Row="1" FontSize="12" Opacity="0.75" TextWrapping="Wrap" Margin="0,0,6,0" />
-        <Grid Grid.Row="2" Margin="0,4,6,0" ColumnSpacing="6">
+        <!-- Stretch with Bloop: the camera button, and while it runs the progress ring, the hint and a way to stop. -->
+        <StackPanel x:Name="StretchArea" Grid.Row="2" Spacing="6" Margin="0,2,6,0" Visibility="Collapsed">
+            <Button x:Name="StretchButton" FontSize="12" Padding="10,3" MinHeight="26" HorizontalAlignment="Left" Click="OnStretchWithBloop">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <FontIcon Glyph="&#xE722;" FontSize="12" />
+                    <TextBlock x:Name="StretchButtonText" FontSize="12" />
+                </StackPanel>
+            </Button>
+            <Grid x:Name="PosePanel" ColumnSpacing="10" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ProgressRing x:Name="PoseRing" Width="36" Height="36" IsIndeterminate="False" Minimum="0" Maximum="100"
+                              VerticalAlignment="Center" />
+                <StackPanel Grid.Column="1" Spacing="2" VerticalAlignment="Center">
+                    <TextBlock x:Name="PoseHint" FontSize="12" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" />
+                    <TextBlock x:Name="PoseSides" FontSize="11" Opacity="0.75" TextWrapping="Wrap" Visibility="Collapsed" />
+                    <TextBlock x:Name="PoseCameraOn" FontSize="11" Opacity="0.75" TextWrapping="Wrap" />
+                </StackPanel>
+                <Button x:Name="StopCameraButton" Grid.Column="2" FontSize="12" Padding="10,3" MinHeight="26" VerticalAlignment="Center"
+                        Click="OnStopCamera" />
+            </Grid>
+            <TextBlock x:Name="PoseNotice" FontSize="12" TextWrapping="Wrap" Opacity="0.85" Visibility="Collapsed"
+                       AutomationProperties.LiveSetting="Polite" />
+            <HyperlinkButton x:Name="PoseSettingsLink" FontSize="12" Padding="0" Visibility="Collapsed" Click="OnCameraSettings" />
+        </StackPanel>
+        <Grid x:Name="ButtonsRow" Grid.Row="3" Margin="0,0,6,0" ColumnSpacing="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -51,7 +80,7 @@
                     Click="OnSnooze" />
         </Grid>
         <!-- How long until the card hides by itself: a thin line along the bottom edge that shrinks to the left. -->
-        <Rectangle x:Name="HideLine" Grid.Row="3" Height="2" Margin="0,4,6,0" HorizontalAlignment="Stretch"
+        <Rectangle x:Name="HideLine" Grid.Row="4" Height="2" Margin="0,4,6,0" HorizontalAlignment="Stretch"
                    Fill="{ThemeResource AccentFillColorDefaultBrush}" Opacity="0.6" IsHitTestVisible="False"
                    AutomationProperties.AccessibilityView="Raw">
             <Rectangle.RenderTransform>

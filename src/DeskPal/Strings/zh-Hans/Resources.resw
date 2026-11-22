@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -1029,5 +1029,95 @@
   </data>
   <data name="Custom_Keep" xml:space="preserve">
     <value>保留这个造型</value>
+  </data>
+  <data name="Settings_Section_Stretch" xml:space="preserve">
+    <value>和 Bloop 一起拉伸</value>
+  </data>
+  <data name="Settings_StretchWithBloop" xml:space="preserve">
+    <value>和 Bloop 一起拉伸</value>
+  </data>
+  <data name="Settings_StretchWithBloopSub" xml:space="preserve">
+    <value>在摄像头前做一次拉伸。Bloop 会跟着你做，保持姿势后提醒即完成。</value>
+  </data>
+  <data name="Settings_StretchPrivacy" xml:space="preserve">
+    <value>仅在你开始的拉伸期间使用摄像头。视频只留在这台电脑上：不会被录制、保存或发送。</value>
+  </data>
+  <data name="Settings_CameraAccess" xml:space="preserve">
+    <value>摄像头访问</value>
+  </data>
+  <data name="Nudge_StretchWithBloop" xml:space="preserve">
+    <value>和 Bloop 一起拉伸</value>
+  </data>
+  <data name="Nudge_StopCamera" xml:space="preserve">
+    <value>停止摄像头</value>
+  </data>
+  <data name="Pose_CameraOn" xml:space="preserve">
+    <value>摄像头已开启 · 仅在这台电脑上</value>
+  </data>
+  <data name="Pose_Starting" xml:space="preserve">
+    <value>正在启动摄像头…</value>
+  </data>
+  <data name="Pose_GetReady" xml:space="preserve">
+    <value>准备好…</value>
+  </data>
+  <data name="Pose_HoldIt" xml:space="preserve">
+    <value>保持住</value>
+  </data>
+  <data name="Pose_WellDone" xml:space="preserve">
+    <value>做得好！</value>
+  </data>
+  <data name="Pose_Sides" xml:space="preserve">
+    <value>左 {0}% · 右 {1}%</value>
+  </data>
+  <data name="Pose_NoCamera" xml:space="preserve">
+    <value>没有找到摄像头。拉伸完后请点“完成”。</value>
+  </data>
+  <data name="Pose_CameraInUse" xml:space="preserve">
+    <value>另一个应用正在使用摄像头。</value>
+  </data>
+  <data name="Pose_CameraBlocked" xml:space="preserve">
+    <value>Windows 正在阻止 Desk Pal 访问摄像头。</value>
+  </data>
+  <data name="Pose_ModelUnavailable" xml:space="preserve">
+    <value>摄像头拉伸暂时不可用。</value>
+  </data>
+  <data name="Pose_Failed" xml:space="preserve">
+    <value>摄像头没有启动。</value>
+  </data>
+  <data name="Pose_StoppedTimeout" xml:space="preserve">
+    <value>摄像头在 3 分钟后已停止。拉伸完后请点“完成”。</value>
+  </data>
+  <data name="Pose_StoppedLost" xml:space="preserve">
+    <value>摄像头已停止工作。</value>
+  </data>
+  <data name="Pose_StoppedLocked" xml:space="preserve">
+    <value>电脑已锁定，摄像头已停止。</value>
+  </data>
+  <data name="Pose_StoppedGeneric" xml:space="preserve">
+    <value>摄像头已停止。</value>
+  </data>
+  <data name="Pose_StepIntoView" xml:space="preserve">
+    <value>请站到画面里</value>
+  </data>
+  <data name="Pose_RaiseArms" xml:space="preserve">
+    <value>双臂举过头顶</value>
+  </data>
+  <data name="Pose_LeanSideways" xml:space="preserve">
+    <value>身体向一侧倾斜</value>
+  </data>
+  <data name="Pose_ShrugHigher" xml:space="preserve">
+    <value>把肩膀抬得更高</value>
+  </data>
+  <data name="Pose_TiltHead" xml:space="preserve">
+    <value>把头歪向一侧肩膀</value>
+  </data>
+  <data name="Pose_TwistMore" xml:space="preserve">
+    <value>再多转一点</value>
+  </data>
+  <data name="Pose_SwitchSides" xml:space="preserve">
+    <value>现在换另一侧</value>
+  </data>
+  <data name="Pose_FaceCamera" xml:space="preserve">
+    <value>请面向摄像头</value>
   </data>
 </root>

@@ -2,8 +2,11 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using DeskPal.Core;
+using DeskPal.Core.Pose;
+using DeskPal.Pose;
 using DeskPal.Render;
 using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -41,11 +44,25 @@ public sealed partial class NudgeCardWindow : Window
     private PanelPlacement? _placement;
     private IntPtr _foregroundBefore;
     private readonly List<Microsoft.UI.Dispatching.DispatcherQueueTimer> _debugTimers = [];
+    private StretchCoach? _coach;
+    private int _poseVersion;
+    private bool _poseActive;
+    private bool _bloopForced3D;
+    private bool _stretchOffered;
+    private string? _lastPoseHint;
 
     public NudgeCardWindow(ICommandRouter router)
     {
         _router = router;
         InitializeComponent();
+        StretchButtonText.Text = Loc.Get("Nudge_StretchWithBloop");
+        AutomationProperties.SetName(StretchButton, StretchButtonText.Text);
+        AutomationProperties.SetName(PoseRing, StretchButtonText.Text);
+        StopCameraButton.Content = Loc.Get("Nudge_StopCamera");
+        AutomationProperties.SetName(StopCameraButton, Loc.Get("Nudge_StopCamera"));
+        PoseCameraOn.Text = Loc.Get("Pose_CameraOn");
+        PoseSettingsLink.Content = Loc.Get("Settings_CameraAccess");
+        Closed += (_, _) => StopCamera();
         Appearance.Register(this, Root, Appearance.Role.Surface);
         Keys.Wire(Root, () => Keys.Invoke(SnoozeButton), () => Keys.Invoke(DoneButton));
         Keys.Hint(DoneButton, "Enter");
@@ -67,8 +84,12 @@ public sealed partial class NudgeCardWindow : Window
     // Seconds a card left alone stays up; read from the settings when each card opens.
     public Func<int> HideSeconds { get; set; } = () => DeskPalSettings.RecommendedHideNudgeSeconds;
 
+    // True while Stretch with Bloop is on in Settings and Pro (or its trial) is active.
+    public Func<bool> StretchWithBloopAllowed { get; set; } = () => false;
+
     public async Task ShowNudgeAsync(Nudge nudge, string style)
     {
+        StopCamera();
         _nudge = nudge;
         _style = style;
         var version = ++_loadVersion;
@@ -86,6 +107,8 @@ public sealed partial class NudgeCardWindow : Window
         SnoozeButton.IsEnabled = MoreButton.IsEnabled = true;
         _repeating = false;
         _hovered = _bloopBusy = false;
+        _bloopForced3D = false;
+        ShowStretchArea(nudge);
         _autoHide.Start(_shownAtTick, HideSeconds(), _timedSeconds);
         UpdateCountdown();
 
@@ -114,6 +137,8 @@ public sealed partial class NudgeCardWindow : Window
             var r = AppWindow.Position;
             var s = AppWindow.Size;
             Logger.Log($"card rect {r.X} {r.Y} {s.Width} {s.Height}");
+            // Debug only: the scripted run starts by itself, since nobody clicks the button.
+            if (AppData.DebugPoseCard && _stretchOffered) After(2.5, "debug-pose-card-start", () => TickGuard.Run("debug-pose-card", () => _ = StartPoseAsync()), once: true);
             if (BloopStage.Window is { } w) Logger.Log($"card bloop hwnd 0x{w.Hwnd:X}");
             After(2, "debug-card-fg", () => LogForeground("after card shown"), once: true);
             if (AppData.DebugPoke)
@@ -159,6 +184,7 @@ public sealed partial class NudgeCardWindow : Window
     // Done: a high five from Bloop beside the card, then a little celebration, then the card goes.
     public void CelebrateThenHide()
     {
+        StopCamera();
         if (BloopStage.LiveFor(this) is not { } viewport || Stage3D.Failed)
         {
             HideCard();
@@ -184,6 +210,7 @@ public sealed partial class NudgeCardWindow : Window
     // Hides the card; Bloop hops back to the card's side, fades and hides (or goes back to the quick panel).
     public void HideCard()
     {
+        StopCamera();
         _repeating = false;
         _timer.Stop();
         _autoHide.Stop();
@@ -198,6 +225,7 @@ public sealed partial class NudgeCardWindow : Window
     private void FadeOutAndExpire()
     {
         if (_nudge is not { } nudge) return;
+        StopCamera();
         Logger.Log($"card countdown ran out after {(Environment.TickCount64 - _shownAtTick) / 1000.0:F1} s (engaged {_autoHide.Engaged})");
         _repeating = false;
         _timer.Stop();
@@ -328,7 +356,7 @@ public sealed partial class NudgeCardWindow : Window
     {
         if (_nudge is null) return;
         var now = Environment.TickCount64;
-        if (_hovered || _bloopBusy) _autoHide.Pause(now);
+        if (_hovered || _bloopBusy || _poseActive) _autoHide.Pause(now);
         else _autoHide.Resume(now);
         HideLine.Opacity = _autoHide.Paused ? 0.25 : 0.6;
     }
@@ -346,14 +374,179 @@ public sealed partial class NudgeCardWindow : Window
 
     private void OnDone(object sender, RoutedEventArgs e)
     {
+        StopCamera();
         // Time on the countdown only counts once the user engaged; Done before that earns no share of the exercise.
         var share = _timedSeconds <= 0 ? 1.0
             : !_autoHide.Engaged ? 0.0
             : Math.Clamp(1 - Math.Max(0, _timedEndTick - Environment.TickCount64) / (_timedSeconds * 1000.0), 0, 1);
         Send(id => new DoneCommand(id, share));
     }
-    private void OnSnooze(object sender, RoutedEventArgs e) => Send(id => new SnoozeCommand(id));
-    private void OnSkip(object sender, RoutedEventArgs e) => Send(id => new SkipCommand(id));
+    private void OnSnooze(object sender, RoutedEventArgs e) { StopCamera(); Send(id => new SnoozeCommand(id)); }
+    private void OnSkip(object sender, RoutedEventArgs e) { StopCamera(); Send(id => new SkipCommand(id)); }
+
+    // ---- Stretch with Bloop ------------------------------------------------------------------------------------
+
+    // Shows the camera button when the stretch can be checked and the feature is allowed. The camera stays off.
+    private void ShowStretchArea(Nudge nudge)
+    {
+        _stretchOffered = StretchWithBloopAllowed() && nudge.Stretch is { } s && (StretchCheck.IsCheckable(s.Id) || AppData.DebugPoseCard);
+        StretchArea.Visibility = _stretchOffered ? Visibility.Visible : Visibility.Collapsed;
+        StretchButton.Visibility = _stretchOffered ? Visibility.Visible : Visibility.Collapsed;
+        PosePanel.Visibility = Visibility.Collapsed;
+        PoseNotice.Visibility = PoseSettingsLink.Visibility = Visibility.Collapsed;
+        ButtonsRow.Margin = new Thickness(0, _stretchOffered ? 4 : 0, 6, 0);
+    }
+
+    private void OnStretchWithBloop(object sender, RoutedEventArgs e) => _ = StartPoseAsync();
+
+    private void OnStopCamera(object sender, RoutedEventArgs e) => EndPose(null, false);
+
+    private void OnCameraSettings(object sender, RoutedEventArgs e) => TickGuard.Run("card-camera-settings", () => _ = Windows.System.Launcher.LaunchUriAsync(PoseSession.CameraPrivacySettings));
+
+    private async Task StartPoseAsync()
+    {
+        if (_nudge is not { Stretch: { } stretch } || _coach is not null) return;
+        try
+        {
+            var version = ++_poseVersion;
+            PoseNotice.Visibility = PoseSettingsLink.Visibility = Visibility.Collapsed;
+            StretchButton.Visibility = Visibility.Collapsed;
+            PosePanel.Visibility = Visibility.Visible;
+            PoseSides.Visibility = Visibility.Collapsed;
+            PoseRing.Value = 0;
+            _lastPoseHint = Loc.Get("Pose_Starting");
+            PoseHint.Text = _lastPoseHint;
+            _poseActive = true;
+            _repeating = false;
+            Engage();
+            UpdatePause();
+            Place();
+
+            var coach = new StretchCoach(DispatcherQueue, stretch.Id, stretch.DurationSeconds, AppData.DebugPoseCard);
+            _coach = coach;
+            coach.Updated += s => OnPoseUpdate(coach, s);
+            coach.Ended += r => OnPoseEnded(coach, r);
+            var result = await coach.StartAsync();
+            if (version != _poseVersion || _coach != coach)
+            {
+                coach.Stop();
+                return;
+            }
+            if (result != PoseStartResult.Started)
+            {
+                var key = result switch
+                {
+                    PoseStartResult.NoCamera => "Pose_NoCamera",
+                    PoseStartResult.CameraInUse => "Pose_CameraInUse",
+                    PoseStartResult.CameraBlocked => "Pose_CameraBlocked",
+                    PoseStartResult.ModelUnavailable => "Pose_ModelUnavailable",
+                    _ => "Pose_Failed",
+                };
+                EndPose(key, result == PoseStartResult.CameraBlocked);
+                return;
+            }
+            UseLiveBloop();
+        }
+        catch (Exception ex)
+        {
+            Logger.Log("stretch with bloop failed: " + ex.GetType().Name + " " + ex.Message);
+            EndPose("Pose_Failed", false);
+        }
+    }
+
+    // Mirroring needs the live model. With a flat or soft picture style Bloop switches to the live model for this
+    // stretch and goes back afterwards.
+    private void UseLiveBloop()
+    {
+        if (_nudge is not { } nudge || _placement is not { } placement) return;
+        if (_style != "3d" && !AppData.Debug3D)
+        {
+            _bloopForced3D = true;
+            BloopStage.Claim(new BloopClaim(this, _hwnd, placement, "3d", nudge.AssetName, null, BloopSize));
+        }
+        else BloopStage.LiveFor(this)?.StopRepeat();
+    }
+
+    private void OnPoseUpdate(StretchCoach coach, CoachSnapshot s)
+    {
+        if (_coach != coach || !_poseActive) return;
+        PoseRing.Value = Math.Clamp(s.Progress, 0f, 1f) * 100;
+        var hint = Loc.Get(s.State switch
+        {
+            StretchState.Done => "Pose_WellDone",
+            _ when s.Reason is { } reason => reason,
+            StretchState.GetReady => "Pose_GetReady",
+            _ => "Pose_HoldIt",
+        });
+        if (hint != _lastPoseHint)
+        {
+            _lastPoseHint = hint;
+            PoseHint.Text = hint;
+        }
+        if (s.Sides == 2)
+        {
+            PoseSides.Visibility = Visibility.Visible;
+            PoseSides.Text = Loc.Format("Pose_Sides", (int)Math.Round(s.LeftSide * 100), (int)Math.Round(s.RightSide * 100));
+        }
+        BloopStage.LiveFor(this)?.Mirror(s.Mirror);
+        if (s.State == StretchState.Done) CompletePose();
+    }
+
+    // The stretch really happened: a soft sound, the camera off, then the same path as the Done button with the full share.
+    private void CompletePose()
+    {
+        Logger.Log("stretch with bloop done");
+        BloopSounds.Play("hop");
+        StopCamera();
+        Send(id => new DoneCommand(id, 1.0));
+    }
+
+    private void OnPoseEnded(StretchCoach coach, PoseStopReason reason)
+    {
+        if (_coach != coach) return;
+        switch (reason)
+        {
+            case PoseStopReason.TimedOut: EndPose("Pose_StoppedTimeout", false); break;
+            case PoseStopReason.CameraLost: EndPose("Pose_StoppedLost", false); break;
+            case PoseStopReason.CameraBlocked: EndPose("Pose_CameraBlocked", true); break;
+            case PoseStopReason.PcLocked or PoseStopReason.PcSleeping: EndPose("Pose_StoppedLocked", false); break;
+            case PoseStopReason.Error: EndPose("Pose_StoppedGeneric", false); break;
+            default: EndPose(null, false); break;
+        }
+    }
+
+    // Turns the camera off and puts the card back: the camera button returns and, when there is something to say,
+    // one kind line (with the privacy settings link when Windows blocked the camera).
+    private void EndPose(string? noticeKey, bool settingsLink)
+    {
+        var wasActive = _poseActive;
+        StopCamera();
+        if (_nudge is not { } nudge || !wasActive) return;
+        PosePanel.Visibility = Visibility.Collapsed;
+        StretchButton.Visibility = _stretchOffered ? Visibility.Visible : Visibility.Collapsed;
+        PoseNotice.Visibility = noticeKey is null ? Visibility.Collapsed : Visibility.Visible;
+        if (noticeKey is not null) PoseNotice.Text = Loc.Get(noticeKey);
+        PoseSettingsLink.Visibility = settingsLink ? Visibility.Visible : Visibility.Collapsed;
+        UpdatePause();
+        if (_bloopForced3D && _placement is { } placement)
+        {
+            _bloopForced3D = false;
+            BloopStage.Claim(new BloopClaim(this, _hwnd, placement, _style, nudge.AssetName, v => StartClips(nudge, v), BloopSize));
+        }
+        Place();
+    }
+
+    // Stops the camera and Bloop's mirroring. Safe to call at any time and any number of times; every way off the card
+    // (Done, Snooze, Skip, hide, expire, close, a new card) goes through here.
+    private void StopCamera()
+    {
+        _poseVersion++;
+        var coach = _coach;
+        _coach = null;
+        _poseActive = false;
+        coach?.Stop();
+        if (coach is not null) BloopStage.LiveFor(this)?.ClearMirror();
+    }
 
     private void Send(Func<Guid, Command> make)
     {

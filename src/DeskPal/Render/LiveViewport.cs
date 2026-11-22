@@ -294,6 +294,21 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
         Wake();
     }
 
+    // Stretch with Bloop: Bloop copies the user's pose (UI thread). Springs are skipped under reduced motion.
+    public void Mirror(in DeskPal.Core.Pose.MirrorValues values)
+    {
+        if (!Ready || _motion is null) return;
+        _motion.SetMirror(values, Motion.Enabled);
+        Wake();
+    }
+
+    public void ClearMirror()
+    {
+        if (_motion is null) return;
+        _motion.ClearMirror();
+        Wake();
+    }
+
     private Vector2 ProjectNode(int node)
     {
         if (node < 0 || node >= _world.Length) return Vector2.Zero;

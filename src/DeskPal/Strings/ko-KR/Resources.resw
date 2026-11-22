@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -1029,5 +1029,95 @@
   </data>
   <data name="Custom_Keep" xml:space="preserve">
     <value>이 모습으로 하기</value>
+  </data>
+  <data name="Settings_Section_Stretch" xml:space="preserve">
+    <value>Bloop과 함께 스트레칭</value>
+  </data>
+  <data name="Settings_StretchWithBloop" xml:space="preserve">
+    <value>Bloop과 함께 스트레칭</value>
+  </data>
+  <data name="Settings_StretchWithBloopSub" xml:space="preserve">
+    <value>카메라 앞에서 스트레칭해 보세요. Bloop이 따라 하고, 자세를 유지하면 알림이 완료돼요.</value>
+  </data>
+  <data name="Settings_StretchPrivacy" xml:space="preserve">
+    <value>카메라는 직접 시작한 스트레칭 중에만 사용돼요. 영상은 이 PC에만 있고 녹화, 저장, 전송되지 않아요.</value>
+  </data>
+  <data name="Settings_CameraAccess" xml:space="preserve">
+    <value>카메라 접근</value>
+  </data>
+  <data name="Nudge_StretchWithBloop" xml:space="preserve">
+    <value>Bloop과 함께 스트레칭</value>
+  </data>
+  <data name="Nudge_StopCamera" xml:space="preserve">
+    <value>카메라 끄기</value>
+  </data>
+  <data name="Pose_CameraOn" xml:space="preserve">
+    <value>카메라 켜짐 · 이 PC에서만</value>
+  </data>
+  <data name="Pose_Starting" xml:space="preserve">
+    <value>카메라를 켜는 중…</value>
+  </data>
+  <data name="Pose_GetReady" xml:space="preserve">
+    <value>준비하세요…</value>
+  </data>
+  <data name="Pose_HoldIt" xml:space="preserve">
+    <value>그대로 유지하세요</value>
+  </data>
+  <data name="Pose_WellDone" xml:space="preserve">
+    <value>잘했어요!</value>
+  </data>
+  <data name="Pose_Sides" xml:space="preserve">
+    <value>왼쪽 {0}% · 오른쪽 {1}%</value>
+  </data>
+  <data name="Pose_NoCamera" xml:space="preserve">
+    <value>카메라를 찾을 수 없어요. 스트레칭을 마쳤다면 '완료'를 누르세요.</value>
+  </data>
+  <data name="Pose_CameraInUse" xml:space="preserve">
+    <value>다른 앱이 카메라를 사용 중이에요.</value>
+  </data>
+  <data name="Pose_CameraBlocked" xml:space="preserve">
+    <value>Windows가 Desk Pal의 카메라 접근을 차단하고 있어요.</value>
+  </data>
+  <data name="Pose_ModelUnavailable" xml:space="preserve">
+    <value>카메라 스트레칭을 지금은 사용할 수 없어요.</value>
+  </data>
+  <data name="Pose_Failed" xml:space="preserve">
+    <value>카메라가 켜지지 않았어요.</value>
+  </data>
+  <data name="Pose_StoppedTimeout" xml:space="preserve">
+    <value>3분이 지나 카메라가 꺼졌어요. 스트레칭을 마쳤다면 '완료'를 누르세요.</value>
+  </data>
+  <data name="Pose_StoppedLost" xml:space="preserve">
+    <value>카메라가 작동하지 않아요.</value>
+  </data>
+  <data name="Pose_StoppedLocked" xml:space="preserve">
+    <value>PC가 잠겨서 카메라가 꺼졌어요.</value>
+  </data>
+  <data name="Pose_StoppedGeneric" xml:space="preserve">
+    <value>카메라가 꺼졌어요.</value>
+  </data>
+  <data name="Pose_StepIntoView" xml:space="preserve">
+    <value>화면 안으로 들어오세요</value>
+  </data>
+  <data name="Pose_RaiseArms" xml:space="preserve">
+    <value>두 팔을 머리 위로 올리세요</value>
+  </data>
+  <data name="Pose_LeanSideways" xml:space="preserve">
+    <value>몸을 한쪽으로 기울이세요</value>
+  </data>
+  <data name="Pose_ShrugHigher" xml:space="preserve">
+    <value>어깨를 더 올리세요</value>
+  </data>
+  <data name="Pose_TiltHead" xml:space="preserve">
+    <value>머리를 한쪽 어깨로 기울이세요</value>
+  </data>
+  <data name="Pose_TwistMore" xml:space="preserve">
+    <value>조금 더 비틀어 보세요</value>
+  </data>
+  <data name="Pose_SwitchSides" xml:space="preserve">
+    <value>이제 반대쪽이에요</value>
+  </data>
+  <data name="Pose_FaceCamera" xml:space="preserve">
+    <value>카메라를 바라보세요</value>
   </data>
 </root>

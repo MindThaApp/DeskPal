@@ -457,7 +457,11 @@ public partial class App : Application
     {
         if (_card is null)
         {
-            _card = new NudgeCardWindow(_router) { HideSeconds = () => _settings.HideNudgeSeconds };
+            _card = new NudgeCardWindow(_router)
+            {
+                HideSeconds = () => _settings.HideNudgeSeconds,
+                StretchWithBloopAllowed = () => _settings.StretchWithBloop.Enabled && Pro.IsUnlocked,
+            };
             _card.Expired += id =>
             {
                 Logger.Log("card auto-hidden");

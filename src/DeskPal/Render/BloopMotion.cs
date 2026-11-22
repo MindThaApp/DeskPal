@@ -247,6 +247,39 @@ internal sealed class BloopMotion
         _pitch.V -= 1.6f * strength;
     }
 
+    // Stretch with Bloop: the user's pose drives the arms, lean, head tilt and shrug through the same springs the touch
+    // reactions use (so it follows through softly). With springs off the pose is applied at once.
+    private const float ArmRaiseRadAt180 = 2.7f;
+
+    public void SetMirror(in DeskPal.Core.Pose.MirrorValues v, bool springy)
+    {
+        _dragArm = 0;
+        _armRaiseUntil = 0;
+        var raiseL = v.HasPerson ? Math.Clamp(v.LeftArmRaiseDeg, 0, 180) / 180f * ArmRaiseRadAt180 : 0f;
+        var raiseR = v.HasPerson ? Math.Clamp(v.RightArmRaiseDeg, 0, 180) / 180f * ArmRaiseRadAt180 : 0f;
+        const float rad = MathF.PI / 180f;
+        var roll = v.HasPerson ? Math.Clamp(-(v.LeanDeg * 0.6f + v.HeadTiltDeg * 0.4f) * rad, -0.45f, 0.45f) : 0f;
+        _armLeft.Target = -raiseL;
+        _armRight.Target = raiseR;
+        _roll.Target = roll;
+        _hop.Target = v.HasPerson ? 0.03f * Math.Clamp(v.Shrug, 0, 1) : 0f;
+        _mSustain[(int)M.MouthSmile] = v.HasPerson ? 0.5f : 0f;
+        if (!springy)
+        {
+            _armLeft.X = _armLeft.Target; _armLeft.V = 0;
+            _armRight.X = _armRight.Target; _armRight.V = 0;
+            _roll.X = roll; _roll.V = 0;
+            _hop.X = _hop.Target; _hop.V = 0;
+        }
+    }
+
+    // Back to the normal rest pose; the springs ease there.
+    public void ClearMirror()
+    {
+        _armLeft.Target = _armRight.Target = _roll.Target = _hop.Target = 0;
+        _mSustain[(int)M.MouthSmile] = 0;
+    }
+
     // True when node a is on the viewer's left of its mirror twin.
     private bool LeftIs(int a)
     {
