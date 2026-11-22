@@ -22,6 +22,7 @@
     <Using Include="Xunit" />
     <Compile Include="..\..\src\DeskPal\Pose\PoseModel.cs" Link="Pose\PoseModel.cs" />
     <Compile Include="..\..\src\DeskPal\Pose\PoseImage.cs" Link="Pose\PoseImage.cs" />
+    <Compile Include="..\..\src\DeskPal\Pose\PoseWatchdog.cs" Link="Pose\PoseWatchdog.cs" />
     <Content Include="..\..\src\DeskPal\Assets\Models\movenet-singlepose-lightning.onnx" Link="Assets\Models\movenet-singlepose-lightning.onnx" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="TestData\*.jpg" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

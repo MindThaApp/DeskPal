@@ -55,8 +55,6 @@ public sealed class PoseSession : IAsyncDisposable
     public static readonly Uri CameraPrivacySettings = new("ms-settings:privacy-webcam");
     public static readonly TimeSpan DefaultMaxRunTime = TimeSpan.FromMinutes(3);
 
-    private static readonly TimeSpan FirstFrameTimeout = TimeSpan.FromSeconds(10);
-    private static readonly TimeSpan FrameGapTimeout = TimeSpan.FromSeconds(5);
     private static readonly object ActiveLock = new();
     private static readonly HashSet<PoseSession> Active = [];
 
@@ -73,6 +71,7 @@ public sealed class PoseSession : IAsyncDisposable
     private int _run;          // counts runs, so a stop queued for an old run never ends a new one
     private long _lastFrameTicks;
     private long _lastResultTicks;
+    private long _cameraOnTicks; // when the camera start finished; the watchdog's limits count from here
     private bool _disposed;
 
     // Stats for the current or last run (read with Stats).
@@ -131,6 +130,12 @@ public sealed class PoseSession : IAsyncDisposable
             Logger.Log("pose model load failed: " + ex.GetType().Name);
             return PoseStartResult.ModelUnavailable;
         }
+        // The card may have closed while the model loaded: free it and never touch the camera.
+        if (ct.IsCancellationRequested)
+        {
+            await ReleaseAsync().ConfigureAwait(false);
+            ct.ThrowIfCancellationRequested();
+        }
 
         var camera = new PoseCamera();
         camera.FrameArrived += OnFrame;
@@ -140,6 +145,7 @@ public sealed class PoseSession : IAsyncDisposable
         _inferenceMs = 0;
         _lastFrameTicks = 0;
         _lastResultTicks = 0;
+        _cameraOnTicks = 0;
         _stopQueued = 0;
         Interlocked.Increment(ref _run);
         _clock = Stopwatch.StartNew();
@@ -158,7 +164,15 @@ public sealed class PoseSession : IAsyncDisposable
             await ReleaseAsync().ConfigureAwait(false);
             return result;
         }
+        // Stopped while the start was finishing (for example the card closed during Windows' camera prompt).
+        if (ct.IsCancellationRequested)
+        {
+            await ReleaseAsync().ConfigureAwait(false);
+            ct.ThrowIfCancellationRequested();
+        }
 
+        // The watchdog's limits count from here, not from the click: the start can include Windows' camera prompt.
+        Volatile.Write(ref _cameraOnTicks, Stopwatch.GetTimestamp());
         lock (ActiveLock) Active.Add(this);
         try { PowerManager.SystemSuspendStatusChanged += OnSuspendChanged; } catch { }
         _watchdog = new Timer(_ => Watch(), null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
@@ -215,7 +229,9 @@ public sealed class PoseSession : IAsyncDisposable
     {
         if (!IsRunning || Interlocked.Exchange(ref _stopQueued, 1) == 1) return;
         int run = Volatile.Read(ref _run);
-        _ = Task.Run(() => StopAsync(reason, run));
+        _ = Task.Run(() => StopAsync(reason, run)).ContinueWith(
+            t => Logger.Log("pose stop failed: " + (t.Exception?.GetBaseException().GetType().Name ?? "unknown")),
+            CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Default);
     }
 
     private void OnFrame(SoftwareBitmap bitmap)
@@ -247,12 +263,13 @@ public sealed class PoseSession : IAsyncDisposable
     private void Watch()
     {
         if (!IsRunning) return;
-        var elapsed = _clock.Elapsed;
-        if (elapsed >= MaxRunTime) { QueueStop(PoseStopReason.TimedOut); return; }
-        if (IsPcLocked()) { QueueStop(PoseStopReason.PcLocked); return; }
+        long on = Volatile.Read(ref _cameraOnTicks);
+        if (on == 0) return;
         long last = Volatile.Read(ref _lastResultTicks);
-        if (last == 0 ? elapsed > FirstFrameTimeout : Stopwatch.GetElapsedTime(last) > FrameGapTimeout)
-            QueueStop(PoseStopReason.CameraLost);
+        var verdict = PoseWatchdog.Check(Stopwatch.GetElapsedTime(on), last == 0 ? null : Stopwatch.GetElapsedTime(last), MaxRunTime);
+        if (verdict == WatchdogVerdict.TimedOut) { QueueStop(PoseStopReason.TimedOut); return; }
+        if (IsPcLocked()) { QueueStop(PoseStopReason.PcLocked); return; }
+        if (verdict == WatchdogVerdict.CameraLost) QueueStop(PoseStopReason.CameraLost);
     }
 
     private void OnSuspendChanged(object? sender, object e)

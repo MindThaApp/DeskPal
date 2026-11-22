@@ -47,7 +47,7 @@ internal sealed class PoseCamera
 
         var result = await OpenAsync(group, sourceInfo, MediaCaptureSharingMode.ExclusiveControl, ct).ConfigureAwait(false);
         // Another app has it: reading alongside it is still possible on many cameras.
-        if (result == PoseStartResult.CameraInUse)
+        if (result == PoseStartResult.CameraInUse && !ct.IsCancellationRequested)
             result = await OpenAsync(group, sourceInfo, MediaCaptureSharingMode.SharedReadOnly, ct).ConfigureAwait(false);
         return result;
     }
@@ -76,11 +76,16 @@ internal sealed class PoseCamera
                 ? $"{vf.Width}x{vf.Height} {current.Subtype} {Fps(current):F0}fps {(mode == MediaCaptureSharingMode.SharedReadOnly ? "shared" : "exclusive")}"
                 : null;
 
+            // The card may have closed while Windows asked for camera access: no frames then, and the camera never
+            // turns on. The catch below releases everything.
+            ct.ThrowIfCancellationRequested();
             var reader = await capture.CreateFrameReaderAsync(source, MediaEncodingSubtypes.Bgra8).AsTask(ct).ConfigureAwait(false);
             _reader = reader;
             reader.AcquisitionMode = MediaFrameReaderAcquisitionMode.Realtime;
             reader.FrameArrived += OnFrameArrived;
+            ct.ThrowIfCancellationRequested();
             var status = await reader.StartAsync().AsTask(ct).ConfigureAwait(false);
+            ct.ThrowIfCancellationRequested();
             if (status == MediaFrameReaderStartStatus.Success) return PoseStartResult.Started;
             await StopAsync().ConfigureAwait(false);
             return status is MediaFrameReaderStartStatus.DeviceNotAvailable or MediaFrameReaderStartStatus.ExclusiveControlNotAvailable
@@ -107,23 +112,45 @@ internal sealed class PoseCamera
     }
 
     /// <summary>Stops the reader and releases the camera. Safe to call more than once.</summary>
+    /// <remarks>Every step is guarded on its own, so a failing step never skips the ones after it: the capture is
+    /// always disposed, which is what turns the camera off.</remarks>
     public async Task StopAsync()
     {
         var reader = Interlocked.Exchange(ref _reader, null);
         var capture = Interlocked.Exchange(ref _capture, null);
-        if (reader is not null)
+        try
         {
-            reader.FrameArrived -= OnFrameArrived;
-            try { await reader.StopAsync().AsTask().ConfigureAwait(false); } catch { }
-            try { reader.Dispose(); } catch { }
+            if (reader is not null)
+            {
+                try { reader.FrameArrived -= OnFrameArrived; }
+                catch (Exception ex) { LogStep("reader unhook", ex); }
+                try { await reader.StopAsync().AsTask().ConfigureAwait(false); }
+                catch (Exception ex) { LogStep("reader stop", ex); }
+                finally
+                {
+                    try { reader.Dispose(); }
+                    catch (Exception ex) { LogStep("reader dispose", ex); }
+                }
+            }
         }
-        if (capture is not null)
+        finally
         {
-            capture.Failed -= OnCaptureFailed;
-            capture.CameraStreamStateChanged -= OnStreamStateChanged;
-            try { capture.Dispose(); } catch { }
+            if (capture is not null)
+            {
+                try { capture.Failed -= OnCaptureFailed; }
+                catch (Exception ex) { LogStep("capture unhook", ex); }
+                try { capture.CameraStreamStateChanged -= OnStreamStateChanged; }
+                catch (Exception ex) { LogStep("capture unhook", ex); }
+                finally
+                {
+                    try { capture.Dispose(); }
+                    catch (Exception ex) { LogStep("capture dispose", ex); }
+                }
+            }
         }
     }
+
+    private static void LogStep(string step, Exception ex) => Logger.Log($"pose camera {step} failed: {ex.GetType().Name}");
 
     private void OnFrameArrived(MediaFrameReader sender, MediaFrameArrivedEventArgs args)
     {
