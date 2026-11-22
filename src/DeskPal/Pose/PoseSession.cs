@@ -70,6 +70,7 @@ public sealed class PoseSession : IAsyncDisposable
     private int _running;      // 1 while frames are wanted
     private int _busy;         // 1 while a frame is being processed
     private int _stopQueued;   // 1 once a stop from inside has been queued for this run
+    private int _run;          // counts runs, so a stop queued for an old run never ends a new one
     private long _lastFrameTicks;
     private long _lastResultTicks;
     private bool _disposed;
@@ -140,6 +141,7 @@ public sealed class PoseSession : IAsyncDisposable
         _lastFrameTicks = 0;
         _lastResultTicks = 0;
         _stopQueued = 0;
+        Interlocked.Increment(ref _run);
         _clock = Stopwatch.StartNew();
         Volatile.Write(ref _running, 1);
 
@@ -164,15 +166,15 @@ public sealed class PoseSession : IAsyncDisposable
     }
 
     /// <summary>Turns the camera off and frees the model. Safe to call at any time and more than once.</summary>
-    public Task StopAsync() => StopAsync(PoseStopReason.Requested);
+    public Task StopAsync() => StopAsync(PoseStopReason.Requested, null);
 
-    private async Task StopAsync(PoseStopReason reason)
+    private async Task StopAsync(PoseStopReason reason, int? run)
     {
         await _gate.WaitAsync().ConfigureAwait(false);
         bool wasRunning;
         try
         {
-            wasRunning = IsRunning;
+            wasRunning = IsRunning && (run is null || run == Volatile.Read(ref _run));
             if (!wasRunning) return;
             await ReleaseAsync().ConfigureAwait(false);
         }
@@ -198,15 +200,22 @@ public sealed class PoseSession : IAsyncDisposable
         }
         // A frame already inside the model finishes before the model goes away.
         for (int i = 0; i < 200 && Volatile.Read(ref _busy) != 0; i++) await Task.Delay(5).ConfigureAwait(false);
-        Interlocked.Exchange(ref _model, null)?.Dispose();
-        _image.Clear();
+        var model = Interlocked.Exchange(ref _model, null);
+        if (Volatile.Read(ref _busy) == 0)
+        {
+            model?.Dispose();
+            _image.Clear();
+        }
+        // Still busy after a second (never seen): leave the model to the collector rather than free it under the frame.
+        else Logger.Log("pose model still busy at stop");
         _clock.Stop();
     }
 
     private void QueueStop(PoseStopReason reason)
     {
         if (!IsRunning || Interlocked.Exchange(ref _stopQueued, 1) == 1) return;
-        _ = Task.Run(() => StopAsync(reason));
+        int run = Volatile.Read(ref _run);
+        _ = Task.Run(() => StopAsync(reason, run));
     }
 
     private void OnFrame(SoftwareBitmap bitmap)
@@ -267,7 +276,7 @@ public sealed class PoseSession : IAsyncDisposable
         PoseSession[] sessions;
         lock (ActiveLock) sessions = [.. Active];
         if (sessions.Length == 0) return;
-        try { Task.Run(() => Task.WhenAll(sessions.Select(s => s.StopAsync(PoseStopReason.AppExit)))).Wait(TimeSpan.FromSeconds(2)); }
+        try { Task.Run(() => Task.WhenAll(sessions.Select(s => s.StopAsync(PoseStopReason.AppExit, null)))).Wait(TimeSpan.FromSeconds(2)); }
         catch { }
     }
 

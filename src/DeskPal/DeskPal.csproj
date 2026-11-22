@@ -52,6 +52,12 @@
   <Target Name="DpDropSkiaSymbols" AfterTargets="Publish">
     <Delete Files="$(PublishDir)libSkiaSharp.pdb" />
   </Target>
+  <!-- ONNX Runtime ships link libraries (~21 MB, mostly an unused Azure provider) beside its DLLs; they are build-only. -->
+  <Target Name="DpDropNativeLinkLibs" AfterTargets="ResolvePackageAssets">
+    <ItemGroup>
+      <NativeCopyLocalItems Remove="@(NativeCopyLocalItems)" Condition="'%(Extension)' == '.lib'" />
+    </ItemGroup>
+  </Target>
   <!--
     The Windows App SDK pulls in its on-device ML runtime (onnxruntime.dll, DirectML.dll, ~40 MB). No Desk Pal build
     uses it: the pose check runs on the smaller CPU-only ONNX Runtime below, and the two would ship clashing
