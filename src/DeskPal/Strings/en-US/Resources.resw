@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>off</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>ask first</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>Send crash reports: {0} (change in Settings)</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>Send crash reports so we can fix problems fast. They never include your files or what you type.</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>What's sent</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal now sends crash reports to help us fix problems fast</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>Got it</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>Pause 30 min</value>

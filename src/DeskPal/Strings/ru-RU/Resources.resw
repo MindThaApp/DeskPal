@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>выкл.</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>спрашивать</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>Отправлять отчёты о сбоях: {0} (меняется в настройках)</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>Отправлять отчёты о сбоях, чтобы мы быстро исправляли проблемы. В них никогда нет ваших файлов и того, что вы вводите.</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>Что отправляется</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal теперь отправляет отчёты о сбоях, чтобы мы быстрее исправляли проблемы</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>Понятно</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>Пауза 30 мин</value>

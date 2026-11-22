@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>关闭</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>先询问</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>发送崩溃报告：{0}（可在设置中更改）</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>发送崩溃报告，帮助我们快速修复问题。报告绝不包含你的文件或你输入的内容。</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>发送的内容</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal 现在会发送崩溃报告，帮助我们快速修复问题</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>知道了</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>暂停 30 分钟</value>

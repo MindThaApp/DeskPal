@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>꺼짐</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>먼저 묻기</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>충돌 보고서 보내기: {0} (설정에서 변경)</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>문제를 빠르게 해결할 수 있도록 충돌 보고서를 보냅니다. 파일이나 입력한 내용은 포함되지 않습니다.</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>전송되는 내용</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal이 문제를 빠르게 해결할 수 있도록 이제 충돌 보고서를 보냅니다</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>확인</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>30분 중지</value>

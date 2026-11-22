@@ -156,5 +156,10 @@ internal sealed class WelcomeWizardWindow : Window
         return panel;
     }
 
-    private static UIElement DonePage() => PageShell("Wizard_Done_Title", "Wizard_Done_Body");
+    private UIElement DonePage()
+    {
+        var panel = PageShell("Wizard_Done_Title", "Wizard_Done_Body");
+        panel.Children.Add(CrashConsentUi.Build(_hub));
+        return panel;
+    }
 }

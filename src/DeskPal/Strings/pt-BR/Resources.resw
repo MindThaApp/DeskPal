@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>desativado</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>perguntar antes</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>Enviar relatórios de falhas: {0} (altere em Configurações)</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>Enviar relatórios de falhas para corrigirmos problemas rapidamente. Eles nunca incluem seus arquivos nem o que você digita.</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>O que é enviado</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>O Desk Pal agora envia relatórios de falhas para nos ajudar a corrigir problemas rapidamente</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>Entendi</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>Pausar 30 min</value>

@@ -301,7 +301,7 @@ public partial class App : Application
         _hub.Commit(false);
     }
 
-    // On sends reports (and the ones waiting from Ask); off is Never, which keeps and sends nothing.
+    // On sends reports as they happen; off is Never, which keeps and sends nothing.
     private void ToggleCrashReports()
     {
         _settings.CrashReports = _settings.CrashReports != CrashReportingMode.Always ? CrashReportingMode.Always : CrashReportingMode.Never;
@@ -322,7 +322,6 @@ public partial class App : Application
         {
             _appliedCrashMode = _settings.CrashReports;
             CrashReporting.Apply(_settings.CrashReports);
-            if (_settings.CrashReports == CrashReportingMode.Always) CrashReporting.SendPending();
         }
         UpdateTray();
     }

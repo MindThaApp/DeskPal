@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>オフ</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>送信前に確認</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>クラッシュレポートの送信：{0}（設定で変更できます）</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>問題をすばやく修正できるよう、クラッシュレポートを送信する。ファイルや入力した内容は含まれません。</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>送信される内容</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal は問題をすばやく修正するため、クラッシュレポートを送信するようになりました</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>了解</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>30分停止</value>

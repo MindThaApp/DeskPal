@@ -38,8 +38,37 @@ public sealed partial class HomePage : Page
         _flat = new Bloop2D(Avatar, Stage, () => _style, 640);
         _touch = new BloopTouch(Stage, CurrentReactor);
         UpdateSoundButton();
+        ShowCrashNotice();
         _timer.Tick += (_, _) => TickGuard.Run("home-refresh", Refresh);
         _ctx.Hub.Changed += () => { UpdateSoundButton(); if (_active) TickGuard.Run("home-settings", () => { Refresh(); _ = LoadStyleAsync(); }); };
+    }
+
+    // Shown once to a user whose old "ask first" crash setting moved to On: the same pre-ticked option, no focus taken.
+    private void ShowCrashNotice()
+    {
+        var s = _ctx.Hub.Settings;
+        if (!s.CrashNoticePending) return;
+        var panel = new StackPanel { Spacing = 6 };
+        panel.Children.Add(new TextBlock { Text = Loc.Get("Crash_NoticeTitle"), FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap });
+        panel.Children.Add(CrashConsentUi.Build(_ctx.Hub));
+        var done = new Button { Content = Loc.Get("Crash_NoticeDone"), HorizontalAlignment = HorizontalAlignment.Left };
+        var card = new Border
+        {
+            Padding = new Thickness(16),
+            CornerRadius = new CornerRadius(8),
+            BorderThickness = new Thickness(1),
+            Background = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"],
+            BorderBrush = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CardStrokeColorDefaultBrush"],
+            Child = panel,
+        };
+        done.Click += (_, _) =>
+        {
+            s.CrashNoticePending = false;
+            _ctx.Hub.Commit(false);
+            InfoColumn.Children.Remove(card);
+        };
+        panel.Children.Add(done);
+        InfoColumn.Children.Insert(1, card);
     }
 
     // Called when the page is on screen and the window is showing; false lets the 3D surface go to sleep.

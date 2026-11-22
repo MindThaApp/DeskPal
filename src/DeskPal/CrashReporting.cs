@@ -8,8 +8,8 @@ namespace DeskPal;
 
 /// <summary>
 /// Crash reports through Sentry (EU region), behind the consent gate and the redaction in Core, as in Files Portal:
-/// Never: the SDK is never started and nothing is kept; Ask (the default): redacted reports wait in the app's data folder until
-/// the user turns "Send crash reports" on; Always: reports go out as they happen. Every event passes <see cref="BeforeSend"/>:
+/// On (the default): reports go out as they happen. Off (Never): the SDK is never started and nothing is kept. Reports that were
+/// queued while the old "ask first" setting was in force are never sent; they stay in the app's own pending folder until the user turns reporting off. Every event passes <see cref="BeforeSend"/>:
 /// paths, the user name and the PC name are replaced, the server name and user details are dropped, and only our own redacted
 /// log tail stays attached. No performance tracing.
 /// </summary>
@@ -39,7 +39,7 @@ internal sealed class CrashReporting
     private static readonly CrashReportOutbox Outbox = new(new PendingCrashReports(Path.Combine(AppData.Dir, "CrashReports", "pending")));
     private static readonly string OutboxFolder = Path.Combine(AppData.Dir, "CrashReports", "Outbox");
     private static IDisposable? _sdk;
-    private static CrashReportingMode _mode = CrashReportingMode.Ask;
+    private static CrashReportingMode _mode = CrashReportingMode.Never;
 
     // Only our own field: reading it never loads the SDK.
     public static bool IsRunning => _sdk is not null;
@@ -138,14 +138,6 @@ internal sealed class CrashReporting
         if (message.StartsWith("CRASH", StringComparison.Ordinal)) return;
         var line = message.Split('\n', 2)[0].Trim();
         SentrySdk.AddBreadcrumb(line.Length > 200 ? line[..200] : line, "deskpal");
-    }
-
-    /// <summary>The user turned reporting on: send what was waiting.</summary>
-    public static int SendPending()
-    {
-        if (!IsRunning) return 0;
-        try { return Outbox.SendPending(_mode, new ResendTransport()).Count; }
-        catch (Exception ex) when (ex is not OutOfMemoryException) { return 0; }
     }
 
     private static string ReadLogTail()
@@ -281,25 +273,5 @@ internal sealed class CrashReporting
             if (Directory.Exists(folder)) Directory.Delete(folder, recursive: true);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
-    }
-
-    // A waiting report, sent after the user turned reporting on: the same (already redacted) event, marked as consented.
-    private sealed class ResendTransport : ICrashReportTransport
-    {
-        public string? Send(string eventJson)
-        {
-            try
-            {
-                using var document = JsonDocument.Parse(eventJson);
-                var evt = SentryEvent.FromJson(document.RootElement);
-                evt.SetTag(ConsentTag, "1");
-                var id = SentrySdk.CaptureEvent(evt);
-                return id == SentryId.Empty ? null : id.ToString();
-            }
-            catch (Exception ex) when (ex is JsonException or InvalidOperationException or FormatException or KeyNotFoundException)
-            {
-                return null;
-            }
-        }
     }
 }

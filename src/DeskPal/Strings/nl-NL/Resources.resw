@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>uit</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>eerst vragen</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>Crashrapporten verzenden: {0} (te wijzigen in Instellingen)</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>Crashrapporten verzenden zodat we problemen snel kunnen oplossen. Ze bevatten nooit je bestanden of wat je typt.</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>Wat er wordt verzonden</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal verstuurt nu crashrapporten om problemen snel op te lossen</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>Begrepen</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>30 min pauzeren</value>

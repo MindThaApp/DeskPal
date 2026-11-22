@@ -34,11 +34,11 @@ public sealed partial class CrashReportRedactor
 
     // A file name inside quotes may hold spaces: 'Quarterly plan.docx'.
     private static readonly Regex QuotedFileName = new(
-        "(?<![\w<>%])(?<q>['\"])[^'\"\r\n\\/:*?<>|]+?\.(?<x>" + DocumentExtensions + ")\k<q>", Flags);
+        @"(?<![\w<>%])(?<q>['""])[^'""\r\n\\/:*?<>|]+?\.(?<x>" + DocumentExtensions + @")\k<q>", Flags);
 
     // A file name with no spaces and no folder in front of it.
     private static readonly Regex BareFileName = new(
-        "(?<![\w<>%.\\/~-])[\w~()-]+\.(?<x>" + DocumentExtensions + ")(?![\w])", Flags);
+        @"(?<![\w<>%.\\/~-])[\w~()-]+\.(?<x>" + DocumentExtensions + @")(?![\w])", Flags);
 
     private static readonly Regex Ipv4 = new(@"(?<![\w.])(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)(?![\w.]*\w)", Flags);
 

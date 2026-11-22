@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>kapalı</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>önce sor</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>Çökme raporlarını gönder: {0} (Ayarlar'dan değiştir)</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>Sorunları hızla düzeltebilmemiz için çökme raporları gönder. Dosyalarınızı veya yazdıklarınızı asla içermez.</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>Neler gönderilir</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal artık sorunları hızla düzeltmemize yardımcı olmak için çökme raporları gönderiyor</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>Anladım</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>30 dk duraklat</value>

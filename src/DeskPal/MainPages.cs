@@ -236,7 +236,7 @@ public sealed class AboutPage : Page
 {
     public AboutPage(MainContext ctx)
     {
-        var mode = ctx.Hub.Settings.CrashReports switch { CrashReportingMode.Always => Loc.Get("About_CrashOn"), CrashReportingMode.Never => Loc.Get("About_CrashOff"), _ => Loc.Get("About_CrashAsk") };
+        var mode = ctx.Hub.Settings.CrashReports switch { CrashReportingMode.Never => Loc.Get("About_CrashOff"), _ => Loc.Get("About_CrashOn") };
         var crash = new HyperlinkButton { Content = Loc.Format("About_CrashLink", mode), Padding = new Thickness(0) };
         crash.Click += (_, _) => ctx.Navigate("settings");
         Content = PageKit.Scroll(new StackPanel

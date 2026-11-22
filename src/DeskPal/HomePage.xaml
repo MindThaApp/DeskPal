@@ -30,7 +30,7 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-            <StackPanel Grid.Column="1" Spacing="16" MaxWidth="520" Padding="40,0,0,0">
+            <StackPanel x:Name="InfoColumn" Grid.Column="1" Spacing="16" MaxWidth="520" Padding="40,0,0,0">
                 <TextBlock x:Name="GreetingText" FontSize="28" FontWeight="SemiBold" TextWrapping="Wrap" />
                 <Border x:Name="RecapCard" Visibility="Collapsed" Padding="16" CornerRadius="8" BorderThickness="1"
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"

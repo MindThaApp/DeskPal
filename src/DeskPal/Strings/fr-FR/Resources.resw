@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>désactivé</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>demander d'abord</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>Envoyer les rapports d'incident : {0} (modifiable dans les Paramètres)</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>Envoyer les rapports de plantage pour que nous corrigions vite les problèmes. Ils n'incluent jamais vos fichiers ni ce que vous saisissez.</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>Ce qui est envoyé</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal envoie désormais les rapports de plantage pour nous aider à corriger vite les problèmes</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>Compris</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>Pause 30 min</value>

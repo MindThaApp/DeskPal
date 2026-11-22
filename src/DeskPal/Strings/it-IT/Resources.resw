@@ -205,11 +205,20 @@
   <data name="About_CrashOff" xml:space="preserve">
     <value>disattivato</value>
   </data>
-  <data name="About_CrashAsk" xml:space="preserve">
-    <value>chiedi prima</value>
-  </data>
   <data name="About_CrashLink" xml:space="preserve">
     <value>Invia segnalazioni di arresto anomalo: {0} (si cambia in Impostazioni)</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>Invia i rapporti sugli arresti anomali così possiamo risolvere subito i problemi. Non includono mai i tuoi file né ciò che scrivi.</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>Cosa viene inviato</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal ora invia i rapporti sugli arresti anomali per aiutarci a risolvere subito i problemi</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>Ho capito</value>
   </data>
   <data name="Common_Pause30" xml:space="preserve">
     <value>Pausa 30 min</value>
