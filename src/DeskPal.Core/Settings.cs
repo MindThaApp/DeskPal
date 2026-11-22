@@ -10,6 +10,12 @@ public sealed class WorkingHours
 
 public enum WaterMode { WithBreaks, Hourly, Off }
 
+// Stretch with Bloop (Pro): the camera is used only during a stretch the user starts from the reminder card.
+public sealed class StretchWithBloopSettings
+{
+    public bool Enabled { get; set; }
+}
+
 public sealed class DeskPalSettings
 {
     public const int CurrentVersion = 3;
@@ -79,6 +85,9 @@ public sealed class DeskPalSettings
     // Settings > Appearance: theme, accent, material, corners, density, text size, motion.
     public AppearanceSettings Appearance { get; set; } = new();
 
+    // Off until the user turns it on; files from before this existed load with it off.
+    public StretchWithBloopSettings StretchWithBloop { get; set; } = new();
+
     public int MovementMinutes => Math.Clamp(StretchMinutes, MovementMin, MovementMax);
 
     public bool IsScheduled(NudgeKind kind) => kind switch
@@ -121,6 +130,7 @@ public sealed class DeskPalSettings
         if (Language is null) { Language = ""; changed = true; }
         if (Pro is null) { Pro = new(); changed = true; }
         if (Appearance is null) { Appearance = new(); changed = true; }
+        if (StretchWithBloop is null) { StretchWithBloop = new(); changed = true; }
         if (Appearance.Clamp()) changed = true;
         var apps = (ApprovedControlApps ?? [])
             .Where(a => !string.IsNullOrWhiteSpace(a) && a.Length <= 1024)

@@ -206,6 +206,9 @@ public partial class App : Application
         if (AppData.DebugSettings) OpenSettings();
         if (AppData.DebugMain) OpenMain(AppData.DebugPage);
         else if (!_ui.FirstRunShown) ShowWizard();
+#if DEBUG
+        if (AppData.DebugPose && AppData.DebugMain) Pose.PoseDebugRun.Start();
+#endif
         ShowKeepLanguagePrompt();
         if (AppData.DebugEyeCue)
         {
@@ -455,7 +458,12 @@ public partial class App : Application
     {
         if (_card is null)
         {
-            _card = new NudgeCardWindow(_router) { HideSeconds = () => _settings.HideNudgeSeconds };
+            _card = new NudgeCardWindow(_router)
+            {
+                HideSeconds = () => _settings.HideNudgeSeconds,
+                StretchWithBloopAllowed = () => Pose.StretchCoach.Available && _settings.StretchWithBloop.Enabled && Pro.IsUnlocked,
+            };
+            _card.WatchGate(_hub);
             _card.Expired += id =>
             {
                 Logger.Log("card auto-hidden");
@@ -841,6 +849,7 @@ public partial class App : Application
         _settingsWindow?.Quit();
         _toastTimer?.Stop();
         try { _link?.Dispose(); } catch (Exception ex) { Logger.Log("automation portal link stop failed: " + ex.Message); }
+        Pose.PoseSession.StopAllForExit();
         Logger.Log(restart ? "exit for restart" : "exit");
         if (restart && !AppRestart.Launch(restartArgs)) Logger.Log("restart did not start");
         Exit();

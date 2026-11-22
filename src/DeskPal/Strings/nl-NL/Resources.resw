@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -1016,5 +1016,95 @@
   </data>
   <data name="Custom_Keep" xml:space="preserve">
     <value>Deze look houden</value>
+  </data>
+  <data name="Settings_Section_Stretch" xml:space="preserve">
+    <value>Stretchen met Bloop</value>
+  </data>
+  <data name="Settings_StretchWithBloop" xml:space="preserve">
+    <value>Camera gebruiken tijdens het stretchen</value>
+  </data>
+  <data name="Settings_StretchWithBloopSub" xml:space="preserve">
+    <value>Doe een stretch voor je camera. Bloop doet je na en de herinnering is klaar zodra je de houding vasthoudt.</value>
+  </data>
+  <data name="Settings_StretchPrivacy" xml:space="preserve">
+    <value>De camera wordt alleen gebruikt tijdens een stretch die jij start. Video blijft op deze pc: er wordt niets opgenomen, opgeslagen of verzonden.</value>
+  </data>
+  <data name="Settings_CameraAccess" xml:space="preserve">
+    <value>Cameratoegang</value>
+  </data>
+  <data name="Nudge_StretchWithBloop" xml:space="preserve">
+    <value>Stretchen met Bloop</value>
+  </data>
+  <data name="Nudge_StopCamera" xml:space="preserve">
+    <value>Camera stoppen</value>
+  </data>
+  <data name="Pose_CameraOn" xml:space="preserve">
+    <value>Camera aan · alleen op deze pc</value>
+  </data>
+  <data name="Pose_Starting" xml:space="preserve">
+    <value>Camera starten…</value>
+  </data>
+  <data name="Pose_GetReady" xml:space="preserve">
+    <value>Maak je klaar…</value>
+  </data>
+  <data name="Pose_HoldIt" xml:space="preserve">
+    <value>Houd vast</value>
+  </data>
+  <data name="Pose_WellDone" xml:space="preserve">
+    <value>Goed gedaan!</value>
+  </data>
+  <data name="Pose_Sides" xml:space="preserve">
+    <value>Links {0}% · Rechts {1}%</value>
+  </data>
+  <data name="Pose_NoCamera" xml:space="preserve">
+    <value>Geen camera gevonden. Kies Klaar als je hebt gestretcht.</value>
+  </data>
+  <data name="Pose_CameraInUse" xml:space="preserve">
+    <value>Een andere app gebruikt de camera.</value>
+  </data>
+  <data name="Pose_CameraBlocked" xml:space="preserve">
+    <value>Windows blokkeert cameratoegang voor Desk Pal.</value>
+  </data>
+  <data name="Pose_ModelUnavailable" xml:space="preserve">
+    <value>Stretchen met de camera is nu niet beschikbaar.</value>
+  </data>
+  <data name="Pose_Failed" xml:space="preserve">
+    <value>De camera is niet gestart.</value>
+  </data>
+  <data name="Pose_StoppedTimeout" xml:space="preserve">
+    <value>De camera is na 3 minuten gestopt. Kies Klaar als je hebt gestretcht.</value>
+  </data>
+  <data name="Pose_StoppedLost" xml:space="preserve">
+    <value>De camera werkt niet meer.</value>
+  </data>
+  <data name="Pose_StoppedLocked" xml:space="preserve">
+    <value>De camera is gestopt omdat je pc is vergrendeld.</value>
+  </data>
+  <data name="Pose_StoppedGeneric" xml:space="preserve">
+    <value>De camera is gestopt.</value>
+  </data>
+  <data name="Pose_StepIntoView" xml:space="preserve">
+    <value>Ga in beeld staan</value>
+  </data>
+  <data name="Pose_RaiseArms" xml:space="preserve">
+    <value>Strek beide armen boven je hoofd</value>
+  </data>
+  <data name="Pose_LeanSideways" xml:space="preserve">
+    <value>Leun naar één kant</value>
+  </data>
+  <data name="Pose_ShrugHigher" xml:space="preserve">
+    <value>Trek je schouders hoger op</value>
+  </data>
+  <data name="Pose_TiltHead" xml:space="preserve">
+    <value>Kantel je hoofd naar een schouder</value>
+  </data>
+  <data name="Pose_TwistMore" xml:space="preserve">
+    <value>Draai iets verder</value>
+  </data>
+  <data name="Pose_SwitchSides" xml:space="preserve">
+    <value>Nu de andere kant</value>
+  </data>
+  <data name="Pose_FaceCamera" xml:space="preserve">
+    <value>Kijk naar de camera</value>
   </data>
 </root>
