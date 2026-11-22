@@ -18,8 +18,10 @@
 
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0" />
-    <!-- C++ runtime (msvcp140/vcruntime140) for the on-device pose model runtime; the Store installs it with the app. -->
-    <PackageDependency Name="Microsoft.VCLibs.140.00.UWPDesktop" MinVersion="14.0.33519.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+    <!-- C++ runtime (msvcp140/vcruntime140) for the on-device pose model runtime; the Store installs it with the app.
+         ONNX Runtime 1.32 needs msvcp140 14.40 or later. Framework 14.0.33728.0 carries msvcp140 14.40.33728;
+         older framework builds ship an older msvcp140 that the runtime can crash on. -->
+    <PackageDependency Name="Microsoft.VCLibs.140.00.UWPDesktop" MinVersion="14.0.33728.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
   </Dependencies>
 
   <Resources>

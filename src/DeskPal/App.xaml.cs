@@ -462,7 +462,7 @@ public partial class App : Application
             _card = new NudgeCardWindow(_router)
             {
                 HideSeconds = () => _settings.HideNudgeSeconds,
-                StretchWithBloopAllowed = () => _settings.StretchWithBloop.Enabled && Pro.IsUnlocked,
+                StretchWithBloopAllowed = () => Pose.StretchCoach.Available && _settings.StretchWithBloop.Enabled && Pro.IsUnlocked,
             };
             _card.WatchGate(_hub);
             _card.Expired += id =>

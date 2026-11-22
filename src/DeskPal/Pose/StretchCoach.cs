@@ -40,6 +40,13 @@ internal sealed class StretchCoach
         _synthetic = synthetic;
     }
 
+    /// <summary>
+    /// Stretch with Bloop is offered only in the packaged (Store) build: that is where the camera permission and the
+    /// C++ runtime the pose model needs come from. The portable build never shows the button. --debug-pose-card
+    /// counts too, since it only plays scripted frames and never touches the camera.
+    /// </summary>
+    public static bool Available => PackagedApp.IsPackaged || AppData.DebugPoseCard;
+
     public bool Stopped => _stopped;
 
     /// <summary>On the UI thread, after a frame was judged.</summary>

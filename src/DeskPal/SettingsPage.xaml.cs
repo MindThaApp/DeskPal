@@ -128,8 +128,12 @@ public sealed partial class SettingsPage : Page
             () => _s.AllowExternalControl, b => { _s.AllowExternalControl = b; _hub.Commit(false); });
         AddAutomationPortalCard();
 
-        Root.Children.Add(Header(Loc.Get("Settings_Section_Stretch")));
-        AddStretchWithBloop();
+        // Store build only (the portable build has no camera permission of its own); debug runs show it for checks.
+        if (DeskPal.Pose.StretchCoach.Available || AppData.IsDebugRun)
+        {
+            Root.Children.Add(Header(Loc.Get("Settings_Section_Stretch")));
+            AddStretchWithBloop();
+        }
 
         Root.Children.Add(Header(Loc.Get("Settings_Section_Privacy")));
         AddSwitch(Loc.Get("Settings_CrashReports"), Loc.Get("Settings_CrashReportsSub"),
