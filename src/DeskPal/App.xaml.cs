@@ -803,7 +803,7 @@ public partial class App : Application
     private void ShowWizard()
     {
         var applied = string.IsNullOrEmpty(_settings.Language) ? Loc.ResolveWindowsLanguage() : _settings.Language;
-        _wizard = new WelcomeWizardWindow(_hub, applied, AppRestart.HasArg(AppRestart.WizardResumeArg) ? 1 : 0,
+        _wizard = new WelcomeWizardWindow(_hub, applied, AppData.DebugWizardPage >= 0 ? AppData.DebugWizardPage : AppRestart.HasArg(AppRestart.WizardResumeArg) ? 1 : 0,
             finished: () =>
             {
                 _ui.FirstRunShown = true;

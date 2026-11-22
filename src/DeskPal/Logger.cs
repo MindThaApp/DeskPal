@@ -27,6 +27,8 @@ public static class AppData
     public static readonly string? DebugGesture = ArgValue("--debug-gesture=");
     // --debug-page=<home|bloop|garden|settings>: with --debug-main, opens the main window on that page.
     public static readonly string? DebugPage = ArgValue("--debug-page=");
+    // --debug-wizard-page=<0-2>: opens the welcome wizard on that page.
+    public static readonly int DebugWizardPage = int.TryParse(ArgValue("--debug-wizard-page="), out var wizardPage) ? wizardPage : -1;
     public static readonly bool IsDebugRun = DebugSettings || DebugMain || DebugEyeCue || DebugNudge || DebugApproval || DebugCrash || DebugTray || DebugQuickPanel || DebugTrayMenu || Debug3D || DebugPoke || DebugPro || DebugGesture is not null;
 
     // Debug runs keep their own state and log so they never touch the real ones.
