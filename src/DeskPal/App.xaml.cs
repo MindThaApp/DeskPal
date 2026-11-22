@@ -206,7 +206,9 @@ public partial class App : Application
         if (AppData.DebugSettings) OpenSettings();
         if (AppData.DebugMain) OpenMain(AppData.DebugPage);
         else if (!_ui.FirstRunShown) ShowWizard();
+#if DEBUG
         if (AppData.DebugPose && AppData.DebugMain) Pose.PoseDebugRun.Start();
+#endif
         ShowKeepLanguagePrompt();
         if (AppData.DebugEyeCue)
         {

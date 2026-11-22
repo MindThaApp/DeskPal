@@ -1,3 +1,4 @@
+#if DEBUG
 using DeskPal.Core.Pose;
 
 namespace DeskPal.Pose;
@@ -5,6 +6,7 @@ namespace DeskPal.Pose;
 /// <summary>
 /// --debug-pose (with --debug-main): one 10 second pose check. Logs only the start result, the camera format, the
 /// top three point scores per frame, and at the end frames per second and model time. No image data is logged.
+/// Debug builds only; Release builds do not contain this class.
 /// </summary>
 internal static class PoseDebugRun
 {
@@ -40,3 +42,4 @@ internal static class PoseDebugRun
             .Take(3)
             .Select(i => $"{(BodyPoint)i}={frame.Points[i].Score:F2}"));
 }
+#endif

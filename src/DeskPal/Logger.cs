@@ -27,9 +27,14 @@ public static class AppData
     public static readonly string? DebugGesture = ArgValue("--debug-gesture=");
     // --debug-page=<home|bloop|garden|settings>: with --debug-main, opens the main window on that page.
     public static readonly string? DebugPage = ArgValue("--debug-page=");
+#if DEBUG
     // --debug-pose: with --debug-main, runs the camera pose check for 10 seconds and logs only fps, model time and
-    // the top three point scores per frame (no image data).
+    // the top three point scores per frame (no image data). Debug builds only: Release, Store and portable builds
+    // can never open the camera from a command line flag.
     public static readonly bool DebugPose = HasArg("--debug-pose");
+#else
+    public const bool DebugPose = false;
+#endif
     // --debug-pose-card: with --debug-main and --debug-nudge, the reminder card runs "Stretch with Bloop" from a
     // scripted frame sequence instead of the camera. The real camera is never touched.
     public static readonly bool DebugPoseCard = HasArg("--debug-pose-card");
