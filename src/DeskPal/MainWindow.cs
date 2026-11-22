@@ -24,6 +24,7 @@ public sealed class MainWindow : Window
     private SettingsPage? _settingsPage;
     private string _page = "home";
     private bool _quit;
+    private string? _pendingPage;
 
     public MainWindow(MainContext ctx, MainWindowUi ui, Action saveUi, Action firstClose)
     {
@@ -91,6 +92,11 @@ public sealed class MainWindow : Window
         _nav.KeyboardAccelerators.Add(settings);
         _nav.Loaded += (_, _) =>
         {
+            if (_pendingPage is { } pending)
+            {
+                _pendingPage = null;
+                TickGuard.Run("main-pending-nav", () => Navigate(pending));
+            }
             if (_nav.SettingsItem is NavigationViewItem s) Keys.Hint(s, $"{s.Content} (Ctrl+,)");
         };
     }
@@ -106,6 +112,8 @@ public sealed class MainWindow : Window
 
     public void Navigate(string tag)
     {
+        // The settings item only exists once the NavigationView has loaded, so an early request waits for Loaded.
+        if (!_nav.IsLoaded) { _pendingPage = tag; return; }
         if (tag == "settings") _nav.SelectedItem = _nav.SettingsItem;
         else
             foreach (var o in _nav.MenuItems.Concat(_nav.FooterMenuItems))
