@@ -49,6 +49,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <ProgressRing x:Name="PoseRing" Width="36" Height="36" IsIndeterminate="False" Minimum="0" Maximum="100"
+                              Background="{ThemeResource ControlStrokeColorDefaultBrush}"
                               VerticalAlignment="Center" />
                 <StackPanel Grid.Column="1" Spacing="2" VerticalAlignment="Center">
                     <TextBlock x:Name="PoseHint" FontSize="12" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" />

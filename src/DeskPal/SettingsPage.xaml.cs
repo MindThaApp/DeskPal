@@ -231,7 +231,8 @@ public sealed partial class SettingsPage : Page
 
         _syncs.Add(() =>
         {
-            toggle.IsOn = _s.StretchWithBloop.Enabled;
+            // Locked: show Off without touching the saved choice, which comes back on purchase.
+            toggle.IsOn = _s.StretchWithBloop.Enabled && Pro.IsUnlocked;
             toggle.IsEnabled = Pro.IsUnlocked;
             proLink.Visibility = Pro.IsUnlocked ? Visibility.Collapsed : Visibility.Visible;
         });
