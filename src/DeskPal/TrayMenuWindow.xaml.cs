@@ -31,6 +31,7 @@ public sealed partial class TrayMenuWindow : Window
     {
         _ctx = ctx;
         InitializeComponent();
+        Appearance.Register(this, Root, Appearance.Role.Surface);
 
         AddRow("", Loc.Get("Tray_Open"), () => _ctx.OpenMain(null), bold: true);
         AddRow("", Loc.Get("Tray_StretchNow"), () => _ctx.Scheduler.Execute(new TestNudgeCommand()));

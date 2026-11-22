@@ -15,6 +15,7 @@ public sealed class SettingsWindow : Window
         SystemBackdrop = new Microsoft.UI.Xaml.Media.MicaBackdrop();
         var page = new SettingsPage(hub);
         Content = page;
+        Appearance.Register(this, page, Appearance.Role.Chrome);
         Keys.Wire(page, () => AppWindow.Hide(), null);
         AppWindow.Resize(new SizeInt32(820, 900));
         AppWindow.Closing += (_, e) =>

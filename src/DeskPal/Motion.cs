@@ -16,10 +16,17 @@ internal static class Motion
         try { Ui.AnimationsEnabledChanged += (_, _) => _enabled = Read(); } catch { }
     }
 
-    public static bool Enabled => _enabled;
+    // The in-app Motion choice (Settings > Appearance). Windows can still turn animations off whatever this says.
+    public static volatile DeskPal.Core.MotionChoice UserMode = DeskPal.Core.MotionChoice.FollowWindows;
 
-    // Duration for a chrome animation: zero when the user turned animations off, otherwise capped at 333 ms.
-    public static TimeSpan Ms(int ms) => TimeSpan.FromMilliseconds(Enabled ? Math.Min(ms, MaxChromeMs) : 0);
+    public const int ReducedChromeMs = 120;
+
+    public static bool Enabled => _enabled && UserMode != DeskPal.Core.MotionChoice.Off;
+
+    // Duration for a chrome animation: zero when animations are off (Windows or the app), shorter when reduced,
+    // otherwise capped at 333 ms.
+    public static TimeSpan Ms(int ms) =>
+        TimeSpan.FromMilliseconds(!Enabled ? 0 : Math.Min(ms, UserMode == DeskPal.Core.MotionChoice.Reduced ? ReducedChromeMs : MaxChromeMs));
 
     private static bool Read()
     {

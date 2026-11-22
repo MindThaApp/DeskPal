@@ -127,6 +127,8 @@ public partial class App : Application
         _hub.ChangeLanguage = ChangeLanguage;
         BloopSounds.Attach(_hub, _scheduler);
         Looks.Attach(_hub);
+        Appearance.Attach(_settings);
+        _hub.Changed += Appearance.Apply;
         _appliedCrashMode = _settings.CrashReports;
         _hub.Changed += OnSettingsChanged;
         _calls = new CallMonitor(new RegistryCallDetector(), _scheduler, TimeProvider.System);

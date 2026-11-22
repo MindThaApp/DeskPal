@@ -50,6 +50,7 @@ public sealed class MainWindow : Window
         _nav.SelectionChanged += (_, e) =>
             TickGuard.Run("main-nav", () => Show(e.IsSettingsSelected ? "settings" : (e.SelectedItem as NavigationViewItem)?.Tag as string ?? "home"));
         Content = _nav;
+        Appearance.Register(this, _nav, Appearance.Role.Chrome);
         _nav.SelectedItem = _homeItem;
         AddShortcuts();
 

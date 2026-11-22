@@ -46,6 +46,7 @@ public sealed partial class NudgeCardWindow : Window
     {
         _router = router;
         InitializeComponent();
+        Appearance.Register(this, Root, Appearance.Role.Surface);
         Keys.Wire(Root, () => Keys.Invoke(SnoozeButton), () => Keys.Invoke(DoneButton));
         Keys.Hint(DoneButton, "Enter");
         Keys.Hint(SnoozeButton, "Esc");
