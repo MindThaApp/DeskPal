@@ -1108,7 +1108,7 @@
     <value>Cada {0} minutos (recomendado)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>Los descansos para los ojos y los avisos de agua se ajustan solos. Puedes afinarlo todo después en Ajustes.</value>
+    <value>Los descansos para los ojos y los avisos de agua se ajustan solos.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>Pruébalo</value>

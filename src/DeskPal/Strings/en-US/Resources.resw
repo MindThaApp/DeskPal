@@ -1234,7 +1234,7 @@
     <value>Every {0} minutes (recommended)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>Eye breaks and water reminders follow along. You can fine-tune everything later in Settings.</value>
+    <value>Eye breaks and water reminders follow along.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>Try it</value>

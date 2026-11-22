@@ -116,7 +116,7 @@ internal sealed class WelcomeHero : Grid
                 Children.Remove(_bubble);
                 _bubble.HorizontalAlignment = HorizontalAlignment.Left;
                 top.Children.Add(_bubble);
-                Grid.SetRowSpan(_bubble, 3);
+                Grid.SetRowSpan(_bubble, 2);
                 Grid.SetColumnSpan(_bubble, 2);
             }
             var at = _stage.TransformToVisual(top).TransformPoint(new Windows.Foundation.Point(0, 0));

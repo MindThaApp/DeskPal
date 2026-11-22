@@ -113,22 +113,27 @@ internal sealed class WelcomeWizardWindow : Window
         _content.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(WelcomeHero.Size) });
         _content.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         _content.ColumnSpacing = 24;
+        // Bloop and the dots span both rows, so they sit at the same height on every step; the crash strip
+        // takes the second row of the text column on the last step only.
+        _content.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+        _content.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        Grid.SetRowSpan(heroColumn, 2);
         _content.Children.Add(heroColumn);
         Grid.SetColumn(scroll, 1);
         _content.Children.Add(scroll);
 
-        // The crash-report option lives in its own strip above the buttons, on the last step only.
-        _crashStrip = (Border)XamlReader.Load("<Border xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' CornerRadius='8' Padding='12' BorderThickness='1' Background='{ThemeResource CardBackgroundFillColorDefaultBrush}' BorderBrush='{ThemeResource CardStrokeColorDefaultBrush}' />");
+        // The crash-report option lives in its own card under the text column, on the last step only.
+        _crashStrip = (Border)XamlReader.Load("<Border xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' CornerRadius='8' Padding='16,12' Margin='0,12,0,0' BorderThickness='1' Background='{ThemeResource CardBackgroundFillColorDefaultBrush}' BorderBrush='{ThemeResource CardStrokeColorDefaultBrush}' />");
         _crashStrip.Child = CrashConsentUi.Build(hub);
         _crashStrip.Visibility = Visibility.Collapsed;
+        Grid.SetColumn(_crashStrip, 1);
+        Grid.SetRow(_crashStrip, 1);
+        _content.Children.Add(_crashStrip);
         var root = new Grid { Padding = new Thickness(32, 24, 32, 24), RowSpacing = 16 };
         root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
         root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-        root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         root.Children.Add(_content);
-        Grid.SetRow(_crashStrip, 1);
-        root.Children.Add(_crashStrip);
-        Grid.SetRow(_footer, 2);
+        Grid.SetRow(_footer, 1);
         root.Children.Add(_footer);
         Content = root;
         _hero.Overlay = root;
@@ -305,6 +310,15 @@ internal sealed class WelcomeWizardWindow : Window
         else Go(Pages - 1);
     }
 
+    // Body text for hints: the window's own primary text colour at 85 %, at least 4.5:1 on the wizard's background in light
+    // and dark (the secondary brush measured about 3.5:1 on the light Mica tint). Theme resource, so it follows this window.
+    private static TextBlock Muted(string text)
+    {
+        var t = (TextBlock)XamlReader.Load("<TextBlock xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' TextWrapping='Wrap' Opacity='0.85' Foreground='{ThemeResource TextFillColorPrimaryBrush}' />");
+        t.Text = text;
+        return t;
+    }
+
     private static StackPanel PageShell(string titleKey, string? subKey)
     {
         var panel = new StackPanel { Spacing = 12, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0, 12, 0, 0) };
@@ -312,12 +326,7 @@ internal sealed class WelcomeWizardWindow : Window
         AutomationProperties.SetHeadingLevel(title, AutomationHeadingLevel.Level1);
         panel.Children.Add(title);
         if (subKey is not null)
-            panel.Children.Add(new TextBlock
-            {
-                Text = Loc.Get(subKey),
-                TextWrapping = TextWrapping.Wrap,
-                Style = (Style)Application.Current.Resources["SecondaryTextStyle"],
-            });
+            panel.Children.Add(Muted(Loc.Get(subKey)));
         return panel;
     }
 
@@ -421,12 +430,7 @@ internal sealed class WelcomeWizardWindow : Window
             _hub.Commit(true);
         };
         panel.Children.Add(rhythm);
-        panel.Children.Add(new TextBlock
-        {
-            Text = Loc.Get("Wizard_Rhythm_Note"),
-            TextWrapping = TextWrapping.Wrap,
-            Style = (Style)Application.Current.Resources["SecondaryTextStyle"],
-        });
+        panel.Children.Add(Muted(Loc.Get("Wizard_Rhythm_Note")));
         loading = false;
         _refreshDay = () =>
         {
@@ -458,9 +462,8 @@ internal sealed class WelcomeWizardWindow : Window
     private FrameworkElement TryPage()
     {
         var panel = PageShell("Wizard_Try_Title", "Wizard_Try_Sub");
-        var accent = (Style)Application.Current.Resources["AccentButtonStyle"];
-        var stretch = new Button { Content = Loc.Get("Wizard_Try_Stretch"), Style = accent };
-        var poke = new Button { Content = Loc.Get("Wizard_Try_Poke"), Style = accent };
+        var stretch = TryButton("", "Wizard_Try_Stretch");
+        var poke = TryButton("", "Wizard_Try_Poke");
         var result = new TextBlock { TextWrapping = TextWrapping.Wrap, Visibility = Visibility.Collapsed };
         AutomationProperties.SetLiveSetting(result, AutomationLiveSetting.Polite);
         stretch.Click += (_, _) => TickGuard.Run("wizard-try-stretch", () =>
@@ -470,7 +473,8 @@ internal sealed class WelcomeWizardWindow : Window
             result.Visibility = Visibility.Visible;
         });
         poke.Click += (_, _) => TickGuard.Run("wizard-try-poke", _hero.Poke);
-        var buttons = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8, Margin = new Thickness(0, 4, 0, 0) };
+        // Side by side, one above the other when big text would not leave room for both.
+        var buttons = new StackPanel { Orientation = Appearance.TextStep >= 2 ? Orientation.Vertical : Orientation.Horizontal, Spacing = 8, Margin = new Thickness(0, 4, 0, 0) };
         buttons.Children.Add(stretch);
         buttons.Children.Add(poke);
         panel.Children.Add(buttons);
@@ -478,6 +482,17 @@ internal sealed class WelcomeWizardWindow : Window
         panel.Children.Add(InfoRow("", "Wizard_Try_Tray"));
         panel.Children.Add(InfoRow("", "Wizard_Try_Pro"));
         return panel;
+    }
+
+    // Inviting but secondary: accent outline, accent icon and text on the normal button fill. Finish stays the only filled accent.
+    private static Button TryButton(string glyph, string textKey)
+    {
+        var b = (Button)XamlReader.Load("<Button xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' HorizontalAlignment='Left' BorderBrush='{ThemeResource AccentFillColorDefaultBrush}' BorderThickness='1.5'><StackPanel Orientation='Horizontal' Spacing='8'><FontIcon FontSize='14' Foreground='{ThemeResource AccentTextFillColorPrimaryBrush}' /><TextBlock Foreground='{ThemeResource AccentTextFillColorPrimaryBrush}' /></StackPanel></Button>");
+        var row = (StackPanel)b.Content;
+        ((FontIcon)row.Children[0]).Glyph = glyph;
+        ((TextBlock)row.Children[1]).Text = Loc.Get(textKey);
+        AutomationProperties.SetName(b, Loc.Get(textKey));
+        return b;
     }
 
     private static Grid InfoRow(string glyph, string textKey)

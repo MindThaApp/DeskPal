@@ -1130,7 +1130,7 @@
     <value>Co {0} minut (zalecane)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>Przerwy dla oczu i przypomnienia o wodzie dostosują się same. Wszystko dopracujesz później w Ustawieniach.</value>
+    <value>Przerwy dla oczu i przypomnienia o wodzie dostosują się same.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>Wypróbuj</value>

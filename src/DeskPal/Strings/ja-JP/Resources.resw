@@ -1130,7 +1130,7 @@
     <value>{0}分ごと(おすすめ)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>目の休憩や水分補給のお知らせもいっしょに動きます。くわしい調整はあとで設定からできます。</value>
+    <value>目の休憩や水分補給のお知らせもいっしょに動きます。</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>ためしてみよう</value>

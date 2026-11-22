@@ -1108,7 +1108,7 @@
     <value>A cada {0} minutos (recomendado)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>As pausas para os olhos e os lembretes de água acompanham. Você pode ajustar tudo depois, em Configurações.</value>
+    <value>As pausas para os olhos e os lembretes de água acompanham.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>Experimente</value>

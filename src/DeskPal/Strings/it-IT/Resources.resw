@@ -1108,7 +1108,7 @@
     <value>Ogni {0} minuti (consigliato)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>Le pause per gli occhi e i promemoria per l&apos;acqua seguono di conseguenza. Potrai regolare tutto più tardi nelle Impostazioni.</value>
+    <value>Le pause per gli occhi e i promemoria per l&apos;acqua seguono di conseguenza.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>Provalo</value>

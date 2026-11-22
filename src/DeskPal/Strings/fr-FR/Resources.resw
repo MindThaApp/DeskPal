@@ -1108,7 +1108,7 @@
     <value>Toutes les {0} minutes (recommandé)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>Les pauses pour les yeux et les rappels d&apos;eau suivent le mouvement. Vous pourrez tout ajuster plus tard dans les Paramètres.</value>
+    <value>Les pauses pour les yeux et les rappels d&apos;eau suivent le mouvement.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>Essayez</value>

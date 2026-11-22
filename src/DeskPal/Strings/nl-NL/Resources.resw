@@ -1108,7 +1108,7 @@
     <value>Elke {0} minuten (aanbevolen)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>Oogpauzes en waterherinneringen lopen vanzelf mee. Alles kun je later bijstellen in Instellingen.</value>
+    <value>Oogpauzes en waterherinneringen lopen vanzelf mee.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>Probeer het</value>

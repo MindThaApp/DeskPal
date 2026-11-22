@@ -1130,7 +1130,7 @@
     <value>Her {0} dakikada bir (önerilen)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>Göz molaları ve su hatırlatmaları buna göre ayarlanır. Her şeyi daha sonra Ayarlar&apos;dan düzenleyebilirsin.</value>
+    <value>Göz molaları ve su hatırlatmaları buna göre ayarlanır.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>Dene</value>

@@ -1130,7 +1130,7 @@
     <value>每 {0} 分钟(推荐)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>护眼休息和喝水提醒会跟着调整。其他设置之后都可以在设置中调整。</value>
+    <value>护眼休息和喝水提醒会跟着调整。</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>试一试</value>

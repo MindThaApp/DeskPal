@@ -1130,7 +1130,7 @@
     <value>Каждые {0} минут (рекомендуется)</value>
   </data>
   <data name="Wizard_Rhythm_Note" xml:space="preserve">
-    <value>Перерывы для глаз и напоминания о воде подстроятся сами. Всё остальное можно настроить позже в Параметрах.</value>
+    <value>Перерывы для глаз и напоминания о воде подстроятся сами.</value>
   </data>
   <data name="Wizard_Try_Title" xml:space="preserve">
     <value>Попробуй</value>
