@@ -74,6 +74,9 @@ public sealed class DeskPalSettings
     // Bloop and Sprout customisation (Pro). Kept when Pro lapses; read through CharacterLook.Effective.
     public LookSettings Look { get; set; } = new();
 
+    // Settings > Appearance: theme, accent, material, corners, density, text size, motion.
+    public AppearanceSettings Appearance { get; set; } = new();
+
     public int MovementMinutes => Math.Clamp(StretchMinutes, MovementMin, MovementMax);
 
     public bool IsScheduled(NudgeKind kind) => kind switch
@@ -112,6 +115,8 @@ public sealed class DeskPalSettings
         if (!Enum.IsDefined(Water)) { Water = WaterMode.WithBreaks; changed = true; }
         if (Language is null) { Language = ""; changed = true; }
         if (Pro is null) { Pro = new(); changed = true; }
+        if (Appearance is null) { Appearance = new(); changed = true; }
+        if (Appearance.Clamp()) changed = true;
         var apps = (ApprovedControlApps ?? [])
             .Where(a => !string.IsNullOrWhiteSpace(a) && a.Length <= 1024)
             .Distinct(StringComparer.OrdinalIgnoreCase)
