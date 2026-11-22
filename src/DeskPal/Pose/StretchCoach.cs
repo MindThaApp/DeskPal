@@ -14,6 +14,10 @@ internal sealed record CoachSnapshot(StretchState State, float Progress, string?
 /// </summary>
 internal sealed class StretchCoach
 {
+    private static readonly TimeSpan ReleaseWait = TimeSpan.FromSeconds(5);
+    private static readonly object ReleaseLock = new();
+    private static Task _releasing = Task.CompletedTask;
+
     private readonly DispatcherQueue _ui;
     private readonly string _stretchId;
     private readonly int _stretchSeconds;
@@ -52,6 +56,15 @@ internal sealed class StretchCoach
             _ = Task.Run(() => RunScript(_cts.Token));
             return PoseStartResult.Started;
         }
+
+        // A camera from the last run may still be closing in the background; opening it again before that finished
+        // would report "camera in use". The wait is short (a release takes well under a second).
+        Task releasing;
+        lock (ReleaseLock) releasing = _releasing;
+        try { await releasing.WaitAsync(ReleaseWait, _cts.Token).ConfigureAwait(true); }
+        catch (OperationCanceledException) { return PoseStartResult.Failed; }
+        catch (TimeoutException) { Logger.Log("stretch camera still closing; starting anyway"); }
+        if (_stopped) return PoseStartResult.Failed;
 
         var session = new PoseSession();
         _session = session;
@@ -149,11 +162,13 @@ internal sealed class StretchCoach
     {
         var session = Interlocked.Exchange(ref _session, null);
         if (session is null) return;
-        _ = Task.Run(async () =>
+        var release = Task.Run(async () =>
         {
             try { await session.DisposeAsync().ConfigureAwait(false); }
             catch (Exception ex) { Logger.Log("stretch camera stop failed: " + ex.GetType().Name); }
         });
+        // Kept for the next start, which waits for it (shared by every card: there is one camera).
+        lock (ReleaseLock) _releasing = _releasing.IsCompleted ? release : Task.WhenAll(_releasing, release);
     }
 
     // --- Debug script: nobody, then a person at rest, one arm up, both arms up and held (or leaning for a side bend).
