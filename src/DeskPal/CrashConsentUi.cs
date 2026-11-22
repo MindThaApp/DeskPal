@@ -8,7 +8,7 @@ namespace DeskPal;
 // Ticking is On, unticking is Off (which also removes anything waiting); it saves at once.
 internal static class CrashConsentUi
 {
-    public const string PrivacyUrl = "https://mindthaapp.github.io/files-portal-privacy/desk-pal#crash-reports";
+    public const string PrivacyUrl = "https://github.com/MindThaApp/desk-pal-privacy#crash-reports";
 
     public static UIElement Build(SettingsHub hub)
     {

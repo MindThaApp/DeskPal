@@ -40,7 +40,8 @@ public sealed partial class CrashReportRedactor
     private static readonly Regex BareFileName = new(
         @"(?<![\w<>%.\\/~-])[\w~()-]+\.(?<x>" + DocumentExtensions + @")(?![\w])", Flags);
 
-    private static readonly Regex Ipv4 = new(@"(?<![\w.])(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)(?![\w.]*\w)", Flags);
+    // "Version=1.0.0.0" in .NET type names is not an address.
+    private static readonly Regex Ipv4 = new(@"(?<![\w.=])(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)(?![\w.]*\w)", Flags);
 
     // Full eight-group form, or a compressed form with "::" (so clock times like 12:30:45 stay).
     private static readonly Regex Ipv6 = new(

@@ -61,6 +61,7 @@ public class CrashConsentTests
     [Theory]
     [InlineData("connect to 192.168.1.20 failed", "connect to <ip> failed")]
     [InlineData("peer 2001:db8::ff00:42:8329 reset", "peer <ip> reset")]
+    [InlineData("DeskPal.Core, Version=1.0.0.0, Culture=neutral", "DeskPal.Core, Version=1.0.0.0, Culture=neutral")]
     public void IpAddressesAreStripped(string input, string expected) =>
         Assert.Equal(expected, Redactor().Redact(input));
 
