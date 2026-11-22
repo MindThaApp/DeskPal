@@ -464,6 +464,7 @@ public partial class App : Application
                 HideSeconds = () => _settings.HideNudgeSeconds,
                 StretchWithBloopAllowed = () => _settings.StretchWithBloop.Enabled && Pro.IsUnlocked,
             };
+            _card.WatchGate(_hub);
             _card.Expired += id =>
             {
                 Logger.Log("card auto-hidden");

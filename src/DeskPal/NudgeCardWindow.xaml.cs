@@ -62,7 +62,12 @@ public sealed partial class NudgeCardWindow : Window
         AutomationProperties.SetName(StopCameraButton, Loc.Get("Nudge_StopCamera"));
         PoseCameraOn.Text = Loc.Get("Pose_CameraOn");
         PoseSettingsLink.Content = Loc.Get("Settings_CameraAccess");
-        Closed += (_, _) => StopCamera();
+        Closed += (_, _) =>
+        {
+            StopCamera();
+            if (_gateHub is { } hub) hub.Changed -= OnGateChanged;
+            _gateHub = null;
+        };
         Appearance.Register(this, Root, Appearance.Role.Surface);
         Keys.Wire(Root, () => Keys.Invoke(SnoozeButton), () => Keys.Invoke(DoneButton));
         Keys.Hint(DoneButton, "Enter");
@@ -87,6 +92,44 @@ public sealed partial class NudgeCardWindow : Window
     // True while Stretch with Bloop is on in Settings and Pro (or its trial) is active.
     public Func<bool> StretchWithBloopAllowed { get; set; } = () => false;
 
+    private SettingsHub? _gateHub;
+
+    // Follows settings and Pro changes (Pro changes raise the hub too): when Stretch with Bloop is turned off or Pro
+    // and its trial end, the camera stops at once and the button goes away.
+    public void WatchGate(SettingsHub hub)
+    {
+        if (_gateHub is { } old) old.Changed -= OnGateChanged;
+        _gateHub = hub;
+        hub.Changed += OnGateChanged;
+    }
+
+    private void OnGateChanged()
+    {
+        if (!DispatcherQueue.HasThreadAccess)
+        {
+            DispatcherQueue.TryEnqueue(OnGateChanged);
+            return;
+        }
+        TickGuard.Run("card-stretch-gate", () =>
+        {
+            if (!_stretchOffered || StretchWithBloopAllowed()) return;
+            Logger.Log("stretch with bloop no longer allowed; camera off");
+            WithdrawStretch();
+        });
+    }
+
+    // The feature is not allowed (any more): camera off, no button, no camera notice.
+    private void WithdrawStretch()
+    {
+        _stretchOffered = false;
+        EndPose(null, false);
+        StretchArea.Visibility = StretchButton.Visibility = Visibility.Collapsed;
+        PosePanel.Visibility = Visibility.Collapsed;
+        PoseNotice.Visibility = PoseSettingsLink.Visibility = Visibility.Collapsed;
+        ButtonsRow.Margin = new Thickness(0, 0, 6, 0);
+        if (_nudge is not null) Place();
+    }
+
     public async Task ShowNudgeAsync(Nudge nudge, string style)
     {
         StopCamera();
@@ -102,7 +145,7 @@ public sealed partial class NudgeCardWindow : Window
         _shownAtTick = Environment.TickCount64;
         _timedSeconds = nudge.TimedSeconds ?? 0;
         _timedEndTick = long.MaxValue; // set when the user engages
-        CountdownPanel.Visibility = _timedSeconds > 0 ? Visibility.Visible : Visibility.Collapsed;
+        UpdateCountdownVisibility();
         DoneButton.IsEnabled = true;
         SnoozeButton.IsEnabled = MoreButton.IsEnabled = true;
         _repeating = false;
@@ -439,6 +482,12 @@ public sealed partial class NudgeCardWindow : Window
     private async Task StartPoseAsync()
     {
         if (_nudge is not { Stretch: { } stretch } || _coach is not null) return;
+        // Checked again at the click: the setting or Pro may have changed since the card was shown.
+        if (!_stretchOffered || !StretchWithBloopAllowed())
+        {
+            WithdrawStretch();
+            return;
+        }
         try
         {
             var version = ++_poseVersion;
@@ -453,6 +502,7 @@ public sealed partial class NudgeCardWindow : Window
             _repeating = false;
             Engage();
             UpdatePause();
+            UpdateCountdownVisibility();
             Place();
 
             var coach = new StretchCoach(DispatcherQueue, stretch.Id, stretch.DurationSeconds, AppData.DebugPoseCard);
@@ -578,8 +628,17 @@ public sealed partial class NudgeCardWindow : Window
         _coach = null;
         _poseActive = false;
         coach?.Stop();
-        if (coach is not null) BloopStage.LiveFor(this)?.ClearMirror();
+        if (coach is not null)
+        {
+            BloopStage.LiveFor(this)?.ClearMirror();
+            UpdateCountdownVisibility();
+        }
     }
+
+    // While the camera check runs its hold ring stands in for the countdown ring and the bonus line; Done and Snooze
+    // stay as the manual way out.
+    private void UpdateCountdownVisibility() =>
+        CountdownPanel.Visibility = _timedSeconds > 0 && !_poseActive ? Visibility.Visible : Visibility.Collapsed;
 
     private void Send(Func<Guid, Command> make)
     {
