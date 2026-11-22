@@ -5,10 +5,10 @@ namespace DeskPal.Core;
 /// <summary>Settings <c>CrashReports</c>: whether crash reports go to the crash-report service.</summary>
 public enum CrashReportingMode
 {
-    /// <summary>The default: a crash report waits on this PC until the user turns "Send crash reports" on.</summary>
+    /// <summary>Retired "ask first" default. Settings migration turns it into <see cref="Always"/>; kept so old files still load.</summary>
     Ask,
 
-    /// <summary>Crash reports are sent as they happen.</summary>
+    /// <summary>The default: crash reports are sent as they happen.</summary>
     Always,
 
     /// <summary>Crash reporting is off: the reporting library is never started and nothing is kept or sent.</summary>

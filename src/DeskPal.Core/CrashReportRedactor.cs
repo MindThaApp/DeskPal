@@ -26,6 +26,25 @@ public sealed partial class CrashReportRedactor
     public const string NameToken = "<name>";
     public const string ServerToken = "<server>";
     public const string ShareToken = "<share>";
+    public const string IpToken = "<ip>";
+
+    private const string DocumentExtensions = "docx?|xlsx?|pptx?|pdf|txt|rtf|csv|odt|ods|odp|md|png|jpe?g|gif|bmp|tiff?|webp|heic|svg|mp3|mp4|wav|mkv|mov|avi|zip|7z|rar|json|xml|ini|log|bak|tmp|msg|eml|pst|ics";
+
+    private const RegexOptions Flags = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
+
+    // A file name inside quotes may hold spaces: 'Quarterly plan.docx'.
+    private static readonly Regex QuotedFileName = new(
+        "(?<![\w<>%])(?<q>['\"])[^'\"\r\n\\/:*?<>|]+?\.(?<x>" + DocumentExtensions + ")\k<q>", Flags);
+
+    // A file name with no spaces and no folder in front of it.
+    private static readonly Regex BareFileName = new(
+        "(?<![\w<>%.\\/~-])[\w~()-]+\.(?<x>" + DocumentExtensions + ")(?![\w])", Flags);
+
+    private static readonly Regex Ipv4 = new(@"(?<![\w.])(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)(?![\w.]*\w)", Flags);
+
+    // Full eight-group form, or a compressed form with "::" (so clock times like 12:30:45 stay).
+    private static readonly Regex Ipv6 = new(
+        @"(?<![\w:])(?:(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}|(?:[0-9a-f]{1,4}:){1,6}(?::[0-9a-f]{1,4}){1,6}|(?:[0-9a-f]{1,4}:){1,7}:|:(?::[0-9a-f]{1,4}){1,7})(?![\w:])", Flags);
 
     // Folder names that say nothing about the user and help reading a report.
     private static readonly HashSet<string> KnownFolders = new(StringComparer.OrdinalIgnoreCase)
@@ -92,6 +111,12 @@ public sealed partial class CrashReportRedactor
         {
             result = _machine.Replace(result, MachineToken);
         }
+
+        // Names that stand alone (no folder in front) and network addresses.
+        result = QuotedFileName.Replace(result, m => m.Groups["q"].Value + FileToken + "." + m.Groups["x"].Value + m.Groups["q"].Value);
+        result = BareFileName.Replace(result, FileToken + ".${x}");
+        result = Ipv4.Replace(result, IpToken);
+        result = Ipv6.Replace(result, IpToken);
 
         return result;
     }

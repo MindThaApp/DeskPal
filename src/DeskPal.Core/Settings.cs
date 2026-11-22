@@ -12,7 +12,7 @@ public enum WaterMode { WithBreaks, Hourly, Off }
 
 public sealed class DeskPalSettings
 {
-    public const int CurrentVersion = 2;
+    public const int CurrentVersion = 3;
 
     public const int RecommendedMovementMinutes = 30;
     public const int MovementMin = 15;
@@ -59,7 +59,9 @@ public sealed class DeskPalSettings
     public int HideNudgeSeconds { get; set; } = RecommendedHideNudgeSeconds;
     public bool AnimateTray { get; set; } = true;
     public bool InteractionSounds { get; set; } = true;
-    public CrashReportingMode CrashReports { get; set; } = CrashReportingMode.Ask;
+    public CrashReportingMode CrashReports { get; set; } = CrashReportingMode.Always;
+    // Set once when an older "ask first" setting moved to On: Home shows the one-time note with the untick option until dismissed.
+    public bool CrashNoticePending { get; set; }
 
     // Automation Portal: both off until the user turns them on.
     public const int MaxApprovedApps = 20;
@@ -103,6 +105,9 @@ public sealed class DeskPalSettings
         {
             // The old default was 40; whether the user chose it cannot be told, so it moves to 30 once.
             if (StretchMinutes == 40) StretchMinutes = RecommendedMovementMinutes;
+            // Crash reports are on by default. A file still on the old "ask first" default never chose; it moves to On and
+            // is told once. An explicit Always or Never stays as it was.
+            if (CrashReports == CrashReportingMode.Ask) { CrashReports = CrashReportingMode.Always; CrashNoticePending = true; }
             SettingsVersion = CurrentVersion;
             changed = true;
         }
