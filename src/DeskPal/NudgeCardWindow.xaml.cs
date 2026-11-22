@@ -139,6 +139,12 @@ public sealed partial class NudgeCardWindow : Window
             Logger.Log($"card rect {r.X} {r.Y} {s.Width} {s.Height}");
             // Debug only: the scripted run starts by itself, since nobody clicks the button.
             if (AppData.DebugPoseCard && _stretchOffered) After(2.5, "debug-pose-card-start", () => TickGuard.Run("debug-pose-card", () => _ = StartPoseAsync()), once: true);
+            if (AppData.DebugPoseCard && _stretchOffered)
+                foreach (var at in new[] { 1.5, 4.5, 6.5, 8.5, 10.5, 11.8, 13.0 })
+                {
+                    var label = at.ToString("00.0", System.Globalization.CultureInfo.InvariantCulture) + "s";
+                    After(at, "debug-pose-card-dump", () => _ = DebugDumpAsync(label), once: true);
+                }
             if (BloopStage.Window is { } w) Logger.Log($"card bloop hwnd 0x{w.Hwnd:X}");
             After(2, "debug-card-fg", () => LogForeground("after card shown"), once: true);
             if (AppData.DebugPoke)
@@ -383,6 +389,33 @@ public sealed partial class NudgeCardWindow : Window
     }
     private void OnSnooze(object sender, RoutedEventArgs e) { StopCamera(); Send(id => new SnoozeCommand(id)); }
     private void OnSkip(object sender, RoutedEventArgs e) { StopCamera(); Send(id => new SkipCommand(id)); }
+
+    // Debug only (--debug-pose-card): saves the card as a PNG in %TEMP% (never over an existing file), so the card can be
+    // checked when the screen cannot be captured. The picture is laid on the theme's plain surface colour.
+    private async Task DebugDumpAsync(string label)
+    {
+        try
+        {
+            var target = new RenderTargetBitmap();
+            await target.RenderAsync(Root);
+            var pixels = (await target.GetPixelsAsync()).ToArray();
+            var w = target.PixelWidth;
+            var h = target.PixelHeight;
+            using var src = new SkiaSharp.SKBitmap(new SkiaSharp.SKImageInfo(w, h, SkiaSharp.SKColorType.Bgra8888, SkiaSharp.SKAlphaType.Premul));
+            System.Runtime.InteropServices.Marshal.Copy(pixels, 0, src.GetPixels(), Math.Min(pixels.Length, src.ByteCount));
+            using var flat = new SkiaSharp.SKBitmap(w, h);
+            using (var canvas = new SkiaSharp.SKCanvas(flat))
+            {
+                canvas.Clear(Root.ActualTheme == ElementTheme.Dark ? new SkiaSharp.SKColor(0x20, 0x20, 0x20) : new SkiaSharp.SKColor(0xF3, 0xF3, 0xF3));
+                canvas.DrawBitmap(src, 0, 0);
+            }
+            var path = Path.Combine(Path.GetTempPath(), $"dp-posecard-{Environment.ProcessId}-{label}.png");
+            using var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write);
+            flat.Encode(file, SkiaSharp.SKEncodedImageFormat.Png, 100);
+            Logger.Log("pose card dump " + Path.GetFileName(path));
+        }
+        catch (Exception ex) { Logger.Log("pose card dump failed: " + ex.Message); }
+    }
 
     // ---- Stretch with Bloop ------------------------------------------------------------------------------------
 
