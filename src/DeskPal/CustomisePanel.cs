@@ -81,7 +81,7 @@ internal sealed partial class CustomisePanel : UserControl
             CornerRadius = new CornerRadius(8),
             Padding = new Thickness(16),
             HorizontalAlignment = HorizontalAlignment.Left,
-            Background = (Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"],
+            Style = (Style)Application.Current.Resources["CardFillStyle"],
             Child = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8, Children = { _bloop, _sprout } },
         };
 

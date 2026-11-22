@@ -58,7 +58,7 @@ internal sealed class LanguagePicker : ListView
         Content = new Border
         {
             Height = 1,
-            Background = (Brush)Application.Current.Resources["DividerStrokeColorDefaultBrush"],
+            Style = (Style)Application.Current.Resources["DividerStyle"],
         },
     };
 
@@ -84,7 +84,7 @@ internal sealed class LanguagePicker : ListView
             {
                 Text = language.EnglishName,
                 FontSize = 12,
-                Foreground = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
+                Style = (Style)Application.Current.Resources["SecondaryTextStyle"],
             });
         Grid.SetColumn(names, 1);
         grid.Children.Add(flag);

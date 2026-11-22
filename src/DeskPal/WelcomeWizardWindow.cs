@@ -47,7 +47,7 @@ internal sealed class WelcomeWizardWindow : Window
         footer.Children.Add(_back);
         footer.Children.Add(_next);
 
-        _step.Foreground = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"];
+        _step.Style = (Style)Application.Current.Resources["SecondaryTextStyle"];
         _step.FontSize = 12;
 
         var root = new Grid { Padding = new Thickness(28, 20, 28, 20), RowSpacing = 12 };
@@ -60,6 +60,7 @@ internal sealed class WelcomeWizardWindow : Window
         root.Children.Add(_body);
         root.Children.Add(footer);
         Content = root;
+        Appearance.Register(this, root, Appearance.Role.Chrome);
         Keys.Wire(root, Close, () => Keys.Invoke(_next));
         Keys.Hint(_next, "Enter");
 
@@ -99,7 +100,7 @@ internal sealed class WelcomeWizardWindow : Window
             {
                 Text = Loc.Get(subKey),
                 TextWrapping = TextWrapping.Wrap,
-                Foreground = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
+                Style = (Style)Application.Current.Resources["SecondaryTextStyle"],
             });
         return panel;
     }

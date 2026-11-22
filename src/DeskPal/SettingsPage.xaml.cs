@@ -300,7 +300,7 @@ public sealed partial class SettingsPage : Page
         {
             Text = text,
             TextWrapping = TextWrapping.Wrap,
-            Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
+            Style = (Style)Application.Current.Resources["SecondaryTextStyle"],
         };
         Appearance.TrackSecondary(t);
         return t;

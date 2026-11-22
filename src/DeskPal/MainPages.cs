@@ -52,7 +52,7 @@ public sealed class TodayPage : Page
                 Spacing = 4,
                 Children =
                 {
-                    new Border { Width = 36, Height = 8, CornerRadius = new CornerRadius(4), Opacity = 0.25, Background = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"] },
+                    new Border { Width = 36, Height = 8, CornerRadius = new CornerRadius(4), Opacity = 0.25, Style = (Style)Application.Current.Resources["SubtleFillStyle"] },
                     new TextBlock { Text = day.ToString("ddd"), FontSize = 11, Opacity = 0.7, HorizontalAlignment = HorizontalAlignment.Center },
                 },
             });

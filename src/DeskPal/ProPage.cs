@@ -163,8 +163,7 @@ public sealed class ProPage : Page
 
     private static Border Card(UIElement child) => new()
     {
-        Background = (Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"],
-        BorderBrush = (Brush)Application.Current.Resources["CardStrokeColorDefaultBrush"],
+        Style = (Style)Application.Current.Resources["CardSurfaceStyle"],
         BorderThickness = new Thickness(1),
         CornerRadius = (CornerRadius)Application.Current.Resources["OverlayCornerRadius"],
         Padding = new Thickness(16, 12, 16, 12),
@@ -183,7 +182,7 @@ public sealed class ProPage : Page
         Text = text,
         TextWrapping = TextWrapping.Wrap,
         FontSize = 12,
-        Foreground = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
+        Style = (Style)Application.Current.Resources["SecondaryTextStyle"],
     };
 
     private static Grid Bullet(string text)

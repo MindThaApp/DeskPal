@@ -25,6 +25,7 @@ public sealed partial class EyeCuePillWindow : Window
     public EyeCuePillWindow()
     {
         InitializeComponent();
+        Appearance.Register(this, Root, Appearance.Role.Surface);
         _hwnd = WindowNative.GetWindowHandle(this);
         _timer.Tick += (_, _) => TickGuard.Run("eye-cue-pill", OnTimer);
 

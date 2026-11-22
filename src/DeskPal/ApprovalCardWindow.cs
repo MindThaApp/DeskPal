@@ -41,6 +41,7 @@ public sealed class ApprovalCardWindow : Window
         panel.Children.Add(_detail);
         panel.Children.Add(buttons);
         Content = panel;
+        Appearance.Register(this, panel, Appearance.Role.Chrome);
         // Granting access never happens from a stray Enter: Esc declines, Allow needs a deliberate click or Space on it.
         Keys.Wire(panel, () => Keys.Invoke(notNow), null);
         Keys.Hint(notNow, "Esc");

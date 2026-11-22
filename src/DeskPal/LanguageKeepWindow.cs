@@ -33,7 +33,7 @@ internal sealed class LanguageKeepWindow : Window
         Title = Loc.Get("Language_Keep_Title");
         SystemBackdrop = new MicaBackdrop();
 
-        var secondary = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"];
+        var secondary = (Style)Application.Current.Resources["SecondaryTextStyle"];
         var panel = new StackPanel { Spacing = 6, Padding = new Thickness(28, 24, 28, 24) };
         panel.Children.Add(new TextBlock { Text = Loc.Get("Language_Keep_Title"), Style = (Style)Application.Current.Resources["TitleTextBlockStyle"], TextWrapping = TextWrapping.Wrap });
         panel.Children.Add(new TextBlock { Text = Loc.Format("Language_Keep_Body", newName), TextWrapping = TextWrapping.Wrap });
@@ -42,11 +42,11 @@ internal sealed class LanguageKeepWindow : Window
 
         if (_previous is not null)
         {
-            panel.Children.Add(new Border { Height = 1, Margin = new Thickness(0, 10, 0, 10), Background = (Brush)Application.Current.Resources["DividerStrokeColorDefaultBrush"] });
-            panel.Children.Add(new TextBlock { Text = _previous.Title, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, Foreground = secondary });
-            panel.Children.Add(new TextBlock { Text = _previous.Body, TextWrapping = TextWrapping.Wrap, Foreground = secondary });
+            panel.Children.Add(new Border { Height = 1, Margin = new Thickness(0, 10, 0, 10), Style = (Style)Application.Current.Resources["DividerStyle"] });
+            panel.Children.Add(new TextBlock { Text = _previous.Title, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, Style = secondary });
+            panel.Children.Add(new TextBlock { Text = _previous.Body, TextWrapping = TextWrapping.Wrap, Style = secondary });
         }
-        _oldCountdown = new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = secondary };
+        _oldCountdown = new TextBlock { TextWrapping = TextWrapping.Wrap, Style = secondary };
         if (_previous is not null) panel.Children.Add(_oldCountdown);
 
         var keepButton = Choice("Language_Keep_Button", _previous?.Keep);
@@ -62,6 +62,7 @@ internal sealed class LanguageKeepWindow : Window
         buttons.Children.Add(backButton);
         panel.Children.Add(buttons);
         Content = panel;
+        Appearance.Register(this, panel, Appearance.Role.Chrome);
         Keys.Wire(panel, () => Keys.Invoke(backButton), () => Keys.Invoke(keepButton));
         Keys.Hint(keepButton, "Enter");
         Keys.Hint(backButton, "Esc");
