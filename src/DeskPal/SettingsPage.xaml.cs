@@ -28,9 +28,16 @@ public sealed partial class SettingsPage : Page
         {
             _hub.Changed -= Sync;
             _hub.Changed += Sync;
+            Appearance.Applied -= RestyleCards;
+            Appearance.Applied += RestyleCards;
             Sync();
+            RestyleCards();
         };
-        Unloaded += (_, _) => _hub.Changed -= Sync;
+        Unloaded += (_, _) =>
+        {
+            _hub.Changed -= Sync;
+            Appearance.Applied -= RestyleCards;
+        };
     }
 
     private void Sync()
@@ -95,6 +102,7 @@ public sealed partial class SettingsPage : Page
         AddWorkingHours();
 
         Root.Children.Add(Header(Loc.Get("Settings_Section_Appearance")));
+        AddAppearance();
         AddChoice(Loc.Get("Settings_NudgeStyle"), Loc.Get("Settings_NudgeStyleSub"), [Loc.Get("Settings_Style_Card"), Loc.Get("Settings_Style_Toast")],
             () => _s.UseNudgeCard ? 0 : 1, i => { _s.UseNudgeCard = i == 0; _hub.Commit(false); });
         var hideChoices = DeskPalSettings.HideNudgeChoices;
@@ -127,6 +135,58 @@ public sealed partial class SettingsPage : Page
 
         Root.Children.Add(Header(Loc.Get("Pro_Title")));
         AddProCard();
+    }
+
+    // Theme, accent, material, corners, density, text size and motion. Each change saves and applies live through the hub.
+    private void AddAppearance()
+    {
+        var a = _s.Appearance;
+        void Pick<T>(string key, T[] values, Func<T> get, Action<T> set, string[] names) where T : struct, Enum
+        {
+            AddChoice(Loc.Get(key), Loc.Get(key + "Sub"), names, () => Math.Max(0, Array.IndexOf(values, get())),
+                i => { set(values[i]); _hub.Commit(false); });
+        }
+        string[] Names(string prefix, params string[] ids) => ids.Select(id => Loc.Get(prefix + id)).ToArray();
+
+        Pick("Appearance_Theme", [ThemeChoice.System, ThemeChoice.Light, ThemeChoice.Dark], () => a.Theme, v => a.Theme = v,
+            Names("Appearance_Theme_", "System", "Light", "Dark"));
+        Pick("Appearance_Accent", [AccentChoice.Windows, AccentChoice.Blue, AccentChoice.Teal, AccentChoice.Violet, AccentChoice.Rose, AccentChoice.Orange],
+            () => a.Accent, v => a.Accent = v, Names("Appearance_Accent_", "Windows", "Blue", "Teal", "Violet", "Rose", "Orange"));
+        Pick("Appearance_Material", [MaterialChoice.Mica, MaterialChoice.Acrylic, MaterialChoice.Solid], () => a.Material, v => a.Material = v,
+            Names("Appearance_Material_", "Mica", "Acrylic", "Solid"));
+        Pick("Appearance_Corners", [CornerChoice.Rounded, CornerChoice.Square, CornerChoice.ExtraRound], () => a.Corners, v => a.Corners = v,
+            Names("Appearance_Corners_", "Rounded", "Square", "ExtraRound"));
+        Pick("Appearance_Density", [DensityChoice.Standard, DensityChoice.Comfortable, DensityChoice.Compact], () => a.Density, v => a.Density = v,
+            Names("Appearance_Density_", "Standard", "Comfortable", "Compact"));
+        AddChoice(Loc.Get("Appearance_TextSize"), Loc.Get("Appearance_TextSizeSub"),
+            Names("Appearance_TextSize_", "Smaller", "Default", "Large", "Larger", "Largest"),
+            () => Math.Clamp(a.TextStep - AppearanceSettings.TextStepMin, 0, AppearanceSettings.TextStepMax - AppearanceSettings.TextStepMin),
+            i => { a.TextStep = i + AppearanceSettings.TextStepMin; _hub.Commit(false); });
+        Pick("Appearance_Motion", [MotionChoice.FollowWindows, MotionChoice.Reduced, MotionChoice.Off], () => a.Motion, v => a.Motion = v,
+            Names("Appearance_Motion_", "FollowWindows", "Reduced", "Off"));
+
+        // Only the Appearance values go back to their defaults; nothing else in the settings file is touched.
+        var reset = new Button { Content = Loc.Get("Appearance_Reset"), Margin = new Thickness(0, 4, 0, 0) };
+        AutomationProperties.SetName(reset, Loc.Get("Appearance_ResetAccessible"));
+        reset.Click += (_, _) =>
+        {
+            a.Reset();
+            _hub.Commit(false);
+        };
+        _syncs.Add(() => reset.IsEnabled = !a.IsDefault);
+        Root.Children.Add(reset);
+    }
+
+    // Cards follow corners and density live; their text follows the text size through Appearance.
+    private void RestyleCards()
+    {
+        Root.Spacing = Appearance.RowSpacing;
+        foreach (var child in Root.Children)
+        {
+            if (child is not Border b) continue;
+            b.CornerRadius = Appearance.CardRadius;
+            b.Padding = Appearance.CardPadding;
+        }
     }
 
     // Status only, with a way to the Pro page; it follows the hub, which is told about every Pro change.
@@ -234,13 +294,17 @@ public sealed partial class SettingsPage : Page
         FontSize = 16,
     };
 
-    private static TextBlock Secondary(string text) => new()
+    private static TextBlock Secondary(string text)
     {
-        Text = text,
-        TextWrapping = TextWrapping.Wrap,
-        FontSize = 12,
-        Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
-    };
+        var t = new TextBlock
+        {
+            Text = text,
+            TextWrapping = TextWrapping.Wrap,
+            Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
+        };
+        Appearance.TrackSecondary(t);
+        return t;
+    }
 
     private const double ControlColumnWidth = 340;
 
