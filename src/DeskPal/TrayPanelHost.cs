@@ -61,7 +61,10 @@ public sealed class TrayPanelHost
     private readonly Window _window;
     private readonly IntPtr _hwnd;
     private readonly FrameworkElement _root;
-    private readonly int _widthDip;
+    private int _widthDip;
+
+    // Panels whose content widens with the text size change this before Show or Relayout.
+    public int WidthDip { get => _widthDip; set => _widthDip = value; }
     private TrayAnchor _anchor;
     private bool _activatedOnce;
     private long _deactivatedTick;
@@ -208,10 +211,11 @@ public sealed class TrayPanelHost
         GetMonitorInfo(monitor, ref info);
         var scale = GetDpiForMonitor(monitor, 0, out var dpiX, out _) == 0 ? dpiX / 96.0 : 1.0;
 
-        _root.Measure(new Windows.Foundation.Size(_widthDip, double.PositiveInfinity));
+        _root.Measure(new Windows.Foundation.Size(Math.Min(_widthDip, Math.Max(200, (info.Work.Right - info.Work.Left) / scale - 2 * GapDip)), double.PositiveInfinity));
         var work = info.Work;
         var gap = (int)Math.Round(GapDip * scale);
         var w = (int)Math.Round(_widthDip * scale);
+        if (w > work.Right - work.Left - 2 * gap) w = work.Right - work.Left - 2 * gap;
         var h = Math.Min((int)Math.Ceiling(_root.DesiredSize.Height * scale), work.Bottom - work.Top - 2 * gap);
         var cx = (anchor.Left + anchor.Right) / 2;
         var cy = (anchor.Top + anchor.Bottom) / 2;

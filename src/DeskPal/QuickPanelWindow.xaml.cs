@@ -97,6 +97,7 @@ public sealed partial class QuickPanelWindow : Window
 
     public void Refresh()
     {
+        _host.WidthDip = 320 + 50 * Math.Max(0, Appearance.TextStep);
         var s = _ctx.Scheduler;
         StatusText.Text = HomeInfo.Status(s, TimeProvider.System.GetLocalNow());
         SubText.Text = s.Holds.Count > 0 && s.ManualHold is not null ? HomeInfo.HoldsLine(s) : HomeInfo.Greeting(DateTime.Now.Hour);
