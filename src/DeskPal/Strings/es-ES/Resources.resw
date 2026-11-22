@@ -1012,7 +1012,7 @@
     <value>Estirarse con Bloop</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Estirarse con Bloop</value>
+    <value>Usar la cámara durante los estiramientos</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>Estírate delante de la cámara. Bloop te imita y el recordatorio se completa cuando mantienes la postura.</value>

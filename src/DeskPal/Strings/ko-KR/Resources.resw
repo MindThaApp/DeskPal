@@ -1034,7 +1034,7 @@
     <value>Bloop과 함께 스트레칭</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Bloop과 함께 스트레칭</value>
+    <value>스트레칭할 때 카메라 사용</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>카메라 앞에서 스트레칭해 보세요. Bloop이 따라 하고, 자세를 유지하면 알림이 완료돼요.</value>

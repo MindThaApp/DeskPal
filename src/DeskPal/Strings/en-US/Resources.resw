@@ -1138,7 +1138,7 @@
     <value>Stretch with Bloop</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Stretch with Bloop</value>
+    <value>Use the camera during stretches</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>Do a stretch in front of your camera. Bloop copies you, and the reminder is done when you hold the pose.</value>

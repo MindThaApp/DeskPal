@@ -1034,7 +1034,7 @@
     <value>Rozciąganie z Bloopem</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Rozciąganie z Bloopem</value>
+    <value>Używaj kamery podczas rozciągania</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>Porozciągaj się przed kamerą. Bloop naśladuje twoje ruchy, a przypomnienie zostanie zaliczone, gdy utrzymasz pozycję.</value>

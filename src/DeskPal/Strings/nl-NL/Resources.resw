@@ -1012,7 +1012,7 @@
     <value>Stretchen met Bloop</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Stretchen met Bloop</value>
+    <value>Camera gebruiken tijdens het stretchen</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>Doe een stretch voor je camera. Bloop doet je na en de herinnering is klaar zodra je de houding vasthoudt.</value>

@@ -1034,7 +1034,7 @@
     <value>和 Bloop 一起拉伸</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>和 Bloop 一起拉伸</value>
+    <value>拉伸时使用摄像头</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>在摄像头前做一次拉伸。Bloop 会跟着你做，保持姿势后提醒即完成。</value>

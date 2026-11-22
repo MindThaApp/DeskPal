@@ -1012,7 +1012,7 @@
     <value>Mit Bloop dehnen</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Mit Bloop dehnen</value>
+    <value>Kamera beim Dehnen verwenden</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>Dehne dich vor deiner Kamera. Bloop macht mit, und die Erinnerung ist erledigt, sobald du die Haltung hältst.</value>

@@ -1012,7 +1012,7 @@
     <value>Allungati con Bloop</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Allungati con Bloop</value>
+    <value>Usa la fotocamera durante gli allungamenti</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>Fai un allungamento davanti alla fotocamera. Bloop ti imita e il promemoria è completato quando mantieni la posizione.</value>

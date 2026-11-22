@@ -1012,7 +1012,7 @@
     <value>Alongar com o Bloop</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Alongar com o Bloop</value>
+    <value>Usar a câmera durante os alongamentos</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>Faça um alongamento na frente da câmera. O Bloop copia você, e o lembrete é concluído quando você mantém a posição.</value>

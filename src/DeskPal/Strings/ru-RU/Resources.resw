@@ -1034,7 +1034,7 @@
     <value>Растяжка с Bloop</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Растяжка с Bloop</value>
+    <value>Использовать камеру во время растяжки</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>Сделай растяжку перед камерой. Bloop повторяет за тобой, и напоминание засчитается, когда ты удержишь позу.</value>

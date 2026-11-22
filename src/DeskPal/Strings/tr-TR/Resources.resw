@@ -1034,7 +1034,7 @@
     <value>Bloop ile esne</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Bloop ile esne</value>
+    <value>Esneme sırasında kamerayı kullan</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>Kameranın önünde bir esneme hareketi yap. Bloop seni taklit eder ve duruşu koruduğunda hatırlatma tamamlanır.</value>

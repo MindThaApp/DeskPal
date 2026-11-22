@@ -1034,7 +1034,7 @@
     <value>Bloopと一緒にストレッチ</value>
   </data>
   <data name="Settings_StretchWithBloop" xml:space="preserve">
-    <value>Bloopと一緒にストレッチ</value>
+    <value>ストレッチ中にカメラを使う</value>
   </data>
   <data name="Settings_StretchWithBloopSub" xml:space="preserve">
     <value>カメラの前でストレッチします。Bloopがまねをして、ポーズを保つとリマインダーが完了します。</value>
