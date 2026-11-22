@@ -1240,7 +1240,7 @@
     <value>Try it</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>See Bloop at work. Nothing here changes your settings.</value>
+    <value>See Bloop in action.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Try a stretch now</value>
@@ -1252,10 +1252,10 @@
     <value>Bloop&apos;s reminder is on your screen. Tap Done on it, or let it fade away.</value>
   </data>
   <data name="Wizard_Try_Tray" xml:space="preserve">
-    <value>Desk Pal lives in the tray by the clock. Click its icon for quick actions. If you can&apos;t see it, open the arrow beside the tray.</value>
+    <value>Find me in the tray by the clock.</value>
   </data>
   <data name="Wizard_Try_Pro" xml:space="preserve">
-    <value>Desk Pal Evolution is free to try for 7 days: your own look for Bloop, plus every feature we add later. What you use today stays free.</value>
+    <value>Evolution is free for 7 days; what you use today stays free.</value>
   </data>
   <data name="Wizard_Skip" xml:space="preserve">
     <value>Skip for now</value>
@@ -1265,5 +1265,8 @@
   </data>
   <data name="Wizard_Hero_Name" xml:space="preserve">
     <value>Bloop, your Desk Pal. Click to say hi.</value>
+  </data>
+  <data name="Wizard_Hero_Hi" xml:space="preserve">
+    <value>Hee hee, hi!</value>
   </data>
 </root>

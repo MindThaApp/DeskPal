@@ -1136,7 +1136,7 @@
     <value>Попробуй</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Посмотри, как Bloop работает. Здесь ничего не меняется в твоих настройках.</value>
+    <value>Посмотри, как Bloop работает.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Попробовать растяжку сейчас</value>
@@ -1148,10 +1148,10 @@
     <value>Напоминание от Bloop уже на экране. Нажми «Готово» или подожди, пока оно исчезнет само.</value>
   </data>
   <data name="Wizard_Try_Tray" xml:space="preserve">
-    <value>Desk Pal живёт в области уведомлений рядом с часами. Нажми на его значок, чтобы открыть быстрые действия. Если значка не видно, открой стрелку рядом с этой областью.</value>
+    <value>Ищи меня в области уведомлений рядом с часами.</value>
   </data>
   <data name="Wizard_Try_Pro" xml:space="preserve">
-    <value>Desk Pal Evolution можно бесплатно попробовать 7 дней: свой внешний вид для Bloop и все функции, которые мы добавим позже. То, чем ты пользуешься сегодня, остаётся бесплатным.</value>
+    <value>Evolution бесплатно 7 дней; то, чем ты пользуешься сегодня, остаётся бесплатным.</value>
   </data>
   <data name="Wizard_Skip" xml:space="preserve">
     <value>Пропустить пока</value>
@@ -1161,5 +1161,8 @@
   </data>
   <data name="Wizard_Hero_Name" xml:space="preserve">
     <value>Bloop, твой Desk Pal. Нажми, чтобы поздороваться.</value>
+  </data>
+  <data name="Wizard_Hero_Hi" xml:space="preserve">
+    <value>Хи-хи, привет!</value>
   </data>
 </root>

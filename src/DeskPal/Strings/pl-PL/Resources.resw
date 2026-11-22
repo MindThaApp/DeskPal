@@ -1136,7 +1136,7 @@
     <value>Wypróbuj</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Zobacz Blooba przy pracy. Nic tutaj nie zmienia twoich ustawień.</value>
+    <value>Zobacz Blooba w akcji.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Wypróbuj rozciąganie teraz</value>
@@ -1148,10 +1148,10 @@
     <value>Przypomnienie od Blooba jest na ekranie. Kliknij Gotowe albo poczekaj, aż samo zniknie.</value>
   </data>
   <data name="Wizard_Try_Tray" xml:space="preserve">
-    <value>Desk Pal mieszka w obszarze powiadomień obok zegara. Kliknij jego ikonę, by użyć szybkich akcji. Jeśli jej nie widzisz, otwórz strzałkę obok tego obszaru.</value>
+    <value>Znajdziesz mnie w obszarze powiadomień obok zegara.</value>
   </data>
   <data name="Wizard_Try_Pro" xml:space="preserve">
-    <value>Desk Pal Evolution możesz wypróbować za darmo przez 7 dni: własny wygląd Blooba i każda funkcja, którą dodamy później. To, z czego korzystasz dziś, zostaje darmowe.</value>
+    <value>Evolution jest darmowe przez 7 dni; to, z czego korzystasz dziś, zostaje darmowe.</value>
   </data>
   <data name="Wizard_Skip" xml:space="preserve">
     <value>Pomiń na razie</value>
@@ -1161,5 +1161,8 @@
   </data>
   <data name="Wizard_Hero_Name" xml:space="preserve">
     <value>Bloop, twój Desk Pal. Kliknij, aby się przywitać.</value>
+  </data>
+  <data name="Wizard_Hero_Hi" xml:space="preserve">
+    <value>Hihi, cześć!</value>
   </data>
 </root>

@@ -1136,7 +1136,7 @@
     <value>ためしてみよう</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Bloopの働きぶりを見てみましょう。ここでは設定は変わりません。</value>
+    <value>Bloopが動くところを見てみましょう。</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>いまストレッチをためす</value>
@@ -1148,10 +1148,10 @@
     <value>Bloopのお知らせが画面に出ています。「完了」を押すか、そのまま消えるのを待ってください。</value>
   </data>
   <data name="Wizard_Try_Tray" xml:space="preserve">
-    <value>Desk Palは時計のそばの通知領域にいます。アイコンをクリックするとすぐ使える操作が出ます。見つからないときは、通知領域の横の矢印を開いてください。</value>
+    <value>時計のそばの通知領域にいます。</value>
   </data>
   <data name="Wizard_Try_Pro" xml:space="preserve">
-    <value>Desk Pal Evolutionは7日間無料でためせます。Bloopの見た目を自分好みにできて、今後追加される機能もすべて使えます。今使っている機能はずっと無料です。</value>
+    <value>Evolutionは7日間無料。今使っている機能はずっと無料です。</value>
   </data>
   <data name="Wizard_Skip" xml:space="preserve">
     <value>今はスキップ</value>
@@ -1161,5 +1161,8 @@
   </data>
   <data name="Wizard_Hero_Name" xml:space="preserve">
     <value>Bloop、あなたのDesk Pal。クリックしてあいさつ。</value>
+  </data>
+  <data name="Wizard_Hero_Hi" xml:space="preserve">
+    <value>えへへ、やあ!</value>
   </data>
 </root>

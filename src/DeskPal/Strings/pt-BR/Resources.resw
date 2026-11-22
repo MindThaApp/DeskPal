@@ -1114,7 +1114,7 @@
     <value>Experimente</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Veja o Bloop em ação. Nada aqui muda suas configurações.</value>
+    <value>Veja o Bloop em ação.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Experimentar um alongamento agora</value>
@@ -1126,10 +1126,10 @@
     <value>O lembrete do Bloop está na sua tela. Toque em Feito ou deixe que ele suma sozinho.</value>
   </data>
   <data name="Wizard_Try_Tray" xml:space="preserve">
-    <value>O Desk Pal fica na bandeja, perto do relógio. Clique no ícone dele para ver as ações rápidas. Se não aparecer, abra a seta ao lado da bandeja.</value>
+    <value>Me encontre na bandeja, perto do relógio.</value>
   </data>
   <data name="Wizard_Try_Pro" xml:space="preserve">
-    <value>Você pode testar o Desk Pal Evolution grátis por 7 dias: um visual só seu para o Bloop e todos os recursos que adicionarmos depois. O que você usa hoje continua grátis.</value>
+    <value>O Evolution é grátis por 7 dias; o que você usa hoje continua grátis.</value>
   </data>
   <data name="Wizard_Skip" xml:space="preserve">
     <value>Pular por enquanto</value>
@@ -1139,5 +1139,8 @@
   </data>
   <data name="Wizard_Hero_Name" xml:space="preserve">
     <value>Bloop, seu Desk Pal. Clique para dizer oi.</value>
+  </data>
+  <data name="Wizard_Hero_Hi" xml:space="preserve">
+    <value>Hihi, oi!</value>
   </data>
 </root>

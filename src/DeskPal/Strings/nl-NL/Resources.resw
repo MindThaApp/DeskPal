@@ -1114,7 +1114,7 @@
     <value>Probeer het</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Zie Bloop aan het werk. Hier verandert niets aan je instellingen.</value>
+    <value>Zie Bloop in actie.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Nu een rekoefening proberen</value>
@@ -1126,10 +1126,10 @@
     <value>De herinnering van Bloop staat op je scherm. Tik op Klaar, of laat hem vanzelf verdwijnen.</value>
   </data>
   <data name="Wizard_Try_Tray" xml:space="preserve">
-    <value>Desk Pal zit in het systeemvak naast de klok. Klik op het pictogram voor snelle acties. Zie je het niet, open dan het pijltje naast het systeemvak.</value>
+    <value>Je vindt me in het systeemvak naast de klok.</value>
   </data>
   <data name="Wizard_Try_Pro" xml:space="preserve">
-    <value>Desk Pal Evolution kun je 7 dagen gratis proberen: een eigen look voor Bloop en elke functie die we later toevoegen. Wat je nu gebruikt, blijft gratis.</value>
+    <value>Evolution is 7 dagen gratis; wat je nu gebruikt, blijft gratis.</value>
   </data>
   <data name="Wizard_Skip" xml:space="preserve">
     <value>Nu overslaan</value>
@@ -1139,5 +1139,8 @@
   </data>
   <data name="Wizard_Hero_Name" xml:space="preserve">
     <value>Bloop, je Desk Pal. Klik om hoi te zeggen.</value>
+  </data>
+  <data name="Wizard_Hero_Hi" xml:space="preserve">
+    <value>Hihi, hoi!</value>
   </data>
 </root>

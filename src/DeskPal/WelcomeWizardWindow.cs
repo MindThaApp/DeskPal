@@ -43,6 +43,7 @@ internal sealed class WelcomeWizardWindow : Window
     private bool _finishedClicked;
     private bool _stacked;
     private Action? _refreshDay;
+    private readonly Border _crashStrip;
 
     public WelcomeWizardWindow(SettingsHub hub, string appliedLanguage, int startPage, Action finished, Action closed, Action tryStretch)
     {
@@ -51,6 +52,7 @@ internal sealed class WelcomeWizardWindow : Window
         _closedAction = closed;
         _tryStretch = tryStretch;
         Title = Loc.Get("Wizard_WindowTitle");
+        AppWindow.SetIcon(System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "deskpal.ico"));
         SystemBackdrop = new MicaBackdrop();
 
         _hero = new WelcomeHero(hub);
@@ -97,8 +99,9 @@ internal sealed class WelcomeWizardWindow : Window
         AutomationProperties.SetAccessibilityView(_dots, AccessibilityView.Raw);
 
         // Left column: Bloop with the step dots under him. Right column: the current step.
-        var heroColumn = new StackPanel { Spacing = 16, VerticalAlignment = VerticalAlignment.Center, Width = WelcomeHero.Size };
+        var heroColumn = new StackPanel { Spacing = 8, VerticalAlignment = VerticalAlignment.Center, Width = WelcomeHero.Size };
         heroColumn.Children.Add(_hero);
+        _dots.Margin = new Thickness(0, -66, 0, 0);
         heroColumn.Children.Add(_dots);
         var scroll = new ScrollViewer
         {
@@ -107,20 +110,28 @@ internal sealed class WelcomeWizardWindow : Window
             Content = _host,
             Padding = new Thickness(0, 0, 12, 0),
         };
-        _content.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        _content.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(WelcomeHero.Size) });
         _content.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        _content.ColumnSpacing = 32;
+        _content.ColumnSpacing = 24;
         _content.Children.Add(heroColumn);
         Grid.SetColumn(scroll, 1);
         _content.Children.Add(scroll);
 
-        var root = new Grid { Padding = new Thickness(32, 24, 32, 24), RowSpacing = 20 };
+        // The crash-report option lives in its own strip above the buttons, on the last step only.
+        _crashStrip = (Border)XamlReader.Load("<Border xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' CornerRadius='8' Padding='12' BorderThickness='1' Background='{ThemeResource CardBackgroundFillColorDefaultBrush}' BorderBrush='{ThemeResource CardStrokeColorDefaultBrush}' />");
+        _crashStrip.Child = CrashConsentUi.Build(hub);
+        _crashStrip.Visibility = Visibility.Collapsed;
+        var root = new Grid { Padding = new Thickness(32, 24, 32, 24), RowSpacing = 16 };
         root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
         root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         root.Children.Add(_content);
-        Grid.SetRow(_footer, 1);
+        Grid.SetRow(_crashStrip, 1);
+        root.Children.Add(_crashStrip);
+        Grid.SetRow(_footer, 2);
         root.Children.Add(_footer);
         Content = root;
+        _hero.Overlay = root;
         Appearance.Register(this, root, Appearance.Role.Chrome);
 #if DEBUG
         if (AppData.DebugWizardHc) DebugHighContrast(root);
@@ -163,6 +174,8 @@ internal sealed class WelcomeWizardWindow : Window
         foreach (var k in new[] { "AccentFillColorDefaultBrush", "AccentFillColorSecondaryBrush", "AccentFillColorTertiaryBrush", "AccentButtonBackground", "AccentButtonBackgroundPointerOver", "AccentButtonBackgroundPressed" }) r[k] = cyan;
         foreach (var k in new[] { "TextOnAccentFillColorPrimaryBrush", "AccentButtonForeground", "AccentButtonForegroundPointerOver", "AccentButtonForegroundPressed" }) r[k] = black;
         r["AccentButtonBorderBrush"] = white;
+        r["ControlStrongStrokeColorDefaultBrush"] = white;
+        r["SolidBackgroundFillColorSecondaryBrush"] = black;
         r["AccentTextFillColorPrimaryBrush"] = green;
         r["HyperlinkButtonForeground"] = green;
         r["ListViewItemBackgroundSelected"] = cyan;
@@ -215,7 +228,7 @@ internal sealed class WelcomeWizardWindow : Window
         _page = target;
         for (var i = 0; i < _pages.Length; i++) _pages[i].Visibility = i == _page ? Visibility.Visible : Visibility.Collapsed;
         _back.Visibility = _page == 0 ? Visibility.Collapsed : Visibility.Visible;
-        _recommended.Visibility = _page == Pages - 1 ? Visibility.Collapsed : Visibility.Visible;
+        _crashStrip.Visibility = _page == Pages - 1 ? Visibility.Visible : Visibility.Collapsed;
         _next.Content = Loc.Get(_page == Pages - 1 ? "Wizard_Finish" : "Wizard_Next");
         for (var i = 0; i < Pages; i++)
         {
@@ -225,7 +238,11 @@ internal sealed class WelcomeWizardWindow : Window
         }
         AutomationProperties.SetName(_host, Loc.Format("Wizard_Step", _page + 1, Pages));
         FitFooter();
-        if (previous < 0) return;
+        if (previous < 0)
+        {
+            DebugPoke();
+            return;
+        }
         AnimateIn(_pages[_page], _page > previous ? 1 : -1);
         if (_page == 0) _hero.Wave();
         _next.Focus(FocusState.Programmatic);
@@ -256,13 +273,24 @@ internal sealed class WelcomeWizardWindow : Window
         board.Begin();
     }
 
+    // --debug-poke on the last step: Bloop is poked once through the button's own path, for UI checks.
+    private void DebugPoke()
+    {
+        if (!AppData.DebugPoke || _page != Pages - 1) return;
+        var t = DispatcherQueue.CreateTimer();
+        t.IsRepeating = false;
+        t.Interval = TimeSpan.FromSeconds(5);
+        t.Tick += (_, _) => TickGuard.Run("wizard-debug-poke", _hero.Poke);
+        t.Start();
+    }
+
     private void Finish()
     {
         _finishedClicked = true;
         Close();
     }
 
-    // The recommended hours and rhythm, saved now, then straight to the last step.
+    // The recommended hours and rhythm, saved now, then straight to the last step (or, from there, finished).
     private void ApplyRecommended()
     {
         var s = _hub.Settings;
@@ -272,13 +300,15 @@ internal sealed class WelcomeWizardWindow : Window
         s.WorkingHours.End = defaults.End;
         _hub.Commit(true);
         _refreshDay?.Invoke();
-        Go(Pages - 1);
+        // On the last step this is the end of setup; the crash-report tick stays as it is.
+        if (_page == Pages - 1) Finish();
+        else Go(Pages - 1);
     }
 
     private static StackPanel PageShell(string titleKey, string? subKey)
     {
         var panel = new StackPanel { Spacing = 12, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0, 12, 0, 0) };
-        var title = new TextBlock { Text = Loc.Get(titleKey), Style = (Style)Application.Current.Resources["TitleTextBlockStyle"], TextWrapping = TextWrapping.Wrap };
+        var title = new TextBlock { Text = Loc.Get(titleKey), Style = (Style)Application.Current.Resources["TitleTextBlockStyle"], TextWrapping = TextWrapping.Wrap, };
         AutomationProperties.SetHeadingLevel(title, AutomationHeadingLevel.Level1);
         panel.Children.Add(title);
         if (subKey is not null)
@@ -294,22 +324,47 @@ internal sealed class WelcomeWizardWindow : Window
     private FrameworkElement LanguagePage(string appliedLanguage)
     {
         var panel = PageShell("Wizard_Hello_Title", "Wizard_Language_Sub");
-        var picker = new LanguagePicker(appliedLanguage) { MaxHeight = 280 };
+        // Five whole rows (nothing cut mid-row) and a scroll bar that stays visible, so it reads as a list that goes on.
+        var picker = new LanguagePicker(appliedLanguage) { MaxHeight = 262, Margin = new Thickness(-4, 0, 0, 0) };
+        // A small chevron under the list says there are more rows; it goes away at the end of the list.
+        var more = (FontIcon)XamlReader.Load("<FontIcon xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' Glyph='&#xE70D;' FontSize='12' HorizontalAlignment='Center' Foreground='{ThemeResource TextFillColorSecondaryBrush}' />");
+        AutomationProperties.SetAccessibilityView(more, AccessibilityView.Raw);
+        picker.Loaded += (_, _) =>
+        {
+            if (FindScroller(picker) is not { } inner) return;
+            if (inner.FindName("VerticalScrollBar") is Microsoft.UI.Xaml.Controls.Primitives.ScrollBar bar)
+                bar.IndicatorMode = Microsoft.UI.Xaml.Controls.Primitives.ScrollingIndicatorMode.MouseIndicator;
+            void Update() => more.Opacity = inner.ScrollableHeight - inner.VerticalOffset > 4 ? 1 : 0;
+            inner.ViewChanged += (_, _) => Update();
+            Update();
+        };
         picker.Chosen += language =>
         {
             _closeHandled = true;
             _hub.ChangeLanguage?.Invoke(language.Tag, false);
         };
         panel.Children.Add(picker);
+        panel.Children.Add(more);
         return panel;
+    }
+
+    private static ScrollViewer? FindScroller(DependencyObject d)
+    {
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+        {
+            var c = VisualTreeHelper.GetChild(d, i);
+            if (c is ScrollViewer sv) return sv;
+            if (FindScroller(c) is { } found) return found;
+        }
+        return null;
     }
 
     private FrameworkElement DayPage()
     {
         var panel = PageShell("Wizard_Hours_Title", "Wizard_Hours_Sub");
         var s = _hub.Settings;
-        var start = new TimePicker { Header = Loc.Get("Settings_Start"), ClockIdentifier = "24HourClock", MinuteIncrement = 5, Time = s.WorkingHours.Start.ToTimeSpan() };
-        var end = new TimePicker { Header = Loc.Get("Settings_End"), ClockIdentifier = "24HourClock", MinuteIncrement = 5, Time = s.WorkingHours.End.ToTimeSpan() };
+        var start = new TimePicker { ClockIdentifier = "24HourClock", MinuteIncrement = 5, Time = s.WorkingHours.Start.ToTimeSpan() };
+        var end = new TimePicker { ClockIdentifier = "24HourClock", MinuteIncrement = 5, Time = s.WorkingHours.End.ToTimeSpan() };
         AutomationProperties.SetName(start, Loc.Get("Settings_DayStart"));
         AutomationProperties.SetName(end, Loc.Get("Settings_DayEnd"));
         var loading = true;
@@ -336,8 +391,8 @@ internal sealed class WelcomeWizardWindow : Window
         end.TimeChanged += (_, _) => Changed();
         // Stacked: a time picker has a fixed minimum width, two side by side would not fit beside Bloop.
         var times = new StackPanel { Orientation = Orientation.Vertical, Spacing = 8, Margin = new Thickness(0, 4, 0, 0) };
-        times.Children.Add(start);
-        times.Children.Add(end);
+        times.Children.Add(Labelled("Settings_Start", start));
+        times.Children.Add(Labelled("Settings_End", end));
         panel.Children.Add(times);
 
         var rhythm = new ComboBox { Header = Loc.Get("Wizard_Rhythm_Label"), MinWidth = 260 };
@@ -384,11 +439,28 @@ internal sealed class WelcomeWizardWindow : Window
         return panel;
     }
 
+    // A visible outline so the fields read as fields in every theme (the fill alone is dim in contrast themes).
+    private static StackPanel Labelled(string labelKey, FrameworkElement field)
+    {
+        var p = new StackPanel { Spacing = 4 };
+        p.Children.Add(new TextBlock { Text = Loc.Get(labelKey) });
+        p.Children.Add(Outlined(field));
+        return p;
+    }
+
+    private static Border Outlined(FrameworkElement field)
+    {
+        var b = (Border)XamlReader.Load("<Border xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' CornerRadius='4' BorderThickness='1' HorizontalAlignment='Left' BorderBrush='{ThemeResource ControlStrongStrokeColorDefaultBrush}' />");
+        b.Child = field;
+        return b;
+    }
+
     private FrameworkElement TryPage()
     {
         var panel = PageShell("Wizard_Try_Title", "Wizard_Try_Sub");
-        var stretch = new Button { Content = Loc.Get("Wizard_Try_Stretch") };
-        var poke = new Button { Content = Loc.Get("Wizard_Try_Poke") };
+        var accent = (Style)Application.Current.Resources["AccentButtonStyle"];
+        var stretch = new Button { Content = Loc.Get("Wizard_Try_Stretch"), Style = accent };
+        var poke = new Button { Content = Loc.Get("Wizard_Try_Poke"), Style = accent };
         var result = new TextBlock { TextWrapping = TextWrapping.Wrap, Visibility = Visibility.Collapsed };
         AutomationProperties.SetLiveSetting(result, AutomationLiveSetting.Polite);
         stretch.Click += (_, _) => TickGuard.Run("wizard-try-stretch", () =>
@@ -405,7 +477,6 @@ internal sealed class WelcomeWizardWindow : Window
         panel.Children.Add(result);
         panel.Children.Add(InfoRow("", "Wizard_Try_Tray"));
         panel.Children.Add(InfoRow("", "Wizard_Try_Pro"));
-        panel.Children.Add(CrashConsentUi.Build(_hub));
         return panel;
     }
 

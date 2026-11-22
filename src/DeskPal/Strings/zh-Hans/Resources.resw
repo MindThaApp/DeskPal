@@ -1136,7 +1136,7 @@
     <value>试一试</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>看看 Bloop 怎么工作。这里的操作不会改动你的设置。</value>
+    <value>看看 Bloop 的实际表现。</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>现在试一次拉伸</value>
@@ -1148,10 +1148,10 @@
     <value>Bloop 的提醒已经出现在屏幕上。点按“完成”,或等它自己消失。</value>
   </data>
   <data name="Wizard_Try_Tray" xml:space="preserve">
-    <value>Desk Pal 住在时钟旁边的托盘里。点击它的图标可使用快捷操作。如果看不到,请展开托盘旁的箭头。</value>
+    <value>我在时钟旁边的托盘里。</value>
   </data>
   <data name="Wizard_Try_Pro" xml:space="preserve">
-    <value>Desk Pal Evolution 可免费试用 7 天:为 Bloop 定制专属外观,还能使用我们以后添加的所有功能。你现在用的功能会一直免费。</value>
+    <value>Evolution 可免费试用 7 天;你现在用的功能会一直免费。</value>
   </data>
   <data name="Wizard_Skip" xml:space="preserve">
     <value>暂时跳过</value>
@@ -1161,5 +1161,8 @@
   </data>
   <data name="Wizard_Hero_Name" xml:space="preserve">
     <value>Bloop,你的 Desk Pal。点击跟它打个招呼。</value>
+  </data>
+  <data name="Wizard_Hero_Hi" xml:space="preserve">
+    <value>嘻嘻,你好!</value>
   </data>
 </root>

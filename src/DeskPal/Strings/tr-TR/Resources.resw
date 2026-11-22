@@ -1136,7 +1136,7 @@
     <value>Dene</value>
   </data>
   <data name="Wizard_Try_Sub" xml:space="preserve">
-    <value>Bloop&apos;u iş başında gör. Burada yaptıkların ayarlarını değiştirmez.</value>
+    <value>Bloop&apos;u iş başında gör.</value>
   </data>
   <data name="Wizard_Try_Stretch" xml:space="preserve">
     <value>Şimdi bir esneme dene</value>
@@ -1148,10 +1148,10 @@
     <value>Bloop&apos;un hatırlatması ekranında. Tamam&apos;a dokun ya da kendiliğinden kaybolmasını bekle.</value>
   </data>
   <data name="Wizard_Try_Tray" xml:space="preserve">
-    <value>Desk Pal saatin yanındaki bildirim alanında yaşar. Hızlı eylemler için simgesine tıkla. Göremiyorsan bildirim alanının yanındaki oku aç.</value>
+    <value>Beni saatin yanındaki bildirim alanında bulabilirsin.</value>
   </data>
   <data name="Wizard_Try_Pro" xml:space="preserve">
-    <value>Desk Pal Evolution&apos;ı 7 gün ücretsiz deneyebilirsin: Bloop için sana özel bir görünüm ve daha sonra ekleyeceğimiz tüm özellikler. Bugün kullandıkların ücretsiz kalır.</value>
+    <value>Evolution 7 gün ücretsiz; bugün kullandıkların ücretsiz kalır.</value>
   </data>
   <data name="Wizard_Skip" xml:space="preserve">
     <value>Şimdilik atla</value>
@@ -1161,5 +1161,8 @@
   </data>
   <data name="Wizard_Hero_Name" xml:space="preserve">
     <value>Bloop, senin Desk Pal&apos;in. Merhaba demek için tıkla.</value>
+  </data>
+  <data name="Wizard_Hero_Hi" xml:space="preserve">
+    <value>Hihi, merhaba!</value>
   </data>
 </root>

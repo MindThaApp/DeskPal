@@ -1,6 +1,8 @@
 using DeskPal.Core;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
 
 namespace DeskPal;
 
@@ -13,25 +15,32 @@ internal static class CrashConsentUi
     public static UIElement Build(SettingsHub hub)
     {
         var s = hub.Settings;
+        // The box sits on the first text line with an 8 px gap; "What's sent" ends the sentence.
         var check = new CheckBox
         {
-            Content = new TextBlock { Text = Loc.Get("Crash_Consent"), TextWrapping = TextWrapping.Wrap },
+            MinWidth = 0,
+            Padding = new Thickness(0),
+            Margin = new Thickness(0, -2, 8, 0),
+            VerticalAlignment = VerticalAlignment.Top,
             IsChecked = s.CrashReports != CrashReportingMode.Never,
         };
+        AutomationProperties.SetName(check, Loc.Get("Crash_Consent"));
         check.Click += (_, _) =>
         {
             s.CrashReports = check.IsChecked == true ? CrashReportingMode.Always : CrashReportingMode.Never;
             hub.Commit(false);
         };
-        var link = new HyperlinkButton
-        {
-            Content = Loc.Get("Crash_WhatsSent"),
-            NavigateUri = new Uri(PrivacyUrl),
-            Padding = new Thickness(0),
-        };
-        var panel = new StackPanel { Spacing = 2 };
-        panel.Children.Add(check);
-        panel.Children.Add(link);
-        return panel;
+        var text = new TextBlock { TextWrapping = TextWrapping.Wrap };
+        text.Inlines.Add(new Run { Text = Loc.Get("Crash_Consent") + " " });
+        var link = new Hyperlink { NavigateUri = new Uri(PrivacyUrl) };
+        link.Inlines.Add(new Run { Text = Loc.Get("Crash_WhatsSent") });
+        text.Inlines.Add(link);
+        var grid = new Grid();
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        Grid.SetColumn(text, 1);
+        grid.Children.Add(check);
+        grid.Children.Add(text);
+        return grid;
     }
 }
