@@ -136,6 +136,9 @@ public sealed class PoseModel : IDisposable
         _outputValue.Dispose();
         _run.Dispose();
         _session.Dispose();
+        // The last frame's pixels and points do not outlive the model.
+        Array.Clear(_input);
+        Array.Clear(_output);
     }
 }
 

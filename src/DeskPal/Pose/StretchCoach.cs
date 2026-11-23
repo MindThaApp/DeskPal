@@ -163,6 +163,13 @@ internal sealed class StretchCoach
         _stopped = true;
         try { _cts.Cancel(); } catch { }
         ReleaseSession();
+        // Body points are dropped as soon as the stretch ends.
+        lock (_gate)
+        {
+            _check = null;
+            _mirror = null;
+            _latest = null;
+        }
     }
 
     private void ReleaseSession()
