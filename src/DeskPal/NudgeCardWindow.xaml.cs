@@ -354,10 +354,9 @@ public sealed partial class NudgeCardWindow : Window
     // A short, gentle fade and rise: no bounce, no flash.
     private void PlayEntrance()
     {
-        var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
-        var duration = new Duration(Motion.Ms(200));
-        var fade = new DoubleAnimation { From = 0, To = 1, Duration = duration, EasingFunction = ease };
-        var slide = new DoubleAnimation { From = 8, To = 0, Duration = duration, EasingFunction = ease };
+        var duration = Motion.OpenMs(200);
+        var fade = new DoubleAnimation { From = 0, To = 1, Duration = new Duration(duration) };
+        var slide = Motion.Settle(8, 0, duration);
         Storyboard.SetTarget(fade, Root);
         Storyboard.SetTargetProperty(fade, "Opacity");
         Storyboard.SetTarget(slide, Slide);

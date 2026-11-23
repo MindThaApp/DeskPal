@@ -1,3 +1,5 @@
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media.Animation;
 using Windows.UI.ViewManagement;
 
 namespace DeskPal;
@@ -25,8 +27,28 @@ internal static class Motion
 
     // Duration for a chrome animation: zero when animations are off (Windows or the app), shorter when reduced,
     // otherwise capped at 333 ms.
-    public static TimeSpan Ms(int ms) =>
-        TimeSpan.FromMilliseconds(!Enabled ? 0 : Math.Min(ms, UserMode == DeskPal.Core.MotionChoice.Reduced ? ReducedChromeMs : MaxChromeMs));
+    public static TimeSpan Ms(int ms) => Capped(ms, MaxChromeMs);
+
+    // Things that open, grow or move may run up to 1.3x the old duration so the settle is visible. Closes use Ms().
+    public const double OpenScale = 1.3;
+    public const int MaxOpenMs = 433;
+
+    public static TimeSpan OpenMs(int ms) => Capped((int)Math.Round(ms * OpenScale), MaxOpenMs);
+
+    private static TimeSpan Capped(int ms, int cap) =>
+        TimeSpan.FromMilliseconds(!Enabled ? 0 : Math.Min(ms, UserMode == DeskPal.Core.MotionChoice.Reduced ? ReducedChromeMs : cap));
+
+    // The one shared settle curve, cubic-bezier(.45,0,.1,1): peak ~30% of the time, settles to zero. Change it here only.
+    private static readonly KeySpline SettleSpline = new() { ControlPoint1 = new(.45, 0), ControlPoint2 = new(.1, 1) };
+
+    // Animates a property from..to along the settle curve.
+    public static DoubleAnimationUsingKeyFrames Settle(double from, double to, TimeSpan duration)
+    {
+        var a = new DoubleAnimationUsingKeyFrames { Duration = new Duration(duration) };
+        a.KeyFrames.Add(new LinearDoubleKeyFrame { KeyTime = TimeSpan.Zero, Value = from });
+        a.KeyFrames.Add(new SplineDoubleKeyFrame { KeyTime = duration, Value = to, KeySpline = SettleSpline });
+        return a;
+    }
 
     private static bool Read()
     {

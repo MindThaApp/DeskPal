@@ -251,11 +251,11 @@ internal sealed class WelcomeWizardWindow : Window
         var shift = new TranslateTransform { X = 24 * direction };
         page.RenderTransform = shift;
         page.Opacity = 0;
-        var d = new Duration(Motion.Ms(250));
-        var fade = new DoubleAnimation { From = 0, To = 1, Duration = d };
+        var d = Motion.OpenMs(250);
+        var fade = new DoubleAnimation { From = 0, To = 1, Duration = new Duration(d) };
         Storyboard.SetTarget(fade, page);
         Storyboard.SetTargetProperty(fade, "Opacity");
-        var slide = new DoubleAnimation { From = shift.X, To = 0, Duration = d, EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut } };
+        var slide = Motion.Settle(shift.X, 0, d);
         Storyboard.SetTarget(slide, shift);
         Storyboard.SetTargetProperty(slide, "X");
         var board = new Storyboard();
