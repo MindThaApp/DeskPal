@@ -63,6 +63,7 @@ public sealed class PoseSession : IAsyncDisposable
     private readonly long _minFrameTicks;
     private PoseCamera? _camera;
     private PoseModel? _model;
+    private PoseModel? _orphan;  // a stopped run's model, left for the frame still inside it to free
     private Timer? _watchdog;
     private Stopwatch _clock = new();
     private int _running;      // 1 while frames are wanted
@@ -220,8 +221,18 @@ public sealed class PoseSession : IAsyncDisposable
             model?.Dispose();
             _image.Clear();
         }
-        // Still busy after a second (never seen): leave the model to the collector rather than free it under the frame.
-        else Logger.Log("pose model still busy at stop");
+        else if (model is not null)
+        {
+            // Still busy after a second (never seen): the frame frees the model and image when it ends. The exchange
+            // decides who frees it if the frame ended in between.
+            Logger.Log("pose model still busy at stop");
+            Volatile.Write(ref _orphan, model);
+            if (Volatile.Read(ref _busy) == 0 && Interlocked.Exchange(ref _orphan, null) is { } orphan)
+            {
+                orphan.Dispose();
+                _image.Clear();
+            }
+        }
         _clock.Stop();
     }
 
@@ -239,6 +250,7 @@ public sealed class PoseSession : IAsyncDisposable
         long now = Stopwatch.GetTimestamp();
         if (now - Volatile.Read(ref _lastFrameTicks) < _minFrameTicks) return; // keep to about 15 a second
         if (Interlocked.CompareExchange(ref _busy, 1, 0) != 0) { Interlocked.Increment(ref _dropped); return; } // never queue
+        int run = Volatile.Read(ref _run);
         try
         {
             var model = _model;
@@ -250,6 +262,8 @@ public sealed class PoseSession : IAsyncDisposable
             _inferenceMs += Stopwatch.GetElapsedTime(start).TotalMilliseconds;
             Interlocked.Increment(ref _frames);
             Volatile.Write(ref _lastResultTicks, Stopwatch.GetTimestamp());
+            // The session may have stopped while the model ran: no pose reaches the caller after Stopped.
+            if (!IsRunning || run != Volatile.Read(ref _run)) return;
             FrameReady?.Invoke(this, pose);
         }
         catch (Exception ex)
@@ -257,7 +271,17 @@ public sealed class PoseSession : IAsyncDisposable
             Logger.Log("pose frame failed: " + ex.GetType().Name + " " + ex.Message);
             QueueStop(PoseStopReason.Error);
         }
-        finally { Volatile.Write(ref _busy, 0); }
+        finally
+        {
+            // A stop that timed out waiting for this frame left the model here to free; done before _busy clears so
+            // a new run's first frame cannot be using _image yet.
+            if (Interlocked.Exchange(ref _orphan, null) is { } orphan)
+            {
+                try { orphan.Dispose(); } catch (Exception ex) { Logger.Log("pose model dispose failed: " + ex.GetType().Name); }
+                _image.Clear();
+            }
+            Volatile.Write(ref _busy, 0);
+        }
     }
 
     private void Watch()
