@@ -168,9 +168,20 @@ internal sealed class PoseCamera
 
     private void OnFrameArrived(MediaFrameReader sender, MediaFrameArrivedEventArgs args)
     {
-        using var frame = sender.TryAcquireLatestFrame();
-        using var bitmap = frame?.VideoMediaFrame?.SoftwareBitmap;
-        if (bitmap is not null) FrameArrived?.Invoke(bitmap);
+        // An exception must never escape into the native callback: frame access throws while the reader is being torn down.
+        try
+        {
+            using var frame = sender.TryAcquireLatestFrame();
+            using var bitmap = frame?.VideoMediaFrame?.SoftwareBitmap;
+            if (bitmap is not null) FrameArrived?.Invoke(bitmap);
+        }
+        catch (Exception ex)
+        {
+            // Only a reader that is still current counts as a lost camera; one already handed to StopAsync is expected to fail.
+            if (!ReferenceEquals(Volatile.Read(ref _reader), sender)) return;
+            LogStep("frame", ex);
+            Lost?.Invoke(PoseStopReason.CameraLost);
+        }
     }
 
     private void OnCaptureFailed(MediaCapture sender, MediaCaptureFailedEventArgs args)
