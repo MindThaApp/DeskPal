@@ -330,6 +330,10 @@ public sealed partial class NudgeCardWindow : Window
     {
         var scale = GetDpiForWindow(_hwnd) / 96.0;
         var area = DisplayArea.Primary;
+        // UI checks only: DESKPAL_DEBUG_WINPOS=x,y puts the test card on the screen holding that point, off the owner's.
+        if (AppData.IsDebugRun && Environment.GetEnvironmentVariable("DESKPAL_DEBUG_WINPOS")?.Split(',') is [var px, var py]
+            && int.TryParse(px, out var dx) && int.TryParse(py, out var dy))
+            area = DisplayArea.GetFromPoint(new PointInt32(dx, dy), DisplayAreaFallback.Primary);
         var work = area.WorkArea;
         var mon = area.OuterBounds;
         var edge = work.Y + work.Height < mon.Y + mon.Height ? TaskbarEdge.Bottom
