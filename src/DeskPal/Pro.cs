@@ -8,7 +8,7 @@ namespace DeskPal;
 
 // Desk Pal Evolution (Pro) for the UI. How to gate a Pro feature:
 //
-//   Pro.IsUnlocked                  true during the trial and once the add-on is owned (or with --debug-pro).
+//   Pro.IsUnlocked                  true during the trial and once the add-on is owned (or with --debug-pro in Debug builds).
 //   Pro.State                       Free / Trial (TrialDaysLeft) / Owned, plus TrialUsed and CanStartTrial.
 //   Pro.Pick(saved, standard)       what to show: the user's saved Pro choice while unlocked, the standard one otherwise.
 //                                   Never overwrite or clear the saved choice when Pro is locked; it comes back on purchase.

@@ -16,8 +16,13 @@ public static class AppData
     public static readonly bool DebugMain = HasArg("--debug-main");
     public static readonly bool DebugQuickPanel = HasArg("--debug-quickpanel");
     public static readonly bool DebugTrayMenu = HasArg("--debug-traymenu");
-    // Forces Desk Pal Evolution (Pro) on without the Store; the forced state is never saved.
+#if DEBUG
+    // Forces Desk Pal Evolution (Pro) on without the Store; the forced state is never saved. Debug builds only, so a
+    // Release, Store or portable build can never unlock Pro from a command line flag.
     public static readonly bool DebugPro = HasArg("--debug-pro");
+#else
+    public const bool DebugPro = false;
+#endif
     // With --debug-quickpanel: drag Bloop away through the drag code (no real input), and optionally close the
     // panel while it is away.
     public static readonly bool DebugBloopDrag = HasArg("--debug-bloop-drag");
