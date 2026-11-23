@@ -16,6 +16,7 @@ internal sealed class PoseCamera
 {
     private const uint MinWidth = 320, MinHeight = 240;
     private const double TargetFps = 15;
+    private static readonly TimeSpan StopTimeout = TimeSpan.FromSeconds(2);
 
     // Media Foundation codes that mean another app holds the camera.
     private static readonly HashSet<int> InUseCodes =
@@ -124,7 +125,20 @@ internal sealed class PoseCamera
             {
                 try { reader.FrameArrived -= OnFrameArrived; }
                 catch (Exception ex) { LogStep("reader unhook", ex); }
-                try { await reader.StopAsync().AsTask().ConfigureAwait(false); }
+                // A wedged driver can leave StopAsync pending forever; the capture must still be disposed so the
+                // camera turns off.
+                Task? stop = null;
+                try
+                {
+                    stop = reader.StopAsync().AsTask();
+                    await stop.WaitAsync(StopTimeout).ConfigureAwait(false);
+                }
+                catch (TimeoutException)
+                {
+                    Logger.Log("pose camera reader stop timed out");
+                    _ = stop!.ContinueWith(t => _ = t.Exception, CancellationToken.None,
+                        TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Default);
+                }
                 catch (Exception ex) { LogStep("reader stop", ex); }
                 finally
                 {
@@ -150,7 +164,7 @@ internal sealed class PoseCamera
         }
     }
 
-    private static void LogStep(string step, Exception ex) => Logger.Log($"pose camera {step} failed: {ex.GetType().Name}");
+    private static void LogStep(string step, Exception ex) => Logger.Log($"pose camera {step} failed: 0x{ex.HResult:X8} {ex.GetType().Name}");
 
     private void OnFrameArrived(MediaFrameReader sender, MediaFrameArrivedEventArgs args)
     {
