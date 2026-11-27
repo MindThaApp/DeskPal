@@ -11,7 +11,7 @@ public sealed record LanguageRow(LanguageInfo? Language)
 public static class LanguageList
 {
     // The supported language that best fits a Windows language tag: the full tag first, then the base language.
-    // Chinese only matches when it is not Traditional (zh-TW, zh-HK, zh-MO, zh-Hant), because only Simplified ships.
+    // Chinese goes to Traditional for zh-TW, zh-HK, zh-MO and zh-Hant-*, and to Simplified for everything else.
     public static LanguageInfo? Match(string? tag, IReadOnlyList<LanguageInfo> supported)
     {
         if (string.IsNullOrWhiteSpace(tag)) return null;
@@ -20,7 +20,11 @@ public static class LanguageList
         if (exact is not null) return exact;
         var parts = tag.Split('-', '_');
         var baseLang = parts[0];
-        if (string.Equals(baseLang, "zh", StringComparison.OrdinalIgnoreCase) && !IsSimplifiedChinese(parts)) return null;
+        if (string.Equals(baseLang, "zh", StringComparison.OrdinalIgnoreCase))
+        {
+            var want = IsSimplifiedChinese(parts) ? "zh-Hans" : "zh-Hant";
+            return supported.FirstOrDefault(l => string.Equals(l.Tag, want, StringComparison.OrdinalIgnoreCase));
+        }
         return supported.FirstOrDefault(l => string.Equals(l.Tag.Split('-')[0], baseLang, StringComparison.OrdinalIgnoreCase));
     }
 
@@ -69,10 +73,10 @@ public static class LanguageList
     public static string FlagCode(LanguageInfo language, string? userTag, string? windowsRegion)
     {
         var region = windowsRegion?.Trim().ToLowerInvariant();
-        var baseLang = language.Tag.Split('-')[0].ToLowerInvariant();
+        var regionKey = language.Tag == "zh-Hant" ? "zh-Hant" : language.Tag.Split('-')[0].ToLowerInvariant();
         if (!string.IsNullOrEmpty(region)
             && Match(userTag, [language]) is not null
-            && RegionsByLanguage.TryGetValue(baseLang, out var regions)
+            && RegionsByLanguage.TryGetValue(regionKey, out var regions)
             && Array.IndexOf(regions, region) >= 0)
             return region;
         return language.Tag switch
@@ -90,6 +94,13 @@ public static class LanguageList
             "ko-KR" => "kr",
             "zh-Hans" => "cn",
             "ru-RU" => "ru",
+            "zh-Hant" => "tw",
+            "ar-SA" => "sa",
+            "hi-IN" => "in",
+            "id-ID" => "id",
+            "vi-VN" => "vn",
+            "th-TH" => "th",
+            "sv-SE" => "se",
             _ => language.Tag.Split('-').Last().ToLowerInvariant(),
         };
     }
@@ -100,6 +111,7 @@ public static class LanguageList
         "us", "gb", "au", "ca", "ie", "nz", "za", "in",
         "es", "mx", "ar", "co", "cl", "pe",
         "de", "at", "ch", "fr", "be", "br", "pt", "it", "nl", "pl", "tr", "jp", "kr", "cn", "sg", "ru",
+        "tw", "sa", "id", "vn", "th", "se",
     ];
 
     private static readonly Dictionary<string, string[]> RegionsByLanguage = new()
@@ -112,5 +124,12 @@ public static class LanguageList
         ["it"] = ["it", "ch"],
         ["nl"] = ["nl", "be"],
         ["zh"] = ["cn", "sg"],
+        ["zh-Hant"] = ["tw"],
+        ["ar"] = ["sa"],
+        ["hi"] = ["in"],
+        ["id"] = ["id"],
+        ["vi"] = ["vn"],
+        ["th"] = ["th"],
+        ["sv"] = ["se"],
     };
 }

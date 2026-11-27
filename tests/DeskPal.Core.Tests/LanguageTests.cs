@@ -30,7 +30,7 @@ public class LanguageTests
     [Fact]
     public void Order_UnsupportedUserLanguage_FallsBackToEnglishFirst()
     {
-        var rows = Tags(LanguageList.Order(All, "sv-SE"));
+        var rows = Tags(LanguageList.Order(All, "fi-FI"));
         Assert.Equal(["en-US", "|"], rows.Take(2));
     }
 
@@ -52,8 +52,25 @@ public class LanguageTests
 
     [Theory]
     [InlineData("zh-TW")]
-    [InlineData("zh-Hant")]
     [InlineData("zh-HK")]
+    [InlineData("zh-MO")]
+    [InlineData("zh-Hant-TW")]
+    [InlineData("zh-Hant")]
+    public void Match_TraditionalChinese(string windows) =>
+        Assert.Equal("zh-Hant", LanguageList.Match(windows, All)!.Tag);
+
+    [Theory]
+    [InlineData("ar-EG", "ar-SA")]
+    [InlineData("hi", "hi-IN")]
+    [InlineData("id", "id-ID")]
+    [InlineData("vi-VN", "vi-VN")]
+    [InlineData("th", "th-TH")]
+    [InlineData("sv-FI", "sv-SE")]
+    public void Match_NewLanguages(string windows, string expected) =>
+        Assert.Equal(expected, LanguageList.Match(windows, All)!.Tag);
+
+    [Theory]
+    [InlineData("fi-FI")]
     [InlineData("")]
     [InlineData(null)]
     public void Match_NoMatch(string? windows) => Assert.Null(LanguageList.Match(windows, All));
@@ -61,8 +78,8 @@ public class LanguageTests
     [Fact]
     public void ResolveStartupLanguage_FirstSupportedInUserOrder()
     {
-        Assert.Equal("de-DE", LanguageList.ResolveStartupLanguage(["sv-SE", "de-DE", "fr-FR"], All));
-        Assert.Equal("en-US", LanguageList.ResolveStartupLanguage(["sv-SE", "zh-TW"], All));
+        Assert.Equal("de-DE", LanguageList.ResolveStartupLanguage(["fi-FI", "de-DE", "fr-FR"], All));
+        Assert.Equal("en-US", LanguageList.ResolveStartupLanguage(["fi-FI", "nb-NO"], All));
         Assert.Equal("en-US", LanguageList.ResolveStartupLanguage([], All));
     }
 
@@ -77,6 +94,9 @@ public class LanguageTests
     [InlineData("ja-JP", "ja-JP", "US", "jp")]
     [InlineData("zh-Hans", "zh-CN", "SG", "sg")]
     [InlineData("ko-KR", "ko-KR", "KR", "kr")]
+    [InlineData("zh-Hant", "zh-TW", "TW", "tw")]
+    [InlineData("zh-Hans", "zh-CN", "TW", "cn")]
+    [InlineData("sv-SE", "sv-SE", "FI", "se")]
     public void FlagCode_UsesRegionOnlyForOwnLanguage(string language, string userTag, string region, string expected) =>
         Assert.Equal(expected, LanguageList.FlagCode(All.First(l => l.Tag == language), userTag, region));
 

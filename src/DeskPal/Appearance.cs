@@ -43,6 +43,7 @@ internal static class Appearance
 
     public static void Register(Window window, FrameworkElement root, Role role)
     {
+        if (Loc.IsRightToLeft) root.FlowDirection = FlowDirection.RightToLeft;
         lock (Entries) Entries.Add(new Entry(window, root, role));
         // Pages swap in and templates realise later, so new text and controls are scaled as layout settles.
         root.LayoutUpdated += (_, _) => QueueScale(root);

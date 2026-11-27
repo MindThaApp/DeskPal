@@ -22,5 +22,12 @@ public static class SupportedLanguages
         new("ko-KR", "한국어", "Korean"),
         new("zh-Hans", "简体中文", "Chinese (Simplified)"),
         new("ru-RU", "Русский", "Russian"),
+        new("zh-Hant", "繁體中文", "Chinese (Traditional)"),
+        new("ar-SA", "العربية", "Arabic"),
+        new("hi-IN", "हिन्दी", "Hindi"),
+        new("id-ID", "Bahasa Indonesia", "Indonesian"),
+        new("vi-VN", "Tiếng Việt", "Vietnamese"),
+        new("th-TH", "ไทย", "Thai"),
+        new("sv-SE", "Svenska", "Swedish"),
     ];
 }

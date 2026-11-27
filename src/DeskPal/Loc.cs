@@ -10,8 +10,13 @@ internal static class Loc
     private static ResourceLoader? _loader;
 
     // Call once at startup, before any window exists. Empty tag = follow the Windows display language.
+    // True when the language the UI runs in is right to left (Arabic); windows mirror their root through Appearance.Register.
+    public static bool IsRightToLeft { get; private set; }
+
     public static void Apply(string? tag)
     {
+        var effective = string.IsNullOrWhiteSpace(tag) ? ResolveWindowsLanguage() : tag;
+        IsRightToLeft = effective.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
         if (string.IsNullOrWhiteSpace(tag))
         {
             // Back to following Windows: drop any override left from an earlier language choice. Nothing to do (and the
