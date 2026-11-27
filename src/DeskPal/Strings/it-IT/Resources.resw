@@ -1008,6 +1008,132 @@
   <data name="Custom_Keep" xml:space="preserve">
     <value>Tieni questo look</value>
   </data>
+  <data name="Appearance_Theme" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="Appearance_ThemeSub" xml:space="preserve">
+    <value>Chiaro, scuro o come Windows.</value>
+  </data>
+  <data name="Appearance_Theme_System" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="Appearance_Theme_Light" xml:space="preserve">
+    <value>Chiaro</value>
+  </data>
+  <data name="Appearance_Theme_Dark" xml:space="preserve">
+    <value>Scuro</value>
+  </data>
+  <data name="Appearance_Accent" xml:space="preserve">
+    <value>Colore principale</value>
+  </data>
+  <data name="Appearance_AccentSub" xml:space="preserve">
+    <value>Segue il colore principale di Windows, a meno che tu non ne scelga uno.</value>
+  </data>
+  <data name="Appearance_Accent_Windows" xml:space="preserve">
+    <value>Colore principale di Windows</value>
+  </data>
+  <data name="Appearance_Accent_Blue" xml:space="preserve">
+    <value>Blu</value>
+  </data>
+  <data name="Appearance_Accent_Teal" xml:space="preserve">
+    <value>Verde acqua</value>
+  </data>
+  <data name="Appearance_Accent_Violet" xml:space="preserve">
+    <value>Viola</value>
+  </data>
+  <data name="Appearance_Accent_Rose" xml:space="preserve">
+    <value>Rosa</value>
+  </data>
+  <data name="Appearance_Accent_Orange" xml:space="preserve">
+    <value>Arancione</value>
+  </data>
+  <data name="Appearance_Material" xml:space="preserve">
+    <value>Materiale della finestra</value>
+  </data>
+  <data name="Appearance_MaterialSub" xml:space="preserve">
+    <value>Con il contrasto elevato viene usato automaticamente Tinta unita.</value>
+  </data>
+  <data name="Appearance_Material_Mica" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Appearance_Material_Acrylic" xml:space="preserve">
+    <value>Acrilico</value>
+  </data>
+  <data name="Appearance_Material_Solid" xml:space="preserve">
+    <value>Tinta unita</value>
+  </data>
+  <data name="Appearance_Corners" xml:space="preserve">
+    <value>Angoli</value>
+  </data>
+  <data name="Appearance_CornersSub" xml:space="preserve">
+    <value>Quanto sono arrotondati schede e controlli.</value>
+  </data>
+  <data name="Appearance_Corners_Rounded" xml:space="preserve">
+    <value>Arrotondati</value>
+  </data>
+  <data name="Appearance_Corners_Square" xml:space="preserve">
+    <value>Squadrati</value>
+  </data>
+  <data name="Appearance_Corners_ExtraRound" xml:space="preserve">
+    <value>Molto arrotondati</value>
+  </data>
+  <data name="Appearance_Density" xml:space="preserve">
+    <value>Densità</value>
+  </data>
+  <data name="Appearance_DensitySub" xml:space="preserve">
+    <value>Spazio all&apos;interno delle schede delle impostazioni.</value>
+  </data>
+  <data name="Appearance_Density_Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Appearance_Density_Comfortable" xml:space="preserve">
+    <value>Comoda</value>
+  </data>
+  <data name="Appearance_Density_Compact" xml:space="preserve">
+    <value>Compatta</value>
+  </data>
+  <data name="Appearance_TextSize" xml:space="preserve">
+    <value>Dimensioni testo</value>
+  </data>
+  <data name="Appearance_TextSizeSub" xml:space="preserve">
+    <value>Si aggiunge alle dimensioni del testo di Windows.</value>
+  </data>
+  <data name="Appearance_TextSize_Smaller" xml:space="preserve">
+    <value>Più piccolo</value>
+  </data>
+  <data name="Appearance_TextSize_Default" xml:space="preserve">
+    <value>Predefinito</value>
+  </data>
+  <data name="Appearance_TextSize_Large" xml:space="preserve">
+    <value>Grande</value>
+  </data>
+  <data name="Appearance_TextSize_Larger" xml:space="preserve">
+    <value>Più grande</value>
+  </data>
+  <data name="Appearance_TextSize_Largest" xml:space="preserve">
+    <value>Massimo</value>
+  </data>
+  <data name="Appearance_Motion" xml:space="preserve">
+    <value>Movimento</value>
+  </data>
+  <data name="Appearance_MotionSub" xml:space="preserve">
+    <value>Animazioni nelle finestre e nelle schede.</value>
+  </data>
+  <data name="Appearance_Motion_FollowWindows" xml:space="preserve">
+    <value>Segui Windows</value>
+  </data>
+  <data name="Appearance_Motion_Reduced" xml:space="preserve">
+    <value>Ridotto</value>
+  </data>
+  <data name="Appearance_Motion_Off" xml:space="preserve">
+    <value>Disattivato</value>
+  </data>
+  <data name="Appearance_Reset" xml:space="preserve">
+    <value>Ripristina l&apos;aspetto predefinito</value>
+  </data>
+  <data name="Appearance_ResetAccessible" xml:space="preserve">
+    <value>Ripristina le impostazioni di aspetto ai valori predefiniti</value>
+  </data>
   <data name="Settings_Section_Stretch" xml:space="preserve">
     <value>Allungati con Bloop</value>
   </data>

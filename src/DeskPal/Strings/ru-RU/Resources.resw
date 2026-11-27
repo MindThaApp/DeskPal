@@ -1030,6 +1030,132 @@
   <data name="Custom_Keep" xml:space="preserve">
     <value>Оставить этот образ</value>
   </data>
+  <data name="Appearance_Theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="Appearance_ThemeSub" xml:space="preserve">
+    <value>Светлая, тёмная или как в Windows.</value>
+  </data>
+  <data name="Appearance_Theme_System" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="Appearance_Theme_Light" xml:space="preserve">
+    <value>Светлая</value>
+  </data>
+  <data name="Appearance_Theme_Dark" xml:space="preserve">
+    <value>Тёмная</value>
+  </data>
+  <data name="Appearance_Accent" xml:space="preserve">
+    <value>Цвет выделения</value>
+  </data>
+  <data name="Appearance_AccentSub" xml:space="preserve">
+    <value>Используется цвет выделения Windows, если не выбрать другой.</value>
+  </data>
+  <data name="Appearance_Accent_Windows" xml:space="preserve">
+    <value>Цвет выделения Windows</value>
+  </data>
+  <data name="Appearance_Accent_Blue" xml:space="preserve">
+    <value>Синий</value>
+  </data>
+  <data name="Appearance_Accent_Teal" xml:space="preserve">
+    <value>Бирюзовый</value>
+  </data>
+  <data name="Appearance_Accent_Violet" xml:space="preserve">
+    <value>Фиолетовый</value>
+  </data>
+  <data name="Appearance_Accent_Rose" xml:space="preserve">
+    <value>Розовый</value>
+  </data>
+  <data name="Appearance_Accent_Orange" xml:space="preserve">
+    <value>Оранжевый</value>
+  </data>
+  <data name="Appearance_Material" xml:space="preserve">
+    <value>Материал окна</value>
+  </data>
+  <data name="Appearance_MaterialSub" xml:space="preserve">
+    <value>При высокой контрастности автоматически используется сплошной.</value>
+  </data>
+  <data name="Appearance_Material_Mica" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Appearance_Material_Acrylic" xml:space="preserve">
+    <value>Акрил</value>
+  </data>
+  <data name="Appearance_Material_Solid" xml:space="preserve">
+    <value>Сплошной</value>
+  </data>
+  <data name="Appearance_Corners" xml:space="preserve">
+    <value>Углы</value>
+  </data>
+  <data name="Appearance_CornersSub" xml:space="preserve">
+    <value>Насколько скруглены карточки и элементы управления.</value>
+  </data>
+  <data name="Appearance_Corners_Rounded" xml:space="preserve">
+    <value>Скруглённые</value>
+  </data>
+  <data name="Appearance_Corners_Square" xml:space="preserve">
+    <value>Прямые</value>
+  </data>
+  <data name="Appearance_Corners_ExtraRound" xml:space="preserve">
+    <value>Сильно скруглённые</value>
+  </data>
+  <data name="Appearance_Density" xml:space="preserve">
+    <value>Плотность</value>
+  </data>
+  <data name="Appearance_DensitySub" xml:space="preserve">
+    <value>Отступы внутри карточек параметров.</value>
+  </data>
+  <data name="Appearance_Density_Standard" xml:space="preserve">
+    <value>Стандартная</value>
+  </data>
+  <data name="Appearance_Density_Comfortable" xml:space="preserve">
+    <value>Комфортная</value>
+  </data>
+  <data name="Appearance_Density_Compact" xml:space="preserve">
+    <value>Компактная</value>
+  </data>
+  <data name="Appearance_TextSize" xml:space="preserve">
+    <value>Размер текста</value>
+  </data>
+  <data name="Appearance_TextSizeSub" xml:space="preserve">
+    <value>Добавляется к размеру текста Windows.</value>
+  </data>
+  <data name="Appearance_TextSize_Smaller" xml:space="preserve">
+    <value>Меньше</value>
+  </data>
+  <data name="Appearance_TextSize_Default" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="Appearance_TextSize_Large" xml:space="preserve">
+    <value>Крупный</value>
+  </data>
+  <data name="Appearance_TextSize_Larger" xml:space="preserve">
+    <value>Крупнее</value>
+  </data>
+  <data name="Appearance_TextSize_Largest" xml:space="preserve">
+    <value>Самый крупный</value>
+  </data>
+  <data name="Appearance_Motion" xml:space="preserve">
+    <value>Анимация</value>
+  </data>
+  <data name="Appearance_MotionSub" xml:space="preserve">
+    <value>Анимация в окнах и карточках.</value>
+  </data>
+  <data name="Appearance_Motion_FollowWindows" xml:space="preserve">
+    <value>Как в Windows</value>
+  </data>
+  <data name="Appearance_Motion_Reduced" xml:space="preserve">
+    <value>Уменьшенная</value>
+  </data>
+  <data name="Appearance_Motion_Off" xml:space="preserve">
+    <value>Выкл.</value>
+  </data>
+  <data name="Appearance_Reset" xml:space="preserve">
+    <value>Сбросить оформление по умолчанию</value>
+  </data>
+  <data name="Appearance_ResetAccessible" xml:space="preserve">
+    <value>Сбросить параметры оформления по умолчанию</value>
+  </data>
   <data name="Settings_Section_Stretch" xml:space="preserve">
     <value>Растяжка с Bloop</value>
   </data>

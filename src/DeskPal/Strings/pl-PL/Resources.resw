@@ -1030,6 +1030,132 @@
   <data name="Custom_Keep" xml:space="preserve">
     <value>Zachowaj ten wygląd</value>
   </data>
+  <data name="Appearance_Theme" xml:space="preserve">
+    <value>Motyw</value>
+  </data>
+  <data name="Appearance_ThemeSub" xml:space="preserve">
+    <value>Jasny, ciemny lub zgodny z Windows.</value>
+  </data>
+  <data name="Appearance_Theme_System" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="Appearance_Theme_Light" xml:space="preserve">
+    <value>Jasny</value>
+  </data>
+  <data name="Appearance_Theme_Dark" xml:space="preserve">
+    <value>Ciemny</value>
+  </data>
+  <data name="Appearance_Accent" xml:space="preserve">
+    <value>Kolor akcentu</value>
+  </data>
+  <data name="Appearance_AccentSub" xml:space="preserve">
+    <value>Używa koloru akcentu Windows, chyba że wybierzesz inny.</value>
+  </data>
+  <data name="Appearance_Accent_Windows" xml:space="preserve">
+    <value>Kolor akcentu Windows</value>
+  </data>
+  <data name="Appearance_Accent_Blue" xml:space="preserve">
+    <value>Niebieski</value>
+  </data>
+  <data name="Appearance_Accent_Teal" xml:space="preserve">
+    <value>Morski</value>
+  </data>
+  <data name="Appearance_Accent_Violet" xml:space="preserve">
+    <value>Fioletowy</value>
+  </data>
+  <data name="Appearance_Accent_Rose" xml:space="preserve">
+    <value>Różowy</value>
+  </data>
+  <data name="Appearance_Accent_Orange" xml:space="preserve">
+    <value>Pomarańczowy</value>
+  </data>
+  <data name="Appearance_Material" xml:space="preserve">
+    <value>Materiał okna</value>
+  </data>
+  <data name="Appearance_MaterialSub" xml:space="preserve">
+    <value>Przy dużym kontraście automatycznie używany jest jednolity.</value>
+  </data>
+  <data name="Appearance_Material_Mica" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Appearance_Material_Acrylic" xml:space="preserve">
+    <value>Akryl</value>
+  </data>
+  <data name="Appearance_Material_Solid" xml:space="preserve">
+    <value>Jednolity</value>
+  </data>
+  <data name="Appearance_Corners" xml:space="preserve">
+    <value>Narożniki</value>
+  </data>
+  <data name="Appearance_CornersSub" xml:space="preserve">
+    <value>Jak bardzo zaokrąglone są karty i kontrolki.</value>
+  </data>
+  <data name="Appearance_Corners_Rounded" xml:space="preserve">
+    <value>Zaokrąglone</value>
+  </data>
+  <data name="Appearance_Corners_Square" xml:space="preserve">
+    <value>Kwadratowe</value>
+  </data>
+  <data name="Appearance_Corners_ExtraRound" xml:space="preserve">
+    <value>Mocno zaokrąglone</value>
+  </data>
+  <data name="Appearance_Density" xml:space="preserve">
+    <value>Gęstość</value>
+  </data>
+  <data name="Appearance_DensitySub" xml:space="preserve">
+    <value>Odstępy wewnątrz kart ustawień.</value>
+  </data>
+  <data name="Appearance_Density_Standard" xml:space="preserve">
+    <value>Standardowa</value>
+  </data>
+  <data name="Appearance_Density_Comfortable" xml:space="preserve">
+    <value>Komfortowa</value>
+  </data>
+  <data name="Appearance_Density_Compact" xml:space="preserve">
+    <value>Zwarta</value>
+  </data>
+  <data name="Appearance_TextSize" xml:space="preserve">
+    <value>Rozmiar tekstu</value>
+  </data>
+  <data name="Appearance_TextSizeSub" xml:space="preserve">
+    <value>Dodawany do rozmiaru tekstu Windows.</value>
+  </data>
+  <data name="Appearance_TextSize_Smaller" xml:space="preserve">
+    <value>Mniejszy</value>
+  </data>
+  <data name="Appearance_TextSize_Default" xml:space="preserve">
+    <value>Domyślny</value>
+  </data>
+  <data name="Appearance_TextSize_Large" xml:space="preserve">
+    <value>Duży</value>
+  </data>
+  <data name="Appearance_TextSize_Larger" xml:space="preserve">
+    <value>Większy</value>
+  </data>
+  <data name="Appearance_TextSize_Largest" xml:space="preserve">
+    <value>Największy</value>
+  </data>
+  <data name="Appearance_Motion" xml:space="preserve">
+    <value>Ruch</value>
+  </data>
+  <data name="Appearance_MotionSub" xml:space="preserve">
+    <value>Animacje w oknach i kartach.</value>
+  </data>
+  <data name="Appearance_Motion_FollowWindows" xml:space="preserve">
+    <value>Zgodnie z Windows</value>
+  </data>
+  <data name="Appearance_Motion_Reduced" xml:space="preserve">
+    <value>Ograniczony</value>
+  </data>
+  <data name="Appearance_Motion_Off" xml:space="preserve">
+    <value>Wyłączony</value>
+  </data>
+  <data name="Appearance_Reset" xml:space="preserve">
+    <value>Przywróć domyślny wygląd</value>
+  </data>
+  <data name="Appearance_ResetAccessible" xml:space="preserve">
+    <value>Przywróć domyślne ustawienia wyglądu</value>
+  </data>
   <data name="Settings_Section_Stretch" xml:space="preserve">
     <value>Rozciąganie z Bloopem</value>
   </data>

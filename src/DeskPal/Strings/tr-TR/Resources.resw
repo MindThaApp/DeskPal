@@ -1030,6 +1030,132 @@
   <data name="Custom_Keep" xml:space="preserve">
     <value>Bu görünümü koru</value>
   </data>
+  <data name="Appearance_Theme" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="Appearance_ThemeSub" xml:space="preserve">
+    <value>Açık, koyu veya Windows&apos;u izle.</value>
+  </data>
+  <data name="Appearance_Theme_System" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="Appearance_Theme_Light" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="Appearance_Theme_Dark" xml:space="preserve">
+    <value>Koyu</value>
+  </data>
+  <data name="Appearance_Accent" xml:space="preserve">
+    <value>Vurgu rengi</value>
+  </data>
+  <data name="Appearance_AccentSub" xml:space="preserve">
+    <value>Siz seçmedikçe Windows vurgu rengini izler.</value>
+  </data>
+  <data name="Appearance_Accent_Windows" xml:space="preserve">
+    <value>Windows vurgu rengi</value>
+  </data>
+  <data name="Appearance_Accent_Blue" xml:space="preserve">
+    <value>Mavi</value>
+  </data>
+  <data name="Appearance_Accent_Teal" xml:space="preserve">
+    <value>Deniz mavisi</value>
+  </data>
+  <data name="Appearance_Accent_Violet" xml:space="preserve">
+    <value>Mor</value>
+  </data>
+  <data name="Appearance_Accent_Rose" xml:space="preserve">
+    <value>Gül pembesi</value>
+  </data>
+  <data name="Appearance_Accent_Orange" xml:space="preserve">
+    <value>Turuncu</value>
+  </data>
+  <data name="Appearance_Material" xml:space="preserve">
+    <value>Pencere malzemesi</value>
+  </data>
+  <data name="Appearance_MaterialSub" xml:space="preserve">
+    <value>Yüksek karşıtlıkta otomatik olarak Düz kullanılır.</value>
+  </data>
+  <data name="Appearance_Material_Mica" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Appearance_Material_Acrylic" xml:space="preserve">
+    <value>Akrilik</value>
+  </data>
+  <data name="Appearance_Material_Solid" xml:space="preserve">
+    <value>Düz</value>
+  </data>
+  <data name="Appearance_Corners" xml:space="preserve">
+    <value>Köşeler</value>
+  </data>
+  <data name="Appearance_CornersSub" xml:space="preserve">
+    <value>Kartların ve denetimlerin yuvarlaklığı.</value>
+  </data>
+  <data name="Appearance_Corners_Rounded" xml:space="preserve">
+    <value>Yuvarlak</value>
+  </data>
+  <data name="Appearance_Corners_Square" xml:space="preserve">
+    <value>Köşeli</value>
+  </data>
+  <data name="Appearance_Corners_ExtraRound" xml:space="preserve">
+    <value>Çok yuvarlak</value>
+  </data>
+  <data name="Appearance_Density" xml:space="preserve">
+    <value>Yoğunluk</value>
+  </data>
+  <data name="Appearance_DensitySub" xml:space="preserve">
+    <value>Ayarlar kartlarının iç boşluğu.</value>
+  </data>
+  <data name="Appearance_Density_Standard" xml:space="preserve">
+    <value>Standart</value>
+  </data>
+  <data name="Appearance_Density_Comfortable" xml:space="preserve">
+    <value>Rahat</value>
+  </data>
+  <data name="Appearance_Density_Compact" xml:space="preserve">
+    <value>Kompakt</value>
+  </data>
+  <data name="Appearance_TextSize" xml:space="preserve">
+    <value>Metin boyutu</value>
+  </data>
+  <data name="Appearance_TextSizeSub" xml:space="preserve">
+    <value>Windows metin boyutuna eklenir.</value>
+  </data>
+  <data name="Appearance_TextSize_Smaller" xml:space="preserve">
+    <value>Daha küçük</value>
+  </data>
+  <data name="Appearance_TextSize_Default" xml:space="preserve">
+    <value>Varsayılan</value>
+  </data>
+  <data name="Appearance_TextSize_Large" xml:space="preserve">
+    <value>Büyük</value>
+  </data>
+  <data name="Appearance_TextSize_Larger" xml:space="preserve">
+    <value>Daha büyük</value>
+  </data>
+  <data name="Appearance_TextSize_Largest" xml:space="preserve">
+    <value>En büyük</value>
+  </data>
+  <data name="Appearance_Motion" xml:space="preserve">
+    <value>Hareket</value>
+  </data>
+  <data name="Appearance_MotionSub" xml:space="preserve">
+    <value>Pencerelerdeki ve kartlardaki animasyonlar.</value>
+  </data>
+  <data name="Appearance_Motion_FollowWindows" xml:space="preserve">
+    <value>Windows&apos;u izle</value>
+  </data>
+  <data name="Appearance_Motion_Reduced" xml:space="preserve">
+    <value>Azaltılmış</value>
+  </data>
+  <data name="Appearance_Motion_Off" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="Appearance_Reset" xml:space="preserve">
+    <value>Görünümü varsayılana sıfırla</value>
+  </data>
+  <data name="Appearance_ResetAccessible" xml:space="preserve">
+    <value>Görünüm ayarlarını varsayılana sıfırla</value>
+  </data>
   <data name="Settings_Section_Stretch" xml:space="preserve">
     <value>Bloop ile esne</value>
   </data>

@@ -1030,6 +1030,132 @@
   <data name="Custom_Keep" xml:space="preserve">
     <value>この見た目にする</value>
   </data>
+  <data name="Appearance_Theme" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="Appearance_ThemeSub" xml:space="preserve">
+    <value>ライト、ダーク、または Windows の設定に合わせます。</value>
+  </data>
+  <data name="Appearance_Theme_System" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="Appearance_Theme_Light" xml:space="preserve">
+    <value>ライト</value>
+  </data>
+  <data name="Appearance_Theme_Dark" xml:space="preserve">
+    <value>ダーク</value>
+  </data>
+  <data name="Appearance_Accent" xml:space="preserve">
+    <value>アクセント カラー</value>
+  </data>
+  <data name="Appearance_AccentSub" xml:space="preserve">
+    <value>選ばない限り、Windows のアクセント カラーに従います。</value>
+  </data>
+  <data name="Appearance_Accent_Windows" xml:space="preserve">
+    <value>Windows のアクセント カラー</value>
+  </data>
+  <data name="Appearance_Accent_Blue" xml:space="preserve">
+    <value>ブルー</value>
+  </data>
+  <data name="Appearance_Accent_Teal" xml:space="preserve">
+    <value>ティール</value>
+  </data>
+  <data name="Appearance_Accent_Violet" xml:space="preserve">
+    <value>バイオレット</value>
+  </data>
+  <data name="Appearance_Accent_Rose" xml:space="preserve">
+    <value>ローズ</value>
+  </data>
+  <data name="Appearance_Accent_Orange" xml:space="preserve">
+    <value>オレンジ</value>
+  </data>
+  <data name="Appearance_Material" xml:space="preserve">
+    <value>ウィンドウの素材</value>
+  </data>
+  <data name="Appearance_MaterialSub" xml:space="preserve">
+    <value>ハイ コントラスト時は自動的に単色になります。</value>
+  </data>
+  <data name="Appearance_Material_Mica" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Appearance_Material_Acrylic" xml:space="preserve">
+    <value>アクリル</value>
+  </data>
+  <data name="Appearance_Material_Solid" xml:space="preserve">
+    <value>単色</value>
+  </data>
+  <data name="Appearance_Corners" xml:space="preserve">
+    <value>角</value>
+  </data>
+  <data name="Appearance_CornersSub" xml:space="preserve">
+    <value>カードやコントロールの丸さ。</value>
+  </data>
+  <data name="Appearance_Corners_Rounded" xml:space="preserve">
+    <value>丸い</value>
+  </data>
+  <data name="Appearance_Corners_Square" xml:space="preserve">
+    <value>四角</value>
+  </data>
+  <data name="Appearance_Corners_ExtraRound" xml:space="preserve">
+    <value>大きく丸い</value>
+  </data>
+  <data name="Appearance_Density" xml:space="preserve">
+    <value>密度</value>
+  </data>
+  <data name="Appearance_DensitySub" xml:space="preserve">
+    <value>設定カード内の余白。</value>
+  </data>
+  <data name="Appearance_Density_Standard" xml:space="preserve">
+    <value>標準</value>
+  </data>
+  <data name="Appearance_Density_Comfortable" xml:space="preserve">
+    <value>ゆったり</value>
+  </data>
+  <data name="Appearance_Density_Compact" xml:space="preserve">
+    <value>コンパクト</value>
+  </data>
+  <data name="Appearance_TextSize" xml:space="preserve">
+    <value>テキスト サイズ</value>
+  </data>
+  <data name="Appearance_TextSizeSub" xml:space="preserve">
+    <value>Windows のテキスト サイズに加算されます。</value>
+  </data>
+  <data name="Appearance_TextSize_Smaller" xml:space="preserve">
+    <value>小さめ</value>
+  </data>
+  <data name="Appearance_TextSize_Default" xml:space="preserve">
+    <value>既定</value>
+  </data>
+  <data name="Appearance_TextSize_Large" xml:space="preserve">
+    <value>大きめ</value>
+  </data>
+  <data name="Appearance_TextSize_Larger" xml:space="preserve">
+    <value>さらに大きめ</value>
+  </data>
+  <data name="Appearance_TextSize_Largest" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="Appearance_Motion" xml:space="preserve">
+    <value>モーション</value>
+  </data>
+  <data name="Appearance_MotionSub" xml:space="preserve">
+    <value>ウィンドウとカードのアニメーション。</value>
+  </data>
+  <data name="Appearance_Motion_FollowWindows" xml:space="preserve">
+    <value>Windows に従う</value>
+  </data>
+  <data name="Appearance_Motion_Reduced" xml:space="preserve">
+    <value>控えめ</value>
+  </data>
+  <data name="Appearance_Motion_Off" xml:space="preserve">
+    <value>オフ</value>
+  </data>
+  <data name="Appearance_Reset" xml:space="preserve">
+    <value>外観を既定に戻す</value>
+  </data>
+  <data name="Appearance_ResetAccessible" xml:space="preserve">
+    <value>外観の設定を既定に戻す</value>
+  </data>
   <data name="Settings_Section_Stretch" xml:space="preserve">
     <value>Bloopと一緒にストレッチ</value>
   </data>

@@ -1008,6 +1008,132 @@
   <data name="Custom_Keep" xml:space="preserve">
     <value>Deze look houden</value>
   </data>
+  <data name="Appearance_Theme" xml:space="preserve">
+    <value>Thema</value>
+  </data>
+  <data name="Appearance_ThemeSub" xml:space="preserve">
+    <value>Licht, donker of volg Windows.</value>
+  </data>
+  <data name="Appearance_Theme_System" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="Appearance_Theme_Light" xml:space="preserve">
+    <value>Licht</value>
+  </data>
+  <data name="Appearance_Theme_Dark" xml:space="preserve">
+    <value>Donker</value>
+  </data>
+  <data name="Appearance_Accent" xml:space="preserve">
+    <value>Accentkleur</value>
+  </data>
+  <data name="Appearance_AccentSub" xml:space="preserve">
+    <value>Volgt je Windows-accentkleur tenzij je er zelf een kiest.</value>
+  </data>
+  <data name="Appearance_Accent_Windows" xml:space="preserve">
+    <value>Windows-accentkleur</value>
+  </data>
+  <data name="Appearance_Accent_Blue" xml:space="preserve">
+    <value>Blauw</value>
+  </data>
+  <data name="Appearance_Accent_Teal" xml:space="preserve">
+    <value>Blauwgroen</value>
+  </data>
+  <data name="Appearance_Accent_Violet" xml:space="preserve">
+    <value>Violet</value>
+  </data>
+  <data name="Appearance_Accent_Rose" xml:space="preserve">
+    <value>Roze</value>
+  </data>
+  <data name="Appearance_Accent_Orange" xml:space="preserve">
+    <value>Oranje</value>
+  </data>
+  <data name="Appearance_Material" xml:space="preserve">
+    <value>Venstermateriaal</value>
+  </data>
+  <data name="Appearance_MaterialSub" xml:space="preserve">
+    <value>Effen wordt automatisch gebruikt bij hoog contrast.</value>
+  </data>
+  <data name="Appearance_Material_Mica" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Appearance_Material_Acrylic" xml:space="preserve">
+    <value>Acryl</value>
+  </data>
+  <data name="Appearance_Material_Solid" xml:space="preserve">
+    <value>Effen</value>
+  </data>
+  <data name="Appearance_Corners" xml:space="preserve">
+    <value>Hoeken</value>
+  </data>
+  <data name="Appearance_CornersSub" xml:space="preserve">
+    <value>Hoe rond kaarten en besturingselementen zijn.</value>
+  </data>
+  <data name="Appearance_Corners_Rounded" xml:space="preserve">
+    <value>Afgerond</value>
+  </data>
+  <data name="Appearance_Corners_Square" xml:space="preserve">
+    <value>Vierkant</value>
+  </data>
+  <data name="Appearance_Corners_ExtraRound" xml:space="preserve">
+    <value>Extra rond</value>
+  </data>
+  <data name="Appearance_Density" xml:space="preserve">
+    <value>Dichtheid</value>
+  </data>
+  <data name="Appearance_DensitySub" xml:space="preserve">
+    <value>Ruimte binnen instellingenkaarten.</value>
+  </data>
+  <data name="Appearance_Density_Standard" xml:space="preserve">
+    <value>Standaard</value>
+  </data>
+  <data name="Appearance_Density_Comfortable" xml:space="preserve">
+    <value>Comfortabel</value>
+  </data>
+  <data name="Appearance_Density_Compact" xml:space="preserve">
+    <value>Compact</value>
+  </data>
+  <data name="Appearance_TextSize" xml:space="preserve">
+    <value>Tekstgrootte</value>
+  </data>
+  <data name="Appearance_TextSizeSub" xml:space="preserve">
+    <value>Komt bovenop de tekstgrootte van Windows.</value>
+  </data>
+  <data name="Appearance_TextSize_Smaller" xml:space="preserve">
+    <value>Kleiner</value>
+  </data>
+  <data name="Appearance_TextSize_Default" xml:space="preserve">
+    <value>Standaard</value>
+  </data>
+  <data name="Appearance_TextSize_Large" xml:space="preserve">
+    <value>Groot</value>
+  </data>
+  <data name="Appearance_TextSize_Larger" xml:space="preserve">
+    <value>Groter</value>
+  </data>
+  <data name="Appearance_TextSize_Largest" xml:space="preserve">
+    <value>Grootst</value>
+  </data>
+  <data name="Appearance_Motion" xml:space="preserve">
+    <value>Beweging</value>
+  </data>
+  <data name="Appearance_MotionSub" xml:space="preserve">
+    <value>Animaties in vensters en kaarten.</value>
+  </data>
+  <data name="Appearance_Motion_FollowWindows" xml:space="preserve">
+    <value>Windows volgen</value>
+  </data>
+  <data name="Appearance_Motion_Reduced" xml:space="preserve">
+    <value>Beperkt</value>
+  </data>
+  <data name="Appearance_Motion_Off" xml:space="preserve">
+    <value>Uit</value>
+  </data>
+  <data name="Appearance_Reset" xml:space="preserve">
+    <value>Weergave terugzetten naar standaard</value>
+  </data>
+  <data name="Appearance_ResetAccessible" xml:space="preserve">
+    <value>Weergave-instellingen terugzetten naar standaard</value>
+  </data>
   <data name="Settings_Section_Stretch" xml:space="preserve">
     <value>Stretchen met Bloop</value>
   </data>
