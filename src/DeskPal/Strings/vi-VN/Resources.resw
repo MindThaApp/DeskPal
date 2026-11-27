@@ -1,0 +1,1275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Home_Greeting_Night" xml:space="preserve">
+    <value>Vẫn còn thức à? Hãy nhẹ nhàng với đôi mắt tối nay nhé.</value>
+    <comment>Greeting before 5:00</comment>
+  </data>
+  <data name="Home_Greeting_Morning" xml:space="preserve">
+    <value>Chào buổi sáng! Sẵn sàng cho một ngày tốt lành chưa?</value>
+    <comment>Greeting 5:00-11:59</comment>
+  </data>
+  <data name="Home_Greeting_Afternoon" xml:space="preserve">
+    <value>Chào buổi chiều! Giãn cơ một chút sẽ rất dễ chịu.</value>
+    <comment>Greeting 12:00-16:59</comment>
+  </data>
+  <data name="Home_Greeting_Evening" xml:space="preserve">
+    <value>Chào buổi tối! Hôm nay bạn làm tốt lắm.</value>
+    <comment>Greeting 17:00-21:59</comment>
+  </data>
+  <data name="Home_Greeting_Late" xml:space="preserve">
+    <value>Khuya rồi. Sắp đến lúc thư giãn chưa?</value>
+    <comment>Greeting from 22:00</comment>
+  </data>
+  <data name="Home_NextNothing" xml:space="preserve">
+    <value>Chưa có lịch nào</value>
+  </data>
+  <data name="Home_Kind_Eyes" xml:space="preserve">
+    <value>Nghỉ mắt</value>
+    <comment>Kind of break in the next-up line</comment>
+  </data>
+  <data name="Home_Kind_Walk" xml:space="preserve">
+    <value>Đi bộ</value>
+  </data>
+  <data name="Home_Kind_Stretch" xml:space="preserve">
+    <value>Giãn cơ</value>
+  </data>
+  <data name="Home_NextAt" xml:space="preserve">
+    <value>{0} lúc {1}</value>
+    <comment>{0} is the kind of break, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Home_NoHolds" xml:space="preserve">
+    <value>Không bị hoãn</value>
+  </data>
+  <data name="Home_Holding" xml:space="preserve">
+    <value>Đang hoãn: {0}</value>
+    <comment>{0} is a comma-separated list of reasons reminders are on hold</comment>
+  </data>
+  <data name="Home_Counts" xml:space="preserve">
+    <value>Giãn cơ {0}   Nghỉ mắt {1}   Đi bộ {2}</value>
+    <comment>Keep the wide gaps between items</comment>
+  </data>
+  <data name="Home_PausedUntil" xml:space="preserve">
+    <value>Tạm dừng đến {0}</value>
+    <comment>{0} is a time or "tomorrow 09:00"</comment>
+  </data>
+  <data name="Home_Tomorrow" xml:space="preserve">
+    <value>ngày mai {0}</value>
+    <comment>{0} is a time such as 09:00</comment>
+  </data>
+  <data name="Home_Held" xml:space="preserve">
+    <value>Đang hoãn: {0}</value>
+  </data>
+  <data name="Home_NextLine" xml:space="preserve">
+    <value>Tiếp theo: {0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Main_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Main_Nav_Home" xml:space="preserve">
+    <value>Trang chủ</value>
+  </data>
+  <data name="Main_Nav_Today" xml:space="preserve">
+    <value>Hôm nay</value>
+  </data>
+  <data name="Main_Nav_Bloop" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Main_Nav_Garden" xml:space="preserve">
+    <value>Khu vườn</value>
+  </data>
+  <data name="Main_Nav_About" xml:space="preserve">
+    <value>Giới thiệu</value>
+  </data>
+  <data name="Today_Title" xml:space="preserve">
+    <value>Hôm nay</value>
+  </data>
+  <data name="Today_NextUp" xml:space="preserve">
+    <value>Tiếp theo</value>
+  </data>
+  <data name="Today_DoneToday" xml:space="preserve">
+    <value>Đã xong hôm nay</value>
+  </data>
+  <data name="Today_Last7" xml:space="preserve">
+    <value>7 ngày qua</value>
+  </data>
+  <data name="Today_HistoryComingSoon" xml:space="preserve">
+    <value>Lịch sử sắp ra mắt.</value>
+  </data>
+  <data name="Today_Stretches" xml:space="preserve">
+    <value>Số lần giãn cơ hôm nay: {0}</value>
+  </data>
+  <data name="Today_EyeBreaks" xml:space="preserve">
+    <value>Số lần nghỉ mắt hôm nay: {0}</value>
+  </data>
+  <data name="Today_Walks" xml:space="preserve">
+    <value>Số lần đi bộ hôm nay: {0}</value>
+  </data>
+  <data name="Bloop_Title" xml:space="preserve">
+    <value>Bloop</value>
+  </data>
+  <data name="Bloop_Style_Flat" xml:space="preserve">
+    <value>Phẳng</value>
+  </data>
+  <data name="Bloop_Style_FlatNote" xml:space="preserve">
+    <value>Gọn gàng và đơn giản</value>
+  </data>
+  <data name="Bloop_Style_Soft3d" xml:space="preserve">
+    <value>3D mềm</value>
+  </data>
+  <data name="Bloop_Style_Soft3dNote" xml:space="preserve">
+    <value>Bo tròn và bóng bẩy</value>
+  </data>
+  <data name="Bloop_Style_3d" xml:space="preserve">
+    <value>3D (beta)</value>
+  </data>
+  <data name="Bloop_Style_3dNote" xml:space="preserve">
+    <value>Sống động và chọc được, dùng card đồ họa</value>
+  </data>
+  <data name="Bloop_Sounds" xml:space="preserve">
+    <value>Âm thanh Bloop</value>
+  </data>
+  <data name="Common_On" xml:space="preserve">
+    <value>Bật</value>
+  </data>
+  <data name="Common_Off" xml:space="preserve">
+    <value>Tắt</value>
+  </data>
+  <data name="Bloop_Look" xml:space="preserve">
+    <value>Diện mạo</value>
+  </data>
+  <data name="Bloop_Play" xml:space="preserve">
+    <value>Chơi</value>
+  </data>
+  <data name="Bloop_PlayText" xml:space="preserve">
+    <value>Ở trang Trang chủ, hãy chạm vào bụng, đầu, má, tay hoặc chân của Bloop, chạm liên tiếp vài lần, giữ lại, vuốt ve qua lại hoặc lướt ngang qua. Mỗi cách đều có phản ứng riêng, và đôi mắt của Bloop dõi theo con trỏ của bạn.</value>
+    <comment>Bloop is the name of the mascot; do not translate</comment>
+  </data>
+  <data name="Bloop_Bond" xml:space="preserve">
+    <value>Gắn kết</value>
+  </data>
+  <data name="Bloop_BondText" xml:space="preserve">
+    <value>Mức gắn kết: sắp ra mắt.</value>
+  </data>
+  <data name="Bloop_Evolution" xml:space="preserve">
+    <value>Tiến hóa</value>
+  </data>
+  <data name="Bloop_EvolutionText" xml:space="preserve">
+    <value>Tiến hóa: sắp ra mắt.</value>
+  </data>
+  <data name="Garden_Title" xml:space="preserve">
+    <value>Khu vườn</value>
+  </data>
+  <data name="Garden_Intro" xml:space="preserve">
+    <value>Khu vườn lớn lên khi bạn chăm sóc bản thân.</value>
+  </data>
+  <data name="Garden_Seedling" xml:space="preserve">
+    <value>Mầm non</value>
+  </data>
+  <data name="Garden_Young" xml:space="preserve">
+    <value>Cây non</value>
+  </data>
+  <data name="Garden_Bushy" xml:space="preserve">
+    <value>Xum xuê</value>
+  </data>
+  <data name="Garden_Bloom" xml:space="preserve">
+    <value>Nở hoa</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>Giới thiệu Desk Pal</value>
+  </data>
+  <data name="About_Tagline" xml:space="preserve">
+    <value>Nhắc giãn cơ và nghỉ mắt nhẹ nhàng từ Bloop.</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Phiên bản {0}</value>
+    <comment>{0} is the version number</comment>
+  </data>
+  <data name="About_CrashOn" xml:space="preserve">
+    <value>bật</value>
+    <comment>Fills the {0} in "Send crash reports: {0} (change in Settings)"</comment>
+  </data>
+  <data name="About_CrashOff" xml:space="preserve">
+    <value>tắt</value>
+  </data>
+  <data name="About_CrashLink" xml:space="preserve">
+    <value>Gửi báo cáo sự cố: {0} (thay đổi trong Cài đặt)</value>
+  </data>
+  <data name="Crash_Consent" xml:space="preserve">
+    <value>Gửi báo cáo sự cố để chúng tôi sửa lỗi nhanh chóng. Báo cáo không bao giờ chứa tệp hay nội dung bạn gõ.</value>
+  </data>
+  <data name="Crash_WhatsSent" xml:space="preserve">
+    <value>Nội dung được gửi</value>
+  </data>
+  <data name="Crash_OffHint" xml:space="preserve">
+    <value>Tắt bất cứ lúc nào trong Cài đặt &gt; Quyền riêng tư.</value>
+  </data>
+  <data name="Crash_NoticeTitle" xml:space="preserve">
+    <value>Desk Pal giờ gửi báo cáo sự cố để giúp chúng tôi sửa lỗi nhanh chóng</value>
+  </data>
+  <data name="Crash_NoticeDone" xml:space="preserve">
+    <value>Đã hiểu</value>
+  </data>
+  <data name="Common_Pause30" xml:space="preserve">
+    <value>Dừng 30 phút</value>
+    <comment>Button; the number is a fixed 30 minutes</comment>
+  </data>
+  <data name="Common_Resume" xml:space="preserve">
+    <value>Tiếp tục</value>
+  </data>
+  <data name="Common_Done" xml:space="preserve">
+    <value>Xong</value>
+  </data>
+  <data name="Home_Stage.AutomationProperties.Name" xml:space="preserve">
+    <value>Bloop, chạm, giữ, vuốt ve hoặc lướt</value>
+    <comment>Accessible name of the interactive mascot area</comment>
+  </data>
+  <data name="Home_SproutHit.AutomationProperties.Name" xml:space="preserve">
+    <value>Sprout</value>
+    <comment>Sprout is the plant companion's name</comment>
+  </data>
+  <data name="Home_NextUpHeader.Text" xml:space="preserve">
+    <value>Tiếp theo</value>
+  </data>
+  <data name="Home_TodayHeader.Text" xml:space="preserve">
+    <value>Hôm nay</value>
+  </data>
+  <data name="Home_QuickActionsHeader.Text" xml:space="preserve">
+    <value>Thao tác nhanh</value>
+  </data>
+  <data name="Home_StretchNow.Content" xml:space="preserve">
+    <value>Giãn cơ ngay</value>
+  </data>
+  <data name="Home_EyeNow.Content" xml:space="preserve">
+    <value>Nghỉ mắt ngay</value>
+  </data>
+  <data name="Home_OpenSettings.Content" xml:space="preserve">
+    <value>Mở cài đặt</value>
+  </data>
+  <data name="Home_SoundsOn" xml:space="preserve">
+    <value>Bật âm thanh</value>
+  </data>
+  <data name="Home_SoundsOff" xml:space="preserve">
+    <value>Tắt âm thanh</value>
+  </data>
+  <data name="Home_SoundsOnAccessible" xml:space="preserve">
+    <value>Âm thanh Bloop đang bật, nhấp để tắt tiếng</value>
+  </data>
+  <data name="Home_SoundsOffAccessible" xml:space="preserve">
+    <value>Âm thanh Bloop đang tắt, nhấp để bật</value>
+  </data>
+  <data name="Quick_Stat_Stretches" xml:space="preserve">
+    <value>Giãn cơ</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_EyeBreaks" xml:space="preserve">
+    <value>Nghỉ mắt</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_Stat_Walks" xml:space="preserve">
+    <value>Đi bộ</value>
+    <comment>Label under a progress ring; keep short</comment>
+  </data>
+  <data name="Quick_StatAccessible" xml:space="preserve">
+    <value>{0}: {1}/{2} hôm nay</value>
+    <comment>{0} is the stat label, {1} done, {2} goal</comment>
+  </data>
+  <data name="Quick_StatAccessibleNoGoal" xml:space="preserve">
+    <value>{0}: {1} hôm nay, không có mục tiêu</value>
+  </data>
+  <data name="Quick_SoundsOnAccessible" xml:space="preserve">
+    <value>Âm thanh tương tác đang bật. Tắt</value>
+  </data>
+  <data name="Quick_SoundsOffAccessible" xml:space="preserve">
+    <value>Âm thanh tương tác đang tắt. Bật</value>
+  </data>
+  <data name="Quick_ResumeAccessible" xml:space="preserve">
+    <value>Tiếp tục nhắc nhở</value>
+  </data>
+  <data name="Quick_Pause30Accessible" xml:space="preserve">
+    <value>Tạm dừng 30 phút</value>
+  </data>
+  <data name="Quick_StretchButton.Content" xml:space="preserve">
+    <value>Giãn cơ ngay</value>
+  </data>
+  <data name="Quick_StretchButton.AutomationProperties.Name" xml:space="preserve">
+    <value>Giãn cơ ngay</value>
+  </data>
+  <data name="Quick_EyeButton.Content" xml:space="preserve">
+    <value>Nghỉ mắt</value>
+    <comment>Keep short; button</comment>
+  </data>
+  <data name="Quick_EyeButton.AutomationProperties.Name" xml:space="preserve">
+    <value>Nghỉ mắt</value>
+  </data>
+  <data name="Quick_OpenLink.Content" xml:space="preserve">
+    <value>Mở Desk Pal ›</value>
+  </data>
+  <data name="Quick_OpenLink.AutomationProperties.Name" xml:space="preserve">
+    <value>Mở Desk Pal</value>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>Mở Desk Pal</value>
+  </data>
+  <data name="Tray_StretchNow" xml:space="preserve">
+    <value>Giãn cơ ngay</value>
+  </data>
+  <data name="Tray_Pause" xml:space="preserve">
+    <value>Tạm dừng</value>
+  </data>
+  <data name="Tray_Pause30" xml:space="preserve">
+    <value>30 phút</value>
+  </data>
+  <data name="Tray_Pause1h" xml:space="preserve">
+    <value>1 giờ</value>
+  </data>
+  <data name="Tray_PauseTomorrow" xml:space="preserve">
+    <value>Đến ngày mai</value>
+  </data>
+  <data name="Tray_Resume" xml:space="preserve">
+    <value>Tiếp tục</value>
+  </data>
+  <data name="Tray_Style" xml:space="preserve">
+    <value>Kiểu</value>
+  </data>
+  <data name="Tray_AnimateIcon" xml:space="preserve">
+    <value>Biểu tượng khay chuyển động</value>
+  </data>
+  <data name="Tray_CrashReports" xml:space="preserve">
+    <value>Gửi báo cáo sự cố</value>
+  </data>
+  <data name="Tray_Settings" xml:space="preserve">
+    <value>Cài đặt</value>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>Thoát</value>
+  </data>
+  <data name="Tray_NextUp" xml:space="preserve">
+    <value>Tiếp theo: {0}</value>
+    <comment>{0} is the next-up line</comment>
+  </data>
+  <data name="Tray_Today" xml:space="preserve">
+    <value>Hôm nay: {0} lần giãn cơ · {1} lần nghỉ mắt · {2} lần đi bộ</value>
+  </data>
+  <data name="Tray_On" xml:space="preserve">
+    <value>{0}, bật</value>
+    <comment>Accessible name of a toggle row</comment>
+  </data>
+  <data name="Tray_Off" xml:space="preserve">
+    <value>{0}, tắt</value>
+  </data>
+  <data name="Eye_Pill" xml:space="preserve">
+    <value>Nhìn xa 6 m · {0} giây</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Settings_WindowTitle" xml:space="preserve">
+    <value>Cài đặt Desk Pal</value>
+  </data>
+  <data name="Approval_Title" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Window title</comment>
+  </data>
+  <data name="Approval_Allow" xml:space="preserve">
+    <value>Cho phép</value>
+  </data>
+  <data name="Approval_NotNow" xml:space="preserve">
+    <value>Để sau</value>
+  </data>
+  <data name="Approval_Question" xml:space="preserve">
+    <value>Cho phép {0} điều khiển Desk Pal?</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Approval_Body" xml:space="preserve">
+    <value>{0} muốn bắt đầu giờ nghỉ, bật hoặc tắt chế độ tập trung và tạm dừng nhắc nhở của bạn. Desk Pal chỉ hỏi một lần cho mỗi ứng dụng; bạn có thể gỡ bất cứ lúc nào trong Cài đặt.</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Buddy_Title" xml:space="preserve">
+    <value>Bloop</value>
+    <comment>Window title and accessible name of the floating mascot</comment>
+  </data>
+  <data name="App_TrayTooltip" xml:space="preserve">
+    <value>Desk Pal</value>
+    <comment>Tray icon tooltip</comment>
+  </data>
+  <data name="Tray_Tooltip_Held" xml:space="preserve">
+    <value>Desk Pal: đang hoãn ({0})</value>
+    <comment>{0} is the reason reminders are on hold</comment>
+  </data>
+  <data name="Tray_Tooltip_Next" xml:space="preserve">
+    <value>Desk Pal: tiếp theo {0} {1}</value>
+    <comment>{0} is the kind of break in lower case, {1} a time such as 14:30</comment>
+  </data>
+  <data name="Tray_Kind_Eyes" xml:space="preserve">
+    <value>nghỉ mắt</value>
+    <comment>Lower case, used inside a sentence</comment>
+  </data>
+  <data name="Tray_Kind_Walk" xml:space="preserve">
+    <value>đi bộ</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Stretch" xml:space="preserve">
+    <value>giãn cơ</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Water" xml:space="preserve">
+    <value>nghỉ uống nước</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Tray_Kind_Breathe" xml:space="preserve">
+    <value>nghỉ thở</value>
+    <comment>Lower case</comment>
+  </data>
+  <data name="Hold_Dnd" xml:space="preserve">
+    <value>Hỗ trợ tập trung hoặc toàn màn hình</value>
+    <comment>Reason reminders are on hold when Windows Focus Assist or a full-screen app is active</comment>
+  </data>
+  <data name="Toast_Start" xml:space="preserve">
+    <value>Bắt đầu</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_Snooze10" xml:space="preserve">
+    <value>10 phút nữa</value>
+    <comment>Toast button; snoozes the reminder</comment>
+  </data>
+  <data name="Toast_Skip" xml:space="preserve">
+    <value>Bỏ qua</value>
+    <comment>Toast button</comment>
+  </data>
+  <data name="Toast_StillHere" xml:space="preserve">
+    <value>Desk Pal vẫn ở đây trong khay hệ thống.</value>
+    <comment>Shown when the main window is closed</comment>
+  </data>
+  <data name="Nudge_CountdownSeconds" xml:space="preserve">
+    <value>{0} giây</value>
+    <comment>{0} is the seconds left</comment>
+  </data>
+  <data name="Nudge_BonusHint" xml:space="preserve">
+    <value>Giãn cơ đủ thời gian để nhận thưởng</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Nudge_BonusDone" xml:space="preserve">
+    <value>Giãn cơ trọn vẹn! Làm tốt lắm</value>
+    <comment>Shown when the countdown reaches zero; keep short</comment>
+  </data>
+  <data name="Nudge_More.AutomationProperties.Name" xml:space="preserve">
+    <value>Thêm tùy chọn</value>
+  </data>
+  <data name="Nudge_More.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Thêm</value>
+  </data>
+  <data name="Nudge_Skip.Text" xml:space="preserve">
+    <value>Bỏ qua lần này</value>
+    <comment>Menu item</comment>
+  </data>
+  <data name="Nudge_Done.Content" xml:space="preserve">
+    <value>Xong</value>
+  </data>
+  <data name="Nudge_Snooze.Content" xml:space="preserve">
+    <value>Báo lại</value>
+  </data>
+  <data name="Nudge_Snooze.AutomationProperties.Name" xml:space="preserve">
+    <value>Báo lại sau 10 phút</value>
+  </data>
+  <data name="Nudge_Snooze.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Báo lại sau 10 phút</value>
+  </data>
+  <data name="Nudge_BonusHintText.Text" xml:space="preserve">
+    <value>Giãn cơ đủ thời gian để nhận thưởng</value>
+    <comment>Shown next to the countdown; keep short, it wraps in a narrow card</comment>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Cài đặt</value>
+    <comment>Page title</comment>
+  </data>
+  <data name="Settings_Section_Reminders" xml:space="preserve">
+    <value>Nhắc nhở</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_WorkingHours" xml:space="preserve">
+    <value>Giờ làm việc</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Appearance" xml:space="preserve">
+    <value>Giao diện</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Section_Portal" xml:space="preserve">
+    <value>Automation Portal</value>
+    <comment>Section heading; Automation Portal is an app name</comment>
+  </data>
+  <data name="Settings_Section_Privacy" xml:space="preserve">
+    <value>Quyền riêng tư</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Settings_Movement_Name" xml:space="preserve">
+    <value>Vận động</value>
+    <comment>Reminder name; combined into "{name} — {what}"</comment>
+  </data>
+  <data name="Settings_Movement_What" xml:space="preserve">
+    <value>Giãn cơ hoặc đứng dậy</value>
+  </data>
+  <data name="Settings_Movement_Reason" xml:space="preserve">
+    <value>Ngắt quãng việc ngồi khoảng mỗi 30 phút được khuyến nghị rộng rãi để giảm cứng người.</value>
+  </data>
+  <data name="Settings_Eyes_Name" xml:space="preserve">
+    <value>Mắt</value>
+  </data>
+  <data name="Settings_Eyes_What" xml:space="preserve">
+    <value>Nghỉ mắt 20-20-20 (nhắc nhẹ nhàng)</value>
+  </data>
+  <data name="Settings_Eyes_Reason" xml:space="preserve">
+    <value>Thói quen 20-20-20: cứ 20 phút, nhìn xa khoảng 6 mét trong 20 giây.</value>
+  </data>
+  <data name="Settings_Water_Name" xml:space="preserve">
+    <value>Nước</value>
+  </data>
+  <data name="Settings_Water_What" xml:space="preserve">
+    <value>Uống nước</value>
+  </data>
+  <data name="Settings_Water_Reason" xml:space="preserve">
+    <value>Nhấp từng ngụm nhỏ đều đặn dễ hơn là uống bù về sau.</value>
+  </data>
+  <data name="Settings_Walk_Name" xml:space="preserve">
+    <value>Đi bộ</value>
+  </data>
+  <data name="Settings_Walk_What" xml:space="preserve">
+    <value>Đi bộ ngắn thay cho giãn cơ</value>
+  </data>
+  <data name="Settings_Walk_Reason" xml:space="preserve">
+    <value>Đi bộ ngắn mỗi vài giờ giúp bạn tỉnh táo trở lại.</value>
+  </data>
+  <data name="Settings_SitStand_Name" xml:space="preserve">
+    <value>Ngồi / đứng</value>
+  </data>
+  <data name="Settings_SitStand_What" xml:space="preserve">
+    <value>Dành cho bàn đứng</value>
+  </data>
+  <data name="Settings_SitStand_Reason" xml:space="preserve">
+    <value>Nếu bạn có bàn đứng, đổi tư thế mỗi 30–60 phút giúp bạn thoải mái.</value>
+  </data>
+  <data name="Settings_Minutes" xml:space="preserve">
+    <value>{0} phút</value>
+    <comment>{0} is a number of minutes</comment>
+  </data>
+  <data name="Settings_WaterWithBreaks" xml:space="preserve">
+    <value>Cùng giờ nghỉ vận động</value>
+  </data>
+  <data name="Settings_WaterHourly" xml:space="preserve">
+    <value>Mỗi 60 phút</value>
+  </data>
+  <data name="Settings_AfterStretches" xml:space="preserve">
+    <value>Sau {0} lần giãn cơ</value>
+  </data>
+  <data name="Settings_EveryMinutes" xml:space="preserve">
+    <value>Mỗi {0} phút</value>
+  </data>
+  <data name="Settings_OffByDefault" xml:space="preserve">
+    <value>Mặc định tắt</value>
+    <comment>Shown after "Recommended:" for sit / stand</comment>
+  </data>
+  <data name="Settings_RecommendedTag" xml:space="preserve">
+    <value> ★ Khuyến nghị</value>
+    <comment>Appended to the recommended choice; keep the leading space</comment>
+  </data>
+  <data name="Settings_RecommendedLine" xml:space="preserve">
+    <value>Khuyến nghị: {0}</value>
+    <comment>{0} is a short option label in lower case</comment>
+  </data>
+  <data name="Settings_ResetAll" xml:space="preserve">
+    <value>Đặt lại tất cả theo khuyến nghị</value>
+  </data>
+  <data name="Settings_ResetAllAccessible" xml:space="preserve">
+    <value>Đặt lại tất cả nhắc nhở theo khuyến nghị</value>
+  </data>
+  <data name="Settings_NameDash" xml:space="preserve">
+    <value>{0} — {1}</value>
+    <comment>{0} is the reminder name, {1} what it is for</comment>
+  </data>
+  <data name="Settings_ReminderOnOff" xml:space="preserve">
+    <value>Bật hoặc tắt nhắc nhở {0}</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Frequency" xml:space="preserve">
+    <value>Tần suất {0}</value>
+    <comment>{0} is the reminder name</comment>
+  </data>
+  <data name="Settings_Custom" xml:space="preserve">
+    <value>Tùy chỉnh…</value>
+    <comment>Combo box item for a custom number of minutes</comment>
+  </data>
+  <data name="Settings_CustomMinutesHeader" xml:space="preserve">
+    <value>Số phút (15–120)</value>
+    <comment>Keep the range in step with the app limits 15 and 120</comment>
+  </data>
+  <data name="Settings_CustomMinutesAccessible" xml:space="preserve">
+    <value>Số phút tùy chỉnh cho {0}</value>
+  </data>
+  <data name="Settings_Reset" xml:space="preserve">
+    <value>Đặt lại</value>
+    <comment>Link that resets one reminder to the recommended setting</comment>
+  </data>
+  <data name="Settings_ResetAccessible" xml:space="preserve">
+    <value>Đặt lại {0} theo khuyến nghị</value>
+  </data>
+  <data name="Settings_NudgeStyle" xml:space="preserve">
+    <value>Kiểu nhắc</value>
+  </data>
+  <data name="Settings_NudgeStyleSub" xml:space="preserve">
+    <value>Cách lời nhắc xuất hiện</value>
+  </data>
+  <data name="Settings_Style_Card" xml:space="preserve">
+    <value>Thẻ</value>
+  </data>
+  <data name="Settings_Style_Toast" xml:space="preserve">
+    <value>Thông báo</value>
+    <comment>Windows notification</comment>
+  </data>
+  <data name="Settings_HideAfter" xml:space="preserve">
+    <value>Ẩn lời nhắc sau</value>
+  </data>
+  <data name="Settings_HideAfterSub" xml:space="preserve">
+    <value>Thẻ nhắc nhở bị bỏ qua sẽ tự ẩn</value>
+  </data>
+  <data name="Settings_Seconds" xml:space="preserve">
+    <value>{0} giây</value>
+    <comment>{0} is a number of seconds</comment>
+  </data>
+  <data name="Settings_AvatarStyle" xml:space="preserve">
+    <value>Kiểu hình đại diện</value>
+  </data>
+  <data name="Settings_AvatarStyleSub" xml:space="preserve">
+    <value>Cách Bloop được vẽ</value>
+  </data>
+  <data name="Settings_AnimateTray" xml:space="preserve">
+    <value>Biểu tượng khay chuyển động</value>
+  </data>
+  <data name="Settings_AnimateTraySub" xml:space="preserve">
+    <value>Cho biểu tượng khay chuyển động khi có lời nhắc</value>
+  </data>
+  <data name="Settings_BloopSounds" xml:space="preserve">
+    <value>Âm thanh Bloop</value>
+  </data>
+  <data name="Settings_BloopSoundsSub" xml:space="preserve">
+    <value>Âm thanh nhẹ khi bạn chọc, vỗ hoặc lướt trên Bloop. Im lặng khi đang gọi và khi bật Hỗ trợ tập trung</value>
+  </data>
+  <data name="Settings_ShareEvents" xml:space="preserve">
+    <value>Chia sẻ sự kiện với Automation Portal</value>
+  </data>
+  <data name="Settings_ShareEventsSub" xml:space="preserve">
+    <value>Cho phép lối tắt phản ứng với giờ nghỉ, chế độ tập trung và tạm dừng trên PC này. Chỉ chia sẻ số lượng và thời gian</value>
+  </data>
+  <data name="Settings_AllowControl" xml:space="preserve">
+    <value>Cho phép Automation Portal và ứng dụng khác điều khiển Desk Pal</value>
+    <comment>Also quoted by an error message in the app; keep wording in step</comment>
+  </data>
+  <data name="Settings_AllowControlSub" xml:space="preserve">
+    <value>Chúng có thể bắt đầu giờ nghỉ, bật hoặc tắt chế độ tập trung và tạm dừng. Mỗi ứng dụng hỏi bạn một lần</value>
+  </data>
+  <data name="Settings_CrashReports" xml:space="preserve">
+    <value>Gửi báo cáo sự cố</value>
+  </data>
+  <data name="Settings_CrashReportsSub" xml:space="preserve">
+    <value>Giúp sửa lỗi bằng cách gửi báo cáo khi ứng dụng gặp sự cố</value>
+  </data>
+  <data name="Settings_AppsAllowed" xml:space="preserve">
+    <value>Ứng dụng bạn đã cho phép</value>
+  </data>
+  <data name="Settings_AppsAllowedSub" xml:space="preserve">
+    <value>Các ứng dụng được phép thay đổi Desk Pal. Gỡ một ứng dụng để được hỏi lại</value>
+  </data>
+  <data name="Settings_OpenPortal" xml:space="preserve">
+    <value>Mở Automation Portal</value>
+  </data>
+  <data name="Settings_GetPortal" xml:space="preserve">
+    <value>Tải Automation Portal</value>
+  </data>
+  <data name="Settings_None" xml:space="preserve">
+    <value>Chưa có</value>
+  </data>
+  <data name="Settings_Remove" xml:space="preserve">
+    <value>Gỡ</value>
+  </data>
+  <data name="Settings_RemoveAccessible" xml:space="preserve">
+    <value>Gỡ {0}</value>
+    <comment>{0} is an app name</comment>
+  </data>
+  <data name="Settings_SkippedOne" xml:space="preserve">
+    <value>Hôm nay bỏ qua 1 sự kiện (Automation Portal không khả dụng)</value>
+  </data>
+  <data name="Settings_SkippedMany" xml:space="preserve">
+    <value>Hôm nay bỏ qua {0} sự kiện (Automation Portal không khả dụng)</value>
+  </data>
+  <data name="Settings_Start" xml:space="preserve">
+    <value>Bắt đầu</value>
+    <comment>Time picker header for the start of the working day</comment>
+  </data>
+  <data name="Settings_End" xml:space="preserve">
+    <value>Kết thúc</value>
+    <comment>Time picker header for the end of the working day</comment>
+  </data>
+  <data name="Settings_DayStart" xml:space="preserve">
+    <value>Bắt đầu ngày làm việc</value>
+  </data>
+  <data name="Settings_DayEnd" xml:space="preserve">
+    <value>Kết thúc ngày làm việc</value>
+  </data>
+  <data name="Settings_WorkingHoursSub" xml:space="preserve">
+    <value>Nhắc nhở chỉ xuất hiện vào những ngày và giờ này</value>
+  </data>
+  <data name="Settings_Section_Language" xml:space="preserve">
+    <value>Ngôn ngữ</value>
+    <comment>Section heading</comment>
+  </data>
+  <data name="Language_PickerAccessible" xml:space="preserve">
+    <value>Ngôn ngữ</value>
+    <comment>Accessible name of the language list</comment>
+  </data>
+  <data name="Language_SwitchTitle" xml:space="preserve">
+    <value>Chuyển sang {0}?</value>
+    <comment>Confirm dialog title; {0} is the language's own name</comment>
+  </data>
+  <data name="Language_SwitchBody" xml:space="preserve">
+    <value>Desk Pal sẽ khởi động lại. Bạn sẽ được hỏi có giữ ngôn ngữ mới không, và nếu không trả lời, ứng dụng tự quay lại sau 30 giây.</value>
+    <comment>Confirm dialog text</comment>
+  </data>
+  <data name="Language_SwitchButton" xml:space="preserve">
+    <value>Chuyển</value>
+    <comment>Confirm dialog primary button</comment>
+  </data>
+  <data name="Language_CancelButton" xml:space="preserve">
+    <value>Hủy</value>
+    <comment>Confirm dialog cancel button</comment>
+  </data>
+  <data name="Language_Keep_Title" xml:space="preserve">
+    <value>Giữ ngôn ngữ này?</value>
+    <comment>Title of the window shown after a language switch</comment>
+  </data>
+  <data name="Language_Keep_Body" xml:space="preserve">
+    <value>Desk Pal hiện đang hiển thị {0}.</value>
+    <comment>{0} is the new language's own name</comment>
+  </data>
+  <data name="Language_Keep_Countdown" xml:space="preserve">
+    <value>Quay lại sau {0} giây.</value>
+    <comment>Countdown line; {0} is the seconds left</comment>
+  </data>
+  <data name="Language_Keep_Button" xml:space="preserve">
+    <value>Giữ</value>
+    <comment>Keep the new language</comment>
+  </data>
+  <data name="Language_GoBack_Button" xml:space="preserve">
+    <value>Quay lại</value>
+    <comment>Return to the previous language</comment>
+  </data>
+  <data name="Wizard_WindowTitle" xml:space="preserve">
+    <value>Chào mừng đến với Desk Pal</value>
+    <comment>Setup window title</comment>
+  </data>
+  <data name="Wizard_Step" xml:space="preserve">
+    <value>Bước {0}/{1}</value>
+    <comment>Setup progress; {0} is the current step, {1} the number of steps</comment>
+  </data>
+  <data name="Wizard_Language_Sub" xml:space="preserve">
+    <value>Chọn ngôn ngữ Desk Pal sử dụng. Chọn ngôn ngữ khác sẽ khởi động lại Desk Pal.</value>
+    <comment>Setup page 1 text</comment>
+  </data>
+  <data name="Wizard_Hours_Title" xml:space="preserve">
+    <value>Bạn làm việc lúc nào?</value>
+    <comment>Setup page 2 heading</comment>
+  </data>
+  <data name="Wizard_Hours_Sub" xml:space="preserve">
+    <value>Bloop chỉ nhắc bạn trong giờ làm việc. Bạn có thể chọn các ngày sau trong Cài đặt.</value>
+    <comment>Setup page 2 text</comment>
+  </data>
+  <data name="Wizard_Back" xml:space="preserve">
+    <value>Quay lại</value>
+    <comment>Setup button</comment>
+  </data>
+  <data name="Wizard_Next" xml:space="preserve">
+    <value>Tiếp</value>
+    <comment>Setup button</comment>
+  </data>
+  <data name="Wizard_Finish" xml:space="preserve">
+    <value>Hoàn tất</value>
+    <comment>Setup button</comment>
+  </data>
+  <data name="Main_Nav_Pro" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Navigation item; product name, keep as is</comment>
+  </data>
+  <data name="Pro_Badge" xml:space="preserve">
+    <value>Pro</value>
+    <comment>Small badge next to paid features; keep short</comment>
+  </data>
+  <data name="Pro_Title" xml:space="preserve">
+    <value>Desk Pal Evolution</value>
+    <comment>Product name, keep as is</comment>
+  </data>
+  <data name="Pro_Intro" xml:space="preserve">
+    <value>Biến Desk Pal thành của riêng bạn. Mua một lần mở khóa mọi tính năng Pro, hiện tại và tương lai.</value>
+  </data>
+  <data name="Pro_Status_Free" xml:space="preserve">
+    <value>Bạn đang dùng bản miễn phí. Mọi thứ bạn dùng hôm nay vẫn miễn phí.</value>
+  </data>
+  <data name="Pro_Status_Trial" xml:space="preserve">
+    <value>Dùng thử Pro: còn {0} ngày.</value>
+    <comment>{0} = days left in the trial (2 to 7)</comment>
+  </data>
+  <data name="Pro_Status_TrialLastDay" xml:space="preserve">
+    <value>Dùng thử Pro: ngày cuối.</value>
+  </data>
+  <data name="Pro_Status_TrialEnded" xml:space="preserve">
+    <value>Thời gian dùng thử Pro đã kết thúc. Lựa chọn của bạn được lưu và sẽ trở lại khi bạn có Pro.</value>
+  </data>
+  <data name="Pro_Status_Owned" xml:space="preserve">
+    <value>Pro đã được mở khóa. Cảm ơn bạn đã ủng hộ Desk Pal!</value>
+  </data>
+  <data name="Pro_Includes" xml:space="preserve">
+    <value>Pro mang lại gì</value>
+  </data>
+  <data name="Pro_Feature_Custom" xml:space="preserve">
+    <value>Diện mạo riêng: tùy chỉnh Bloop và Desk Pal theo ý bạn.</value>
+  </data>
+  <data name="Pro_Feature_Stretch" xml:space="preserve">
+    <value>Giãn cơ cùng Bloop (sắp ra mắt).</value>
+  </data>
+  <data name="Pro_Feature_Future" xml:space="preserve">
+    <value>Mọi tính năng Pro trong tương lai, không tốn thêm phí.</value>
+  </data>
+  <data name="Pro_AlwaysFree" xml:space="preserve">
+    <value>Luôn miễn phí</value>
+  </data>
+  <data name="Pro_AlwaysFreeText" xml:space="preserve">
+    <value>Mọi nhắc nhở, giờ yên tĩnh, vòng mục tiêu, chuỗi ngày, Bloop và Sprout, bốn giai đoạn của khu vườn và lịch sử 7 ngày.</value>
+  </data>
+  <data name="Pro_TryFree" xml:space="preserve">
+    <value>Dùng thử Pro miễn phí 7 ngày</value>
+  </data>
+  <data name="Pro_Buy" xml:space="preserve">
+    <value>Mua Pro</value>
+  </data>
+  <data name="Pro_BuyPrice" xml:space="preserve">
+    <value>Mua Pro — {0}</value>
+    <comment>Button; {0} = price from the Store, e.g. £3.99</comment>
+  </data>
+  <data name="Pro_Restore" xml:space="preserve">
+    <value>Khôi phục giao dịch mua</value>
+  </data>
+  <data name="Pro_OneTime" xml:space="preserve">
+    <value>Mua một lần. Không đăng ký.</value>
+  </data>
+  <data name="Pro_Msg_TrialStarted" xml:space="preserve">
+    <value>Bản dùng thử Pro 7 ngày của bạn đã bắt đầu. Chúc bạn vui!</value>
+  </data>
+  <data name="Pro_Msg_Thanks" xml:space="preserve">
+    <value>Cảm ơn bạn! Pro đã được mở khóa.</value>
+  </data>
+  <data name="Pro_Msg_NotPurchased" xml:space="preserve">
+    <value>Chưa có giao dịch mua nào.</value>
+  </data>
+  <data name="Pro_Msg_StoreError" xml:space="preserve">
+    <value>Không thể kết nối Microsoft Store. Vui lòng thử lại sau.</value>
+  </data>
+  <data name="Pro_Msg_NoStore" xml:space="preserve">
+    <value>Việc mua cần phiên bản Desk Pal từ Microsoft Store.</value>
+  </data>
+  <data name="Pro_Msg_Restored" xml:space="preserve">
+    <value>Pro đã được mở khóa cho tài khoản này.</value>
+  </data>
+  <data name="Pro_Msg_NothingToRestore" xml:space="preserve">
+    <value>Không tìm thấy giao dịch mua Desk Pal Evolution nào cho tài khoản này.</value>
+  </data>
+  <data name="Pro_SettingsName" xml:space="preserve">
+    <value>Tính năng Pro</value>
+  </data>
+  <data name="Pro_SeeMore" xml:space="preserve">
+    <value>Xem Pro</value>
+  </data>
+  <data name="Home_StreakHeader.Text" xml:space="preserve">
+    <value>Chuỗi ngày</value>
+  </data>
+  <data name="Home_LastWeekLink.Content" xml:space="preserve">
+    <value>Tuần trước</value>
+  </data>
+  <data name="Home_RecapTitle.Text" xml:space="preserve">
+    <value>Tuần trước</value>
+  </data>
+  <data name="Home_RecapIntro.Text" xml:space="preserve">
+    <value>Đây là tuần trước của bạn.</value>
+  </data>
+  <data name="Home_RecapDismiss.Content" xml:space="preserve">
+    <value>Đã hiểu</value>
+  </data>
+  <data name="Home_StreakOverall" xml:space="preserve">
+    <value>Số ngày liên tiếp: {0}</value>
+  </data>
+  <data name="Home_StreakLine" xml:space="preserve">
+    <value>{0}: {1} (cao nhất: {2})</value>
+  </data>
+  <data name="Home_StreakNewBest" xml:space="preserve">
+    <value>Chuỗi kỷ lục mới: {0}. Bloop đang cổ vũ bạn!</value>
+  </data>
+  <data name="Home_StreakFresh" xml:space="preserve">
+    <value>Một khởi đầu mới hôm nay. Bloop rất vui vì có bạn ở đây.</value>
+  </data>
+  <data name="Streak_Kind_Stretch" xml:space="preserve">
+    <value>Giãn cơ</value>
+  </data>
+  <data name="Streak_Kind_Eyes" xml:space="preserve">
+    <value>Mắt</value>
+  </data>
+  <data name="Streak_Kind_Walk" xml:space="preserve">
+    <value>Đi bộ</value>
+  </data>
+  <data name="Home_RecapLine" xml:space="preserve">
+    <value>{0}: đã xong {1}, số ngày đạt mục tiêu: {2}</value>
+  </data>
+  <data name="Home_RecapAllDays" xml:space="preserve">
+    <value>Số ngày đạt mọi mục tiêu: {0}</value>
+  </data>
+  <data name="Home_RecapBest" xml:space="preserve">
+    <value>Chuỗi dài nhất: {0}</value>
+  </data>
+  <data name="Custom_Title" xml:space="preserve">
+    <value>Tùy chỉnh</value>
+  </data>
+  <data name="Custom_Intro" xml:space="preserve">
+    <value>Chọn màu của Bloop, chiếc mũ và chậu của Sprout. Chạm vào bất kỳ lựa chọn nào để xem thử ở đây trước.</value>
+  </data>
+  <data name="Custom_PreviewName" xml:space="preserve">
+    <value>Xem trước Bloop và Sprout</value>
+  </data>
+  <data name="Custom_Colour" xml:space="preserve">
+    <value>Màu của Bloop</value>
+  </data>
+  <data name="Custom_Hat" xml:space="preserve">
+    <value>Mũ</value>
+  </data>
+  <data name="Custom_Pot" xml:space="preserve">
+    <value>Chậu của Sprout</value>
+  </data>
+  <data name="Custom_Colour_Blue" xml:space="preserve">
+    <value>Xanh da trời</value>
+  </data>
+  <data name="Custom_Colour_Mint" xml:space="preserve">
+    <value>Xanh bạc hà</value>
+  </data>
+  <data name="Custom_Colour_Peach" xml:space="preserve">
+    <value>Hồng đào</value>
+  </data>
+  <data name="Custom_Colour_Lilac" xml:space="preserve">
+    <value>Tím lilac</value>
+  </data>
+  <data name="Custom_Colour_Sunny" xml:space="preserve">
+    <value>Vàng nắng</value>
+  </data>
+  <data name="Custom_Colour_Bubblegum" xml:space="preserve">
+    <value>Hồng kẹo cao su</value>
+  </data>
+  <data name="Custom_Hat_None" xml:space="preserve">
+    <value>Không mũ</value>
+  </data>
+  <data name="Custom_Hat_Beanie" xml:space="preserve">
+    <value>Mũ len ấm áp</value>
+  </data>
+  <data name="Custom_Hat_PartyHat" xml:space="preserve">
+    <value>Mũ tiệc</value>
+  </data>
+  <data name="Custom_Hat_LeafSprig" xml:space="preserve">
+    <value>Cành lá</value>
+  </data>
+  <data name="Custom_Pot_Terracotta" xml:space="preserve">
+    <value>Đất nung</value>
+  </data>
+  <data name="Custom_Pot_SkyGlaze" xml:space="preserve">
+    <value>Men xanh trời</value>
+  </data>
+  <data name="Custom_Pot_Cream" xml:space="preserve">
+    <value>Màu kem</value>
+  </data>
+  <data name="Custom_Locked" xml:space="preserve">
+    <value>Thử bất kỳ diện mạo nào tại đây. Với Pro, lựa chọn của bạn hiển thị ở mọi nơi có Bloop và Sprout.</value>
+  </data>
+  <data name="Custom_SavedForPro" xml:space="preserve">
+    <value>Diện mạo của bạn đã được lưu và sẽ trở lại khi bạn có Pro.</value>
+  </data>
+  <data name="Custom_Keep" xml:space="preserve">
+    <value>Giữ diện mạo này</value>
+  </data>
+  <data name="Appearance_Theme" xml:space="preserve">
+    <value>Chủ đề</value>
+  </data>
+  <data name="Appearance_ThemeSub" xml:space="preserve">
+    <value>Sáng, tối hoặc theo Windows.</value>
+  </data>
+  <data name="Appearance_Theme_System" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="Appearance_Theme_Light" xml:space="preserve">
+    <value>Sáng</value>
+  </data>
+  <data name="Appearance_Theme_Dark" xml:space="preserve">
+    <value>Tối</value>
+  </data>
+  <data name="Appearance_Accent" xml:space="preserve">
+    <value>Màu nhấn</value>
+  </data>
+  <data name="Appearance_AccentSub" xml:space="preserve">
+    <value>Theo màu nhấn của Windows trừ khi bạn chọn màu khác.</value>
+  </data>
+  <data name="Appearance_Accent_Windows" xml:space="preserve">
+    <value>Màu nhấn Windows</value>
+  </data>
+  <data name="Appearance_Accent_Blue" xml:space="preserve">
+    <value>Xanh dương</value>
+  </data>
+  <data name="Appearance_Accent_Teal" xml:space="preserve">
+    <value>Xanh mòng két</value>
+  </data>
+  <data name="Appearance_Accent_Violet" xml:space="preserve">
+    <value>Tím</value>
+  </data>
+  <data name="Appearance_Accent_Rose" xml:space="preserve">
+    <value>Hồng</value>
+  </data>
+  <data name="Appearance_Accent_Orange" xml:space="preserve">
+    <value>Cam</value>
+  </data>
+  <data name="Appearance_Material" xml:space="preserve">
+    <value>Chất liệu cửa sổ</value>
+  </data>
+  <data name="Appearance_MaterialSub" xml:space="preserve">
+    <value>Chất liệu đặc được tự động dùng ở chế độ tương phản cao.</value>
+  </data>
+  <data name="Appearance_Material_Mica" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Appearance_Material_Acrylic" xml:space="preserve">
+    <value>Acrylic</value>
+  </data>
+  <data name="Appearance_Material_Solid" xml:space="preserve">
+    <value>Đặc</value>
+  </data>
+  <data name="Appearance_Corners" xml:space="preserve">
+    <value>Góc</value>
+  </data>
+  <data name="Appearance_CornersSub" xml:space="preserve">
+    <value>Độ bo tròn của thẻ và điều khiển.</value>
+  </data>
+  <data name="Appearance_Corners_Rounded" xml:space="preserve">
+    <value>Bo tròn</value>
+  </data>
+  <data name="Appearance_Corners_Square" xml:space="preserve">
+    <value>Vuông</value>
+  </data>
+  <data name="Appearance_Corners_ExtraRound" xml:space="preserve">
+    <value>Bo tròn nhiều</value>
+  </data>
+  <data name="Appearance_Density" xml:space="preserve">
+    <value>Mật độ</value>
+  </data>
+  <data name="Appearance_DensitySub" xml:space="preserve">
+    <value>Khoảng cách bên trong các thẻ cài đặt.</value>
+  </data>
+  <data name="Appearance_Density_Standard" xml:space="preserve">
+    <value>Chuẩn</value>
+  </data>
+  <data name="Appearance_Density_Comfortable" xml:space="preserve">
+    <value>Thoải mái</value>
+  </data>
+  <data name="Appearance_Density_Compact" xml:space="preserve">
+    <value>Gọn</value>
+  </data>
+  <data name="Appearance_TextSize" xml:space="preserve">
+    <value>Cỡ chữ</value>
+  </data>
+  <data name="Appearance_TextSizeSub" xml:space="preserve">
+    <value>Cộng thêm vào cỡ chữ của Windows.</value>
+  </data>
+  <data name="Appearance_TextSize_Smaller" xml:space="preserve">
+    <value>Nhỏ hơn</value>
+  </data>
+  <data name="Appearance_TextSize_Default" xml:space="preserve">
+    <value>Mặc định</value>
+  </data>
+  <data name="Appearance_TextSize_Large" xml:space="preserve">
+    <value>Lớn</value>
+  </data>
+  <data name="Appearance_TextSize_Larger" xml:space="preserve">
+    <value>Lớn hơn</value>
+  </data>
+  <data name="Appearance_TextSize_Largest" xml:space="preserve">
+    <value>Lớn nhất</value>
+  </data>
+  <data name="Appearance_Motion" xml:space="preserve">
+    <value>Chuyển động</value>
+  </data>
+  <data name="Appearance_MotionSub" xml:space="preserve">
+    <value>Hiệu ứng trong cửa sổ và thẻ.</value>
+  </data>
+  <data name="Appearance_Motion_FollowWindows" xml:space="preserve">
+    <value>Theo Windows</value>
+  </data>
+  <data name="Appearance_Motion_Reduced" xml:space="preserve">
+    <value>Giảm bớt</value>
+  </data>
+  <data name="Appearance_Motion_Off" xml:space="preserve">
+    <value>Tắt</value>
+  </data>
+  <data name="Appearance_Reset" xml:space="preserve">
+    <value>Đặt lại giao diện về mặc định</value>
+  </data>
+  <data name="Appearance_ResetAccessible" xml:space="preserve">
+    <value>Đặt lại cài đặt giao diện về mặc định</value>
+  </data>
+  <data name="Settings_Section_Stretch" xml:space="preserve">
+    <value>Giãn cơ cùng Bloop</value>
+  </data>
+  <data name="Settings_StretchWithBloop" xml:space="preserve">
+    <value>Dùng camera khi giãn cơ</value>
+  </data>
+  <data name="Settings_StretchWithBloopSub" xml:space="preserve">
+    <value>Giãn cơ trước camera. Bloop bắt chước bạn, và lời nhắc hoàn tất khi bạn giữ đúng tư thế.</value>
+  </data>
+  <data name="Settings_StretchPrivacy" xml:space="preserve">
+    <value>Camera chỉ được dùng trong lúc giãn cơ do bạn bắt đầu. Video ở lại trên PC này: không bao giờ được ghi, lưu hoặc gửi đi.</value>
+  </data>
+  <data name="Settings_CameraAccess" xml:space="preserve">
+    <value>Quyền truy cập camera</value>
+  </data>
+  <data name="Nudge_StretchWithBloop" xml:space="preserve">
+    <value>Giãn cơ cùng Bloop</value>
+  </data>
+  <data name="Nudge_StopCamera" xml:space="preserve">
+    <value>Dừng camera</value>
+  </data>
+  <data name="Pose_CameraOn" xml:space="preserve">
+    <value>Camera bật · chỉ trên PC này</value>
+  </data>
+  <data name="Pose_Starting" xml:space="preserve">
+    <value>Đang bật camera…</value>
+  </data>
+  <data name="Pose_GetReady" xml:space="preserve">
+    <value>Chuẩn bị nào…</value>
+  </data>
+  <data name="Pose_HoldIt" xml:space="preserve">
+    <value>Giữ yên tư thế</value>
+  </data>
+  <data name="Pose_WellDone" xml:space="preserve">
+    <value>Làm tốt lắm!</value>
+  </data>
+  <data name="Pose_Sides" xml:space="preserve">
+    <value>Trái {0}% · Phải {1}%</value>
+  </data>
+  <data name="Pose_NoCamera" xml:space="preserve">
+    <value>Không tìm thấy camera. Chọn Xong khi bạn đã giãn cơ.</value>
+  </data>
+  <data name="Pose_CameraInUse" xml:space="preserve">
+    <value>Một ứng dụng khác đang dùng camera.</value>
+  </data>
+  <data name="Pose_CameraBlocked" xml:space="preserve">
+    <value>Windows đang chặn quyền truy cập camera của Desk Pal.</value>
+  </data>
+  <data name="Pose_ModelUnavailable" xml:space="preserve">
+    <value>Hiện chưa thể giãn cơ bằng camera.</value>
+  </data>
+  <data name="Pose_Failed" xml:space="preserve">
+    <value>Camera không bật được.</value>
+  </data>
+  <data name="Pose_StoppedTimeout" xml:space="preserve">
+    <value>Camera đã dừng sau 3 phút. Chọn Xong khi bạn đã giãn cơ.</value>
+  </data>
+  <data name="Pose_StoppedLost" xml:space="preserve">
+    <value>Camera đã ngừng hoạt động.</value>
+  </data>
+  <data name="Pose_StoppedLocked" xml:space="preserve">
+    <value>Camera đã dừng vì PC của bạn bị khóa.</value>
+  </data>
+  <data name="Pose_StoppedGeneric" xml:space="preserve">
+    <value>Camera đã dừng.</value>
+  </data>
+  <data name="Pose_StepIntoView" xml:space="preserve">
+    <value>Bước vào khung hình</value>
+  </data>
+  <data name="Pose_RaiseArms" xml:space="preserve">
+    <value>Giơ hai tay lên cao qua đầu</value>
+  </data>
+  <data name="Pose_LeanSideways" xml:space="preserve">
+    <value>Nghiêng người sang một bên</value>
+  </data>
+  <data name="Pose_ShrugHigher" xml:space="preserve">
+    <value>Nhún vai cao hơn</value>
+  </data>
+  <data name="Pose_TiltHead" xml:space="preserve">
+    <value>Nghiêng đầu về phía vai</value>
+  </data>
+  <data name="Pose_TwistMore" xml:space="preserve">
+    <value>Xoay thêm một chút</value>
+  </data>
+  <data name="Pose_SwitchSides" xml:space="preserve">
+    <value>Giờ sang bên kia</value>
+  </data>
+  <data name="Pose_FaceCamera" xml:space="preserve">
+    <value>Quay mặt về camera</value>
+  </data>
+  <data name="Wizard_Hello_Title" xml:space="preserve">
+    <value>Chào bạn, mình là Bloop!</value>
+  </data>
+  <data name="Wizard_Rhythm_Label" xml:space="preserve">
+    <value>Mình nên nhắc bạn vận động bao lâu một lần?</value>
+  </data>
+  <data name="Wizard_Rhythm_Option" xml:space="preserve">
+    <value>Mỗi {0} phút</value>
+  </data>
+  <data name="Wizard_Rhythm_Recommended" xml:space="preserve">
+    <value>Mỗi {0} phút (khuyến nghị)</value>
+  </data>
+  <data name="Wizard_Rhythm_Note" xml:space="preserve">
+    <value>Nghỉ mắt và nhắc uống nước sẽ đi theo.</value>
+  </data>
+  <data name="Wizard_Try_Title" xml:space="preserve">
+    <value>Xem Bloop hoạt động</value>
+  </data>
+  <data name="Wizard_Try_Sub" xml:space="preserve">
+    <value>Nhấn một nút để xem nó làm gì.</value>
+  </data>
+  <data name="Wizard_Try_Stretch" xml:space="preserve">
+    <value>Thử giãn cơ ngay</value>
+  </data>
+  <data name="Wizard_Try_Poke" xml:space="preserve">
+    <value>Chào Bloop</value>
+  </data>
+  <data name="Wizard_Try_Sent" xml:space="preserve">
+    <value>Lời nhắc của Bloop đang hiện trên màn hình. Chạm Xong trên đó, hoặc để nó tự biến mất.</value>
+  </data>
+  <data name="Wizard_Try_Tray" xml:space="preserve">
+    <value>Tìm mình trong khay hệ thống cạnh đồng hồ nhé.</value>
+  </data>
+  <data name="Wizard_Try_Pro" xml:space="preserve">
+    <value>Evolution miễn phí 7 ngày; những gì bạn dùng hôm nay vẫn miễn phí.</value>
+  </data>
+  <data name="Wizard_Skip" xml:space="preserve">
+    <value>Bỏ qua lúc này</value>
+  </data>
+  <data name="Wizard_Recommended" xml:space="preserve">
+    <value>Bắt đầu với cài đặt khuyến nghị</value>
+  </data>
+  <data name="Wizard_Hero_Name" xml:space="preserve">
+    <value>Bloop, Desk Pal của bạn. Nhấp để chào.</value>
+  </data>
+  <data name="Wizard_Hero_Hi" xml:space="preserve">
+    <value>Hì hì, chào bạn!</value>
+  </data>
+</root>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>Vươn tay lên cao</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>Lưng trên</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>Đan các ngón tay vào nhau và vươn cao lên, thở chậm. Hạ tay xuống và để vai thả lỏng.</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>Nghiêng người</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>Thân mình</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>Giơ một tay lên cao và nghiêng nhẹ người sang phía đối diện. Đổi bên khi đến giữa chừng.</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>Nhún vai</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>Vai</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>Nâng hai vai lên gần tai, giữ một lát rồi thả xuống. Lặp lại vài lần.</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>Xoay cổ</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>Cổ</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>Từ từ nghiêng đầu về một bên vai rồi nhẹ nhàng xoay sang bên kia. Làm thật thoải mái và thư giãn.</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>Xoay người khi ngồi</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>Cột sống</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>Ngồi thẳng và xoay thân trên sang một bên, tay vịn lưng ghế. Đổi bên sau vài nhịp thở.</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>Giãn cổ tay</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>Cổ tay</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>Duỗi một tay ra, lòng bàn tay hướng lên, và nhẹ nhàng kéo các ngón tay về phía sau bằng tay kia. Đổi tay.</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>Giãn cơ gập hông</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>Hông</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>Đứng lên và bước một chân ra sau, dồn trọng lượng về phía trước cho đến khi thấy căng nhẹ ở phía trước hông. Đổi chân.</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>Nhón gót</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>Chân</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>Đứng thẳng và nhón gót lên, rồi hạ xuống từ từ. Có thể vịn vào ghế nếu muốn. Lặp lại nhiều lần.</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>Cuộc gọi dài quá. Giãn cơ nhé?</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>Nghỉ mắt</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>Nhìn xa 6 m</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>Tập trung</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>Tạm dừng đến ngày mai</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>Đã tạm dừng</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>Đã báo lại</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>Đang gọi</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>Đến lúc ngồi một chút</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>Chuyển sang đứng</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}, {1}.</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value> và </value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>Giờ giãn cơ</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0}. {1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>Nghỉ đi bộ</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>Đứng dậy đi bộ một đoạn ngắn, dù chỉ sang phòng bên cạnh.</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>Nghỉ mắt</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>Nhìn vật cách khoảng 6 mét trong 20 giây.</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>Giờ uống nước</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>Lấy một cốc nước nhé.</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>Hít thở</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>Hít thở thật chậm và sâu vài lần.</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>giãn cơ một chút</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>đi bộ một đoạn ngắn</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>cho mắt nghỉ 20 giây</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>uống chút nước khi đang đứng dậy</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>hít thở chậm vài lần</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>Một ứng dụng không xác định</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>

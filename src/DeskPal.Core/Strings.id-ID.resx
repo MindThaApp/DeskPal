@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>Rentangkan ke atas</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>Punggung atas</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>Satukan jari-jarimu dan rentangkan tinggi ke atas sambil bernapas pelan. Turunkan lengan dan biarkan bahumu rileks.</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>Bungkuk samping</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>Badan</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>Angkat satu lengan ke atas kepala dan condongkan badan perlahan ke sisi berlawanan. Ganti sisi di tengah-tengah.</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>Angkat bahu</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>Bahu</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>Angkat kedua bahu ke arah telinga, tahan sebentar, lalu jatuhkan. Ulangi beberapa kali.</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>Putar leher</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>Leher</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>Miringkan kepala perlahan ke satu bahu lalu putar dengan lembut ke bahu yang lain. Lakukan dengan santai.</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>Putar badan sambil duduk</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>Tulang belakang</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>Duduk tegak dan putar tubuh bagian atas ke satu sisi sambil berpegangan pada sandaran kursi. Ganti sisi setelah beberapa napas.</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>Regangan pergelangan tangan</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>Pergelangan tangan</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>Luruskan satu lengan dengan telapak menghadap atas dan tarik jari-jari perlahan ke belakang dengan tangan yang lain. Ganti tangan.</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>Regangan fleksor pinggul</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>Pinggul</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>Berdiri dan langkahkan satu kaki ke belakang, geser berat badan ke depan sampai terasa regangan ringan di depan pinggul. Ganti kaki.</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>Angkat tumit</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>Kaki</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>Berdiri tegak dan berjinjit, lalu turun perlahan. Berpeganglah pada kursi jika mau. Ulangi beberapa kali.</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>Panggilannya lama ya. Meregang?</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>Istirahat mata</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>Lihat 6 m jauhnya</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>Fokus</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>Dijeda sampai besok</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>Dijeda</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>Ditunda</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>Sedang panggilan</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>Waktunya duduk sebentar</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>Ganti ke berdiri</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}, {1}.</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value> dan </value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>Waktunya meregang</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0}. {1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>Istirahat jalan</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>Berdiri dan jalan sebentar, walau hanya ke ruangan sebelah.</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>Istirahat mata</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>Lihat sesuatu sejauh sekitar 6 meter selama 20 detik.</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>Waktunya minum</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>Ambil segelas air.</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>Bernapas</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>Tarik napas dalam-dalam beberapa kali dengan pelan.</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>regangkan tubuhmu</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>jalan sebentar</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>istirahatkan matamu selama 20 detik</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>ambil air selagi kamu berdiri</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>tarik napas pelan beberapa kali</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>Aplikasi tak dikenal</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>

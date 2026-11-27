@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>Sträck uppåt</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>Övre ryggen</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>Fläta ihop fingrarna och sträck armarna högt upp medan du andas långsamt. Sänk armarna och låt axlarna slappna av.</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>Sidoböj</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>Bålen</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>Sträck ena armen över huvudet och luta dig försiktigt åt motsatt håll. Byt sida halvvägs.</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>Axellyft</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>Axlar</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>Lyft båda axlarna mot öronen, håll en stund och låt dem sedan falla. Upprepa några gånger.</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>Nackrullning</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>Nacke</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>Luta långsamt huvudet mot ena axeln och rulla det försiktigt över till den andra. Ta det lugnt och avslappnat.</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>Sittande vridning</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>Ryggraden</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>Sitt rakt och vrid överkroppen åt ena sidan medan du håller i stolsryggen. Byt sida efter några andetag.</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>Handledsstretch</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>Handleder</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>Sträck ut ena armen med handflatan uppåt och dra försiktigt fingrarna bakåt med andra handen. Byt hand.</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>Höftböjarstretch</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>Höfter</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>Stå upp och kliv ett steg bakåt med ena foten. Flytta vikten framåt tills du känner en lätt stretch längst fram i höften. Byt ben.</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>Tåhävningar</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>Ben</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>Stå rakt och res dig upp på tårna, sänk dig sedan långsamt. Håll i en stol om du vill. Upprepa flera gånger.</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>Det var ett långt samtal. Dags att stretcha?</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>Ögonpaus</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>Titta 6 m bort</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>Fokus</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>Pausad till imorgon</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>Pausad</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>Snoozad</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>I ett samtal</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>Dags att sitta ner en stund</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>Byt till stående</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}, {1}.</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value> och </value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>Dags att stretcha</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0}. {1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>Promenadpaus</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>Res dig och ta en kort promenad, även om det bara är till nästa rum.</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>Ögonpaus</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>Titta på något ungefär 6 meter bort i 20 sekunder.</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>Dags för vatten</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>Ta ett glas vatten.</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>Andas</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>Ta några långsamma, djupa andetag.</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>ge kroppen lite stretching</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>ta en kort promenad</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>vila ögonen i 20 sekunder</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>ta lite vatten medan du är uppe</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>ta några långsamma andetag</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>En okänd app</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>
