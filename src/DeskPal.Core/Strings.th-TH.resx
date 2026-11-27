@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>ยืดแขนเหนือศีรษะ</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>หลังส่วนบน</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>ประสานนิ้วมือแล้วยืดแขนขึ้นสูง หายใจช้า ๆ จากนั้นลดแขนลงและผ่อนคลายไหล่</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>เอนตัวไปด้านข้าง</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>ลำตัว</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>ยกแขนข้างหนึ่งเหนือศีรษะแล้วเอนตัวไปด้านตรงข้ามเบา ๆ สลับข้างเมื่อทำได้ครึ่งทาง</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>ยักไหล่</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>ไหล่</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>ยกไหล่ทั้งสองข้างขึ้นใกล้หู ค้างไว้สักครู่ แล้วปล่อยลง ทำซ้ำสองสามครั้ง</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>หมุนคอ</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>คอ</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>เอียงศีรษะไปทางไหล่ข้างหนึ่งช้า ๆ แล้วหมุนผ่านไปอีกข้างเบา ๆ ทำอย่างสบาย ๆ ผ่อนคลาย</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>บิดตัวขณะนั่ง</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>กระดูกสันหลัง</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>นั่งตัวตรงแล้วบิดลำตัวส่วนบนไปด้านหนึ่ง จับพนักเก้าอี้ไว้ หายใจสองสามครั้งแล้วสลับข้าง</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>ยืดข้อมือ</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>ข้อมือ</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>เหยียดแขนข้างหนึ่งออกโดยหงายฝ่ามือขึ้น แล้วใช้มืออีกข้างดึงนิ้วกลับเบา ๆ จากนั้นสลับมือ</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>ยืดกล้ามเนื้องอสะโพก</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>สะโพก</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>ยืนแล้วก้าวเท้าข้างหนึ่งไปด้านหลัง ย้ายน้ำหนักไปข้างหน้าจนรู้สึกตึงเบา ๆ ที่ด้านหน้าของสะโพก จากนั้นสลับขา</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>เขย่งปลายเท้า</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>ขา</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>ยืนตัวตรงแล้วเขย่งปลายเท้าขึ้น จากนั้นลดลงช้า ๆ จับเก้าอี้ไว้ได้ตามสบาย ทำซ้ำหลายครั้ง</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>คุยนานเลยนะ ยืดเส้นหน่อยไหม</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>พักสายตา</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>มองไกล 20 ฟุต</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>โฟกัส</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>หยุดชั่วคราวถึงพรุ่งนี้</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>หยุดชั่วคราว</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>เลื่อนการเตือน</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>กำลังโทร</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>ถึงเวลานั่งพักสักหน่อย</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>สลับมายืนกันเถอะ</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}, {1}</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value> และ</value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>ได้เวลายืดเส้น</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>พักเดิน</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>ลุกขึ้นแล้วเดินสั้น ๆ แม้แค่ไปอีกห้องก็ได้</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>พักสายตา</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>มองสิ่งที่อยู่ห่างออกไปประมาณ 20 ฟุต เป็นเวลา 20 วินาที</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>ได้เวลาดื่มน้ำ</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>ไปหยิบน้ำสักแก้วมาดื่มกัน</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>หายใจ</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>หายใจเข้าลึก ๆ ช้า ๆ สองสามครั้ง</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>ยืดเส้นยืดสายให้ร่างกาย</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>ไปเดินสั้น ๆ</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>พักสายตา 20 วินาที</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>ดื่มน้ำสักหน่อยตอนที่ลุกขึ้นมา</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>หายใจเข้าลึก ๆ ช้า ๆ สองสามครั้ง</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>แอปที่ไม่รู้จัก</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>

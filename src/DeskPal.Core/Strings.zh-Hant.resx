@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>過頭伸展</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>上背</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>雙手十指交扣，向上高舉，緩慢呼吸。接著放下手臂，讓肩膀放鬆。</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>側彎</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>軀幹</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>一隻手臂高舉過頭，輕輕向另一側傾斜。做到一半時換邊。</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>聳肩</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>肩膀</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>雙肩往耳朵方向抬起，停留片刻，再放鬆落下。重複幾次。</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>頸部繞環</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>頸部</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>慢慢將頭歪向一側肩膀，再輕輕繞到另一側。保持輕鬆自在。</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>坐姿扭轉</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>脊椎</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>坐直，上半身轉向一側，手扶椅背。呼吸幾次後換邊。</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>手腕伸展</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>手腕</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>一隻手臂伸直、掌心向上，用另一隻手輕輕將手指往後拉。再換手。</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>髖屈肌伸展</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>髖部</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>站立，一隻腳向後跨一步，重心前移，直到髖部前側有輕微伸展感。再換腳。</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>提踵</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>腿部</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>站直，踮起腳尖，再緩緩放下。需要的話可以扶著椅子。重複數次。</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>剛才講了好久。要伸展一下嗎？</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>護眼休息</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>望向 20 英尺外</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>專注</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>已暫停到明天</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>已暫停</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>已延後</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>通話中</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>該坐一下了</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>換成站姿吧</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}，{1}。</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value>並</value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>該伸展了</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0}。{1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>散步休息</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>起身短暫走一走，就算只是走到隔壁房間也好。</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>護眼休息</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>看著約 20 英尺外的物體，持續 20 秒。</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>喝水時間</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>去倒杯水來喝吧。</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>深呼吸</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>慢慢地深呼吸幾次。</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>讓身體伸展一下</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>散散步</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>讓眼睛休息 20 秒</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>趁起身時喝點水</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>慢慢深呼吸幾次</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>未知的應用程式</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>
