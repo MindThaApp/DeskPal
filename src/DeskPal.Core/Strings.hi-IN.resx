@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>सिर के ऊपर तानना</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>पीठ का ऊपरी हिस्सा</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>उँगलियाँ आपस में फँसाएँ और धीरे-धीरे साँस लेते हुए हाथ ऊपर तानें। फिर हाथ नीचे लाएँ और कंधों को ढीला छोड़ दें।</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>बगल की ओर झुकना</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>धड़</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>एक हाथ सिर के ऊपर उठाएँ और धीरे से विपरीत दिशा में झुकें। बीच में तरफ़ बदल लें।</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>कंधे उचकाना</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>कंधे</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>दोनों कंधों को कानों की ओर उठाएँ, एक पल रुकें, फिर उन्हें छोड़ दें। यह कुछ बार दोहराएँ।</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>गर्दन घुमाना</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>गर्दन</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>सिर को धीरे से एक कंधे की ओर झुकाएँ और उसे हल्के से घुमाकर दूसरे कंधे तक ले जाएँ। इसे आसान और ढीला रखें।</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>बैठकर मुड़ना</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>रीढ़</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>सीधे बैठें और कुर्सी की पीठ पकड़कर ऊपरी शरीर को एक तरफ़ मोड़ें। कुछ साँसों के बाद तरफ़ बदलें।</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>कलाई का स्ट्रेच</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>कलाइयाँ</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>एक हाथ हथेली ऊपर करके आगे बढ़ाएँ और दूसरे हाथ से उँगलियों को धीरे से पीछे खींचें। फिर हाथ बदलें।</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>हिप फ़्लेक्सर स्ट्रेच</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>कूल्हे</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>खड़े होकर एक पैर पीछे रखें और वज़न आगे की ओर डालें, जब तक कूल्हे के आगे हल्का खिंचाव न लगे। फिर पैर बदलें।</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>पिंडली उठाना</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>पैर</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>सीधे खड़े हों और पंजों के बल ऊपर उठें, फिर धीरे से नीचे आएँ। चाहें तो कुर्सी पकड़ लें। कई बार दोहराएँ।</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>वह तो लंबी कॉल थी। थोड़ा स्ट्रेच करें?</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>आँखों का ब्रेक</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>6 मीटर दूर देखें</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>फ़ोकस</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>कल तक रुका हुआ</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>रुका हुआ</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>स्नूज़ किया गया</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>कॉल में</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>अब थोड़ी देर बैठने का समय है</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>खड़े होकर काम करें</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}, {1}।</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value> और </value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>स्ट्रेच का समय</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0}। {1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>सैर का ब्रेक</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>उठें और थोड़ी देर टहलें, भले ही बस अगले कमरे तक।</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>आँखों का ब्रेक</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>20 सेकंड के लिए लगभग 20 फ़ीट दूर किसी चीज़ को देखें।</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>पानी का समय</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>एक गिलास पानी पिएँ।</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>साँस लें</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>कुछ धीमी, गहरी साँसें लें।</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>अपने शरीर को थोड़ा स्ट्रेच कराएँ</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>थोड़ी देर टहलें</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>20 सेकंड के लिए अपनी आँखों को आराम दें</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>उठे हैं तो थोड़ा पानी पी लें</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>कुछ धीमी साँसें लें</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>एक अज्ञात ऐप</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>

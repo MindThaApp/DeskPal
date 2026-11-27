@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Stretch_OverheadReach_Name" xml:space="preserve">
+    <value>مد الذراعين للأعلى</value>
+    <comment>Stretch exercise name</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Area" xml:space="preserve">
+    <value>أعلى الظهر</value>
+    <comment>Body area, shown under the exercise</comment>
+  </data>
+  <data name="Stretch_OverheadReach_Instruction" xml:space="preserve">
+    <value>شبّك أصابعك وارفع ذراعيك عاليًا مع التنفس ببطء. أنزل ذراعيك ودع كتفيك يسترخيان.</value>
+  </data>
+  <data name="Stretch_SideBend_Name" xml:space="preserve">
+    <value>الانحناء الجانبي</value>
+  </data>
+  <data name="Stretch_SideBend_Area" xml:space="preserve">
+    <value>الجذع</value>
+  </data>
+  <data name="Stretch_SideBend_Instruction" xml:space="preserve">
+    <value>ارفع ذراعًا واحدة فوق رأسك ومِل برفق إلى الجهة المقابلة. بدّل الجانب في منتصف التمرين.</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Name" xml:space="preserve">
+    <value>رفع الكتفين</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Area" xml:space="preserve">
+    <value>الكتفان</value>
+  </data>
+  <data name="Stretch_ShoulderShrug_Instruction" xml:space="preserve">
+    <value>ارفع كتفيك نحو أذنيك، وثبّت لحظة، ثم دعهما ينزلان. كرر ذلك عدة مرات.</value>
+  </data>
+  <data name="Stretch_NeckRoll_Name" xml:space="preserve">
+    <value>تدوير الرقبة</value>
+  </data>
+  <data name="Stretch_NeckRoll_Area" xml:space="preserve">
+    <value>الرقبة</value>
+  </data>
+  <data name="Stretch_NeckRoll_Instruction" xml:space="preserve">
+    <value>أمل رأسك ببطء نحو كتف واحد ثم دوّره برفق إلى الكتف الآخر. اجعل الحركة سهلة ومسترخية.</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Name" xml:space="preserve">
+    <value>الالتفاف جالسًا</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Area" xml:space="preserve">
+    <value>العمود الفقري</value>
+  </data>
+  <data name="Stretch_SeatedTwist_Instruction" xml:space="preserve">
+    <value>اجلس منتصبًا وأدر جزأك العلوي إلى جانب واحد ممسكًا بظهر الكرسي. بدّل الجانب بعد بضعة أنفاس.</value>
+  </data>
+  <data name="Stretch_WristStretch_Name" xml:space="preserve">
+    <value>تمدد المعصم</value>
+  </data>
+  <data name="Stretch_WristStretch_Area" xml:space="preserve">
+    <value>المعصمان</value>
+  </data>
+  <data name="Stretch_WristStretch_Instruction" xml:space="preserve">
+    <value>مد ذراعًا واحدة وراحة اليد لأعلى، واسحب الأصابع للخلف برفق بيدك الأخرى. بدّل اليدين.</value>
+  </data>
+  <data name="Stretch_HipFlexor_Name" xml:space="preserve">
+    <value>تمدد عضلة ثني الورك</value>
+  </data>
+  <data name="Stretch_HipFlexor_Area" xml:space="preserve">
+    <value>الوركان</value>
+  </data>
+  <data name="Stretch_HipFlexor_Instruction" xml:space="preserve">
+    <value>قف وخطُ بقدم واحدة إلى الخلف، وانقل وزنك إلى الأمام حتى تشعر بتمدد خفيف في مقدمة الورك. بدّل الساقين.</value>
+  </data>
+  <data name="Stretch_CalfRaises_Name" xml:space="preserve">
+    <value>رفع الساقين</value>
+  </data>
+  <data name="Stretch_CalfRaises_Area" xml:space="preserve">
+    <value>الساقان</value>
+  </data>
+  <data name="Stretch_CalfRaises_Instruction" xml:space="preserve">
+    <value>قف منتصبًا وارتفع على أصابع قدميك، ثم انزل ببطء. يمكنك الإمساك بكرسي إن أحببت. كرر عدة مرات.</value>
+  </data>
+  <data name="Nudge_LongCall_Message" xml:space="preserve">
+    <value>كانت مكالمة طويلة. هل نتمدد؟</value>
+    <comment>Shown after a long video call; question</comment>
+  </data>
+  <data name="Nudge_EyeCue_Title" xml:space="preserve">
+    <value>استراحة للعينين</value>
+    <comment>Title of the small eye-break pill</comment>
+  </data>
+  <data name="Nudge_EyeCue_Message" xml:space="preserve">
+    <value>انظر إلى مسافة 6 أمتار</value>
+    <comment>Short text on the eye-break pill; keep it brief</comment>
+  </data>
+  <data name="Nudge_Hold_Focus" xml:space="preserve">
+    <value>التركيز</value>
+    <comment>Reason shown while reminders are on hold for focus time</comment>
+  </data>
+  <data name="Nudge_Hold_PausedUntilTomorrow" xml:space="preserve">
+    <value>متوقف مؤقتًا حتى الغد</value>
+  </data>
+  <data name="Nudge_Hold_Paused" xml:space="preserve">
+    <value>متوقف مؤقتًا</value>
+  </data>
+  <data name="Nudge_Hold_Snoozed" xml:space="preserve">
+    <value>مؤجل</value>
+  </data>
+  <data name="Nudge_Hold_InCall" xml:space="preserve">
+    <value>في مكالمة</value>
+  </data>
+  <data name="Nudge_Posture_Sit" xml:space="preserve">
+    <value>حان وقت الجلوس قليلًا</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Posture_Stand" xml:space="preserve">
+    <value>انتقل إلى الوقوف</value>
+    <comment>Sit/stand reminder</comment>
+  </data>
+  <data name="Nudge_Combined" xml:space="preserve">
+    <value>{0}، {1}.</value>
+    <comment>{0} is the first reminder title or posture line, {1} is the list of other things to do joined by the "And" word</comment>
+  </data>
+  <data name="Nudge_And" xml:space="preserve">
+    <value> و </value>
+    <comment>Joins two short reminder phrases; keep the surrounding spaces</comment>
+  </data>
+  <data name="Nudge_Stretch_Title" xml:space="preserve">
+    <value>وقت التمدد</value>
+  </data>
+  <data name="Nudge_Stretch_Text" xml:space="preserve">
+    <value>{0}. {1}</value>
+    <comment>{0} is the exercise name, {1} the instruction</comment>
+  </data>
+  <data name="Nudge_Walk_Title" xml:space="preserve">
+    <value>استراحة مشي</value>
+  </data>
+  <data name="Nudge_Walk_Text" xml:space="preserve">
+    <value>قف وامشِ قليلًا، ولو إلى الغرفة المجاورة.</value>
+  </data>
+  <data name="Nudge_Eyes_Title" xml:space="preserve">
+    <value>استراحة للعينين</value>
+  </data>
+  <data name="Nudge_Eyes_Text" xml:space="preserve">
+    <value>انظر إلى شيء يبعد نحو 6 أمتار (20 قدمًا) لمدة 20 ثانية.</value>
+  </data>
+  <data name="Nudge_Water_Title" xml:space="preserve">
+    <value>وقت الماء</value>
+  </data>
+  <data name="Nudge_Water_Text" xml:space="preserve">
+    <value>تناول كوبًا من الماء.</value>
+  </data>
+  <data name="Nudge_Breathe_Title" xml:space="preserve">
+    <value>تنفّس</value>
+  </data>
+  <data name="Nudge_Breathe_Text" xml:space="preserve">
+    <value>خذ بضعة أنفاس عميقة وبطيئة.</value>
+  </data>
+  <data name="Nudge_Stretch_Tail" xml:space="preserve">
+    <value>امنح جسمك قسطًا من التمدد</value>
+    <comment>Continues a sentence such as "Stretch time, give your body a stretch and ..."</comment>
+  </data>
+  <data name="Nudge_Walk_Tail" xml:space="preserve">
+    <value>امشِ قليلًا</value>
+  </data>
+  <data name="Nudge_Eyes_Tail" xml:space="preserve">
+    <value>أرح عينيك لمدة 20 ثانية</value>
+  </data>
+  <data name="Nudge_Water_Tail" xml:space="preserve">
+    <value>تناول بعض الماء وأنت واقف</value>
+  </data>
+  <data name="Nudge_Breathe_Tail" xml:space="preserve">
+    <value>خذ بضعة أنفاس بطيئة</value>
+  </data>
+  <data name="App_UnknownApp" xml:space="preserve">
+    <value>تطبيق غير معروف</value>
+    <comment>Name shown when the app asking to control Desk Pal is not known</comment>
+  </data>
+</root>
