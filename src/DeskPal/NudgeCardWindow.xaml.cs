@@ -224,6 +224,8 @@ public sealed partial class NudgeCardWindow : Window
         viewport.PlaySequence("wave");
         if (clip is null) return;
         if (loop) viewport.Loop(clip);
+        // A character with a move for this very stretch (Pip) shows it; Bloop shows his nearest one.
+        else if (nudge.Stretch is { } stretch && !nudge.IsLongCall && Environment.GetEnvironmentVariable("DESKPAL_DEBUG_CLIP") is not { Length: > 0 }) viewport.RepeatFirst(gap, stretch.Id.Replace('-', '_'), clip);
         else viewport.Repeat(clip, gap);
         _repeating = true;
         _repeatUntilTick = _timedSeconds > 0 && _autoHide.Engaged ? _timedEndTick
@@ -433,7 +435,12 @@ public sealed partial class NudgeCardWindow : Window
             : Math.Clamp(1 - Math.Max(0, _timedEndTick - Environment.TickCount64) / (_timedSeconds * 1000.0), 0, 1);
         Send(id => new DoneCommand(id, share));
     }
-    private void OnSnooze(object sender, RoutedEventArgs e) { StopCamera(); Send(id => new SnoozeCommand(id)); }
+    private void OnSnooze(object sender, RoutedEventArgs e)
+    {
+        StopCamera();
+        BloopStage.LiveFor(this)?.Sulk();
+        Send(id => new SnoozeCommand(id));
+    }
     private void OnSkip(object sender, RoutedEventArgs e) { StopCamera(); Send(id => new SkipCommand(id)); }
 
     // Debug only (--debug-pose-card): saves the card as a PNG in %TEMP% (never over an existing file), so the card can be

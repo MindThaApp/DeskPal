@@ -314,6 +314,31 @@ internal sealed class Stage3D : IDisposable
         return stage;
     }
 
+    private GpuModel? _pip;
+    private bool _pipTried;
+
+    // The model for the chosen character. Pip is built in code on first use and kept with the device; if that ever
+    // fails, Bloop stands in.
+    public GpuModel ModelFor(PalCharacter character)
+    {
+        if (character != PalCharacter.Pip) return Bloop;
+        if (!_pipTried)
+        {
+            _pipTried = true;
+            try
+            {
+                var sw = Stopwatch.StartNew();
+                _pip = GpuModel.Create(Device, Context, PipModel.Build());
+                Logger.Log($"3d pip built: {_pip.Model.Parts.Length} parts {_pip.Model.Clips.Count} clips, {sw.ElapsedMilliseconds} ms");
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"3d pip could not be built, showing Bloop: {ex.GetType().Name}: {ex.Message}");
+            }
+        }
+        return _pip ?? Bloop;
+    }
+
     private readonly Dictionary<BloopHat, GpuModel?> _hats = [];
 
     // A hat for the live Bloop, built on first use and kept with the device. Null for no hat or if it cannot be built.
@@ -344,6 +369,7 @@ internal sealed class Stage3D : IDisposable
         catch { }
         foreach (var hat in _hats.Values) hat?.Dispose();
         _hats.Clear();
+        _pip?.Dispose();
         Bloop.Dispose();
         Sprout?.Dispose();
         Sampler.Dispose();

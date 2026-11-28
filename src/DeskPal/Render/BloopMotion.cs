@@ -59,6 +59,10 @@ internal sealed class BloopMotion
     // Procedural raise or wave for the viewer's-left hand (the high_five and wave clips use the other one).
     private double _armRaiseStart, _armRaiseUntil;
     private bool _armRaiseWave;
+    // Idle life: heavy eyelids late at night (a held pose, so the loop can stop), a nod-off, a happy spin, a sulk.
+    private float _drowsy, _drowsyTarget;
+    private double _nodStart, _nodUntil, _spinStart, _spinUntil, _sulkStart, _sulkUntil;
+    private bool _nodJolted, _sulkSmiled, _sulkMoves;
 
     public BloopMotion(GltfModel model, BloopAnimator anim, bool clips)
     {
@@ -108,6 +112,8 @@ internal sealed class BloopMotion
         _patting = _tickling = false;
         _dragArm = 0;
         _armRaiseUntil = 0;
+        _drowsy = _drowsyTarget = 0;
+        _nodUntil = _spinUntil = _sulkUntil = 0;
         Array.Clear(_mw);
         Array.Clear(_mUntil);
         Array.Clear(_mSustain);
@@ -116,7 +122,58 @@ internal sealed class BloopMotion
     public bool Busy => _armRaiseUntil > 0 ||
         _squash.Moving || _roll.Moving || _pitch.Moving || _yaw.Moving || _hop.Moving || _dent.Moving || _armLeft.Moving || _armRight.Moving
         || _hold > 1e-3f || _holdTarget > 0 || _melt > 1e-3f || _meltTarget > 0 || _now < _shakeUntil || _now < _swayUntil
-        || !double.IsPositiveInfinity(_settleAt) || MorphsActive();
+        || !double.IsPositiveInfinity(_settleAt) || MorphsActive()
+        || _now < _nodUntil || _now < _spinUntil || _now < _sulkUntil || MathF.Abs(_drowsy - _drowsyTarget) > 1e-3f;
+
+    // Calls from outside a frame (a touch, an idle moment) bring the clock up to date first, so their timed face
+    // shapes start now and not at the last drawn frame.
+    public void Sync(double now) => _now = Math.Max(_now, now);
+
+    public float DrowsyTarget
+    {
+        get => _drowsyTarget;
+        set => _drowsyTarget = Math.Clamp(value, 0, 1);
+    }
+
+    public void Yawn(bool moves)
+    {
+        Pulse(M.MouthO, 1, 1.5);
+        Pulse(M.EyesSqueeze, 0.85f, 1.5);
+        Pulse(M.Stretch, 0.5f, 1.1);
+        if (!moves) return;
+        _pitch.V -= 1.2f;
+        _squash.V += 4;
+    }
+
+    // Eyes close, the head drifts forward, then a little jolt awake.
+    public void NodOff()
+    {
+        _nodStart = _now;
+        _nodUntil = _now + 2.2;
+        _nodJolted = false;
+        Pulse(M.Blink, 1, 1.5);
+    }
+
+    public void Spin()
+    {
+        _spinStart = _now;
+        _spinUntil = _now + 1.1;
+        _hop.V += 0.5f;
+        _squash.V -= 6;
+        Pulse(M.EyesHappy, 1, 1.2);
+        Pulse(M.MouthGrin, 0.8f, 1.0);
+    }
+
+    public void Sulk(bool moves)
+    {
+        _sulkStart = _now;
+        _sulkUntil = _now + 2.0;
+        _sulkSmiled = false;
+        _sulkMoves = moves;
+        Pulse(M.EyesSqueeze, 0.3f, 1.0);
+        Pulse(M.MouthO, 0.25f, 1.0);
+        if (moves) _squash.V -= 3;
+    }
 
     private bool MorphsActive()
     {
@@ -165,6 +222,21 @@ internal sealed class BloopMotion
             }
         }
 
+        _drowsy += (_drowsyTarget - _drowsy) * Math.Min(1, dt * 1.5f);
+        if (MathF.Abs(_drowsy - _drowsyTarget) < 1e-3f) _drowsy = _drowsyTarget;
+        if (_now < _nodUntil && !_nodJolted && _now - _nodStart > 0.75 * 2.2)
+        {
+            _nodJolted = true;
+            _hop.V += 0.2f;
+        }
+        if (_now < _sulkUntil && !_sulkSmiled && _now - _sulkStart > 1.2)
+        {
+            // Brave smile: perks up again.
+            _sulkSmiled = true;
+            Pulse(M.MouthSmile, 0.9f, 0.8);
+            Pulse(M.EyesHappy, 0.7f, 0.7);
+            if (_sulkMoves) _hop.V += 0.15f;
+        }
         _hold += (_holdTarget - _hold) * Math.Min(1, dt * (_holdTarget > _hold ? 6 : 14));
         _melt += (_meltTarget - _melt) * Math.Min(1, dt * 3);
         if (_hold < 1e-3f && _holdTarget == 0) _hold = 0;
@@ -290,6 +362,15 @@ internal sealed class BloopMotion
 
     public void React(in GestureEvent e, BodyRegion region)
     {
+        // Dozing: the first touch wakes him with a little start.
+        if (_drowsy > 0.4f)
+        {
+            _drowsy = 0.2f;
+            _hop.V += 0.35f;
+            _squash.V += 10;
+            Pulse(M.MouthO, 0.7f, 0.5);
+        }
+        _drowsyTarget = 0;
         switch (e.Kind)
         {
             case GestureKind.Tap:
@@ -627,11 +708,25 @@ internal sealed class BloopMotion
             var env = (float)Math.Min(Math.Min(1, (_swayUntil - _now) / 0.6), (_now - _swayStart) / 0.4);
             roll += _swayAmp * 0.09f * env * MathF.Sin(2 * MathF.PI * 0.7f * (float)(_now - _swayStart));
         }
+        var pitch = _pitch.X + 0.07f * _drowsy;
+        var yaw = _yaw.X;
+        if (_now < _nodUntil)
+        {
+            var k = (float)((_now - _nodStart) / 2.2);
+            pitch += k < 0.75f ? 0.22f * PipMoves.Smooth(k / 0.6f) : 0.22f * (1 - PipMoves.Springy((k - 0.75f) / 0.25f));
+        }
+        if (_now < _spinUntil) yaw += MathF.Tau * PipMoves.Springy((float)((_now - _spinStart) / 1.1));
+        if (_now < _sulkUntil && _sulkMoves)
+        {
+            var k = PipMoves.Env((float)(_now - _sulkStart), 0, 0.3f, 1.0f, 1.6f);
+            pitch += 0.16f * k;
+            roll += 0.06f * k;
+        }
         if (_root >= 0 && world.Length > _root)
         {
             var delta = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, roll)
-                        * Quaternion.CreateFromAxisAngle(Vector3.UnitX, _pitch.X)
-                        * Quaternion.CreateFromAxisAngle(Vector3.UnitY, _yaw.X);
+                        * Quaternion.CreateFromAxisAngle(Vector3.UnitX, pitch)
+                        * Quaternion.CreateFromAxisAngle(Vector3.UnitY, yaw);
             RotateWorld(pose, world, model, _root, delta);
             MoveWorld(pose, world, model, _root, new Vector3(0, Math.Max(_hop.X, -0.002f), 0));
         }
@@ -648,6 +743,8 @@ internal sealed class BloopMotion
                 if (k < 0 || k >= w.Length || _mw[i] <= 0) continue;
                 w[k] = Math.Clamp(Math.Max(w[k], _mw[i]), 0, 1);
             }
+            var blink = _morph[(int)M.Blink];
+            if (blink >= 0 && blink < w.Length && _drowsy > 0) w[blink] = Math.Max(w[blink], 0.55f * _drowsy);
             var flat = _morph[(int)M.Squish];
             if (flat >= 0 && flat < w.Length) w[flat] = Math.Clamp(w[flat] + 0.5f * _melt + 0.6f * _hold, 0, 1);
         }

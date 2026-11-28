@@ -72,6 +72,9 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
     private double _nextFidget;
     private double _sproutPulse = -1;
     private BloopMotion? _motion;
+    private GpuModel? _character;
+    private bool _morningDone;
+    private readonly Queue<(double At, Vector2 Target)> _glances = new();
     private Matrix4x4[] _world = [];
     private Matrix4x4 _viewProj;
     private bool _jointsLogged;
@@ -113,8 +116,34 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
     private void Redraw()
     {
         if (!Live) return;
+        if (EnsureCharacter())
+        {
+            _anim!.Reset();
+            _motion!.Reset();
+        }
         Wake();
         Kick();
+    }
+
+    // Makes the animator and springs for the chosen character (Bloop or Pip) when they are not already made for it.
+    // True when they were (re)made.
+    private bool EnsureCharacter()
+    {
+        if (_stage is null) return false;
+        var gm = _stage.ModelFor(ActiveLook.Character);
+        if (_anim?.Model == gm.Model && _motion is not null) return false;
+        _character = gm;
+        _anim = new BloopAnimator(gm.Model);
+        _anim.ClipStarted += name =>
+        {
+            _runClips.Add(name);
+            Logger.Log($"3d clip {name}{(_home ? " (home)" : " (card)")}");
+        };
+        _motion = new BloopMotion(_anim.Model, _anim, clips: true) { Project = ProjectNode };
+        _world = new Matrix4x4[_anim.Model.Nodes.Length];
+        _viewProj = default;
+        _glances.Clear();
+        return true;
     }
 
     public event Action? FirstFrame;
@@ -153,20 +182,9 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
                 return;
             }
             EnsureSwapChain(scale);
-            if (_anim?.Model != _stage.Bloop.Model)
-            {
-                _anim = new BloopAnimator(_stage.Bloop.Model);
-                _anim.ClipStarted += name =>
-                {
-                    _runClips.Add(name);
-                    Logger.Log($"3d clip {name}{(_home ? " (home)" : " (card)")}");
-                };
-                _motion = new BloopMotion(_anim.Model, _anim, clips: true) { Project = ProjectNode };
-                _world = new Matrix4x4[_anim.Model.Nodes.Length];
-                _viewProj = default;
-            }
+            EnsureCharacter();
             if (_stage.Sprout is { } sprout && _sproutPose?.W.Length != sprout.Model.Nodes.Length) _sproutPose = new Pose(sprout.Model);
-            _anim.Reset();
+            _anim!.Reset();
             _clock.Restart();
             _lastTick = 0;
             _awakeUntil = AwakeSeconds;
@@ -219,6 +237,26 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
     public void Repeat(string clip, float gap) => Request(a => a.Repeat(clip, gap));
 
     public void Loop(string clip) => Request(a => a.Enqueue(clip, loop: true));
+
+    // Repeats the first of the clips the current character has (Pip has a move for every stretch, Bloop for three).
+    public void RepeatFirst(float gap, params string[] clips) => Request(a =>
+    {
+        foreach (var c in clips)
+            if (a.Model.Clips.ContainsKey(c))
+            {
+                a.Repeat(c, gap);
+                return;
+            }
+    });
+
+    // Snoozed: a short, kind sulk, then a brave smile. Face only under reduced motion.
+    public void Sulk()
+    {
+        if (!Ready || _motion is null) return;
+        _motion.Sync(Now);
+        _motion.Sulk(Motion.Enabled);
+        Wake();
+    }
 
     public void StopRepeat() => Request(a => a.StopRepeat());
 
@@ -290,6 +328,7 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
     {
         if (!Ready || _motion is null) return;
         _motion.Joints = Joints();
+        _motion.Sync(Now);
         _motion.React(e, region);
         Wake();
     }
@@ -432,12 +471,40 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
         ScheduleSleepWake();
     }
 
+    // Idle life on Home: a wave or shrug, a look around, a yawn, a nod-off and heavy eyelids late at night, a
+    // morning stretch, and now and then a happy spin. Silent, and only within the idle window after a touch.
     private void Fidget(double now)
     {
         _nextFidget = NextFidgetGap();
-        if (_anim is null || _anim.ActionActive) return;
-        if (_random.Next(2) == 0) _anim.Play("wave", 0.8f);
-        else _anim.Play("shoulder_shrug", 0.5f);
+        if (_anim is null || _motion is null || _anim.ActionActive) return;
+        var clock = DateTime.Now;
+        var motion = Motion.Enabled;
+        _motion.Sync(now);
+        if (IdleLife.IsNight(clock) && now - _lastInteraction > 25) _motion.DrowsyTarget = 1;
+        var move = IdleLife.Choose(clock, _random.NextDouble(), motion, _morningDone);
+        Logger.Log($"3d idle {move}");
+        switch (move)
+        {
+            case IdleMove.Wave: _anim.Play("wave", 0.8f); break;
+            case IdleMove.Shrug: _anim.Play("shoulder_shrug", 0.5f); break;
+            case IdleMove.Yawn: _motion.Yawn(motion); break;
+            case IdleMove.NodOff: _motion.NodOff(); break;
+            case IdleMove.Spin: _motion.Spin(); break;
+            case IdleMove.MorningStretch:
+                _morningDone = true;
+                _anim.Play("stretch_overhead", 0.7f);
+                _motion.Yawn(motion);
+                break;
+            case IdleMove.LookAround:
+            {
+                var side = _random.Next(2) == 0 ? -1f : 1f;
+                _glances.Clear();
+                _glances.Enqueue((now, new Vector2(0.75f * side, 0.15f)));
+                _glances.Enqueue((now + 1.1, new Vector2(-0.6f * side, 0.05f)));
+                _glances.Enqueue((now + 2.1, Vector2.Zero));
+                break;
+            }
+        }
         _awakeUntil = Math.Max(_awakeUntil, now + 3);
         Kick();
     }
@@ -525,6 +592,7 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
             _anim.Blink();
         }
         if (_home && now >= _nextFidget && _nextFidget - _lastInteraction < FidgetWindow) Fidget(now);
+        while (_glances.Count > 0 && now >= _glances.Peek().At) _eyeTarget = _glances.Dequeue().Target;
 
         _anim.Advance((float)dt, (float)_envelope);
         if (_sproutPulse >= 0)
@@ -560,7 +628,9 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
         if (AppData.Debug3DFail) throw new COMException("forced device removal (--debug-3d-fail)", unchecked((int)0x887A0005));
 
         var ctx = s.Context;
-        var model = s.Bloop.Model;
+        var character = _character ?? s.Bloop;
+        var model = character.Model;
+        if (_anim.Model != model) return;
         var pose = _anim.Evaluate();
 
         if (_world.Length != model.Nodes.Length) _world = new Matrix4x4[model.Nodes.Length];
@@ -608,7 +678,8 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
         ctx.PSSetShader(s.ShadowPs);
         ctx.VSSetConstantBuffer(3, s.ShadowCb);
         ctx.PSSetConstantBuffer(3, s.ShadowCb);
-        DrawShadow(new Vector4(0, 0, 0.062f, 0.042f), 0.42f);
+        if (character == s.Bloop) DrawShadow(new Vector4(0, 0, 0.062f, 0.042f), 0.42f);
+        else DrawShadow(new Vector4(0, 0, 0.034f, 0.026f), 0.40f);
         if (sprout is not null) DrawShadow(new Vector4(SproutAt.X, SproutAt.Z, 0.022f, 0.016f), 0.32f);
 
         ctx.OMSetDepthStencilState(s.DepthOn);
@@ -623,7 +694,7 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
 
         ctx.UpdateSubresource(in skin, s.SkinCb);
         var look = ActiveLook;
-        DrawModel(s.Bloop, pose, null, s.Bloop.TextureFor(s.Device, ctx, look.BloopShift));
+        DrawModel(character, pose, null, character.TextureFor(s.Device, ctx, look.BloopShift));
         if (s.Hat(look.Hat) is { } hat && model.NodeIndex("socket.head") is var socket and >= 0)
         {
             // The hat is modelled in the head socket's space, so the socket's world matrix places it.
@@ -830,6 +901,8 @@ internal sealed class LiveViewport : IDisposable, IBloopReactor
         if (_visible && !_failed) return;
         ReleaseTargets();
         _anim = null;
+        _motion = null;
+        _character = null;
         _sproutPose = null;
         _sproutWorld = null;
         if (_stage is not null)

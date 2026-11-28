@@ -15,7 +15,8 @@ internal static class Looks
 
     public static CharacterLook Saved => _hub?.Settings.Look.ToLook() ?? CharacterLook.Default;
 
-    public static CharacterLook Current => Pro.Pick(Saved, CharacterLook.Default);
+    // The character choice is free, so it always follows the saved one.
+    public static CharacterLook Current => Pro.Pick(Saved, CharacterLook.Default) with { Character = Saved.Character };
 
     public static void Attach(SettingsHub hub)
     {
