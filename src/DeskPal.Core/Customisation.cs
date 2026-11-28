@@ -17,36 +17,48 @@ public enum BloopHat { None, Beanie, PartyHat, LeafSprig }
 
 public enum PotStyle { Terracotta, SkyGlaze, Cream }
 
+// Who lives on the desk. Bloop is the default; Pip has arms and legs (live 3D only, other styles show Bloop).
+// The character choice is free; colours, hats and pots are the Evolution part of the look.
+public enum PalCharacter { Bloop, Pip }
+
 public sealed class LookSettings
 {
     public string BloopColour { get; set; } = "";
     public string Hat { get; set; } = "";
     public string Pot { get; set; } = "";
+    public string Character { get; set; } = "";
 
     public CharacterLook ToLook() => new(
         Parse(BloopColour, Core.BloopColour.Blue),
         Parse(Hat, BloopHat.None),
-        Parse(Pot, PotStyle.Terracotta));
+        Parse(Pot, PotStyle.Terracotta),
+        Parse(Character, PalCharacter.Bloop));
 
     public void Set(BloopColour colour) => BloopColour = colour.ToString();
     public void Set(BloopHat hat) => Hat = hat.ToString();
     public void Set(PotStyle pot) => Pot = pot.ToString();
+    public void Set(PalCharacter character) => Character = character.ToString();
 
     private static T Parse<T>(string? text, T standard) where T : struct, Enum =>
         !string.IsNullOrWhiteSpace(text) && Enum.TryParse<T>(text, true, out var v) && Enum.IsDefined(v) ? v : standard;
 }
 
-public readonly record struct CharacterLook(BloopColour Colour, BloopHat Hat, PotStyle Pot)
+public readonly record struct CharacterLook(BloopColour Colour, BloopHat Hat, PotStyle Pot, PalCharacter Character = PalCharacter.Bloop)
 {
     public static readonly CharacterLook Default = new(BloopColour.Blue, BloopHat.None, PotStyle.Terracotta);
 
-    public bool IsDefault => this == Default;
+    // The default colours, hat and pot, whoever the character is.
+    public bool IsDefault => this with { Character = PalCharacter.Bloop } == Default;
 
     // A short stable key for caches ("blue-none-terracotta").
     public string Key => $"{Colour}-{Hat}-{Pot}".ToLowerInvariant();
 
-    public static CharacterLook Effective(LookSettings? saved, ProState state) =>
-        state.Pick(saved?.ToLook() ?? Default, Default);
+    // The character is not gated, so it always follows the saved choice.
+    public static CharacterLook Effective(LookSettings? saved, ProState state)
+    {
+        var look = saved?.ToLook() ?? Default;
+        return state.Pick(look, Default) with { Character = look.Character };
+    }
 
     public ColourShift? BloopShift => ColourShift.ForBloop(Colour);
     public ColourShift? PotShift => ColourShift.ForPot(Pot);
